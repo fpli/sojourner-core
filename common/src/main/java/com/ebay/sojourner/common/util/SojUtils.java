@@ -4,10 +4,10 @@ import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.model.UbiEvent;
 import com.ebay.sojourner.common.model.UbiSession;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
 
 public class SojUtils {
 
@@ -123,9 +123,12 @@ public class SojUtils {
         sojEvent.setWebServer(ubiEvent.getWebServer());
         sojEvent.setRv(ubiEvent.isRv());
         sojEvent.setBot(RulePriorityUtils.getHighPriorityBotFlag(ubiEvent.getBotFlags()));
-        if (ubiEvent.getCurrentImprId() != null) {
-            sojEvent.setCiid(String.valueOf(ubiEvent.getCurrentImprId()));
+        if (sojEvent.getApplicationPayload() != null
+            && StringUtils.isNotBlank(sojEvent.getApplicationPayload().get("ciid"))
+            && !sojEvent.getApplicationPayload().get("ciid").equals("null")) {
+            sojEvent.setCiid(sojEvent.getApplicationPayload().get("ciid"));
         }
+
         return sojEvent;
     }
 
