@@ -54,7 +54,7 @@ public class CustomTopicConfigSourceFunction extends RichSourceFunction<PageIdTo
               PageIdTopicMapping item = new PageIdTopicMapping();
               item.setPageId(pageId);
               item.setTopics(Sets.newHashSet(topic));
-              item.setEnv(config.getEnv());
+              item.setProfile(config.getProfile());
               mappings.add(item);
             }
           }

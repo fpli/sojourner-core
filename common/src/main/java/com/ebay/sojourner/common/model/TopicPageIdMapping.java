@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class TopicPageIdMapping {
   private String topic;
   private Set<Integer> pageIds;
-  private String env;
+  private String profile;
 }
