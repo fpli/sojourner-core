@@ -21,12 +21,12 @@ public class CustomTopicConfigSourceFunction extends RichSourceFunction<PageIdTo
   private ObjectMapper objectMapper;
   private final String baseURL;
   private final Long interval;
-  private final String env;
+  private final String profile;
 
-  public CustomTopicConfigSourceFunction(String baseURL, Long interval, String env) {
+  public CustomTopicConfigSourceFunction(String baseURL, Long interval, String profile) {
     this.baseURL = baseURL;
     this.interval = interval;
-    this.env = env;
+    this.profile = profile;
   }
 
   @Override
@@ -34,7 +34,7 @@ public class CustomTopicConfigSourceFunction extends RichSourceFunction<PageIdTo
     while (true) {
       try {
         Response response = restClient.get(
-            "/api/custom_topic_config/list/topic_page_ids?env=" + env);
+            "/api/custom_topic_config/list/topic_page_ids?profile=" + profile);
         List<TopicPageIdMapping> configs =
             objectMapper
             .reader()
