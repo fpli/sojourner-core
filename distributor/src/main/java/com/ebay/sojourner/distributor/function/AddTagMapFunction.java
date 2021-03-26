@@ -1,64 +1,60 @@
 package com.ebay.sojourner.distributor.function;
 
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.AGENT_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.BOTT_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.CBRND_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.CLIENT_IP_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.CORRID_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.CURRENT_IMPR_ID_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.DD_BF_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.DD_BV_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.DD_DC_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.DD_D_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.DD_OSV_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.DD_OS_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.EVENT_TS_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.FORWARDED_FOR_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.IFRM_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.JS_EV_MAK_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.NODE_ID_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.PAGE_NAME_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.PAYLOAD_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.RDT_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.REFERER_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.REMOTE_IP_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.REQUEST_GUID_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.RHEOS_UPSTREAM_CREATE_TS_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.RHEOS_UPSTREAM_SEND_TS_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.RLOGID_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.RV_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.TIMESTAMP_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.TPOOL_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.TTYPE_TAG;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.URL_QUERY_STRING_TAG;
+
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
-import com.ebay.sojourner.flink.connector.kafka.AvroKafkaDeserializer;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
-import com.ebay.sojourner.flink.connector.kafka.KafkaDeserializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
 
-public class AddTagMapFunction extends RichMapFunction<RawSojEventWrapper, RawSojEventWrapper> {
+public class AddTagMapFunction extends RichMapFunction<SojEvent, RawSojEventWrapper> {
 
-  private transient KafkaDeserializer<SojEvent> deserializer;
   private transient KafkaSerializer<SojEvent> serializer;
-  private static final String AGENT_TAG = "Agent";
-  private static final String EVENT_TS_TAG = "EventTS";
-  private static final String FORWARDED_FOR_TAG = "ForwardedFor";
-  private static final String PAYLOAD_TAG = "Payload";
-  private static final String REFERER_TAG = "Referer";
-  private static final String REMOTE_IP_TAG = "RemoteIP";
-  private static final String TPOOL_TAG = "TPool";
-  private static final String TTYPE_TAG = "TType";
-  private static final String BOTT_TAG = "bott";
-  private static final String CBRND_TAG = "cbrnd";
-  private static final String CLIENT_IP_TAG = "clientIP";
-  private static final String CORRID_TAG = "corrId";
-  private static final String CURRENT_IMPR_ID_TAG = "currentImprId";
-  private static final String DD_BF_TAG = "dd_bf";
-  private static final String DD_BV_TAG = "dd_bv";
-  private static final String DD_D_TAG = "dd_d";
-  private static final String DD_DC_TAG = "dd_dc";
-  private static final String DD_OS_TAG = "dd_os";
-  private static final String DD_OSV_TAG = "dd_osv";
-  private static final String IFRM_TAG = "ifrm";
-  private static final String JS_EV_MAK_TAG = "js_ev_mak";
-  private static final String NODE_ID_TAG = "nodeId";
-  private static final String PAGE_NAME_TAG = "pageName";
-  private static final String RDT_TAG = "rdt";
-  private static final String REQUEST_GUID_TAG = "requestGuid";
-  private static final String RHEOS_UPSTREAM_CREATE_TS_TAG = "rheosUpstreamCreateTs";
-  private static final String RHEOS_UPSTREAM_SEND_TS_TAG = "rheosUpstreamSendTs";
-  private static final String RLOGID_TAG = "rlogid";
-  private static final String RV_TAG = "rv";
-  private static final String TIMESTAMP_TAG = "timestamp";
-  private static final String URL_QUERY_STRING_TAG = "urlQueryString";
 
   @Override
   public void open(Configuration parameters) throws Exception {
     super.open(parameters);
-    deserializer = new AvroKafkaDeserializer<>(SojEvent.class);
     serializer = new AvroKafkaSerializer<>(SojEvent.getClassSchema());
   }
 
   @Override
-  public RawSojEventWrapper map(RawSojEventWrapper wrapper) throws Exception {
+  public RawSojEventWrapper map(SojEvent event) throws Exception {
     // add JetStream backward compatible tags in 'applicationPayload' field
     try {
-      SojEvent event = deserializer.decodeValue(wrapper.getPayload());
       Map<String, String> applicationPayload = event.getApplicationPayload();
       // add tags
       if (event.getClientData().containsKey("TStamp")) {
@@ -156,10 +152,10 @@ public class AddTagMapFunction extends RichMapFunction<RawSojEventWrapper, RawSo
                                String.valueOf(System.currentTimeMillis()));
       }
 
-      wrapper.setPayload(serializer.encodeValue(event));
+      byte[] payloads = serializer.encodeValue(event);
+      return new RawSojEventWrapper(event.getGuid(), event.getPageId(), null, payloads);
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }
-    return wrapper;
   }
 }

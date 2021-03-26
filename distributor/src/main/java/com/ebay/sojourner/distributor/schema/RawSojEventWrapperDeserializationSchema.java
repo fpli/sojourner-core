@@ -7,7 +7,7 @@ import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 @Slf4j
-public class SojEventDistDeserializationSchema
+public class RawSojEventWrapperDeserializationSchema
     implements KafkaDeserializationSchema<RawSojEventWrapper> {
 
   @Override
