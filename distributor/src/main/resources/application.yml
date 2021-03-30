@@ -1,6 +1,5 @@
 flink:
   app:
-    name: Sojourner Distributor - RNO
     parallelism:
       source: 200
       sink-kafka: 200
@@ -12,12 +11,10 @@ flink:
       max-concurrent: 1
       tolerate-failure-number: 3
     source:
-      dc: rno
       operator-name: Non-bot SojEvent Source
       from-timestamp: 0
       out-of-orderless-in-min: 0
     sink:
-      dc: rno
       operator-name: Non-bot SojEvent Sink
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
@@ -25,7 +22,6 @@ flink:
 kafka:
   consumer:
     stream: behavior.totalv2
-    group-id: sojourner-distributor-rno
     topic:
       - behavior.totalv2.sojevent-nonbot-rno
       - behavior.totalv2.sojevent-nonbot-lvs

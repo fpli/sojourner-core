@@ -11,7 +11,7 @@ import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.jetbrains.annotations.Nullable;
 
-public class SojEventDistSerializationSchema
+public class RawSojEventWrapperSerializationSchema
     implements KafkaSerializationSchema<RawSojEventWrapper> {
 
   private static final String SCHEMA_VERSION = "2";
