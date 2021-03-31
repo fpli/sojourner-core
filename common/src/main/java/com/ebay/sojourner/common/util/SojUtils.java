@@ -68,7 +68,6 @@ public class SojUtils {
         sojEvent.setCobrand(String.valueOf(ubiEvent.getCobrand()));
         sojEvent.setCookies(ubiEvent.getCookies());
         sojEvent.setCurrentImprId(ubiEvent.getCurrentImprId());
-        sojEvent.setDataCenter(ubiEvent.getDataCenter());
         sojEvent.setDeviceFamily(ubiEvent.getDeviceFamily());
         sojEvent.setDeviceType(ubiEvent.getDeviceType());
         sojEvent.setEnrichedOsVersion(ubiEvent.getEnrichedOsVersion());
@@ -77,16 +76,14 @@ public class SojUtils {
         sojEvent.setEventAttr(ubiEvent.getEventAttr());
         sojEvent.setEventCnt(ubiEvent.getEventCnt());
         sojEvent.setEventFamily(ubiEvent.getEventFamily());
-        sojEvent.setEventTimestamp(ubiEvent.getEventTimestamp() != null ?
-                SojTimestamp.getUnixTimestamp(ubiEvent.getEventTimestamp()) : null);
+        sojEvent.setEventTimestamp(SojTimestamp.getUnixTimestamp(ubiEvent.getEventTimestamp()));
+        sojEvent.setIngestTime(ubiEvent.getIngestTime());
         sojEvent.setFlags(ubiEvent.getFlags());
         sojEvent.setForwardedFor(ubiEvent.getForwardedFor());
-        sojEvent.setGenerateTime(ubiEvent.getGenerateTime());
         sojEvent.setIcfBinary(ubiEvent.getIcfBinary());
         sojEvent.setIframe(ubiEvent.isIframe());
-        sojEvent.setIngestTime(ubiEvent.getIngestTime());
-        sojEvent.setItemId(ubiEvent.getItemId() == null ? null
-                : String.valueOf(ubiEvent.getItemId()));
+        sojEvent.setItemId(ubiEvent.getItemId() == null ? null :
+                String.valueOf(ubiEvent.getItemId()));
         sojEvent.setOldSessionSkey(ubiEvent.getOldSessionSkey());
         sojEvent.setOsFamily(ubiEvent.getOsFamily());
         sojEvent.setOsVersion(ubiEvent.getOsVersion());
@@ -106,15 +103,13 @@ public class SojUtils {
         sojEvent.setReservedForFuture(ubiEvent.getReservedForFuture());
         sojEvent.setRlogid(ubiEvent.getRlogid());
         sojEvent.setSeqNum(String.valueOf(ubiEvent.getSeqNum()));
-        sojEvent.setSessionEndTime(ubiEvent.getSessionEndTime());
         sojEvent.setSessionSkey(ubiEvent.getSessionSkey());
         sojEvent.setSessionId(ubiEvent.getSessionId());
         sojEvent.setSessionStartDt(ubiEvent.getSessionStartDt());
         sojEvent.setSojDataDt(ubiEvent.getSojDataDt());
-        sojEvent.setSessionStartTime(ubiEvent.getSessionStartTime());
         sojEvent.setSid(ubiEvent.getSid());
-        sojEvent.setSiteId(ubiEvent.getSiteId() == -1 ? null
-                : String.valueOf(ubiEvent.getSiteId()));
+        sojEvent.setSiteId(ubiEvent.getSiteId() == -1 ? null :
+                String.valueOf(ubiEvent.getSiteId()));
         sojEvent.setSourceImprId(ubiEvent.getSourceImprId());
         sojEvent.setSqr(ubiEvent.getSqr());
         sojEvent.setStaticPageType(ubiEvent.getStaticPageType());
@@ -142,8 +137,8 @@ public class SojUtils {
         sojSession.setUserAgent(ubiSession.getUserAgent());
         sojSession.setSojDataDt(ubiSession.getSojDataDt());
         //change sojtimestamp to unixtimestamp
-        sojSession.setSessionStartDt(SojTimestamp
-                .getUnixTimestamp(ubiSession.getSessionStartDt()));
+        sojSession.setSessionStartDt(SojTimestamp.getUnixTimestamp(
+                ubiSession.getSessionStartDt()));
         sojSession.setStartTimestamp(ubiSession.getStartTimestamp());
         sojSession.setEndTimestamp(ubiSession.getEndTimestamp());
         // change sojtimestamp to unixtimestamp
@@ -178,8 +173,8 @@ public class SojUtils {
                 ubiSession.getFirstSiteId() == Integer.MIN_VALUE ? null :
                         String.valueOf(ubiSession.getFirstSiteId()));
         sojSession.setFirstSiteId(
-                ubiSession.getFirstSiteId() == Integer.MIN_VALUE ? null
-                        : ubiSession.getFirstSiteId());
+                ubiSession.getFirstSiteId() == Integer.MIN_VALUE ? null :
+                        ubiSession.getFirstSiteId());
         sojSession.setCguid(ubiSession.getFirstCguid());
         sojSession.setFirstMappedUserId(ubiSession.getFirstMappedUserId());
         sojSession.setHomepageCnt(ubiSession.getHomepageCnt());
@@ -215,7 +210,6 @@ public class SojUtils {
         sojSession.setStreamId(ubiSession.getStreamId());
         sojSession.setBuserId(ubiSession.getBuserId());
         sojSession.setIsOpen(ubiSession.isOpenEmit());
-        //fix bugs
         sojSession.setPageId(ubiSession.getPageId());
         sojSession.setSojEventCnt(ubiSession.getAbsEventCnt());
         return sojSession;

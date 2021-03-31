@@ -404,11 +404,10 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
 
   private void parseEventTimestamp(RawEvent rawEvent) {
     StringBuilder buffer = new StringBuilder();
-    Long abEventTimestamp = null;
-    Long eventTimestamp = null;
-    Long interval = null;
-    //    String applicationPayload = ubiEvent.getApplicationPayload();
-    String mtstsString = null;
+    Long abEventTimestamp;
+    Long eventTimestamp;
+    Long interval;
+    String mtstsString;
     String pageId = null;
     Map<String, String> map = new HashMap<>();
     map.putAll(rawEvent.getSojA());
@@ -429,7 +428,9 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     if (applicationPayload == null) {
       applicationPayload = mCRecString;
     }
-    // abEventTimestamp = rawEvent.getAbEventTimestamp();
+    Long origEventTimeStamp = rawEvent.getRheosHeader().getEventCreateTimestamp();
+    abEventTimestamp = SojTimestamp.getSojTimestamp(origEventTimeStamp);
+
     // for cal2.0 abeventtimestamp format change(from soj timestamp to EPOCH timestamp)
     String tstamp = rawEvent.getClientData().getTStamp();
     if (tstamp != null) {
@@ -437,14 +438,6 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
         abEventTimestamp = Long.valueOf(rawEvent.getClientData().getTStamp());
         abEventTimestamp = SojTimestamp.getSojTimestamp(abEventTimestamp);
       } catch (NumberFormatException e) {
-        Long origEventTimeStamp = rawEvent.getRheosHeader().getEventCreateTimestamp();
-        if (origEventTimeStamp != null) {
-          abEventTimestamp = SojTimestamp.getSojTimestamp(origEventTimeStamp);
-        }
-      }
-    } else {
-      Long origEventTimeStamp = rawEvent.getRheosHeader().getEventCreateTimestamp();
-      if (origEventTimeStamp != null) {
         abEventTimestamp = SojTimestamp.getSojTimestamp(origEventTimeStamp);
       }
     }
@@ -506,10 +499,6 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     v1 = dateMinsFormatter.parseDateTime(dateMinsFormatter.print(microts1 / 1000)).getMillis();
     v2 = dateMinsFormatter.parseDateTime(dateMinsFormatter.print(microts2 / 1000)).getMillis();
     return (v1 - v2) * 1000;
-  }
-
-  private String getString(Object o) {
-    return (o != null) ? o.toString() : null;
   }
 
   @Override

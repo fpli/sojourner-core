@@ -8,10 +8,8 @@ public class TimestampParser implements FieldParser<RawEvent, UbiEvent> {
 
   public void parse(RawEvent rawEvent, UbiEvent ubiEvent) {
     Long eventTimestamp = rawEvent.getEventTimestamp();
-    if (eventTimestamp != null) {
-      ubiEvent.setEventTimestamp(eventTimestamp);
-      ubiEvent.setSojDataDt(SojTimestamp.castSojTimestampToDate(eventTimestamp));
-    }
+    ubiEvent.setEventTimestamp(eventTimestamp);
+    ubiEvent.setSojDataDt(SojTimestamp.castSojTimestampToDate(eventTimestamp));
 
     // Keep original session key from UBI Listener
     ubiEvent.setIngestTime(rawEvent.getIngestTime());

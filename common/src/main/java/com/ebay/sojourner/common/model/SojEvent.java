@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 /**  tags not included but in UbiEvent: current_impr_id, source_impr_id, staticPageType, reservedForFuture, eventAttr, oldSessionSkey, seqNum, sessionStartDt, sojDataDt, version */
 @org.apache.avro.specific.AvroGenerated
 public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -62963482522262616L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SojEvent\",\"namespace\":\"com.ebay.sojourner.common.model\",\"doc\":\" tags not included but in UbiEvent: current_impr_id, source_impr_id, staticPageType, reservedForFuture, eventAttr, oldSessionSkey, seqNum, sessionStartDt, sojDataDt, version\",\"fields\":[{\"name\":\"rheosHeader\",\"type\":{\"type\":\"record\",\"name\":\"RheosHeader\",\"fields\":[{\"name\":\"eventCreateTimestamp\",\"type\":\"long\"},{\"name\":\"eventSentTimestamp\",\"type\":\"long\"},{\"name\":\"schemaId\",\"type\":\"int\"},{\"name\":\"eventId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"producerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},\"doc\":\"Rheos header\"},{\"name\":\"guid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"sessionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag snid\"},{\"name\":\"sessionSkey\",\"type\":[\"null\",\"long\"]},{\"name\":\"seqNum\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag snsq\"},{\"name\":\"sessionStartDt\",\"type\":[\"null\",\"long\"]},{\"name\":\"sojDataDt\",\"type\":[\"null\",\"long\"]},{\"name\":\"version\",\"type\":[\"null\",\"int\"]},{\"name\":\"staticPageType\",\"type\":[\"null\",\"int\"]},{\"name\":\"reservedForFuture\",\"type\":[\"null\",\"int\"]},{\"name\":\"eventAttr\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"currentImprId\",\"type\":[\"null\",\"long\"]},{\"name\":\"sourceImprId\",\"type\":[\"null\",\"long\"]},{\"name\":\"eventTimestamp\",\"type\":[\"null\",\"long\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from timestamp, publish time\"},{\"name\":\"eventCaptureTime\",\"type\":[\"null\",\"long\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=mobile specific, map from mtsts, used for mobile case\"},{\"name\":\"requestCorrelationId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=request correlation id, map from tag rq\"},{\"name\":\"cguid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=correlation guid, map from tag n\"},{\"name\":\"sid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=Sojourner key for source id\"},{\"name\":\"pageId\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag p\"},{\"name\":\"pageName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"pageFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag pgf\"},{\"name\":\"eventFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from efam of pulsar event, event family\"},{\"name\":\"eventAction\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from eactn of pulsar event, event action\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag u/bu\"},{\"name\":\"clickId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=Click Id, map from tag c\"},{\"name\":\"siteId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=Site ID, map from tag t\"},{\"name\":\"ciid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"siid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"oldSessionSkey\",\"type\":[\"null\",\"long\"]},{\"name\":\"partialValidPage\",\"type\":[\"null\",\"boolean\"]},{\"name\":\"sessionStartTime\",\"type\":[\"null\",\"long\"]},{\"name\":\"sessionEndTime\",\"type\":[\"null\",\"long\"]},{\"name\":\"botFlags\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"int\"}],\"default\":null},{\"name\":\"icfBinary\",\"type\":[\"null\",\"long\"]},{\"name\":\"ingestTime\",\"type\":[\"null\",\"long\"]},{\"name\":\"generateTime\",\"type\":[\"null\",\"long\"]},{\"name\":\"eventCnt\",\"type\":[\"null\",\"long\"]},{\"name\":\"dataCenter\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"rdt\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=1 indicates that the command redirected to another URL\"},{\"name\":\"regu\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=indicating that this is a registered user, map from tag regU\"},{\"name\":\"iframe\",\"type\":[\"null\",\"boolean\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag _ifrm\"},{\"name\":\"refererHash\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag r\"},{\"name\":\"sqr\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=search keyword, map from tag sQr\"},{\"name\":\"itemId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag itm/item\"},{\"name\":\"flags\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag flgs\"},{\"name\":\"urlQueryString\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag Referer\"},{\"name\":\"webServer\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=web server, map from Server\"},{\"name\":\"cookies\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag ck/C\"},{\"name\":\"referrer\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"bot\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag bott\"},{\"name\":\"clientIP\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"remoteIP\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag RemoteIP\"},{\"name\":\"agentInfo\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag Agent\"},{\"name\":\"forwardedFor\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"appId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=application ID, map from tag app\"},{\"name\":\"appVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=application version, map from mav\"},{\"name\":\"osVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=operation system version, map from osv\"},{\"name\":\"trafficSource\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from trffc_src\"},{\"name\":\"cobrand\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from cbrnd\"},{\"name\":\"deviceFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_d\"},{\"name\":\"deviceType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_dc\"},{\"name\":\"browserVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_bv\"},{\"name\":\"browserFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataCl","assification=Internal|isEncrypted=false|description=map from dd_bf\"},{\"name\":\"osFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_os\"},{\"name\":\"enrichedOsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_osv\"},{\"name\":\"applicationPayload\",\"type\":{\"type\":\"map\",\"values\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"avro.java.string\":\"String\"}},{\"name\":\"rlogid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"CAL request log id\",\"default\":null,\"avro.java.string\":\"String\"},{\"name\":\"clientData\",\"type\":{\"type\":\"map\",\"values\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"avro.java.string\":\"String\"},\"doc\":\"Includes ForwardFor, ContentLength, Script, Server, Encoding, TMachine, TStamp, TName, TStatus, TDuration, TPayload\"},{\"name\":\"rv\",\"type\":[\"null\",\"boolean\"]}]}");
+  private static final long serialVersionUID = -8050547324278820829L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SojEvent\",\"namespace\":\"com.ebay.sojourner.common.model\",\"doc\":\" tags not included but in UbiEvent: current_impr_id, source_impr_id, staticPageType, reservedForFuture, eventAttr, oldSessionSkey, seqNum, sessionStartDt, sojDataDt, version\",\"fields\":[{\"name\":\"rheosHeader\",\"type\":{\"type\":\"record\",\"name\":\"RheosHeader\",\"fields\":[{\"name\":\"eventCreateTimestamp\",\"type\":\"long\"},{\"name\":\"eventSentTimestamp\",\"type\":\"long\"},{\"name\":\"schemaId\",\"type\":\"int\"},{\"name\":\"eventId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"producerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]},\"doc\":\"Rheos header\"},{\"name\":\"guid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"eventTimestamp\",\"type\":\"long\",\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from timestamp, publish time\"},{\"name\":\"eventCaptureTime\",\"type\":[\"null\",\"long\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=mobile specific, map from mtsts, used for mobile case\"},{\"name\":\"requestCorrelationId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=request correlation id, map from tag rq\"},{\"name\":\"cguid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=correlation guid, map from tag n\"},{\"name\":\"sid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=Sojourner key for source id\"},{\"name\":\"pageId\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag p\"},{\"name\":\"pageName\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"pageFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag pgf\"},{\"name\":\"eventFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from efam of pulsar event, event family\"},{\"name\":\"eventAction\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from eactn of pulsar event, event action\"},{\"name\":\"userId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag u/bu\"},{\"name\":\"clickId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=Click Id, map from tag c\"},{\"name\":\"siteId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=Site ID, map from tag t\"},{\"name\":\"sessionId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag snid\"},{\"name\":\"seqNum\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag snsq\"},{\"name\":\"ciid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"siid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"rdt\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=1 indicates that the command redirected to another URL\"},{\"name\":\"regu\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=indicating that this is a registered user, map from tag regU\"},{\"name\":\"iframe\",\"type\":[\"null\",\"boolean\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag _ifrm\"},{\"name\":\"refererHash\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag r\"},{\"name\":\"sqr\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=search keyword, map from tag sQr\"},{\"name\":\"itemId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag itm/item\"},{\"name\":\"flags\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag flgs\"},{\"name\":\"urlQueryString\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag Referer\"},{\"name\":\"webServer\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=web server, map from Server\"},{\"name\":\"cookies\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag ck/C\"},{\"name\":\"bot\",\"type\":[\"null\",\"int\"],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag bott\"},{\"name\":\"clientIP\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"remoteIP\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag RemoteIP\"},{\"name\":\"agentInfo\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from tag Agent\"},{\"name\":\"appId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=application ID, map from tag app\"},{\"name\":\"appVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=application version, map from mav\"},{\"name\":\"osVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=operation system version, map from osv\"},{\"name\":\"trafficSource\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from trffc_src\"},{\"name\":\"cobrand\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from cbrnd\"},{\"name\":\"deviceFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_d\"},{\"name\":\"deviceType\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_dc\"},{\"name\":\"browserVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_bv\"},{\"name\":\"browserFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_bf\"},{\"name\":\"osFamily\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_os\"},{\"name\":\"enrichedOsVersion\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"dataClassification=Internal|isEncrypted=false|description=map from dd_osv\"},{\"name\":\"applicationPayload\",\"type\":{\"type\":\"map\",\"values\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"avro.java.string\":\"String\"}},{\"name\":\"rlogid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"doc\":\"CAL request log id\",\"default\":null,\"avro.java.string\":\"String\"},{\"name\":\"clientData\",\"type\":{\"type\":\"map\",\"values\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"avro.java.string\":\"String\"},\"doc\":\"Includes ForwardFor, ContentLength, Script, Server, Encoding, TMachine, TStamp, TName, TStatus, TDuration, TPayload\"},{\"name\":\"ingestTime\",\"type\":[\"null\",\"long\"]},{\"name\":\"sessionSkey\",\"type\":[\"null\",\"long\"]},{\"name\":\"sessionStartDt\",\"type\":\"long\"},{\"name\":\"sojDataDt\",\"type\":\"long\"},{\"name\":\"version\",\"type\":[\"null\",\"int\"]},{\"name\":\"staticPageType\",\"type\":[\"","null\",\"int\"]},{\"name\":\"reservedForFuture\",\"type\":[\"null\",\"int\"]},{\"name\":\"eventAttr\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"currentImprId\",\"type\":[\"null\",\"long\"]},{\"name\":\"sourceImprId\",\"type\":[\"null\",\"long\"]},{\"name\":\"oldSessionSkey\",\"type\":[\"null\",\"long\"]},{\"name\":\"partialValidPage\",\"type\":[\"null\",\"boolean\"]},{\"name\":\"botFlags\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"int\"}],\"default\":null},{\"name\":\"icfBinary\",\"type\":\"long\"},{\"name\":\"eventCnt\",\"type\":[\"null\",\"long\"]},{\"name\":\"referrer\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"forwardedFor\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"rv\",\"type\":[\"null\",\"boolean\"]},{\"name\":\"sojHeader\",\"type\":[\"null\",{\"type\":\"map\",\"values\":\"bytes\",\"avro.java.string\":\"String\"}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -55,21 +55,8 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   /** Rheos header */
   @Deprecated public com.ebay.sojourner.common.model.RheosHeader rheosHeader;
   @Deprecated public java.lang.String guid;
-  /** dataClassification=Internal|isEncrypted=false|description=map from tag snid */
-  @Deprecated public java.lang.String sessionId;
-  @Deprecated public java.lang.Long sessionSkey;
-  /** dataClassification=Internal|isEncrypted=false|description=map from tag snsq */
-  @Deprecated public java.lang.String seqNum;
-  @Deprecated public java.lang.Long sessionStartDt;
-  @Deprecated public java.lang.Long sojDataDt;
-  @Deprecated public java.lang.Integer version;
-  @Deprecated public java.lang.Integer staticPageType;
-  @Deprecated public java.lang.Integer reservedForFuture;
-  @Deprecated public java.lang.String eventAttr;
-  @Deprecated public java.lang.Long currentImprId;
-  @Deprecated public java.lang.Long sourceImprId;
   /** dataClassification=Internal|isEncrypted=false|description=map from timestamp, publish time */
-  @Deprecated public java.lang.Long eventTimestamp;
+  @Deprecated public long eventTimestamp;
   /** dataClassification=Internal|isEncrypted=false|description=mobile specific, map from mtsts, used for mobile case */
   @Deprecated public java.lang.Long eventCaptureTime;
   /** dataClassification=Internal|isEncrypted=false|description=request correlation id, map from tag rq */
@@ -93,18 +80,12 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   @Deprecated public java.lang.String clickId;
   /** dataClassification=Internal|isEncrypted=false|description=Site ID, map from tag t */
   @Deprecated public java.lang.String siteId;
+  /** dataClassification=Internal|isEncrypted=false|description=map from tag snid */
+  @Deprecated public java.lang.String sessionId;
+  /** dataClassification=Internal|isEncrypted=false|description=map from tag snsq */
+  @Deprecated public java.lang.String seqNum;
   @Deprecated public java.lang.String ciid;
   @Deprecated public java.lang.String siid;
-  @Deprecated public java.lang.Long oldSessionSkey;
-  @Deprecated public java.lang.Boolean partialValidPage;
-  @Deprecated public java.lang.Long sessionStartTime;
-  @Deprecated public java.lang.Long sessionEndTime;
-  @Deprecated public java.util.List<java.lang.Integer> botFlags;
-  @Deprecated public java.lang.Long icfBinary;
-  @Deprecated public java.lang.Long ingestTime;
-  @Deprecated public java.lang.Long generateTime;
-  @Deprecated public java.lang.Long eventCnt;
-  @Deprecated public java.lang.String dataCenter;
   /** dataClassification=Internal|isEncrypted=false|description=1 indicates that the command redirected to another URL */
   @Deprecated public java.lang.Integer rdt;
   /** dataClassification=Internal|isEncrypted=false|description=indicating that this is a registered user, map from tag regU */
@@ -125,7 +106,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   @Deprecated public java.lang.String webServer;
   /** dataClassification=Internal|isEncrypted=false|description=map from tag ck/C */
   @Deprecated public java.lang.String cookies;
-  @Deprecated public java.lang.String referrer;
   /** dataClassification=Internal|isEncrypted=false|description=map from tag bott */
   @Deprecated public java.lang.Integer bot;
   @Deprecated public java.lang.String clientIP;
@@ -133,7 +113,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   @Deprecated public java.lang.String remoteIP;
   /** dataClassification=Internal|isEncrypted=false|description=map from tag Agent */
   @Deprecated public java.lang.String agentInfo;
-  @Deprecated public java.lang.String forwardedFor;
   /** dataClassification=Internal|isEncrypted=false|description=application ID, map from tag app */
   @Deprecated public java.lang.String appId;
   /** dataClassification=Internal|isEncrypted=false|description=application version, map from mav */
@@ -161,7 +140,25 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   @Deprecated public java.lang.String rlogid;
   /** Includes ForwardFor, ContentLength, Script, Server, Encoding, TMachine, TStamp, TName, TStatus, TDuration, TPayload */
   @Deprecated public java.util.Map<java.lang.String,java.lang.String> clientData;
+  @Deprecated public java.lang.Long ingestTime;
+  @Deprecated public java.lang.Long sessionSkey;
+  @Deprecated public long sessionStartDt;
+  @Deprecated public long sojDataDt;
+  @Deprecated public java.lang.Integer version;
+  @Deprecated public java.lang.Integer staticPageType;
+  @Deprecated public java.lang.Integer reservedForFuture;
+  @Deprecated public java.lang.String eventAttr;
+  @Deprecated public java.lang.Long currentImprId;
+  @Deprecated public java.lang.Long sourceImprId;
+  @Deprecated public java.lang.Long oldSessionSkey;
+  @Deprecated public java.lang.Boolean partialValidPage;
+  @Deprecated public java.util.List<java.lang.Integer> botFlags;
+  @Deprecated public long icfBinary;
+  @Deprecated public java.lang.Long eventCnt;
+  @Deprecated public java.lang.String referrer;
+  @Deprecated public java.lang.String forwardedFor;
   @Deprecated public java.lang.Boolean rv;
+  @Deprecated public java.util.Map<java.lang.String,java.nio.ByteBuffer> sojHeader;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -174,17 +171,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    * All-args constructor.
    * @param rheosHeader Rheos header
    * @param guid The new value for guid
-   * @param sessionId dataClassification=Internal|isEncrypted=false|description=map from tag snid
-   * @param sessionSkey The new value for sessionSkey
-   * @param seqNum dataClassification=Internal|isEncrypted=false|description=map from tag snsq
-   * @param sessionStartDt The new value for sessionStartDt
-   * @param sojDataDt The new value for sojDataDt
-   * @param version The new value for version
-   * @param staticPageType The new value for staticPageType
-   * @param reservedForFuture The new value for reservedForFuture
-   * @param eventAttr The new value for eventAttr
-   * @param currentImprId The new value for currentImprId
-   * @param sourceImprId The new value for sourceImprId
    * @param eventTimestamp dataClassification=Internal|isEncrypted=false|description=map from timestamp, publish time
    * @param eventCaptureTime dataClassification=Internal|isEncrypted=false|description=mobile specific, map from mtsts, used for mobile case
    * @param requestCorrelationId dataClassification=Internal|isEncrypted=false|description=request correlation id, map from tag rq
@@ -198,18 +184,10 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    * @param userId dataClassification=Internal|isEncrypted=false|description=map from tag u/bu
    * @param clickId dataClassification=Internal|isEncrypted=false|description=Click Id, map from tag c
    * @param siteId dataClassification=Internal|isEncrypted=false|description=Site ID, map from tag t
+   * @param sessionId dataClassification=Internal|isEncrypted=false|description=map from tag snid
+   * @param seqNum dataClassification=Internal|isEncrypted=false|description=map from tag snsq
    * @param ciid The new value for ciid
    * @param siid The new value for siid
-   * @param oldSessionSkey The new value for oldSessionSkey
-   * @param partialValidPage The new value for partialValidPage
-   * @param sessionStartTime The new value for sessionStartTime
-   * @param sessionEndTime The new value for sessionEndTime
-   * @param botFlags The new value for botFlags
-   * @param icfBinary The new value for icfBinary
-   * @param ingestTime The new value for ingestTime
-   * @param generateTime The new value for generateTime
-   * @param eventCnt The new value for eventCnt
-   * @param dataCenter The new value for dataCenter
    * @param rdt dataClassification=Internal|isEncrypted=false|description=1 indicates that the command redirected to another URL
    * @param regu dataClassification=Internal|isEncrypted=false|description=indicating that this is a registered user, map from tag regU
    * @param iframe dataClassification=Internal|isEncrypted=false|description=map from tag _ifrm
@@ -220,12 +198,10 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    * @param urlQueryString dataClassification=Internal|isEncrypted=false|description=map from tag Referer
    * @param webServer dataClassification=Internal|isEncrypted=false|description=web server, map from Server
    * @param cookies dataClassification=Internal|isEncrypted=false|description=map from tag ck/C
-   * @param referrer The new value for referrer
    * @param bot dataClassification=Internal|isEncrypted=false|description=map from tag bott
    * @param clientIP The new value for clientIP
    * @param remoteIP dataClassification=Internal|isEncrypted=false|description=map from tag RemoteIP
    * @param agentInfo dataClassification=Internal|isEncrypted=false|description=map from tag Agent
-   * @param forwardedFor The new value for forwardedFor
    * @param appId dataClassification=Internal|isEncrypted=false|description=application ID, map from tag app
    * @param appVersion dataClassification=Internal|isEncrypted=false|description=application version, map from mav
    * @param osVersion dataClassification=Internal|isEncrypted=false|description=operation system version, map from osv
@@ -240,22 +216,29 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    * @param applicationPayload The new value for applicationPayload
    * @param rlogid CAL request log id
    * @param clientData Includes ForwardFor, ContentLength, Script, Server, Encoding, TMachine, TStamp, TName, TStatus, TDuration, TPayload
+   * @param ingestTime The new value for ingestTime
+   * @param sessionSkey The new value for sessionSkey
+   * @param sessionStartDt The new value for sessionStartDt
+   * @param sojDataDt The new value for sojDataDt
+   * @param version The new value for version
+   * @param staticPageType The new value for staticPageType
+   * @param reservedForFuture The new value for reservedForFuture
+   * @param eventAttr The new value for eventAttr
+   * @param currentImprId The new value for currentImprId
+   * @param sourceImprId The new value for sourceImprId
+   * @param oldSessionSkey The new value for oldSessionSkey
+   * @param partialValidPage The new value for partialValidPage
+   * @param botFlags The new value for botFlags
+   * @param icfBinary The new value for icfBinary
+   * @param eventCnt The new value for eventCnt
+   * @param referrer The new value for referrer
+   * @param forwardedFor The new value for forwardedFor
    * @param rv The new value for rv
+   * @param sojHeader The new value for sojHeader
    */
-  public SojEvent(com.ebay.sojourner.common.model.RheosHeader rheosHeader, java.lang.String guid, java.lang.String sessionId, java.lang.Long sessionSkey, java.lang.String seqNum, java.lang.Long sessionStartDt, java.lang.Long sojDataDt, java.lang.Integer version, java.lang.Integer staticPageType, java.lang.Integer reservedForFuture, java.lang.String eventAttr, java.lang.Long currentImprId, java.lang.Long sourceImprId, java.lang.Long eventTimestamp, java.lang.Long eventCaptureTime, java.lang.String requestCorrelationId, java.lang.String cguid, java.lang.String sid, java.lang.Integer pageId, java.lang.String pageName, java.lang.String pageFamily, java.lang.String eventFamily, java.lang.String eventAction, java.lang.String userId, java.lang.String clickId, java.lang.String siteId, java.lang.String ciid, java.lang.String siid, java.lang.Long oldSessionSkey, java.lang.Boolean partialValidPage, java.lang.Long sessionStartTime, java.lang.Long sessionEndTime, java.util.List<java.lang.Integer> botFlags, java.lang.Long icfBinary, java.lang.Long ingestTime, java.lang.Long generateTime, java.lang.Long eventCnt, java.lang.String dataCenter, java.lang.Integer rdt, java.lang.Integer regu, java.lang.Boolean iframe, java.lang.String refererHash, java.lang.String sqr, java.lang.String itemId, java.lang.String flags, java.lang.String urlQueryString, java.lang.String webServer, java.lang.String cookies, java.lang.String referrer, java.lang.Integer bot, java.lang.String clientIP, java.lang.String remoteIP, java.lang.String agentInfo, java.lang.String forwardedFor, java.lang.String appId, java.lang.String appVersion, java.lang.String osVersion, java.lang.String trafficSource, java.lang.String cobrand, java.lang.String deviceFamily, java.lang.String deviceType, java.lang.String browserVersion, java.lang.String browserFamily, java.lang.String osFamily, java.lang.String enrichedOsVersion, java.util.Map<java.lang.String,java.lang.String> applicationPayload, java.lang.String rlogid, java.util.Map<java.lang.String,java.lang.String> clientData, java.lang.Boolean rv) {
+  public SojEvent(com.ebay.sojourner.common.model.RheosHeader rheosHeader, java.lang.String guid, java.lang.Long eventTimestamp, java.lang.Long eventCaptureTime, java.lang.String requestCorrelationId, java.lang.String cguid, java.lang.String sid, java.lang.Integer pageId, java.lang.String pageName, java.lang.String pageFamily, java.lang.String eventFamily, java.lang.String eventAction, java.lang.String userId, java.lang.String clickId, java.lang.String siteId, java.lang.String sessionId, java.lang.String seqNum, java.lang.String ciid, java.lang.String siid, java.lang.Integer rdt, java.lang.Integer regu, java.lang.Boolean iframe, java.lang.String refererHash, java.lang.String sqr, java.lang.String itemId, java.lang.String flags, java.lang.String urlQueryString, java.lang.String webServer, java.lang.String cookies, java.lang.Integer bot, java.lang.String clientIP, java.lang.String remoteIP, java.lang.String agentInfo, java.lang.String appId, java.lang.String appVersion, java.lang.String osVersion, java.lang.String trafficSource, java.lang.String cobrand, java.lang.String deviceFamily, java.lang.String deviceType, java.lang.String browserVersion, java.lang.String browserFamily, java.lang.String osFamily, java.lang.String enrichedOsVersion, java.util.Map<java.lang.String,java.lang.String> applicationPayload, java.lang.String rlogid, java.util.Map<java.lang.String,java.lang.String> clientData, java.lang.Long ingestTime, java.lang.Long sessionSkey, java.lang.Long sessionStartDt, java.lang.Long sojDataDt, java.lang.Integer version, java.lang.Integer staticPageType, java.lang.Integer reservedForFuture, java.lang.String eventAttr, java.lang.Long currentImprId, java.lang.Long sourceImprId, java.lang.Long oldSessionSkey, java.lang.Boolean partialValidPage, java.util.List<java.lang.Integer> botFlags, java.lang.Long icfBinary, java.lang.Long eventCnt, java.lang.String referrer, java.lang.String forwardedFor, java.lang.Boolean rv, java.util.Map<java.lang.String,java.nio.ByteBuffer> sojHeader) {
     this.rheosHeader = rheosHeader;
     this.guid = guid;
-    this.sessionId = sessionId;
-    this.sessionSkey = sessionSkey;
-    this.seqNum = seqNum;
-    this.sessionStartDt = sessionStartDt;
-    this.sojDataDt = sojDataDt;
-    this.version = version;
-    this.staticPageType = staticPageType;
-    this.reservedForFuture = reservedForFuture;
-    this.eventAttr = eventAttr;
-    this.currentImprId = currentImprId;
-    this.sourceImprId = sourceImprId;
     this.eventTimestamp = eventTimestamp;
     this.eventCaptureTime = eventCaptureTime;
     this.requestCorrelationId = requestCorrelationId;
@@ -269,18 +252,10 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     this.userId = userId;
     this.clickId = clickId;
     this.siteId = siteId;
+    this.sessionId = sessionId;
+    this.seqNum = seqNum;
     this.ciid = ciid;
     this.siid = siid;
-    this.oldSessionSkey = oldSessionSkey;
-    this.partialValidPage = partialValidPage;
-    this.sessionStartTime = sessionStartTime;
-    this.sessionEndTime = sessionEndTime;
-    this.botFlags = botFlags;
-    this.icfBinary = icfBinary;
-    this.ingestTime = ingestTime;
-    this.generateTime = generateTime;
-    this.eventCnt = eventCnt;
-    this.dataCenter = dataCenter;
     this.rdt = rdt;
     this.regu = regu;
     this.iframe = iframe;
@@ -291,12 +266,10 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     this.urlQueryString = urlQueryString;
     this.webServer = webServer;
     this.cookies = cookies;
-    this.referrer = referrer;
     this.bot = bot;
     this.clientIP = clientIP;
     this.remoteIP = remoteIP;
     this.agentInfo = agentInfo;
-    this.forwardedFor = forwardedFor;
     this.appId = appId;
     this.appVersion = appVersion;
     this.osVersion = osVersion;
@@ -311,7 +284,25 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     this.applicationPayload = applicationPayload;
     this.rlogid = rlogid;
     this.clientData = clientData;
+    this.ingestTime = ingestTime;
+    this.sessionSkey = sessionSkey;
+    this.sessionStartDt = sessionStartDt;
+    this.sojDataDt = sojDataDt;
+    this.version = version;
+    this.staticPageType = staticPageType;
+    this.reservedForFuture = reservedForFuture;
+    this.eventAttr = eventAttr;
+    this.currentImprId = currentImprId;
+    this.sourceImprId = sourceImprId;
+    this.oldSessionSkey = oldSessionSkey;
+    this.partialValidPage = partialValidPage;
+    this.botFlags = botFlags;
+    this.icfBinary = icfBinary;
+    this.eventCnt = eventCnt;
+    this.referrer = referrer;
+    this.forwardedFor = forwardedFor;
     this.rv = rv;
+    this.sojHeader = sojHeader;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -320,73 +311,70 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     switch (field$) {
     case 0: return rheosHeader;
     case 1: return guid;
-    case 2: return sessionId;
-    case 3: return sessionSkey;
-    case 4: return seqNum;
-    case 5: return sessionStartDt;
-    case 6: return sojDataDt;
-    case 7: return version;
-    case 8: return staticPageType;
-    case 9: return reservedForFuture;
-    case 10: return eventAttr;
-    case 11: return currentImprId;
-    case 12: return sourceImprId;
-    case 13: return eventTimestamp;
-    case 14: return eventCaptureTime;
-    case 15: return requestCorrelationId;
-    case 16: return cguid;
-    case 17: return sid;
-    case 18: return pageId;
-    case 19: return pageName;
-    case 20: return pageFamily;
-    case 21: return eventFamily;
-    case 22: return eventAction;
-    case 23: return userId;
-    case 24: return clickId;
-    case 25: return siteId;
-    case 26: return ciid;
-    case 27: return siid;
-    case 28: return oldSessionSkey;
-    case 29: return partialValidPage;
-    case 30: return sessionStartTime;
-    case 31: return sessionEndTime;
-    case 32: return botFlags;
-    case 33: return icfBinary;
-    case 34: return ingestTime;
-    case 35: return generateTime;
-    case 36: return eventCnt;
-    case 37: return dataCenter;
-    case 38: return rdt;
-    case 39: return regu;
-    case 40: return iframe;
-    case 41: return refererHash;
-    case 42: return sqr;
-    case 43: return itemId;
-    case 44: return flags;
-    case 45: return urlQueryString;
-    case 46: return webServer;
-    case 47: return cookies;
-    case 48: return referrer;
-    case 49: return bot;
-    case 50: return clientIP;
-    case 51: return remoteIP;
-    case 52: return agentInfo;
-    case 53: return forwardedFor;
-    case 54: return appId;
-    case 55: return appVersion;
-    case 56: return osVersion;
-    case 57: return trafficSource;
-    case 58: return cobrand;
-    case 59: return deviceFamily;
-    case 60: return deviceType;
-    case 61: return browserVersion;
-    case 62: return browserFamily;
-    case 63: return osFamily;
-    case 64: return enrichedOsVersion;
-    case 65: return applicationPayload;
-    case 66: return rlogid;
-    case 67: return clientData;
-    case 68: return rv;
+    case 2: return eventTimestamp;
+    case 3: return eventCaptureTime;
+    case 4: return requestCorrelationId;
+    case 5: return cguid;
+    case 6: return sid;
+    case 7: return pageId;
+    case 8: return pageName;
+    case 9: return pageFamily;
+    case 10: return eventFamily;
+    case 11: return eventAction;
+    case 12: return userId;
+    case 13: return clickId;
+    case 14: return siteId;
+    case 15: return sessionId;
+    case 16: return seqNum;
+    case 17: return ciid;
+    case 18: return siid;
+    case 19: return rdt;
+    case 20: return regu;
+    case 21: return iframe;
+    case 22: return refererHash;
+    case 23: return sqr;
+    case 24: return itemId;
+    case 25: return flags;
+    case 26: return urlQueryString;
+    case 27: return webServer;
+    case 28: return cookies;
+    case 29: return bot;
+    case 30: return clientIP;
+    case 31: return remoteIP;
+    case 32: return agentInfo;
+    case 33: return appId;
+    case 34: return appVersion;
+    case 35: return osVersion;
+    case 36: return trafficSource;
+    case 37: return cobrand;
+    case 38: return deviceFamily;
+    case 39: return deviceType;
+    case 40: return browserVersion;
+    case 41: return browserFamily;
+    case 42: return osFamily;
+    case 43: return enrichedOsVersion;
+    case 44: return applicationPayload;
+    case 45: return rlogid;
+    case 46: return clientData;
+    case 47: return ingestTime;
+    case 48: return sessionSkey;
+    case 49: return sessionStartDt;
+    case 50: return sojDataDt;
+    case 51: return version;
+    case 52: return staticPageType;
+    case 53: return reservedForFuture;
+    case 54: return eventAttr;
+    case 55: return currentImprId;
+    case 56: return sourceImprId;
+    case 57: return oldSessionSkey;
+    case 58: return partialValidPage;
+    case 59: return botFlags;
+    case 60: return icfBinary;
+    case 61: return eventCnt;
+    case 62: return referrer;
+    case 63: return forwardedFor;
+    case 64: return rv;
+    case 65: return sojHeader;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -397,73 +385,70 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     switch (field$) {
     case 0: rheosHeader = (com.ebay.sojourner.common.model.RheosHeader)value$; break;
     case 1: guid = (java.lang.String)value$; break;
-    case 2: sessionId = (java.lang.String)value$; break;
-    case 3: sessionSkey = (java.lang.Long)value$; break;
-    case 4: seqNum = (java.lang.String)value$; break;
-    case 5: sessionStartDt = (java.lang.Long)value$; break;
-    case 6: sojDataDt = (java.lang.Long)value$; break;
-    case 7: version = (java.lang.Integer)value$; break;
-    case 8: staticPageType = (java.lang.Integer)value$; break;
-    case 9: reservedForFuture = (java.lang.Integer)value$; break;
-    case 10: eventAttr = (java.lang.String)value$; break;
-    case 11: currentImprId = (java.lang.Long)value$; break;
-    case 12: sourceImprId = (java.lang.Long)value$; break;
-    case 13: eventTimestamp = (java.lang.Long)value$; break;
-    case 14: eventCaptureTime = (java.lang.Long)value$; break;
-    case 15: requestCorrelationId = (java.lang.String)value$; break;
-    case 16: cguid = (java.lang.String)value$; break;
-    case 17: sid = (java.lang.String)value$; break;
-    case 18: pageId = (java.lang.Integer)value$; break;
-    case 19: pageName = (java.lang.String)value$; break;
-    case 20: pageFamily = (java.lang.String)value$; break;
-    case 21: eventFamily = (java.lang.String)value$; break;
-    case 22: eventAction = (java.lang.String)value$; break;
-    case 23: userId = (java.lang.String)value$; break;
-    case 24: clickId = (java.lang.String)value$; break;
-    case 25: siteId = (java.lang.String)value$; break;
-    case 26: ciid = (java.lang.String)value$; break;
-    case 27: siid = (java.lang.String)value$; break;
-    case 28: oldSessionSkey = (java.lang.Long)value$; break;
-    case 29: partialValidPage = (java.lang.Boolean)value$; break;
-    case 30: sessionStartTime = (java.lang.Long)value$; break;
-    case 31: sessionEndTime = (java.lang.Long)value$; break;
-    case 32: botFlags = (java.util.List<java.lang.Integer>)value$; break;
-    case 33: icfBinary = (java.lang.Long)value$; break;
-    case 34: ingestTime = (java.lang.Long)value$; break;
-    case 35: generateTime = (java.lang.Long)value$; break;
-    case 36: eventCnt = (java.lang.Long)value$; break;
-    case 37: dataCenter = (java.lang.String)value$; break;
-    case 38: rdt = (java.lang.Integer)value$; break;
-    case 39: regu = (java.lang.Integer)value$; break;
-    case 40: iframe = (java.lang.Boolean)value$; break;
-    case 41: refererHash = (java.lang.String)value$; break;
-    case 42: sqr = (java.lang.String)value$; break;
-    case 43: itemId = (java.lang.String)value$; break;
-    case 44: flags = (java.lang.String)value$; break;
-    case 45: urlQueryString = (java.lang.String)value$; break;
-    case 46: webServer = (java.lang.String)value$; break;
-    case 47: cookies = (java.lang.String)value$; break;
-    case 48: referrer = (java.lang.String)value$; break;
-    case 49: bot = (java.lang.Integer)value$; break;
-    case 50: clientIP = (java.lang.String)value$; break;
-    case 51: remoteIP = (java.lang.String)value$; break;
-    case 52: agentInfo = (java.lang.String)value$; break;
-    case 53: forwardedFor = (java.lang.String)value$; break;
-    case 54: appId = (java.lang.String)value$; break;
-    case 55: appVersion = (java.lang.String)value$; break;
-    case 56: osVersion = (java.lang.String)value$; break;
-    case 57: trafficSource = (java.lang.String)value$; break;
-    case 58: cobrand = (java.lang.String)value$; break;
-    case 59: deviceFamily = (java.lang.String)value$; break;
-    case 60: deviceType = (java.lang.String)value$; break;
-    case 61: browserVersion = (java.lang.String)value$; break;
-    case 62: browserFamily = (java.lang.String)value$; break;
-    case 63: osFamily = (java.lang.String)value$; break;
-    case 64: enrichedOsVersion = (java.lang.String)value$; break;
-    case 65: applicationPayload = (java.util.Map<java.lang.String,java.lang.String>)value$; break;
-    case 66: rlogid = (java.lang.String)value$; break;
-    case 67: clientData = (java.util.Map<java.lang.String,java.lang.String>)value$; break;
-    case 68: rv = (java.lang.Boolean)value$; break;
+    case 2: eventTimestamp = (java.lang.Long)value$; break;
+    case 3: eventCaptureTime = (java.lang.Long)value$; break;
+    case 4: requestCorrelationId = (java.lang.String)value$; break;
+    case 5: cguid = (java.lang.String)value$; break;
+    case 6: sid = (java.lang.String)value$; break;
+    case 7: pageId = (java.lang.Integer)value$; break;
+    case 8: pageName = (java.lang.String)value$; break;
+    case 9: pageFamily = (java.lang.String)value$; break;
+    case 10: eventFamily = (java.lang.String)value$; break;
+    case 11: eventAction = (java.lang.String)value$; break;
+    case 12: userId = (java.lang.String)value$; break;
+    case 13: clickId = (java.lang.String)value$; break;
+    case 14: siteId = (java.lang.String)value$; break;
+    case 15: sessionId = (java.lang.String)value$; break;
+    case 16: seqNum = (java.lang.String)value$; break;
+    case 17: ciid = (java.lang.String)value$; break;
+    case 18: siid = (java.lang.String)value$; break;
+    case 19: rdt = (java.lang.Integer)value$; break;
+    case 20: regu = (java.lang.Integer)value$; break;
+    case 21: iframe = (java.lang.Boolean)value$; break;
+    case 22: refererHash = (java.lang.String)value$; break;
+    case 23: sqr = (java.lang.String)value$; break;
+    case 24: itemId = (java.lang.String)value$; break;
+    case 25: flags = (java.lang.String)value$; break;
+    case 26: urlQueryString = (java.lang.String)value$; break;
+    case 27: webServer = (java.lang.String)value$; break;
+    case 28: cookies = (java.lang.String)value$; break;
+    case 29: bot = (java.lang.Integer)value$; break;
+    case 30: clientIP = (java.lang.String)value$; break;
+    case 31: remoteIP = (java.lang.String)value$; break;
+    case 32: agentInfo = (java.lang.String)value$; break;
+    case 33: appId = (java.lang.String)value$; break;
+    case 34: appVersion = (java.lang.String)value$; break;
+    case 35: osVersion = (java.lang.String)value$; break;
+    case 36: trafficSource = (java.lang.String)value$; break;
+    case 37: cobrand = (java.lang.String)value$; break;
+    case 38: deviceFamily = (java.lang.String)value$; break;
+    case 39: deviceType = (java.lang.String)value$; break;
+    case 40: browserVersion = (java.lang.String)value$; break;
+    case 41: browserFamily = (java.lang.String)value$; break;
+    case 42: osFamily = (java.lang.String)value$; break;
+    case 43: enrichedOsVersion = (java.lang.String)value$; break;
+    case 44: applicationPayload = (java.util.Map<java.lang.String,java.lang.String>)value$; break;
+    case 45: rlogid = (java.lang.String)value$; break;
+    case 46: clientData = (java.util.Map<java.lang.String,java.lang.String>)value$; break;
+    case 47: ingestTime = (java.lang.Long)value$; break;
+    case 48: sessionSkey = (java.lang.Long)value$; break;
+    case 49: sessionStartDt = (java.lang.Long)value$; break;
+    case 50: sojDataDt = (java.lang.Long)value$; break;
+    case 51: version = (java.lang.Integer)value$; break;
+    case 52: staticPageType = (java.lang.Integer)value$; break;
+    case 53: reservedForFuture = (java.lang.Integer)value$; break;
+    case 54: eventAttr = (java.lang.String)value$; break;
+    case 55: currentImprId = (java.lang.Long)value$; break;
+    case 56: sourceImprId = (java.lang.Long)value$; break;
+    case 57: oldSessionSkey = (java.lang.Long)value$; break;
+    case 58: partialValidPage = (java.lang.Boolean)value$; break;
+    case 59: botFlags = (java.util.List<java.lang.Integer>)value$; break;
+    case 60: icfBinary = (java.lang.Long)value$; break;
+    case 61: eventCnt = (java.lang.Long)value$; break;
+    case 62: referrer = (java.lang.String)value$; break;
+    case 63: forwardedFor = (java.lang.String)value$; break;
+    case 64: rv = (java.lang.Boolean)value$; break;
+    case 65: sojHeader = (java.util.Map<java.lang.String,java.nio.ByteBuffer>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -499,184 +484,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    */
   public void setGuid(java.lang.String value) {
     this.guid = value;
-  }
-
-  /**
-   * Gets the value of the 'sessionId' field.
-   * @return dataClassification=Internal|isEncrypted=false|description=map from tag snid
-   */
-  public java.lang.String getSessionId() {
-    return sessionId;
-  }
-
-  /**
-   * Sets the value of the 'sessionId' field.
-   * dataClassification=Internal|isEncrypted=false|description=map from tag snid
-   * @param value the value to set.
-   */
-  public void setSessionId(java.lang.String value) {
-    this.sessionId = value;
-  }
-
-  /**
-   * Gets the value of the 'sessionSkey' field.
-   * @return The value of the 'sessionSkey' field.
-   */
-  public java.lang.Long getSessionSkey() {
-    return sessionSkey;
-  }
-
-  /**
-   * Sets the value of the 'sessionSkey' field.
-   * @param value the value to set.
-   */
-  public void setSessionSkey(java.lang.Long value) {
-    this.sessionSkey = value;
-  }
-
-  /**
-   * Gets the value of the 'seqNum' field.
-   * @return dataClassification=Internal|isEncrypted=false|description=map from tag snsq
-   */
-  public java.lang.String getSeqNum() {
-    return seqNum;
-  }
-
-  /**
-   * Sets the value of the 'seqNum' field.
-   * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
-   * @param value the value to set.
-   */
-  public void setSeqNum(java.lang.String value) {
-    this.seqNum = value;
-  }
-
-  /**
-   * Gets the value of the 'sessionStartDt' field.
-   * @return The value of the 'sessionStartDt' field.
-   */
-  public java.lang.Long getSessionStartDt() {
-    return sessionStartDt;
-  }
-
-  /**
-   * Sets the value of the 'sessionStartDt' field.
-   * @param value the value to set.
-   */
-  public void setSessionStartDt(java.lang.Long value) {
-    this.sessionStartDt = value;
-  }
-
-  /**
-   * Gets the value of the 'sojDataDt' field.
-   * @return The value of the 'sojDataDt' field.
-   */
-  public java.lang.Long getSojDataDt() {
-    return sojDataDt;
-  }
-
-  /**
-   * Sets the value of the 'sojDataDt' field.
-   * @param value the value to set.
-   */
-  public void setSojDataDt(java.lang.Long value) {
-    this.sojDataDt = value;
-  }
-
-  /**
-   * Gets the value of the 'version' field.
-   * @return The value of the 'version' field.
-   */
-  public java.lang.Integer getVersion() {
-    return version;
-  }
-
-  /**
-   * Sets the value of the 'version' field.
-   * @param value the value to set.
-   */
-  public void setVersion(java.lang.Integer value) {
-    this.version = value;
-  }
-
-  /**
-   * Gets the value of the 'staticPageType' field.
-   * @return The value of the 'staticPageType' field.
-   */
-  public java.lang.Integer getStaticPageType() {
-    return staticPageType;
-  }
-
-  /**
-   * Sets the value of the 'staticPageType' field.
-   * @param value the value to set.
-   */
-  public void setStaticPageType(java.lang.Integer value) {
-    this.staticPageType = value;
-  }
-
-  /**
-   * Gets the value of the 'reservedForFuture' field.
-   * @return The value of the 'reservedForFuture' field.
-   */
-  public java.lang.Integer getReservedForFuture() {
-    return reservedForFuture;
-  }
-
-  /**
-   * Sets the value of the 'reservedForFuture' field.
-   * @param value the value to set.
-   */
-  public void setReservedForFuture(java.lang.Integer value) {
-    this.reservedForFuture = value;
-  }
-
-  /**
-   * Gets the value of the 'eventAttr' field.
-   * @return The value of the 'eventAttr' field.
-   */
-  public java.lang.String getEventAttr() {
-    return eventAttr;
-  }
-
-  /**
-   * Sets the value of the 'eventAttr' field.
-   * @param value the value to set.
-   */
-  public void setEventAttr(java.lang.String value) {
-    this.eventAttr = value;
-  }
-
-  /**
-   * Gets the value of the 'currentImprId' field.
-   * @return The value of the 'currentImprId' field.
-   */
-  public java.lang.Long getCurrentImprId() {
-    return currentImprId;
-  }
-
-  /**
-   * Sets the value of the 'currentImprId' field.
-   * @param value the value to set.
-   */
-  public void setCurrentImprId(java.lang.Long value) {
-    this.currentImprId = value;
-  }
-
-  /**
-   * Gets the value of the 'sourceImprId' field.
-   * @return The value of the 'sourceImprId' field.
-   */
-  public java.lang.Long getSourceImprId() {
-    return sourceImprId;
-  }
-
-  /**
-   * Sets the value of the 'sourceImprId' field.
-   * @param value the value to set.
-   */
-  public void setSourceImprId(java.lang.Long value) {
-    this.sourceImprId = value;
   }
 
   /**
@@ -900,6 +707,40 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   }
 
   /**
+   * Gets the value of the 'sessionId' field.
+   * @return dataClassification=Internal|isEncrypted=false|description=map from tag snid
+   */
+  public java.lang.String getSessionId() {
+    return sessionId;
+  }
+
+  /**
+   * Sets the value of the 'sessionId' field.
+   * dataClassification=Internal|isEncrypted=false|description=map from tag snid
+   * @param value the value to set.
+   */
+  public void setSessionId(java.lang.String value) {
+    this.sessionId = value;
+  }
+
+  /**
+   * Gets the value of the 'seqNum' field.
+   * @return dataClassification=Internal|isEncrypted=false|description=map from tag snsq
+   */
+  public java.lang.String getSeqNum() {
+    return seqNum;
+  }
+
+  /**
+   * Sets the value of the 'seqNum' field.
+   * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
+   * @param value the value to set.
+   */
+  public void setSeqNum(java.lang.String value) {
+    this.seqNum = value;
+  }
+
+  /**
    * Gets the value of the 'ciid' field.
    * @return The value of the 'ciid' field.
    */
@@ -929,166 +770,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    */
   public void setSiid(java.lang.String value) {
     this.siid = value;
-  }
-
-  /**
-   * Gets the value of the 'oldSessionSkey' field.
-   * @return The value of the 'oldSessionSkey' field.
-   */
-  public java.lang.Long getOldSessionSkey() {
-    return oldSessionSkey;
-  }
-
-  /**
-   * Sets the value of the 'oldSessionSkey' field.
-   * @param value the value to set.
-   */
-  public void setOldSessionSkey(java.lang.Long value) {
-    this.oldSessionSkey = value;
-  }
-
-  /**
-   * Gets the value of the 'partialValidPage' field.
-   * @return The value of the 'partialValidPage' field.
-   */
-  public java.lang.Boolean getPartialValidPage() {
-    return partialValidPage;
-  }
-
-  /**
-   * Sets the value of the 'partialValidPage' field.
-   * @param value the value to set.
-   */
-  public void setPartialValidPage(java.lang.Boolean value) {
-    this.partialValidPage = value;
-  }
-
-  /**
-   * Gets the value of the 'sessionStartTime' field.
-   * @return The value of the 'sessionStartTime' field.
-   */
-  public java.lang.Long getSessionStartTime() {
-    return sessionStartTime;
-  }
-
-  /**
-   * Sets the value of the 'sessionStartTime' field.
-   * @param value the value to set.
-   */
-  public void setSessionStartTime(java.lang.Long value) {
-    this.sessionStartTime = value;
-  }
-
-  /**
-   * Gets the value of the 'sessionEndTime' field.
-   * @return The value of the 'sessionEndTime' field.
-   */
-  public java.lang.Long getSessionEndTime() {
-    return sessionEndTime;
-  }
-
-  /**
-   * Sets the value of the 'sessionEndTime' field.
-   * @param value the value to set.
-   */
-  public void setSessionEndTime(java.lang.Long value) {
-    this.sessionEndTime = value;
-  }
-
-  /**
-   * Gets the value of the 'botFlags' field.
-   * @return The value of the 'botFlags' field.
-   */
-  public java.util.List<java.lang.Integer> getBotFlags() {
-    return botFlags;
-  }
-
-  /**
-   * Sets the value of the 'botFlags' field.
-   * @param value the value to set.
-   */
-  public void setBotFlags(java.util.List<java.lang.Integer> value) {
-    this.botFlags = value;
-  }
-
-  /**
-   * Gets the value of the 'icfBinary' field.
-   * @return The value of the 'icfBinary' field.
-   */
-  public java.lang.Long getIcfBinary() {
-    return icfBinary;
-  }
-
-  /**
-   * Sets the value of the 'icfBinary' field.
-   * @param value the value to set.
-   */
-  public void setIcfBinary(java.lang.Long value) {
-    this.icfBinary = value;
-  }
-
-  /**
-   * Gets the value of the 'ingestTime' field.
-   * @return The value of the 'ingestTime' field.
-   */
-  public java.lang.Long getIngestTime() {
-    return ingestTime;
-  }
-
-  /**
-   * Sets the value of the 'ingestTime' field.
-   * @param value the value to set.
-   */
-  public void setIngestTime(java.lang.Long value) {
-    this.ingestTime = value;
-  }
-
-  /**
-   * Gets the value of the 'generateTime' field.
-   * @return The value of the 'generateTime' field.
-   */
-  public java.lang.Long getGenerateTime() {
-    return generateTime;
-  }
-
-  /**
-   * Sets the value of the 'generateTime' field.
-   * @param value the value to set.
-   */
-  public void setGenerateTime(java.lang.Long value) {
-    this.generateTime = value;
-  }
-
-  /**
-   * Gets the value of the 'eventCnt' field.
-   * @return The value of the 'eventCnt' field.
-   */
-  public java.lang.Long getEventCnt() {
-    return eventCnt;
-  }
-
-  /**
-   * Sets the value of the 'eventCnt' field.
-   * @param value the value to set.
-   */
-  public void setEventCnt(java.lang.Long value) {
-    this.eventCnt = value;
-  }
-
-  /**
-   * Gets the value of the 'dataCenter' field.
-   * @return The value of the 'dataCenter' field.
-   */
-  public java.lang.String getDataCenter() {
-    return dataCenter;
-  }
-
-  /**
-   * Sets the value of the 'dataCenter' field.
-   * @param value the value to set.
-   */
-  public void setDataCenter(java.lang.String value) {
-    this.dataCenter = value;
   }
 
   /**
@@ -1262,22 +943,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   }
 
   /**
-   * Gets the value of the 'referrer' field.
-   * @return The value of the 'referrer' field.
-   */
-  public java.lang.String getReferrer() {
-    return referrer;
-  }
-
-  /**
-   * Sets the value of the 'referrer' field.
-   * @param value the value to set.
-   */
-  public void setReferrer(java.lang.String value) {
-    this.referrer = value;
-  }
-
-  /**
    * Gets the value of the 'bot' field.
    * @return dataClassification=Internal|isEncrypted=false|description=map from tag bott
    */
@@ -1342,22 +1007,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    */
   public void setAgentInfo(java.lang.String value) {
     this.agentInfo = value;
-  }
-
-  /**
-   * Gets the value of the 'forwardedFor' field.
-   * @return The value of the 'forwardedFor' field.
-   */
-  public java.lang.String getForwardedFor() {
-    return forwardedFor;
-  }
-
-  /**
-   * Sets the value of the 'forwardedFor' field.
-   * @param value the value to set.
-   */
-  public void setForwardedFor(java.lang.String value) {
-    this.forwardedFor = value;
   }
 
   /**
@@ -1598,6 +1247,278 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
   }
 
   /**
+   * Gets the value of the 'ingestTime' field.
+   * @return The value of the 'ingestTime' field.
+   */
+  public java.lang.Long getIngestTime() {
+    return ingestTime;
+  }
+
+  /**
+   * Sets the value of the 'ingestTime' field.
+   * @param value the value to set.
+   */
+  public void setIngestTime(java.lang.Long value) {
+    this.ingestTime = value;
+  }
+
+  /**
+   * Gets the value of the 'sessionSkey' field.
+   * @return The value of the 'sessionSkey' field.
+   */
+  public java.lang.Long getSessionSkey() {
+    return sessionSkey;
+  }
+
+  /**
+   * Sets the value of the 'sessionSkey' field.
+   * @param value the value to set.
+   */
+  public void setSessionSkey(java.lang.Long value) {
+    this.sessionSkey = value;
+  }
+
+  /**
+   * Gets the value of the 'sessionStartDt' field.
+   * @return The value of the 'sessionStartDt' field.
+   */
+  public java.lang.Long getSessionStartDt() {
+    return sessionStartDt;
+  }
+
+  /**
+   * Sets the value of the 'sessionStartDt' field.
+   * @param value the value to set.
+   */
+  public void setSessionStartDt(java.lang.Long value) {
+    this.sessionStartDt = value;
+  }
+
+  /**
+   * Gets the value of the 'sojDataDt' field.
+   * @return The value of the 'sojDataDt' field.
+   */
+  public java.lang.Long getSojDataDt() {
+    return sojDataDt;
+  }
+
+  /**
+   * Sets the value of the 'sojDataDt' field.
+   * @param value the value to set.
+   */
+  public void setSojDataDt(java.lang.Long value) {
+    this.sojDataDt = value;
+  }
+
+  /**
+   * Gets the value of the 'version' field.
+   * @return The value of the 'version' field.
+   */
+  public java.lang.Integer getVersion() {
+    return version;
+  }
+
+  /**
+   * Sets the value of the 'version' field.
+   * @param value the value to set.
+   */
+  public void setVersion(java.lang.Integer value) {
+    this.version = value;
+  }
+
+  /**
+   * Gets the value of the 'staticPageType' field.
+   * @return The value of the 'staticPageType' field.
+   */
+  public java.lang.Integer getStaticPageType() {
+    return staticPageType;
+  }
+
+  /**
+   * Sets the value of the 'staticPageType' field.
+   * @param value the value to set.
+   */
+  public void setStaticPageType(java.lang.Integer value) {
+    this.staticPageType = value;
+  }
+
+  /**
+   * Gets the value of the 'reservedForFuture' field.
+   * @return The value of the 'reservedForFuture' field.
+   */
+  public java.lang.Integer getReservedForFuture() {
+    return reservedForFuture;
+  }
+
+  /**
+   * Sets the value of the 'reservedForFuture' field.
+   * @param value the value to set.
+   */
+  public void setReservedForFuture(java.lang.Integer value) {
+    this.reservedForFuture = value;
+  }
+
+  /**
+   * Gets the value of the 'eventAttr' field.
+   * @return The value of the 'eventAttr' field.
+   */
+  public java.lang.String getEventAttr() {
+    return eventAttr;
+  }
+
+  /**
+   * Sets the value of the 'eventAttr' field.
+   * @param value the value to set.
+   */
+  public void setEventAttr(java.lang.String value) {
+    this.eventAttr = value;
+  }
+
+  /**
+   * Gets the value of the 'currentImprId' field.
+   * @return The value of the 'currentImprId' field.
+   */
+  public java.lang.Long getCurrentImprId() {
+    return currentImprId;
+  }
+
+  /**
+   * Sets the value of the 'currentImprId' field.
+   * @param value the value to set.
+   */
+  public void setCurrentImprId(java.lang.Long value) {
+    this.currentImprId = value;
+  }
+
+  /**
+   * Gets the value of the 'sourceImprId' field.
+   * @return The value of the 'sourceImprId' field.
+   */
+  public java.lang.Long getSourceImprId() {
+    return sourceImprId;
+  }
+
+  /**
+   * Sets the value of the 'sourceImprId' field.
+   * @param value the value to set.
+   */
+  public void setSourceImprId(java.lang.Long value) {
+    this.sourceImprId = value;
+  }
+
+  /**
+   * Gets the value of the 'oldSessionSkey' field.
+   * @return The value of the 'oldSessionSkey' field.
+   */
+  public java.lang.Long getOldSessionSkey() {
+    return oldSessionSkey;
+  }
+
+  /**
+   * Sets the value of the 'oldSessionSkey' field.
+   * @param value the value to set.
+   */
+  public void setOldSessionSkey(java.lang.Long value) {
+    this.oldSessionSkey = value;
+  }
+
+  /**
+   * Gets the value of the 'partialValidPage' field.
+   * @return The value of the 'partialValidPage' field.
+   */
+  public java.lang.Boolean getPartialValidPage() {
+    return partialValidPage;
+  }
+
+  /**
+   * Sets the value of the 'partialValidPage' field.
+   * @param value the value to set.
+   */
+  public void setPartialValidPage(java.lang.Boolean value) {
+    this.partialValidPage = value;
+  }
+
+  /**
+   * Gets the value of the 'botFlags' field.
+   * @return The value of the 'botFlags' field.
+   */
+  public java.util.List<java.lang.Integer> getBotFlags() {
+    return botFlags;
+  }
+
+  /**
+   * Sets the value of the 'botFlags' field.
+   * @param value the value to set.
+   */
+  public void setBotFlags(java.util.List<java.lang.Integer> value) {
+    this.botFlags = value;
+  }
+
+  /**
+   * Gets the value of the 'icfBinary' field.
+   * @return The value of the 'icfBinary' field.
+   */
+  public java.lang.Long getIcfBinary() {
+    return icfBinary;
+  }
+
+  /**
+   * Sets the value of the 'icfBinary' field.
+   * @param value the value to set.
+   */
+  public void setIcfBinary(java.lang.Long value) {
+    this.icfBinary = value;
+  }
+
+  /**
+   * Gets the value of the 'eventCnt' field.
+   * @return The value of the 'eventCnt' field.
+   */
+  public java.lang.Long getEventCnt() {
+    return eventCnt;
+  }
+
+  /**
+   * Sets the value of the 'eventCnt' field.
+   * @param value the value to set.
+   */
+  public void setEventCnt(java.lang.Long value) {
+    this.eventCnt = value;
+  }
+
+  /**
+   * Gets the value of the 'referrer' field.
+   * @return The value of the 'referrer' field.
+   */
+  public java.lang.String getReferrer() {
+    return referrer;
+  }
+
+  /**
+   * Sets the value of the 'referrer' field.
+   * @param value the value to set.
+   */
+  public void setReferrer(java.lang.String value) {
+    this.referrer = value;
+  }
+
+  /**
+   * Gets the value of the 'forwardedFor' field.
+   * @return The value of the 'forwardedFor' field.
+   */
+  public java.lang.String getForwardedFor() {
+    return forwardedFor;
+  }
+
+  /**
+   * Sets the value of the 'forwardedFor' field.
+   * @param value the value to set.
+   */
+  public void setForwardedFor(java.lang.String value) {
+    this.forwardedFor = value;
+  }
+
+  /**
    * Gets the value of the 'rv' field.
    * @return The value of the 'rv' field.
    */
@@ -1611,6 +1532,22 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
    */
   public void setRv(java.lang.Boolean value) {
     this.rv = value;
+  }
+
+  /**
+   * Gets the value of the 'sojHeader' field.
+   * @return The value of the 'sojHeader' field.
+   */
+  public java.util.Map<java.lang.String,java.nio.ByteBuffer> getSojHeader() {
+    return sojHeader;
+  }
+
+  /**
+   * Sets the value of the 'sojHeader' field.
+   * @param value the value to set.
+   */
+  public void setSojHeader(java.util.Map<java.lang.String,java.nio.ByteBuffer> value) {
+    this.sojHeader = value;
   }
 
   /**
@@ -1649,21 +1586,8 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     private com.ebay.sojourner.common.model.RheosHeader rheosHeader;
     private com.ebay.sojourner.common.model.RheosHeader.Builder rheosHeaderBuilder;
     private java.lang.String guid;
-    /** dataClassification=Internal|isEncrypted=false|description=map from tag snid */
-    private java.lang.String sessionId;
-    private java.lang.Long sessionSkey;
-    /** dataClassification=Internal|isEncrypted=false|description=map from tag snsq */
-    private java.lang.String seqNum;
-    private java.lang.Long sessionStartDt;
-    private java.lang.Long sojDataDt;
-    private java.lang.Integer version;
-    private java.lang.Integer staticPageType;
-    private java.lang.Integer reservedForFuture;
-    private java.lang.String eventAttr;
-    private java.lang.Long currentImprId;
-    private java.lang.Long sourceImprId;
     /** dataClassification=Internal|isEncrypted=false|description=map from timestamp, publish time */
-    private java.lang.Long eventTimestamp;
+    private long eventTimestamp;
     /** dataClassification=Internal|isEncrypted=false|description=mobile specific, map from mtsts, used for mobile case */
     private java.lang.Long eventCaptureTime;
     /** dataClassification=Internal|isEncrypted=false|description=request correlation id, map from tag rq */
@@ -1687,18 +1611,12 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     private java.lang.String clickId;
     /** dataClassification=Internal|isEncrypted=false|description=Site ID, map from tag t */
     private java.lang.String siteId;
+    /** dataClassification=Internal|isEncrypted=false|description=map from tag snid */
+    private java.lang.String sessionId;
+    /** dataClassification=Internal|isEncrypted=false|description=map from tag snsq */
+    private java.lang.String seqNum;
     private java.lang.String ciid;
     private java.lang.String siid;
-    private java.lang.Long oldSessionSkey;
-    private java.lang.Boolean partialValidPage;
-    private java.lang.Long sessionStartTime;
-    private java.lang.Long sessionEndTime;
-    private java.util.List<java.lang.Integer> botFlags;
-    private java.lang.Long icfBinary;
-    private java.lang.Long ingestTime;
-    private java.lang.Long generateTime;
-    private java.lang.Long eventCnt;
-    private java.lang.String dataCenter;
     /** dataClassification=Internal|isEncrypted=false|description=1 indicates that the command redirected to another URL */
     private java.lang.Integer rdt;
     /** dataClassification=Internal|isEncrypted=false|description=indicating that this is a registered user, map from tag regU */
@@ -1719,7 +1637,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     private java.lang.String webServer;
     /** dataClassification=Internal|isEncrypted=false|description=map from tag ck/C */
     private java.lang.String cookies;
-    private java.lang.String referrer;
     /** dataClassification=Internal|isEncrypted=false|description=map from tag bott */
     private java.lang.Integer bot;
     private java.lang.String clientIP;
@@ -1727,7 +1644,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     private java.lang.String remoteIP;
     /** dataClassification=Internal|isEncrypted=false|description=map from tag Agent */
     private java.lang.String agentInfo;
-    private java.lang.String forwardedFor;
     /** dataClassification=Internal|isEncrypted=false|description=application ID, map from tag app */
     private java.lang.String appId;
     /** dataClassification=Internal|isEncrypted=false|description=application version, map from mav */
@@ -1755,7 +1671,25 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     private java.lang.String rlogid;
     /** Includes ForwardFor, ContentLength, Script, Server, Encoding, TMachine, TStamp, TName, TStatus, TDuration, TPayload */
     private java.util.Map<java.lang.String,java.lang.String> clientData;
+    private java.lang.Long ingestTime;
+    private java.lang.Long sessionSkey;
+    private long sessionStartDt;
+    private long sojDataDt;
+    private java.lang.Integer version;
+    private java.lang.Integer staticPageType;
+    private java.lang.Integer reservedForFuture;
+    private java.lang.String eventAttr;
+    private java.lang.Long currentImprId;
+    private java.lang.Long sourceImprId;
+    private java.lang.Long oldSessionSkey;
+    private java.lang.Boolean partialValidPage;
+    private java.util.List<java.lang.Integer> botFlags;
+    private long icfBinary;
+    private java.lang.Long eventCnt;
+    private java.lang.String referrer;
+    private java.lang.String forwardedFor;
     private java.lang.Boolean rv;
+    private java.util.Map<java.lang.String,java.nio.ByteBuffer> sojHeader;
 
     /** Creates a new Builder */
     private Builder() {
@@ -1779,273 +1713,261 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
         this.guid = data().deepCopy(fields()[1].schema(), other.guid);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.sessionId)) {
-        this.sessionId = data().deepCopy(fields()[2].schema(), other.sessionId);
+      if (isValidValue(fields()[2], other.eventTimestamp)) {
+        this.eventTimestamp = data().deepCopy(fields()[2].schema(), other.eventTimestamp);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.sessionSkey)) {
-        this.sessionSkey = data().deepCopy(fields()[3].schema(), other.sessionSkey);
+      if (isValidValue(fields()[3], other.eventCaptureTime)) {
+        this.eventCaptureTime = data().deepCopy(fields()[3].schema(), other.eventCaptureTime);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.seqNum)) {
-        this.seqNum = data().deepCopy(fields()[4].schema(), other.seqNum);
+      if (isValidValue(fields()[4], other.requestCorrelationId)) {
+        this.requestCorrelationId = data().deepCopy(fields()[4].schema(), other.requestCorrelationId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.sessionStartDt)) {
-        this.sessionStartDt = data().deepCopy(fields()[5].schema(), other.sessionStartDt);
+      if (isValidValue(fields()[5], other.cguid)) {
+        this.cguid = data().deepCopy(fields()[5].schema(), other.cguid);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.sojDataDt)) {
-        this.sojDataDt = data().deepCopy(fields()[6].schema(), other.sojDataDt);
+      if (isValidValue(fields()[6], other.sid)) {
+        this.sid = data().deepCopy(fields()[6].schema(), other.sid);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.version)) {
-        this.version = data().deepCopy(fields()[7].schema(), other.version);
+      if (isValidValue(fields()[7], other.pageId)) {
+        this.pageId = data().deepCopy(fields()[7].schema(), other.pageId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.staticPageType)) {
-        this.staticPageType = data().deepCopy(fields()[8].schema(), other.staticPageType);
+      if (isValidValue(fields()[8], other.pageName)) {
+        this.pageName = data().deepCopy(fields()[8].schema(), other.pageName);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.reservedForFuture)) {
-        this.reservedForFuture = data().deepCopy(fields()[9].schema(), other.reservedForFuture);
+      if (isValidValue(fields()[9], other.pageFamily)) {
+        this.pageFamily = data().deepCopy(fields()[9].schema(), other.pageFamily);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.eventAttr)) {
-        this.eventAttr = data().deepCopy(fields()[10].schema(), other.eventAttr);
+      if (isValidValue(fields()[10], other.eventFamily)) {
+        this.eventFamily = data().deepCopy(fields()[10].schema(), other.eventFamily);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.currentImprId)) {
-        this.currentImprId = data().deepCopy(fields()[11].schema(), other.currentImprId);
+      if (isValidValue(fields()[11], other.eventAction)) {
+        this.eventAction = data().deepCopy(fields()[11].schema(), other.eventAction);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.sourceImprId)) {
-        this.sourceImprId = data().deepCopy(fields()[12].schema(), other.sourceImprId);
+      if (isValidValue(fields()[12], other.userId)) {
+        this.userId = data().deepCopy(fields()[12].schema(), other.userId);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.eventTimestamp)) {
-        this.eventTimestamp = data().deepCopy(fields()[13].schema(), other.eventTimestamp);
+      if (isValidValue(fields()[13], other.clickId)) {
+        this.clickId = data().deepCopy(fields()[13].schema(), other.clickId);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.eventCaptureTime)) {
-        this.eventCaptureTime = data().deepCopy(fields()[14].schema(), other.eventCaptureTime);
+      if (isValidValue(fields()[14], other.siteId)) {
+        this.siteId = data().deepCopy(fields()[14].schema(), other.siteId);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.requestCorrelationId)) {
-        this.requestCorrelationId = data().deepCopy(fields()[15].schema(), other.requestCorrelationId);
+      if (isValidValue(fields()[15], other.sessionId)) {
+        this.sessionId = data().deepCopy(fields()[15].schema(), other.sessionId);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.cguid)) {
-        this.cguid = data().deepCopy(fields()[16].schema(), other.cguid);
+      if (isValidValue(fields()[16], other.seqNum)) {
+        this.seqNum = data().deepCopy(fields()[16].schema(), other.seqNum);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.sid)) {
-        this.sid = data().deepCopy(fields()[17].schema(), other.sid);
+      if (isValidValue(fields()[17], other.ciid)) {
+        this.ciid = data().deepCopy(fields()[17].schema(), other.ciid);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.pageId)) {
-        this.pageId = data().deepCopy(fields()[18].schema(), other.pageId);
+      if (isValidValue(fields()[18], other.siid)) {
+        this.siid = data().deepCopy(fields()[18].schema(), other.siid);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.pageName)) {
-        this.pageName = data().deepCopy(fields()[19].schema(), other.pageName);
+      if (isValidValue(fields()[19], other.rdt)) {
+        this.rdt = data().deepCopy(fields()[19].schema(), other.rdt);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.pageFamily)) {
-        this.pageFamily = data().deepCopy(fields()[20].schema(), other.pageFamily);
+      if (isValidValue(fields()[20], other.regu)) {
+        this.regu = data().deepCopy(fields()[20].schema(), other.regu);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.eventFamily)) {
-        this.eventFamily = data().deepCopy(fields()[21].schema(), other.eventFamily);
+      if (isValidValue(fields()[21], other.iframe)) {
+        this.iframe = data().deepCopy(fields()[21].schema(), other.iframe);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.eventAction)) {
-        this.eventAction = data().deepCopy(fields()[22].schema(), other.eventAction);
+      if (isValidValue(fields()[22], other.refererHash)) {
+        this.refererHash = data().deepCopy(fields()[22].schema(), other.refererHash);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.userId)) {
-        this.userId = data().deepCopy(fields()[23].schema(), other.userId);
+      if (isValidValue(fields()[23], other.sqr)) {
+        this.sqr = data().deepCopy(fields()[23].schema(), other.sqr);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.clickId)) {
-        this.clickId = data().deepCopy(fields()[24].schema(), other.clickId);
+      if (isValidValue(fields()[24], other.itemId)) {
+        this.itemId = data().deepCopy(fields()[24].schema(), other.itemId);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.siteId)) {
-        this.siteId = data().deepCopy(fields()[25].schema(), other.siteId);
+      if (isValidValue(fields()[25], other.flags)) {
+        this.flags = data().deepCopy(fields()[25].schema(), other.flags);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.ciid)) {
-        this.ciid = data().deepCopy(fields()[26].schema(), other.ciid);
+      if (isValidValue(fields()[26], other.urlQueryString)) {
+        this.urlQueryString = data().deepCopy(fields()[26].schema(), other.urlQueryString);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.siid)) {
-        this.siid = data().deepCopy(fields()[27].schema(), other.siid);
+      if (isValidValue(fields()[27], other.webServer)) {
+        this.webServer = data().deepCopy(fields()[27].schema(), other.webServer);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.oldSessionSkey)) {
-        this.oldSessionSkey = data().deepCopy(fields()[28].schema(), other.oldSessionSkey);
+      if (isValidValue(fields()[28], other.cookies)) {
+        this.cookies = data().deepCopy(fields()[28].schema(), other.cookies);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.partialValidPage)) {
-        this.partialValidPage = data().deepCopy(fields()[29].schema(), other.partialValidPage);
+      if (isValidValue(fields()[29], other.bot)) {
+        this.bot = data().deepCopy(fields()[29].schema(), other.bot);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.sessionStartTime)) {
-        this.sessionStartTime = data().deepCopy(fields()[30].schema(), other.sessionStartTime);
+      if (isValidValue(fields()[30], other.clientIP)) {
+        this.clientIP = data().deepCopy(fields()[30].schema(), other.clientIP);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.sessionEndTime)) {
-        this.sessionEndTime = data().deepCopy(fields()[31].schema(), other.sessionEndTime);
+      if (isValidValue(fields()[31], other.remoteIP)) {
+        this.remoteIP = data().deepCopy(fields()[31].schema(), other.remoteIP);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.botFlags)) {
-        this.botFlags = data().deepCopy(fields()[32].schema(), other.botFlags);
+      if (isValidValue(fields()[32], other.agentInfo)) {
+        this.agentInfo = data().deepCopy(fields()[32].schema(), other.agentInfo);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.icfBinary)) {
-        this.icfBinary = data().deepCopy(fields()[33].schema(), other.icfBinary);
+      if (isValidValue(fields()[33], other.appId)) {
+        this.appId = data().deepCopy(fields()[33].schema(), other.appId);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.ingestTime)) {
-        this.ingestTime = data().deepCopy(fields()[34].schema(), other.ingestTime);
+      if (isValidValue(fields()[34], other.appVersion)) {
+        this.appVersion = data().deepCopy(fields()[34].schema(), other.appVersion);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.generateTime)) {
-        this.generateTime = data().deepCopy(fields()[35].schema(), other.generateTime);
+      if (isValidValue(fields()[35], other.osVersion)) {
+        this.osVersion = data().deepCopy(fields()[35].schema(), other.osVersion);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.eventCnt)) {
-        this.eventCnt = data().deepCopy(fields()[36].schema(), other.eventCnt);
+      if (isValidValue(fields()[36], other.trafficSource)) {
+        this.trafficSource = data().deepCopy(fields()[36].schema(), other.trafficSource);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.dataCenter)) {
-        this.dataCenter = data().deepCopy(fields()[37].schema(), other.dataCenter);
+      if (isValidValue(fields()[37], other.cobrand)) {
+        this.cobrand = data().deepCopy(fields()[37].schema(), other.cobrand);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.rdt)) {
-        this.rdt = data().deepCopy(fields()[38].schema(), other.rdt);
+      if (isValidValue(fields()[38], other.deviceFamily)) {
+        this.deviceFamily = data().deepCopy(fields()[38].schema(), other.deviceFamily);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.regu)) {
-        this.regu = data().deepCopy(fields()[39].schema(), other.regu);
+      if (isValidValue(fields()[39], other.deviceType)) {
+        this.deviceType = data().deepCopy(fields()[39].schema(), other.deviceType);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.iframe)) {
-        this.iframe = data().deepCopy(fields()[40].schema(), other.iframe);
+      if (isValidValue(fields()[40], other.browserVersion)) {
+        this.browserVersion = data().deepCopy(fields()[40].schema(), other.browserVersion);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.refererHash)) {
-        this.refererHash = data().deepCopy(fields()[41].schema(), other.refererHash);
+      if (isValidValue(fields()[41], other.browserFamily)) {
+        this.browserFamily = data().deepCopy(fields()[41].schema(), other.browserFamily);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.sqr)) {
-        this.sqr = data().deepCopy(fields()[42].schema(), other.sqr);
+      if (isValidValue(fields()[42], other.osFamily)) {
+        this.osFamily = data().deepCopy(fields()[42].schema(), other.osFamily);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.itemId)) {
-        this.itemId = data().deepCopy(fields()[43].schema(), other.itemId);
+      if (isValidValue(fields()[43], other.enrichedOsVersion)) {
+        this.enrichedOsVersion = data().deepCopy(fields()[43].schema(), other.enrichedOsVersion);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.flags)) {
-        this.flags = data().deepCopy(fields()[44].schema(), other.flags);
+      if (isValidValue(fields()[44], other.applicationPayload)) {
+        this.applicationPayload = data().deepCopy(fields()[44].schema(), other.applicationPayload);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.urlQueryString)) {
-        this.urlQueryString = data().deepCopy(fields()[45].schema(), other.urlQueryString);
+      if (isValidValue(fields()[45], other.rlogid)) {
+        this.rlogid = data().deepCopy(fields()[45].schema(), other.rlogid);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.webServer)) {
-        this.webServer = data().deepCopy(fields()[46].schema(), other.webServer);
+      if (isValidValue(fields()[46], other.clientData)) {
+        this.clientData = data().deepCopy(fields()[46].schema(), other.clientData);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.cookies)) {
-        this.cookies = data().deepCopy(fields()[47].schema(), other.cookies);
+      if (isValidValue(fields()[47], other.ingestTime)) {
+        this.ingestTime = data().deepCopy(fields()[47].schema(), other.ingestTime);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.referrer)) {
-        this.referrer = data().deepCopy(fields()[48].schema(), other.referrer);
+      if (isValidValue(fields()[48], other.sessionSkey)) {
+        this.sessionSkey = data().deepCopy(fields()[48].schema(), other.sessionSkey);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.bot)) {
-        this.bot = data().deepCopy(fields()[49].schema(), other.bot);
+      if (isValidValue(fields()[49], other.sessionStartDt)) {
+        this.sessionStartDt = data().deepCopy(fields()[49].schema(), other.sessionStartDt);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.clientIP)) {
-        this.clientIP = data().deepCopy(fields()[50].schema(), other.clientIP);
+      if (isValidValue(fields()[50], other.sojDataDt)) {
+        this.sojDataDt = data().deepCopy(fields()[50].schema(), other.sojDataDt);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.remoteIP)) {
-        this.remoteIP = data().deepCopy(fields()[51].schema(), other.remoteIP);
+      if (isValidValue(fields()[51], other.version)) {
+        this.version = data().deepCopy(fields()[51].schema(), other.version);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.agentInfo)) {
-        this.agentInfo = data().deepCopy(fields()[52].schema(), other.agentInfo);
+      if (isValidValue(fields()[52], other.staticPageType)) {
+        this.staticPageType = data().deepCopy(fields()[52].schema(), other.staticPageType);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.forwardedFor)) {
-        this.forwardedFor = data().deepCopy(fields()[53].schema(), other.forwardedFor);
+      if (isValidValue(fields()[53], other.reservedForFuture)) {
+        this.reservedForFuture = data().deepCopy(fields()[53].schema(), other.reservedForFuture);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.appId)) {
-        this.appId = data().deepCopy(fields()[54].schema(), other.appId);
+      if (isValidValue(fields()[54], other.eventAttr)) {
+        this.eventAttr = data().deepCopy(fields()[54].schema(), other.eventAttr);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.appVersion)) {
-        this.appVersion = data().deepCopy(fields()[55].schema(), other.appVersion);
+      if (isValidValue(fields()[55], other.currentImprId)) {
+        this.currentImprId = data().deepCopy(fields()[55].schema(), other.currentImprId);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.osVersion)) {
-        this.osVersion = data().deepCopy(fields()[56].schema(), other.osVersion);
+      if (isValidValue(fields()[56], other.sourceImprId)) {
+        this.sourceImprId = data().deepCopy(fields()[56].schema(), other.sourceImprId);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.trafficSource)) {
-        this.trafficSource = data().deepCopy(fields()[57].schema(), other.trafficSource);
+      if (isValidValue(fields()[57], other.oldSessionSkey)) {
+        this.oldSessionSkey = data().deepCopy(fields()[57].schema(), other.oldSessionSkey);
         fieldSetFlags()[57] = true;
       }
-      if (isValidValue(fields()[58], other.cobrand)) {
-        this.cobrand = data().deepCopy(fields()[58].schema(), other.cobrand);
+      if (isValidValue(fields()[58], other.partialValidPage)) {
+        this.partialValidPage = data().deepCopy(fields()[58].schema(), other.partialValidPage);
         fieldSetFlags()[58] = true;
       }
-      if (isValidValue(fields()[59], other.deviceFamily)) {
-        this.deviceFamily = data().deepCopy(fields()[59].schema(), other.deviceFamily);
+      if (isValidValue(fields()[59], other.botFlags)) {
+        this.botFlags = data().deepCopy(fields()[59].schema(), other.botFlags);
         fieldSetFlags()[59] = true;
       }
-      if (isValidValue(fields()[60], other.deviceType)) {
-        this.deviceType = data().deepCopy(fields()[60].schema(), other.deviceType);
+      if (isValidValue(fields()[60], other.icfBinary)) {
+        this.icfBinary = data().deepCopy(fields()[60].schema(), other.icfBinary);
         fieldSetFlags()[60] = true;
       }
-      if (isValidValue(fields()[61], other.browserVersion)) {
-        this.browserVersion = data().deepCopy(fields()[61].schema(), other.browserVersion);
+      if (isValidValue(fields()[61], other.eventCnt)) {
+        this.eventCnt = data().deepCopy(fields()[61].schema(), other.eventCnt);
         fieldSetFlags()[61] = true;
       }
-      if (isValidValue(fields()[62], other.browserFamily)) {
-        this.browserFamily = data().deepCopy(fields()[62].schema(), other.browserFamily);
+      if (isValidValue(fields()[62], other.referrer)) {
+        this.referrer = data().deepCopy(fields()[62].schema(), other.referrer);
         fieldSetFlags()[62] = true;
       }
-      if (isValidValue(fields()[63], other.osFamily)) {
-        this.osFamily = data().deepCopy(fields()[63].schema(), other.osFamily);
+      if (isValidValue(fields()[63], other.forwardedFor)) {
+        this.forwardedFor = data().deepCopy(fields()[63].schema(), other.forwardedFor);
         fieldSetFlags()[63] = true;
       }
-      if (isValidValue(fields()[64], other.enrichedOsVersion)) {
-        this.enrichedOsVersion = data().deepCopy(fields()[64].schema(), other.enrichedOsVersion);
+      if (isValidValue(fields()[64], other.rv)) {
+        this.rv = data().deepCopy(fields()[64].schema(), other.rv);
         fieldSetFlags()[64] = true;
       }
-      if (isValidValue(fields()[65], other.applicationPayload)) {
-        this.applicationPayload = data().deepCopy(fields()[65].schema(), other.applicationPayload);
+      if (isValidValue(fields()[65], other.sojHeader)) {
+        this.sojHeader = data().deepCopy(fields()[65].schema(), other.sojHeader);
         fieldSetFlags()[65] = true;
-      }
-      if (isValidValue(fields()[66], other.rlogid)) {
-        this.rlogid = data().deepCopy(fields()[66].schema(), other.rlogid);
-        fieldSetFlags()[66] = true;
-      }
-      if (isValidValue(fields()[67], other.clientData)) {
-        this.clientData = data().deepCopy(fields()[67].schema(), other.clientData);
-        fieldSetFlags()[67] = true;
-      }
-      if (isValidValue(fields()[68], other.rv)) {
-        this.rv = data().deepCopy(fields()[68].schema(), other.rv);
-        fieldSetFlags()[68] = true;
       }
     }
 
@@ -2064,273 +1986,261 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
         this.guid = data().deepCopy(fields()[1].schema(), other.guid);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.sessionId)) {
-        this.sessionId = data().deepCopy(fields()[2].schema(), other.sessionId);
+      if (isValidValue(fields()[2], other.eventTimestamp)) {
+        this.eventTimestamp = data().deepCopy(fields()[2].schema(), other.eventTimestamp);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.sessionSkey)) {
-        this.sessionSkey = data().deepCopy(fields()[3].schema(), other.sessionSkey);
+      if (isValidValue(fields()[3], other.eventCaptureTime)) {
+        this.eventCaptureTime = data().deepCopy(fields()[3].schema(), other.eventCaptureTime);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.seqNum)) {
-        this.seqNum = data().deepCopy(fields()[4].schema(), other.seqNum);
+      if (isValidValue(fields()[4], other.requestCorrelationId)) {
+        this.requestCorrelationId = data().deepCopy(fields()[4].schema(), other.requestCorrelationId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.sessionStartDt)) {
-        this.sessionStartDt = data().deepCopy(fields()[5].schema(), other.sessionStartDt);
+      if (isValidValue(fields()[5], other.cguid)) {
+        this.cguid = data().deepCopy(fields()[5].schema(), other.cguid);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.sojDataDt)) {
-        this.sojDataDt = data().deepCopy(fields()[6].schema(), other.sojDataDt);
+      if (isValidValue(fields()[6], other.sid)) {
+        this.sid = data().deepCopy(fields()[6].schema(), other.sid);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.version)) {
-        this.version = data().deepCopy(fields()[7].schema(), other.version);
+      if (isValidValue(fields()[7], other.pageId)) {
+        this.pageId = data().deepCopy(fields()[7].schema(), other.pageId);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.staticPageType)) {
-        this.staticPageType = data().deepCopy(fields()[8].schema(), other.staticPageType);
+      if (isValidValue(fields()[8], other.pageName)) {
+        this.pageName = data().deepCopy(fields()[8].schema(), other.pageName);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.reservedForFuture)) {
-        this.reservedForFuture = data().deepCopy(fields()[9].schema(), other.reservedForFuture);
+      if (isValidValue(fields()[9], other.pageFamily)) {
+        this.pageFamily = data().deepCopy(fields()[9].schema(), other.pageFamily);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.eventAttr)) {
-        this.eventAttr = data().deepCopy(fields()[10].schema(), other.eventAttr);
+      if (isValidValue(fields()[10], other.eventFamily)) {
+        this.eventFamily = data().deepCopy(fields()[10].schema(), other.eventFamily);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.currentImprId)) {
-        this.currentImprId = data().deepCopy(fields()[11].schema(), other.currentImprId);
+      if (isValidValue(fields()[11], other.eventAction)) {
+        this.eventAction = data().deepCopy(fields()[11].schema(), other.eventAction);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.sourceImprId)) {
-        this.sourceImprId = data().deepCopy(fields()[12].schema(), other.sourceImprId);
+      if (isValidValue(fields()[12], other.userId)) {
+        this.userId = data().deepCopy(fields()[12].schema(), other.userId);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.eventTimestamp)) {
-        this.eventTimestamp = data().deepCopy(fields()[13].schema(), other.eventTimestamp);
+      if (isValidValue(fields()[13], other.clickId)) {
+        this.clickId = data().deepCopy(fields()[13].schema(), other.clickId);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.eventCaptureTime)) {
-        this.eventCaptureTime = data().deepCopy(fields()[14].schema(), other.eventCaptureTime);
+      if (isValidValue(fields()[14], other.siteId)) {
+        this.siteId = data().deepCopy(fields()[14].schema(), other.siteId);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.requestCorrelationId)) {
-        this.requestCorrelationId = data().deepCopy(fields()[15].schema(), other.requestCorrelationId);
+      if (isValidValue(fields()[15], other.sessionId)) {
+        this.sessionId = data().deepCopy(fields()[15].schema(), other.sessionId);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.cguid)) {
-        this.cguid = data().deepCopy(fields()[16].schema(), other.cguid);
+      if (isValidValue(fields()[16], other.seqNum)) {
+        this.seqNum = data().deepCopy(fields()[16].schema(), other.seqNum);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.sid)) {
-        this.sid = data().deepCopy(fields()[17].schema(), other.sid);
+      if (isValidValue(fields()[17], other.ciid)) {
+        this.ciid = data().deepCopy(fields()[17].schema(), other.ciid);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.pageId)) {
-        this.pageId = data().deepCopy(fields()[18].schema(), other.pageId);
+      if (isValidValue(fields()[18], other.siid)) {
+        this.siid = data().deepCopy(fields()[18].schema(), other.siid);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.pageName)) {
-        this.pageName = data().deepCopy(fields()[19].schema(), other.pageName);
+      if (isValidValue(fields()[19], other.rdt)) {
+        this.rdt = data().deepCopy(fields()[19].schema(), other.rdt);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.pageFamily)) {
-        this.pageFamily = data().deepCopy(fields()[20].schema(), other.pageFamily);
+      if (isValidValue(fields()[20], other.regu)) {
+        this.regu = data().deepCopy(fields()[20].schema(), other.regu);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.eventFamily)) {
-        this.eventFamily = data().deepCopy(fields()[21].schema(), other.eventFamily);
+      if (isValidValue(fields()[21], other.iframe)) {
+        this.iframe = data().deepCopy(fields()[21].schema(), other.iframe);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.eventAction)) {
-        this.eventAction = data().deepCopy(fields()[22].schema(), other.eventAction);
+      if (isValidValue(fields()[22], other.refererHash)) {
+        this.refererHash = data().deepCopy(fields()[22].schema(), other.refererHash);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.userId)) {
-        this.userId = data().deepCopy(fields()[23].schema(), other.userId);
+      if (isValidValue(fields()[23], other.sqr)) {
+        this.sqr = data().deepCopy(fields()[23].schema(), other.sqr);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.clickId)) {
-        this.clickId = data().deepCopy(fields()[24].schema(), other.clickId);
+      if (isValidValue(fields()[24], other.itemId)) {
+        this.itemId = data().deepCopy(fields()[24].schema(), other.itemId);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.siteId)) {
-        this.siteId = data().deepCopy(fields()[25].schema(), other.siteId);
+      if (isValidValue(fields()[25], other.flags)) {
+        this.flags = data().deepCopy(fields()[25].schema(), other.flags);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.ciid)) {
-        this.ciid = data().deepCopy(fields()[26].schema(), other.ciid);
+      if (isValidValue(fields()[26], other.urlQueryString)) {
+        this.urlQueryString = data().deepCopy(fields()[26].schema(), other.urlQueryString);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.siid)) {
-        this.siid = data().deepCopy(fields()[27].schema(), other.siid);
+      if (isValidValue(fields()[27], other.webServer)) {
+        this.webServer = data().deepCopy(fields()[27].schema(), other.webServer);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.oldSessionSkey)) {
-        this.oldSessionSkey = data().deepCopy(fields()[28].schema(), other.oldSessionSkey);
+      if (isValidValue(fields()[28], other.cookies)) {
+        this.cookies = data().deepCopy(fields()[28].schema(), other.cookies);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.partialValidPage)) {
-        this.partialValidPage = data().deepCopy(fields()[29].schema(), other.partialValidPage);
+      if (isValidValue(fields()[29], other.bot)) {
+        this.bot = data().deepCopy(fields()[29].schema(), other.bot);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.sessionStartTime)) {
-        this.sessionStartTime = data().deepCopy(fields()[30].schema(), other.sessionStartTime);
+      if (isValidValue(fields()[30], other.clientIP)) {
+        this.clientIP = data().deepCopy(fields()[30].schema(), other.clientIP);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.sessionEndTime)) {
-        this.sessionEndTime = data().deepCopy(fields()[31].schema(), other.sessionEndTime);
+      if (isValidValue(fields()[31], other.remoteIP)) {
+        this.remoteIP = data().deepCopy(fields()[31].schema(), other.remoteIP);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.botFlags)) {
-        this.botFlags = data().deepCopy(fields()[32].schema(), other.botFlags);
+      if (isValidValue(fields()[32], other.agentInfo)) {
+        this.agentInfo = data().deepCopy(fields()[32].schema(), other.agentInfo);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.icfBinary)) {
-        this.icfBinary = data().deepCopy(fields()[33].schema(), other.icfBinary);
+      if (isValidValue(fields()[33], other.appId)) {
+        this.appId = data().deepCopy(fields()[33].schema(), other.appId);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.ingestTime)) {
-        this.ingestTime = data().deepCopy(fields()[34].schema(), other.ingestTime);
+      if (isValidValue(fields()[34], other.appVersion)) {
+        this.appVersion = data().deepCopy(fields()[34].schema(), other.appVersion);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.generateTime)) {
-        this.generateTime = data().deepCopy(fields()[35].schema(), other.generateTime);
+      if (isValidValue(fields()[35], other.osVersion)) {
+        this.osVersion = data().deepCopy(fields()[35].schema(), other.osVersion);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.eventCnt)) {
-        this.eventCnt = data().deepCopy(fields()[36].schema(), other.eventCnt);
+      if (isValidValue(fields()[36], other.trafficSource)) {
+        this.trafficSource = data().deepCopy(fields()[36].schema(), other.trafficSource);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.dataCenter)) {
-        this.dataCenter = data().deepCopy(fields()[37].schema(), other.dataCenter);
+      if (isValidValue(fields()[37], other.cobrand)) {
+        this.cobrand = data().deepCopy(fields()[37].schema(), other.cobrand);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.rdt)) {
-        this.rdt = data().deepCopy(fields()[38].schema(), other.rdt);
+      if (isValidValue(fields()[38], other.deviceFamily)) {
+        this.deviceFamily = data().deepCopy(fields()[38].schema(), other.deviceFamily);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.regu)) {
-        this.regu = data().deepCopy(fields()[39].schema(), other.regu);
+      if (isValidValue(fields()[39], other.deviceType)) {
+        this.deviceType = data().deepCopy(fields()[39].schema(), other.deviceType);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.iframe)) {
-        this.iframe = data().deepCopy(fields()[40].schema(), other.iframe);
+      if (isValidValue(fields()[40], other.browserVersion)) {
+        this.browserVersion = data().deepCopy(fields()[40].schema(), other.browserVersion);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.refererHash)) {
-        this.refererHash = data().deepCopy(fields()[41].schema(), other.refererHash);
+      if (isValidValue(fields()[41], other.browserFamily)) {
+        this.browserFamily = data().deepCopy(fields()[41].schema(), other.browserFamily);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.sqr)) {
-        this.sqr = data().deepCopy(fields()[42].schema(), other.sqr);
+      if (isValidValue(fields()[42], other.osFamily)) {
+        this.osFamily = data().deepCopy(fields()[42].schema(), other.osFamily);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.itemId)) {
-        this.itemId = data().deepCopy(fields()[43].schema(), other.itemId);
+      if (isValidValue(fields()[43], other.enrichedOsVersion)) {
+        this.enrichedOsVersion = data().deepCopy(fields()[43].schema(), other.enrichedOsVersion);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.flags)) {
-        this.flags = data().deepCopy(fields()[44].schema(), other.flags);
+      if (isValidValue(fields()[44], other.applicationPayload)) {
+        this.applicationPayload = data().deepCopy(fields()[44].schema(), other.applicationPayload);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.urlQueryString)) {
-        this.urlQueryString = data().deepCopy(fields()[45].schema(), other.urlQueryString);
+      if (isValidValue(fields()[45], other.rlogid)) {
+        this.rlogid = data().deepCopy(fields()[45].schema(), other.rlogid);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.webServer)) {
-        this.webServer = data().deepCopy(fields()[46].schema(), other.webServer);
+      if (isValidValue(fields()[46], other.clientData)) {
+        this.clientData = data().deepCopy(fields()[46].schema(), other.clientData);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.cookies)) {
-        this.cookies = data().deepCopy(fields()[47].schema(), other.cookies);
+      if (isValidValue(fields()[47], other.ingestTime)) {
+        this.ingestTime = data().deepCopy(fields()[47].schema(), other.ingestTime);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.referrer)) {
-        this.referrer = data().deepCopy(fields()[48].schema(), other.referrer);
+      if (isValidValue(fields()[48], other.sessionSkey)) {
+        this.sessionSkey = data().deepCopy(fields()[48].schema(), other.sessionSkey);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.bot)) {
-        this.bot = data().deepCopy(fields()[49].schema(), other.bot);
+      if (isValidValue(fields()[49], other.sessionStartDt)) {
+        this.sessionStartDt = data().deepCopy(fields()[49].schema(), other.sessionStartDt);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.clientIP)) {
-        this.clientIP = data().deepCopy(fields()[50].schema(), other.clientIP);
+      if (isValidValue(fields()[50], other.sojDataDt)) {
+        this.sojDataDt = data().deepCopy(fields()[50].schema(), other.sojDataDt);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.remoteIP)) {
-        this.remoteIP = data().deepCopy(fields()[51].schema(), other.remoteIP);
+      if (isValidValue(fields()[51], other.version)) {
+        this.version = data().deepCopy(fields()[51].schema(), other.version);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.agentInfo)) {
-        this.agentInfo = data().deepCopy(fields()[52].schema(), other.agentInfo);
+      if (isValidValue(fields()[52], other.staticPageType)) {
+        this.staticPageType = data().deepCopy(fields()[52].schema(), other.staticPageType);
         fieldSetFlags()[52] = true;
       }
-      if (isValidValue(fields()[53], other.forwardedFor)) {
-        this.forwardedFor = data().deepCopy(fields()[53].schema(), other.forwardedFor);
+      if (isValidValue(fields()[53], other.reservedForFuture)) {
+        this.reservedForFuture = data().deepCopy(fields()[53].schema(), other.reservedForFuture);
         fieldSetFlags()[53] = true;
       }
-      if (isValidValue(fields()[54], other.appId)) {
-        this.appId = data().deepCopy(fields()[54].schema(), other.appId);
+      if (isValidValue(fields()[54], other.eventAttr)) {
+        this.eventAttr = data().deepCopy(fields()[54].schema(), other.eventAttr);
         fieldSetFlags()[54] = true;
       }
-      if (isValidValue(fields()[55], other.appVersion)) {
-        this.appVersion = data().deepCopy(fields()[55].schema(), other.appVersion);
+      if (isValidValue(fields()[55], other.currentImprId)) {
+        this.currentImprId = data().deepCopy(fields()[55].schema(), other.currentImprId);
         fieldSetFlags()[55] = true;
       }
-      if (isValidValue(fields()[56], other.osVersion)) {
-        this.osVersion = data().deepCopy(fields()[56].schema(), other.osVersion);
+      if (isValidValue(fields()[56], other.sourceImprId)) {
+        this.sourceImprId = data().deepCopy(fields()[56].schema(), other.sourceImprId);
         fieldSetFlags()[56] = true;
       }
-      if (isValidValue(fields()[57], other.trafficSource)) {
-        this.trafficSource = data().deepCopy(fields()[57].schema(), other.trafficSource);
+      if (isValidValue(fields()[57], other.oldSessionSkey)) {
+        this.oldSessionSkey = data().deepCopy(fields()[57].schema(), other.oldSessionSkey);
         fieldSetFlags()[57] = true;
       }
-      if (isValidValue(fields()[58], other.cobrand)) {
-        this.cobrand = data().deepCopy(fields()[58].schema(), other.cobrand);
+      if (isValidValue(fields()[58], other.partialValidPage)) {
+        this.partialValidPage = data().deepCopy(fields()[58].schema(), other.partialValidPage);
         fieldSetFlags()[58] = true;
       }
-      if (isValidValue(fields()[59], other.deviceFamily)) {
-        this.deviceFamily = data().deepCopy(fields()[59].schema(), other.deviceFamily);
+      if (isValidValue(fields()[59], other.botFlags)) {
+        this.botFlags = data().deepCopy(fields()[59].schema(), other.botFlags);
         fieldSetFlags()[59] = true;
       }
-      if (isValidValue(fields()[60], other.deviceType)) {
-        this.deviceType = data().deepCopy(fields()[60].schema(), other.deviceType);
+      if (isValidValue(fields()[60], other.icfBinary)) {
+        this.icfBinary = data().deepCopy(fields()[60].schema(), other.icfBinary);
         fieldSetFlags()[60] = true;
       }
-      if (isValidValue(fields()[61], other.browserVersion)) {
-        this.browserVersion = data().deepCopy(fields()[61].schema(), other.browserVersion);
+      if (isValidValue(fields()[61], other.eventCnt)) {
+        this.eventCnt = data().deepCopy(fields()[61].schema(), other.eventCnt);
         fieldSetFlags()[61] = true;
       }
-      if (isValidValue(fields()[62], other.browserFamily)) {
-        this.browserFamily = data().deepCopy(fields()[62].schema(), other.browserFamily);
+      if (isValidValue(fields()[62], other.referrer)) {
+        this.referrer = data().deepCopy(fields()[62].schema(), other.referrer);
         fieldSetFlags()[62] = true;
       }
-      if (isValidValue(fields()[63], other.osFamily)) {
-        this.osFamily = data().deepCopy(fields()[63].schema(), other.osFamily);
+      if (isValidValue(fields()[63], other.forwardedFor)) {
+        this.forwardedFor = data().deepCopy(fields()[63].schema(), other.forwardedFor);
         fieldSetFlags()[63] = true;
       }
-      if (isValidValue(fields()[64], other.enrichedOsVersion)) {
-        this.enrichedOsVersion = data().deepCopy(fields()[64].schema(), other.enrichedOsVersion);
+      if (isValidValue(fields()[64], other.rv)) {
+        this.rv = data().deepCopy(fields()[64].schema(), other.rv);
         fieldSetFlags()[64] = true;
       }
-      if (isValidValue(fields()[65], other.applicationPayload)) {
-        this.applicationPayload = data().deepCopy(fields()[65].schema(), other.applicationPayload);
+      if (isValidValue(fields()[65], other.sojHeader)) {
+        this.sojHeader = data().deepCopy(fields()[65].schema(), other.sojHeader);
         fieldSetFlags()[65] = true;
-      }
-      if (isValidValue(fields()[66], other.rlogid)) {
-        this.rlogid = data().deepCopy(fields()[66].schema(), other.rlogid);
-        fieldSetFlags()[66] = true;
-      }
-      if (isValidValue(fields()[67], other.clientData)) {
-        this.clientData = data().deepCopy(fields()[67].schema(), other.clientData);
-        fieldSetFlags()[67] = true;
-      }
-      if (isValidValue(fields()[68], other.rv)) {
-        this.rv = data().deepCopy(fields()[68].schema(), other.rv);
-        fieldSetFlags()[68] = true;
       }
     }
 
@@ -2455,443 +2365,6 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
     }
 
     /**
-      * Gets the value of the 'sessionId' field.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
-      * @return The value.
-      */
-    public java.lang.String getSessionId() {
-      return sessionId;
-    }
-
-    /**
-      * Sets the value of the 'sessionId' field.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
-      * @param value The value of 'sessionId'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionId(java.lang.String value) {
-      validate(fields()[2], value);
-      this.sessionId = value;
-      fieldSetFlags()[2] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sessionId' field has been set.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
-      * @return True if the 'sessionId' field has been set, false otherwise.
-      */
-    public boolean hasSessionId() {
-      return fieldSetFlags()[2];
-    }
-
-
-    /**
-      * Clears the value of the 'sessionId' field.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionId() {
-      sessionId = null;
-      fieldSetFlags()[2] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sessionSkey' field.
-      * @return The value.
-      */
-    public java.lang.Long getSessionSkey() {
-      return sessionSkey;
-    }
-
-    /**
-      * Sets the value of the 'sessionSkey' field.
-      * @param value The value of 'sessionSkey'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionSkey(java.lang.Long value) {
-      validate(fields()[3], value);
-      this.sessionSkey = value;
-      fieldSetFlags()[3] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sessionSkey' field has been set.
-      * @return True if the 'sessionSkey' field has been set, false otherwise.
-      */
-    public boolean hasSessionSkey() {
-      return fieldSetFlags()[3];
-    }
-
-
-    /**
-      * Clears the value of the 'sessionSkey' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionSkey() {
-      sessionSkey = null;
-      fieldSetFlags()[3] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'seqNum' field.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
-      * @return The value.
-      */
-    public java.lang.String getSeqNum() {
-      return seqNum;
-    }
-
-    /**
-      * Sets the value of the 'seqNum' field.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
-      * @param value The value of 'seqNum'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSeqNum(java.lang.String value) {
-      validate(fields()[4], value);
-      this.seqNum = value;
-      fieldSetFlags()[4] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'seqNum' field has been set.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
-      * @return True if the 'seqNum' field has been set, false otherwise.
-      */
-    public boolean hasSeqNum() {
-      return fieldSetFlags()[4];
-    }
-
-
-    /**
-      * Clears the value of the 'seqNum' field.
-      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSeqNum() {
-      seqNum = null;
-      fieldSetFlags()[4] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sessionStartDt' field.
-      * @return The value.
-      */
-    public java.lang.Long getSessionStartDt() {
-      return sessionStartDt;
-    }
-
-    /**
-      * Sets the value of the 'sessionStartDt' field.
-      * @param value The value of 'sessionStartDt'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionStartDt(java.lang.Long value) {
-      validate(fields()[5], value);
-      this.sessionStartDt = value;
-      fieldSetFlags()[5] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sessionStartDt' field has been set.
-      * @return True if the 'sessionStartDt' field has been set, false otherwise.
-      */
-    public boolean hasSessionStartDt() {
-      return fieldSetFlags()[5];
-    }
-
-
-    /**
-      * Clears the value of the 'sessionStartDt' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionStartDt() {
-      sessionStartDt = null;
-      fieldSetFlags()[5] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sojDataDt' field.
-      * @return The value.
-      */
-    public java.lang.Long getSojDataDt() {
-      return sojDataDt;
-    }
-
-    /**
-      * Sets the value of the 'sojDataDt' field.
-      * @param value The value of 'sojDataDt'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSojDataDt(java.lang.Long value) {
-      validate(fields()[6], value);
-      this.sojDataDt = value;
-      fieldSetFlags()[6] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sojDataDt' field has been set.
-      * @return True if the 'sojDataDt' field has been set, false otherwise.
-      */
-    public boolean hasSojDataDt() {
-      return fieldSetFlags()[6];
-    }
-
-
-    /**
-      * Clears the value of the 'sojDataDt' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSojDataDt() {
-      sojDataDt = null;
-      fieldSetFlags()[6] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'version' field.
-      * @return The value.
-      */
-    public java.lang.Integer getVersion() {
-      return version;
-    }
-
-    /**
-      * Sets the value of the 'version' field.
-      * @param value The value of 'version'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setVersion(java.lang.Integer value) {
-      validate(fields()[7], value);
-      this.version = value;
-      fieldSetFlags()[7] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'version' field has been set.
-      * @return True if the 'version' field has been set, false otherwise.
-      */
-    public boolean hasVersion() {
-      return fieldSetFlags()[7];
-    }
-
-
-    /**
-      * Clears the value of the 'version' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearVersion() {
-      version = null;
-      fieldSetFlags()[7] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'staticPageType' field.
-      * @return The value.
-      */
-    public java.lang.Integer getStaticPageType() {
-      return staticPageType;
-    }
-
-    /**
-      * Sets the value of the 'staticPageType' field.
-      * @param value The value of 'staticPageType'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setStaticPageType(java.lang.Integer value) {
-      validate(fields()[8], value);
-      this.staticPageType = value;
-      fieldSetFlags()[8] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'staticPageType' field has been set.
-      * @return True if the 'staticPageType' field has been set, false otherwise.
-      */
-    public boolean hasStaticPageType() {
-      return fieldSetFlags()[8];
-    }
-
-
-    /**
-      * Clears the value of the 'staticPageType' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearStaticPageType() {
-      staticPageType = null;
-      fieldSetFlags()[8] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'reservedForFuture' field.
-      * @return The value.
-      */
-    public java.lang.Integer getReservedForFuture() {
-      return reservedForFuture;
-    }
-
-    /**
-      * Sets the value of the 'reservedForFuture' field.
-      * @param value The value of 'reservedForFuture'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setReservedForFuture(java.lang.Integer value) {
-      validate(fields()[9], value);
-      this.reservedForFuture = value;
-      fieldSetFlags()[9] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'reservedForFuture' field has been set.
-      * @return True if the 'reservedForFuture' field has been set, false otherwise.
-      */
-    public boolean hasReservedForFuture() {
-      return fieldSetFlags()[9];
-    }
-
-
-    /**
-      * Clears the value of the 'reservedForFuture' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearReservedForFuture() {
-      reservedForFuture = null;
-      fieldSetFlags()[9] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'eventAttr' field.
-      * @return The value.
-      */
-    public java.lang.String getEventAttr() {
-      return eventAttr;
-    }
-
-    /**
-      * Sets the value of the 'eventAttr' field.
-      * @param value The value of 'eventAttr'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setEventAttr(java.lang.String value) {
-      validate(fields()[10], value);
-      this.eventAttr = value;
-      fieldSetFlags()[10] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'eventAttr' field has been set.
-      * @return True if the 'eventAttr' field has been set, false otherwise.
-      */
-    public boolean hasEventAttr() {
-      return fieldSetFlags()[10];
-    }
-
-
-    /**
-      * Clears the value of the 'eventAttr' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearEventAttr() {
-      eventAttr = null;
-      fieldSetFlags()[10] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'currentImprId' field.
-      * @return The value.
-      */
-    public java.lang.Long getCurrentImprId() {
-      return currentImprId;
-    }
-
-    /**
-      * Sets the value of the 'currentImprId' field.
-      * @param value The value of 'currentImprId'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setCurrentImprId(java.lang.Long value) {
-      validate(fields()[11], value);
-      this.currentImprId = value;
-      fieldSetFlags()[11] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'currentImprId' field has been set.
-      * @return True if the 'currentImprId' field has been set, false otherwise.
-      */
-    public boolean hasCurrentImprId() {
-      return fieldSetFlags()[11];
-    }
-
-
-    /**
-      * Clears the value of the 'currentImprId' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearCurrentImprId() {
-      currentImprId = null;
-      fieldSetFlags()[11] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sourceImprId' field.
-      * @return The value.
-      */
-    public java.lang.Long getSourceImprId() {
-      return sourceImprId;
-    }
-
-    /**
-      * Sets the value of the 'sourceImprId' field.
-      * @param value The value of 'sourceImprId'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSourceImprId(java.lang.Long value) {
-      validate(fields()[12], value);
-      this.sourceImprId = value;
-      fieldSetFlags()[12] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sourceImprId' field has been set.
-      * @return True if the 'sourceImprId' field has been set, false otherwise.
-      */
-    public boolean hasSourceImprId() {
-      return fieldSetFlags()[12];
-    }
-
-
-    /**
-      * Clears the value of the 'sourceImprId' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSourceImprId() {
-      sourceImprId = null;
-      fieldSetFlags()[12] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'eventTimestamp' field.
       * dataClassification=Internal|isEncrypted=false|description=map from timestamp, publish time
       * @return The value.
@@ -2906,10 +2379,10 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @param value The value of 'eventTimestamp'.
       * @return This builder.
       */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setEventTimestamp(java.lang.Long value) {
-      validate(fields()[13], value);
+    public com.ebay.sojourner.common.model.SojEvent.Builder setEventTimestamp(long value) {
+      validate(fields()[2], value);
       this.eventTimestamp = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -2919,7 +2392,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'eventTimestamp' field has been set, false otherwise.
       */
     public boolean hasEventTimestamp() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[2];
     }
 
 
@@ -2929,8 +2402,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearEventTimestamp() {
-      eventTimestamp = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -2950,9 +2422,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setEventCaptureTime(java.lang.Long value) {
-      validate(fields()[14], value);
+      validate(fields()[3], value);
       this.eventCaptureTime = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -2962,7 +2434,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'eventCaptureTime' field has been set, false otherwise.
       */
     public boolean hasEventCaptureTime() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[3];
     }
 
 
@@ -2973,7 +2445,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearEventCaptureTime() {
       eventCaptureTime = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -2993,9 +2465,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setRequestCorrelationId(java.lang.String value) {
-      validate(fields()[15], value);
+      validate(fields()[4], value);
       this.requestCorrelationId = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -3005,7 +2477,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'requestCorrelationId' field has been set, false otherwise.
       */
     public boolean hasRequestCorrelationId() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[4];
     }
 
 
@@ -3016,7 +2488,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearRequestCorrelationId() {
       requestCorrelationId = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -3036,9 +2508,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setCguid(java.lang.String value) {
-      validate(fields()[16], value);
+      validate(fields()[5], value);
       this.cguid = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -3048,7 +2520,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'cguid' field has been set, false otherwise.
       */
     public boolean hasCguid() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[5];
     }
 
 
@@ -3059,7 +2531,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearCguid() {
       cguid = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -3079,9 +2551,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setSid(java.lang.String value) {
-      validate(fields()[17], value);
+      validate(fields()[6], value);
       this.sid = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -3091,7 +2563,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'sid' field has been set, false otherwise.
       */
     public boolean hasSid() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[6];
     }
 
 
@@ -3102,7 +2574,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearSid() {
       sid = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -3122,9 +2594,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setPageId(java.lang.Integer value) {
-      validate(fields()[18], value);
+      validate(fields()[7], value);
       this.pageId = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -3134,7 +2606,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'pageId' field has been set, false otherwise.
       */
     public boolean hasPageId() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[7];
     }
 
 
@@ -3145,7 +2617,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearPageId() {
       pageId = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -3163,9 +2635,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setPageName(java.lang.String value) {
-      validate(fields()[19], value);
+      validate(fields()[8], value);
       this.pageName = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -3174,7 +2646,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'pageName' field has been set, false otherwise.
       */
     public boolean hasPageName() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[8];
     }
 
 
@@ -3184,7 +2656,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearPageName() {
       pageName = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -3204,9 +2676,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setPageFamily(java.lang.String value) {
-      validate(fields()[20], value);
+      validate(fields()[9], value);
       this.pageFamily = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -3216,7 +2688,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'pageFamily' field has been set, false otherwise.
       */
     public boolean hasPageFamily() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[9];
     }
 
 
@@ -3227,7 +2699,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearPageFamily() {
       pageFamily = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -3247,9 +2719,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setEventFamily(java.lang.String value) {
-      validate(fields()[21], value);
+      validate(fields()[10], value);
       this.eventFamily = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -3259,7 +2731,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'eventFamily' field has been set, false otherwise.
       */
     public boolean hasEventFamily() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[10];
     }
 
 
@@ -3270,7 +2742,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearEventFamily() {
       eventFamily = null;
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -3290,9 +2762,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setEventAction(java.lang.String value) {
-      validate(fields()[22], value);
+      validate(fields()[11], value);
       this.eventAction = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -3302,7 +2774,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'eventAction' field has been set, false otherwise.
       */
     public boolean hasEventAction() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[11];
     }
 
 
@@ -3313,7 +2785,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearEventAction() {
       eventAction = null;
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -3333,9 +2805,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setUserId(java.lang.String value) {
-      validate(fields()[23], value);
+      validate(fields()[12], value);
       this.userId = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -3345,7 +2817,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'userId' field has been set, false otherwise.
       */
     public boolean hasUserId() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[12];
     }
 
 
@@ -3356,7 +2828,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearUserId() {
       userId = null;
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -3376,9 +2848,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setClickId(java.lang.String value) {
-      validate(fields()[24], value);
+      validate(fields()[13], value);
       this.clickId = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -3388,7 +2860,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'clickId' field has been set, false otherwise.
       */
     public boolean hasClickId() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[13];
     }
 
 
@@ -3399,7 +2871,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearClickId() {
       clickId = null;
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -3419,9 +2891,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setSiteId(java.lang.String value) {
-      validate(fields()[25], value);
+      validate(fields()[14], value);
       this.siteId = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -3431,7 +2903,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'siteId' field has been set, false otherwise.
       */
     public boolean hasSiteId() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[14];
     }
 
 
@@ -3442,7 +2914,93 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearSiteId() {
       siteId = null;
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[14] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sessionId' field.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
+      * @return The value.
+      */
+    public java.lang.String getSessionId() {
+      return sessionId;
+    }
+
+    /**
+      * Sets the value of the 'sessionId' field.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
+      * @param value The value of 'sessionId'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionId(java.lang.String value) {
+      validate(fields()[15], value);
+      this.sessionId = value;
+      fieldSetFlags()[15] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sessionId' field has been set.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
+      * @return True if the 'sessionId' field has been set, false otherwise.
+      */
+    public boolean hasSessionId() {
+      return fieldSetFlags()[15];
+    }
+
+
+    /**
+      * Clears the value of the 'sessionId' field.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snid
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionId() {
+      sessionId = null;
+      fieldSetFlags()[15] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'seqNum' field.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
+      * @return The value.
+      */
+    public java.lang.String getSeqNum() {
+      return seqNum;
+    }
+
+    /**
+      * Sets the value of the 'seqNum' field.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
+      * @param value The value of 'seqNum'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setSeqNum(java.lang.String value) {
+      validate(fields()[16], value);
+      this.seqNum = value;
+      fieldSetFlags()[16] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'seqNum' field has been set.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
+      * @return True if the 'seqNum' field has been set, false otherwise.
+      */
+    public boolean hasSeqNum() {
+      return fieldSetFlags()[16];
+    }
+
+
+    /**
+      * Clears the value of the 'seqNum' field.
+      * dataClassification=Internal|isEncrypted=false|description=map from tag snsq
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearSeqNum() {
+      seqNum = null;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -3460,9 +3018,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setCiid(java.lang.String value) {
-      validate(fields()[26], value);
+      validate(fields()[17], value);
       this.ciid = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -3471,7 +3029,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'ciid' field has been set, false otherwise.
       */
     public boolean hasCiid() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[17];
     }
 
 
@@ -3481,7 +3039,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearCiid() {
       ciid = null;
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -3499,9 +3057,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setSiid(java.lang.String value) {
-      validate(fields()[27], value);
+      validate(fields()[18], value);
       this.siid = value;
-      fieldSetFlags()[27] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -3510,7 +3068,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'siid' field has been set, false otherwise.
       */
     public boolean hasSiid() {
-      return fieldSetFlags()[27];
+      return fieldSetFlags()[18];
     }
 
 
@@ -3520,397 +3078,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearSiid() {
       siid = null;
-      fieldSetFlags()[27] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'oldSessionSkey' field.
-      * @return The value.
-      */
-    public java.lang.Long getOldSessionSkey() {
-      return oldSessionSkey;
-    }
-
-    /**
-      * Sets the value of the 'oldSessionSkey' field.
-      * @param value The value of 'oldSessionSkey'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setOldSessionSkey(java.lang.Long value) {
-      validate(fields()[28], value);
-      this.oldSessionSkey = value;
-      fieldSetFlags()[28] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'oldSessionSkey' field has been set.
-      * @return True if the 'oldSessionSkey' field has been set, false otherwise.
-      */
-    public boolean hasOldSessionSkey() {
-      return fieldSetFlags()[28];
-    }
-
-
-    /**
-      * Clears the value of the 'oldSessionSkey' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearOldSessionSkey() {
-      oldSessionSkey = null;
-      fieldSetFlags()[28] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'partialValidPage' field.
-      * @return The value.
-      */
-    public java.lang.Boolean getPartialValidPage() {
-      return partialValidPage;
-    }
-
-    /**
-      * Sets the value of the 'partialValidPage' field.
-      * @param value The value of 'partialValidPage'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setPartialValidPage(java.lang.Boolean value) {
-      validate(fields()[29], value);
-      this.partialValidPage = value;
-      fieldSetFlags()[29] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'partialValidPage' field has been set.
-      * @return True if the 'partialValidPage' field has been set, false otherwise.
-      */
-    public boolean hasPartialValidPage() {
-      return fieldSetFlags()[29];
-    }
-
-
-    /**
-      * Clears the value of the 'partialValidPage' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearPartialValidPage() {
-      partialValidPage = null;
-      fieldSetFlags()[29] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sessionStartTime' field.
-      * @return The value.
-      */
-    public java.lang.Long getSessionStartTime() {
-      return sessionStartTime;
-    }
-
-    /**
-      * Sets the value of the 'sessionStartTime' field.
-      * @param value The value of 'sessionStartTime'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionStartTime(java.lang.Long value) {
-      validate(fields()[30], value);
-      this.sessionStartTime = value;
-      fieldSetFlags()[30] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sessionStartTime' field has been set.
-      * @return True if the 'sessionStartTime' field has been set, false otherwise.
-      */
-    public boolean hasSessionStartTime() {
-      return fieldSetFlags()[30];
-    }
-
-
-    /**
-      * Clears the value of the 'sessionStartTime' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionStartTime() {
-      sessionStartTime = null;
-      fieldSetFlags()[30] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'sessionEndTime' field.
-      * @return The value.
-      */
-    public java.lang.Long getSessionEndTime() {
-      return sessionEndTime;
-    }
-
-    /**
-      * Sets the value of the 'sessionEndTime' field.
-      * @param value The value of 'sessionEndTime'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionEndTime(java.lang.Long value) {
-      validate(fields()[31], value);
-      this.sessionEndTime = value;
-      fieldSetFlags()[31] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'sessionEndTime' field has been set.
-      * @return True if the 'sessionEndTime' field has been set, false otherwise.
-      */
-    public boolean hasSessionEndTime() {
-      return fieldSetFlags()[31];
-    }
-
-
-    /**
-      * Clears the value of the 'sessionEndTime' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionEndTime() {
-      sessionEndTime = null;
-      fieldSetFlags()[31] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'botFlags' field.
-      * @return The value.
-      */
-    public java.util.List<java.lang.Integer> getBotFlags() {
-      return botFlags;
-    }
-
-    /**
-      * Sets the value of the 'botFlags' field.
-      * @param value The value of 'botFlags'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setBotFlags(java.util.List<java.lang.Integer> value) {
-      validate(fields()[32], value);
-      this.botFlags = value;
-      fieldSetFlags()[32] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'botFlags' field has been set.
-      * @return True if the 'botFlags' field has been set, false otherwise.
-      */
-    public boolean hasBotFlags() {
-      return fieldSetFlags()[32];
-    }
-
-
-    /**
-      * Clears the value of the 'botFlags' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearBotFlags() {
-      botFlags = null;
-      fieldSetFlags()[32] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'icfBinary' field.
-      * @return The value.
-      */
-    public java.lang.Long getIcfBinary() {
-      return icfBinary;
-    }
-
-    /**
-      * Sets the value of the 'icfBinary' field.
-      * @param value The value of 'icfBinary'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setIcfBinary(java.lang.Long value) {
-      validate(fields()[33], value);
-      this.icfBinary = value;
-      fieldSetFlags()[33] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'icfBinary' field has been set.
-      * @return True if the 'icfBinary' field has been set, false otherwise.
-      */
-    public boolean hasIcfBinary() {
-      return fieldSetFlags()[33];
-    }
-
-
-    /**
-      * Clears the value of the 'icfBinary' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearIcfBinary() {
-      icfBinary = null;
-      fieldSetFlags()[33] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'ingestTime' field.
-      * @return The value.
-      */
-    public java.lang.Long getIngestTime() {
-      return ingestTime;
-    }
-
-    /**
-      * Sets the value of the 'ingestTime' field.
-      * @param value The value of 'ingestTime'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setIngestTime(java.lang.Long value) {
-      validate(fields()[34], value);
-      this.ingestTime = value;
-      fieldSetFlags()[34] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'ingestTime' field has been set.
-      * @return True if the 'ingestTime' field has been set, false otherwise.
-      */
-    public boolean hasIngestTime() {
-      return fieldSetFlags()[34];
-    }
-
-
-    /**
-      * Clears the value of the 'ingestTime' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearIngestTime() {
-      ingestTime = null;
-      fieldSetFlags()[34] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'generateTime' field.
-      * @return The value.
-      */
-    public java.lang.Long getGenerateTime() {
-      return generateTime;
-    }
-
-    /**
-      * Sets the value of the 'generateTime' field.
-      * @param value The value of 'generateTime'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setGenerateTime(java.lang.Long value) {
-      validate(fields()[35], value);
-      this.generateTime = value;
-      fieldSetFlags()[35] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'generateTime' field has been set.
-      * @return True if the 'generateTime' field has been set, false otherwise.
-      */
-    public boolean hasGenerateTime() {
-      return fieldSetFlags()[35];
-    }
-
-
-    /**
-      * Clears the value of the 'generateTime' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearGenerateTime() {
-      generateTime = null;
-      fieldSetFlags()[35] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'eventCnt' field.
-      * @return The value.
-      */
-    public java.lang.Long getEventCnt() {
-      return eventCnt;
-    }
-
-    /**
-      * Sets the value of the 'eventCnt' field.
-      * @param value The value of 'eventCnt'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setEventCnt(java.lang.Long value) {
-      validate(fields()[36], value);
-      this.eventCnt = value;
-      fieldSetFlags()[36] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'eventCnt' field has been set.
-      * @return True if the 'eventCnt' field has been set, false otherwise.
-      */
-    public boolean hasEventCnt() {
-      return fieldSetFlags()[36];
-    }
-
-
-    /**
-      * Clears the value of the 'eventCnt' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearEventCnt() {
-      eventCnt = null;
-      fieldSetFlags()[36] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'dataCenter' field.
-      * @return The value.
-      */
-    public java.lang.String getDataCenter() {
-      return dataCenter;
-    }
-
-    /**
-      * Sets the value of the 'dataCenter' field.
-      * @param value The value of 'dataCenter'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setDataCenter(java.lang.String value) {
-      validate(fields()[37], value);
-      this.dataCenter = value;
-      fieldSetFlags()[37] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'dataCenter' field has been set.
-      * @return True if the 'dataCenter' field has been set, false otherwise.
-      */
-    public boolean hasDataCenter() {
-      return fieldSetFlags()[37];
-    }
-
-
-    /**
-      * Clears the value of the 'dataCenter' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearDataCenter() {
-      dataCenter = null;
-      fieldSetFlags()[37] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -3930,9 +3098,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setRdt(java.lang.Integer value) {
-      validate(fields()[38], value);
+      validate(fields()[19], value);
       this.rdt = value;
-      fieldSetFlags()[38] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -3942,7 +3110,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'rdt' field has been set, false otherwise.
       */
     public boolean hasRdt() {
-      return fieldSetFlags()[38];
+      return fieldSetFlags()[19];
     }
 
 
@@ -3953,7 +3121,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearRdt() {
       rdt = null;
-      fieldSetFlags()[38] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -3973,9 +3141,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setRegu(java.lang.Integer value) {
-      validate(fields()[39], value);
+      validate(fields()[20], value);
       this.regu = value;
-      fieldSetFlags()[39] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -3985,7 +3153,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'regu' field has been set, false otherwise.
       */
     public boolean hasRegu() {
-      return fieldSetFlags()[39];
+      return fieldSetFlags()[20];
     }
 
 
@@ -3996,7 +3164,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearRegu() {
       regu = null;
-      fieldSetFlags()[39] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -4016,9 +3184,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setIframe(java.lang.Boolean value) {
-      validate(fields()[40], value);
+      validate(fields()[21], value);
       this.iframe = value;
-      fieldSetFlags()[40] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -4028,7 +3196,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'iframe' field has been set, false otherwise.
       */
     public boolean hasIframe() {
-      return fieldSetFlags()[40];
+      return fieldSetFlags()[21];
     }
 
 
@@ -4039,7 +3207,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearIframe() {
       iframe = null;
-      fieldSetFlags()[40] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -4059,9 +3227,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setRefererHash(java.lang.String value) {
-      validate(fields()[41], value);
+      validate(fields()[22], value);
       this.refererHash = value;
-      fieldSetFlags()[41] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -4071,7 +3239,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'refererHash' field has been set, false otherwise.
       */
     public boolean hasRefererHash() {
-      return fieldSetFlags()[41];
+      return fieldSetFlags()[22];
     }
 
 
@@ -4082,7 +3250,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearRefererHash() {
       refererHash = null;
-      fieldSetFlags()[41] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -4102,9 +3270,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setSqr(java.lang.String value) {
-      validate(fields()[42], value);
+      validate(fields()[23], value);
       this.sqr = value;
-      fieldSetFlags()[42] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -4114,7 +3282,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'sqr' field has been set, false otherwise.
       */
     public boolean hasSqr() {
-      return fieldSetFlags()[42];
+      return fieldSetFlags()[23];
     }
 
 
@@ -4125,7 +3293,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearSqr() {
       sqr = null;
-      fieldSetFlags()[42] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -4145,9 +3313,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setItemId(java.lang.String value) {
-      validate(fields()[43], value);
+      validate(fields()[24], value);
       this.itemId = value;
-      fieldSetFlags()[43] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -4157,7 +3325,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'itemId' field has been set, false otherwise.
       */
     public boolean hasItemId() {
-      return fieldSetFlags()[43];
+      return fieldSetFlags()[24];
     }
 
 
@@ -4168,7 +3336,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearItemId() {
       itemId = null;
-      fieldSetFlags()[43] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -4188,9 +3356,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setFlags(java.lang.String value) {
-      validate(fields()[44], value);
+      validate(fields()[25], value);
       this.flags = value;
-      fieldSetFlags()[44] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -4200,7 +3368,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'flags' field has been set, false otherwise.
       */
     public boolean hasFlags() {
-      return fieldSetFlags()[44];
+      return fieldSetFlags()[25];
     }
 
 
@@ -4211,7 +3379,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearFlags() {
       flags = null;
-      fieldSetFlags()[44] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -4231,9 +3399,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setUrlQueryString(java.lang.String value) {
-      validate(fields()[45], value);
+      validate(fields()[26], value);
       this.urlQueryString = value;
-      fieldSetFlags()[45] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -4243,7 +3411,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'urlQueryString' field has been set, false otherwise.
       */
     public boolean hasUrlQueryString() {
-      return fieldSetFlags()[45];
+      return fieldSetFlags()[26];
     }
 
 
@@ -4254,7 +3422,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearUrlQueryString() {
       urlQueryString = null;
-      fieldSetFlags()[45] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -4274,9 +3442,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setWebServer(java.lang.String value) {
-      validate(fields()[46], value);
+      validate(fields()[27], value);
       this.webServer = value;
-      fieldSetFlags()[46] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -4286,7 +3454,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'webServer' field has been set, false otherwise.
       */
     public boolean hasWebServer() {
-      return fieldSetFlags()[46];
+      return fieldSetFlags()[27];
     }
 
 
@@ -4297,7 +3465,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearWebServer() {
       webServer = null;
-      fieldSetFlags()[46] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -4317,9 +3485,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setCookies(java.lang.String value) {
-      validate(fields()[47], value);
+      validate(fields()[28], value);
       this.cookies = value;
-      fieldSetFlags()[47] = true;
+      fieldSetFlags()[28] = true;
       return this;
     }
 
@@ -4329,7 +3497,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'cookies' field has been set, false otherwise.
       */
     public boolean hasCookies() {
-      return fieldSetFlags()[47];
+      return fieldSetFlags()[28];
     }
 
 
@@ -4340,46 +3508,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearCookies() {
       cookies = null;
-      fieldSetFlags()[47] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'referrer' field.
-      * @return The value.
-      */
-    public java.lang.String getReferrer() {
-      return referrer;
-    }
-
-    /**
-      * Sets the value of the 'referrer' field.
-      * @param value The value of 'referrer'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setReferrer(java.lang.String value) {
-      validate(fields()[48], value);
-      this.referrer = value;
-      fieldSetFlags()[48] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'referrer' field has been set.
-      * @return True if the 'referrer' field has been set, false otherwise.
-      */
-    public boolean hasReferrer() {
-      return fieldSetFlags()[48];
-    }
-
-
-    /**
-      * Clears the value of the 'referrer' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearReferrer() {
-      referrer = null;
-      fieldSetFlags()[48] = false;
+      fieldSetFlags()[28] = false;
       return this;
     }
 
@@ -4399,9 +3528,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setBot(java.lang.Integer value) {
-      validate(fields()[49], value);
+      validate(fields()[29], value);
       this.bot = value;
-      fieldSetFlags()[49] = true;
+      fieldSetFlags()[29] = true;
       return this;
     }
 
@@ -4411,7 +3540,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'bot' field has been set, false otherwise.
       */
     public boolean hasBot() {
-      return fieldSetFlags()[49];
+      return fieldSetFlags()[29];
     }
 
 
@@ -4422,7 +3551,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearBot() {
       bot = null;
-      fieldSetFlags()[49] = false;
+      fieldSetFlags()[29] = false;
       return this;
     }
 
@@ -4440,9 +3569,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setClientIP(java.lang.String value) {
-      validate(fields()[50], value);
+      validate(fields()[30], value);
       this.clientIP = value;
-      fieldSetFlags()[50] = true;
+      fieldSetFlags()[30] = true;
       return this;
     }
 
@@ -4451,7 +3580,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'clientIP' field has been set, false otherwise.
       */
     public boolean hasClientIP() {
-      return fieldSetFlags()[50];
+      return fieldSetFlags()[30];
     }
 
 
@@ -4461,7 +3590,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearClientIP() {
       clientIP = null;
-      fieldSetFlags()[50] = false;
+      fieldSetFlags()[30] = false;
       return this;
     }
 
@@ -4481,9 +3610,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setRemoteIP(java.lang.String value) {
-      validate(fields()[51], value);
+      validate(fields()[31], value);
       this.remoteIP = value;
-      fieldSetFlags()[51] = true;
+      fieldSetFlags()[31] = true;
       return this;
     }
 
@@ -4493,7 +3622,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'remoteIP' field has been set, false otherwise.
       */
     public boolean hasRemoteIP() {
-      return fieldSetFlags()[51];
+      return fieldSetFlags()[31];
     }
 
 
@@ -4504,7 +3633,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearRemoteIP() {
       remoteIP = null;
-      fieldSetFlags()[51] = false;
+      fieldSetFlags()[31] = false;
       return this;
     }
 
@@ -4524,9 +3653,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setAgentInfo(java.lang.String value) {
-      validate(fields()[52], value);
+      validate(fields()[32], value);
       this.agentInfo = value;
-      fieldSetFlags()[52] = true;
+      fieldSetFlags()[32] = true;
       return this;
     }
 
@@ -4536,7 +3665,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'agentInfo' field has been set, false otherwise.
       */
     public boolean hasAgentInfo() {
-      return fieldSetFlags()[52];
+      return fieldSetFlags()[32];
     }
 
 
@@ -4547,46 +3676,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearAgentInfo() {
       agentInfo = null;
-      fieldSetFlags()[52] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'forwardedFor' field.
-      * @return The value.
-      */
-    public java.lang.String getForwardedFor() {
-      return forwardedFor;
-    }
-
-    /**
-      * Sets the value of the 'forwardedFor' field.
-      * @param value The value of 'forwardedFor'.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder setForwardedFor(java.lang.String value) {
-      validate(fields()[53], value);
-      this.forwardedFor = value;
-      fieldSetFlags()[53] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'forwardedFor' field has been set.
-      * @return True if the 'forwardedFor' field has been set, false otherwise.
-      */
-    public boolean hasForwardedFor() {
-      return fieldSetFlags()[53];
-    }
-
-
-    /**
-      * Clears the value of the 'forwardedFor' field.
-      * @return This builder.
-      */
-    public com.ebay.sojourner.common.model.SojEvent.Builder clearForwardedFor() {
-      forwardedFor = null;
-      fieldSetFlags()[53] = false;
+      fieldSetFlags()[32] = false;
       return this;
     }
 
@@ -4606,9 +3696,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setAppId(java.lang.String value) {
-      validate(fields()[54], value);
+      validate(fields()[33], value);
       this.appId = value;
-      fieldSetFlags()[54] = true;
+      fieldSetFlags()[33] = true;
       return this;
     }
 
@@ -4618,7 +3708,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'appId' field has been set, false otherwise.
       */
     public boolean hasAppId() {
-      return fieldSetFlags()[54];
+      return fieldSetFlags()[33];
     }
 
 
@@ -4629,7 +3719,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearAppId() {
       appId = null;
-      fieldSetFlags()[54] = false;
+      fieldSetFlags()[33] = false;
       return this;
     }
 
@@ -4649,9 +3739,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setAppVersion(java.lang.String value) {
-      validate(fields()[55], value);
+      validate(fields()[34], value);
       this.appVersion = value;
-      fieldSetFlags()[55] = true;
+      fieldSetFlags()[34] = true;
       return this;
     }
 
@@ -4661,7 +3751,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'appVersion' field has been set, false otherwise.
       */
     public boolean hasAppVersion() {
-      return fieldSetFlags()[55];
+      return fieldSetFlags()[34];
     }
 
 
@@ -4672,7 +3762,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearAppVersion() {
       appVersion = null;
-      fieldSetFlags()[55] = false;
+      fieldSetFlags()[34] = false;
       return this;
     }
 
@@ -4692,9 +3782,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setOsVersion(java.lang.String value) {
-      validate(fields()[56], value);
+      validate(fields()[35], value);
       this.osVersion = value;
-      fieldSetFlags()[56] = true;
+      fieldSetFlags()[35] = true;
       return this;
     }
 
@@ -4704,7 +3794,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'osVersion' field has been set, false otherwise.
       */
     public boolean hasOsVersion() {
-      return fieldSetFlags()[56];
+      return fieldSetFlags()[35];
     }
 
 
@@ -4715,7 +3805,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearOsVersion() {
       osVersion = null;
-      fieldSetFlags()[56] = false;
+      fieldSetFlags()[35] = false;
       return this;
     }
 
@@ -4735,9 +3825,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setTrafficSource(java.lang.String value) {
-      validate(fields()[57], value);
+      validate(fields()[36], value);
       this.trafficSource = value;
-      fieldSetFlags()[57] = true;
+      fieldSetFlags()[36] = true;
       return this;
     }
 
@@ -4747,7 +3837,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'trafficSource' field has been set, false otherwise.
       */
     public boolean hasTrafficSource() {
-      return fieldSetFlags()[57];
+      return fieldSetFlags()[36];
     }
 
 
@@ -4758,7 +3848,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearTrafficSource() {
       trafficSource = null;
-      fieldSetFlags()[57] = false;
+      fieldSetFlags()[36] = false;
       return this;
     }
 
@@ -4778,9 +3868,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setCobrand(java.lang.String value) {
-      validate(fields()[58], value);
+      validate(fields()[37], value);
       this.cobrand = value;
-      fieldSetFlags()[58] = true;
+      fieldSetFlags()[37] = true;
       return this;
     }
 
@@ -4790,7 +3880,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'cobrand' field has been set, false otherwise.
       */
     public boolean hasCobrand() {
-      return fieldSetFlags()[58];
+      return fieldSetFlags()[37];
     }
 
 
@@ -4801,7 +3891,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearCobrand() {
       cobrand = null;
-      fieldSetFlags()[58] = false;
+      fieldSetFlags()[37] = false;
       return this;
     }
 
@@ -4821,9 +3911,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setDeviceFamily(java.lang.String value) {
-      validate(fields()[59], value);
+      validate(fields()[38], value);
       this.deviceFamily = value;
-      fieldSetFlags()[59] = true;
+      fieldSetFlags()[38] = true;
       return this;
     }
 
@@ -4833,7 +3923,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'deviceFamily' field has been set, false otherwise.
       */
     public boolean hasDeviceFamily() {
-      return fieldSetFlags()[59];
+      return fieldSetFlags()[38];
     }
 
 
@@ -4844,7 +3934,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearDeviceFamily() {
       deviceFamily = null;
-      fieldSetFlags()[59] = false;
+      fieldSetFlags()[38] = false;
       return this;
     }
 
@@ -4864,9 +3954,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setDeviceType(java.lang.String value) {
-      validate(fields()[60], value);
+      validate(fields()[39], value);
       this.deviceType = value;
-      fieldSetFlags()[60] = true;
+      fieldSetFlags()[39] = true;
       return this;
     }
 
@@ -4876,7 +3966,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'deviceType' field has been set, false otherwise.
       */
     public boolean hasDeviceType() {
-      return fieldSetFlags()[60];
+      return fieldSetFlags()[39];
     }
 
 
@@ -4887,7 +3977,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearDeviceType() {
       deviceType = null;
-      fieldSetFlags()[60] = false;
+      fieldSetFlags()[39] = false;
       return this;
     }
 
@@ -4907,9 +3997,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setBrowserVersion(java.lang.String value) {
-      validate(fields()[61], value);
+      validate(fields()[40], value);
       this.browserVersion = value;
-      fieldSetFlags()[61] = true;
+      fieldSetFlags()[40] = true;
       return this;
     }
 
@@ -4919,7 +4009,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'browserVersion' field has been set, false otherwise.
       */
     public boolean hasBrowserVersion() {
-      return fieldSetFlags()[61];
+      return fieldSetFlags()[40];
     }
 
 
@@ -4930,7 +4020,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearBrowserVersion() {
       browserVersion = null;
-      fieldSetFlags()[61] = false;
+      fieldSetFlags()[40] = false;
       return this;
     }
 
@@ -4950,9 +4040,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setBrowserFamily(java.lang.String value) {
-      validate(fields()[62], value);
+      validate(fields()[41], value);
       this.browserFamily = value;
-      fieldSetFlags()[62] = true;
+      fieldSetFlags()[41] = true;
       return this;
     }
 
@@ -4962,7 +4052,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'browserFamily' field has been set, false otherwise.
       */
     public boolean hasBrowserFamily() {
-      return fieldSetFlags()[62];
+      return fieldSetFlags()[41];
     }
 
 
@@ -4973,7 +4063,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearBrowserFamily() {
       browserFamily = null;
-      fieldSetFlags()[62] = false;
+      fieldSetFlags()[41] = false;
       return this;
     }
 
@@ -4993,9 +4083,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setOsFamily(java.lang.String value) {
-      validate(fields()[63], value);
+      validate(fields()[42], value);
       this.osFamily = value;
-      fieldSetFlags()[63] = true;
+      fieldSetFlags()[42] = true;
       return this;
     }
 
@@ -5005,7 +4095,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'osFamily' field has been set, false otherwise.
       */
     public boolean hasOsFamily() {
-      return fieldSetFlags()[63];
+      return fieldSetFlags()[42];
     }
 
 
@@ -5016,7 +4106,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearOsFamily() {
       osFamily = null;
-      fieldSetFlags()[63] = false;
+      fieldSetFlags()[42] = false;
       return this;
     }
 
@@ -5036,9 +4126,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setEnrichedOsVersion(java.lang.String value) {
-      validate(fields()[64], value);
+      validate(fields()[43], value);
       this.enrichedOsVersion = value;
-      fieldSetFlags()[64] = true;
+      fieldSetFlags()[43] = true;
       return this;
     }
 
@@ -5048,7 +4138,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'enrichedOsVersion' field has been set, false otherwise.
       */
     public boolean hasEnrichedOsVersion() {
-      return fieldSetFlags()[64];
+      return fieldSetFlags()[43];
     }
 
 
@@ -5059,7 +4149,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearEnrichedOsVersion() {
       enrichedOsVersion = null;
-      fieldSetFlags()[64] = false;
+      fieldSetFlags()[43] = false;
       return this;
     }
 
@@ -5077,9 +4167,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setApplicationPayload(java.util.Map<java.lang.String,java.lang.String> value) {
-      validate(fields()[65], value);
+      validate(fields()[44], value);
       this.applicationPayload = value;
-      fieldSetFlags()[65] = true;
+      fieldSetFlags()[44] = true;
       return this;
     }
 
@@ -5088,7 +4178,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'applicationPayload' field has been set, false otherwise.
       */
     public boolean hasApplicationPayload() {
-      return fieldSetFlags()[65];
+      return fieldSetFlags()[44];
     }
 
 
@@ -5098,7 +4188,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearApplicationPayload() {
       applicationPayload = null;
-      fieldSetFlags()[65] = false;
+      fieldSetFlags()[44] = false;
       return this;
     }
 
@@ -5118,9 +4208,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setRlogid(java.lang.String value) {
-      validate(fields()[66], value);
+      validate(fields()[45], value);
       this.rlogid = value;
-      fieldSetFlags()[66] = true;
+      fieldSetFlags()[45] = true;
       return this;
     }
 
@@ -5130,7 +4220,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'rlogid' field has been set, false otherwise.
       */
     public boolean hasRlogid() {
-      return fieldSetFlags()[66];
+      return fieldSetFlags()[45];
     }
 
 
@@ -5141,7 +4231,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearRlogid() {
       rlogid = null;
-      fieldSetFlags()[66] = false;
+      fieldSetFlags()[45] = false;
       return this;
     }
 
@@ -5161,9 +4251,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setClientData(java.util.Map<java.lang.String,java.lang.String> value) {
-      validate(fields()[67], value);
+      validate(fields()[46], value);
       this.clientData = value;
-      fieldSetFlags()[67] = true;
+      fieldSetFlags()[46] = true;
       return this;
     }
 
@@ -5173,7 +4263,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'clientData' field has been set, false otherwise.
       */
     public boolean hasClientData() {
-      return fieldSetFlags()[67];
+      return fieldSetFlags()[46];
     }
 
 
@@ -5184,7 +4274,667 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearClientData() {
       clientData = null;
-      fieldSetFlags()[67] = false;
+      fieldSetFlags()[46] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'ingestTime' field.
+      * @return The value.
+      */
+    public java.lang.Long getIngestTime() {
+      return ingestTime;
+    }
+
+    /**
+      * Sets the value of the 'ingestTime' field.
+      * @param value The value of 'ingestTime'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setIngestTime(java.lang.Long value) {
+      validate(fields()[47], value);
+      this.ingestTime = value;
+      fieldSetFlags()[47] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'ingestTime' field has been set.
+      * @return True if the 'ingestTime' field has been set, false otherwise.
+      */
+    public boolean hasIngestTime() {
+      return fieldSetFlags()[47];
+    }
+
+
+    /**
+      * Clears the value of the 'ingestTime' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearIngestTime() {
+      ingestTime = null;
+      fieldSetFlags()[47] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sessionSkey' field.
+      * @return The value.
+      */
+    public java.lang.Long getSessionSkey() {
+      return sessionSkey;
+    }
+
+    /**
+      * Sets the value of the 'sessionSkey' field.
+      * @param value The value of 'sessionSkey'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionSkey(java.lang.Long value) {
+      validate(fields()[48], value);
+      this.sessionSkey = value;
+      fieldSetFlags()[48] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sessionSkey' field has been set.
+      * @return True if the 'sessionSkey' field has been set, false otherwise.
+      */
+    public boolean hasSessionSkey() {
+      return fieldSetFlags()[48];
+    }
+
+
+    /**
+      * Clears the value of the 'sessionSkey' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionSkey() {
+      sessionSkey = null;
+      fieldSetFlags()[48] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sessionStartDt' field.
+      * @return The value.
+      */
+    public java.lang.Long getSessionStartDt() {
+      return sessionStartDt;
+    }
+
+    /**
+      * Sets the value of the 'sessionStartDt' field.
+      * @param value The value of 'sessionStartDt'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setSessionStartDt(long value) {
+      validate(fields()[49], value);
+      this.sessionStartDt = value;
+      fieldSetFlags()[49] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sessionStartDt' field has been set.
+      * @return True if the 'sessionStartDt' field has been set, false otherwise.
+      */
+    public boolean hasSessionStartDt() {
+      return fieldSetFlags()[49];
+    }
+
+
+    /**
+      * Clears the value of the 'sessionStartDt' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearSessionStartDt() {
+      fieldSetFlags()[49] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sojDataDt' field.
+      * @return The value.
+      */
+    public java.lang.Long getSojDataDt() {
+      return sojDataDt;
+    }
+
+    /**
+      * Sets the value of the 'sojDataDt' field.
+      * @param value The value of 'sojDataDt'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setSojDataDt(long value) {
+      validate(fields()[50], value);
+      this.sojDataDt = value;
+      fieldSetFlags()[50] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sojDataDt' field has been set.
+      * @return True if the 'sojDataDt' field has been set, false otherwise.
+      */
+    public boolean hasSojDataDt() {
+      return fieldSetFlags()[50];
+    }
+
+
+    /**
+      * Clears the value of the 'sojDataDt' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearSojDataDt() {
+      fieldSetFlags()[50] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'version' field.
+      * @return The value.
+      */
+    public java.lang.Integer getVersion() {
+      return version;
+    }
+
+    /**
+      * Sets the value of the 'version' field.
+      * @param value The value of 'version'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setVersion(java.lang.Integer value) {
+      validate(fields()[51], value);
+      this.version = value;
+      fieldSetFlags()[51] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'version' field has been set.
+      * @return True if the 'version' field has been set, false otherwise.
+      */
+    public boolean hasVersion() {
+      return fieldSetFlags()[51];
+    }
+
+
+    /**
+      * Clears the value of the 'version' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearVersion() {
+      version = null;
+      fieldSetFlags()[51] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'staticPageType' field.
+      * @return The value.
+      */
+    public java.lang.Integer getStaticPageType() {
+      return staticPageType;
+    }
+
+    /**
+      * Sets the value of the 'staticPageType' field.
+      * @param value The value of 'staticPageType'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setStaticPageType(java.lang.Integer value) {
+      validate(fields()[52], value);
+      this.staticPageType = value;
+      fieldSetFlags()[52] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'staticPageType' field has been set.
+      * @return True if the 'staticPageType' field has been set, false otherwise.
+      */
+    public boolean hasStaticPageType() {
+      return fieldSetFlags()[52];
+    }
+
+
+    /**
+      * Clears the value of the 'staticPageType' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearStaticPageType() {
+      staticPageType = null;
+      fieldSetFlags()[52] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'reservedForFuture' field.
+      * @return The value.
+      */
+    public java.lang.Integer getReservedForFuture() {
+      return reservedForFuture;
+    }
+
+    /**
+      * Sets the value of the 'reservedForFuture' field.
+      * @param value The value of 'reservedForFuture'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setReservedForFuture(java.lang.Integer value) {
+      validate(fields()[53], value);
+      this.reservedForFuture = value;
+      fieldSetFlags()[53] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'reservedForFuture' field has been set.
+      * @return True if the 'reservedForFuture' field has been set, false otherwise.
+      */
+    public boolean hasReservedForFuture() {
+      return fieldSetFlags()[53];
+    }
+
+
+    /**
+      * Clears the value of the 'reservedForFuture' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearReservedForFuture() {
+      reservedForFuture = null;
+      fieldSetFlags()[53] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'eventAttr' field.
+      * @return The value.
+      */
+    public java.lang.String getEventAttr() {
+      return eventAttr;
+    }
+
+    /**
+      * Sets the value of the 'eventAttr' field.
+      * @param value The value of 'eventAttr'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setEventAttr(java.lang.String value) {
+      validate(fields()[54], value);
+      this.eventAttr = value;
+      fieldSetFlags()[54] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'eventAttr' field has been set.
+      * @return True if the 'eventAttr' field has been set, false otherwise.
+      */
+    public boolean hasEventAttr() {
+      return fieldSetFlags()[54];
+    }
+
+
+    /**
+      * Clears the value of the 'eventAttr' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearEventAttr() {
+      eventAttr = null;
+      fieldSetFlags()[54] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'currentImprId' field.
+      * @return The value.
+      */
+    public java.lang.Long getCurrentImprId() {
+      return currentImprId;
+    }
+
+    /**
+      * Sets the value of the 'currentImprId' field.
+      * @param value The value of 'currentImprId'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setCurrentImprId(java.lang.Long value) {
+      validate(fields()[55], value);
+      this.currentImprId = value;
+      fieldSetFlags()[55] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'currentImprId' field has been set.
+      * @return True if the 'currentImprId' field has been set, false otherwise.
+      */
+    public boolean hasCurrentImprId() {
+      return fieldSetFlags()[55];
+    }
+
+
+    /**
+      * Clears the value of the 'currentImprId' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearCurrentImprId() {
+      currentImprId = null;
+      fieldSetFlags()[55] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sourceImprId' field.
+      * @return The value.
+      */
+    public java.lang.Long getSourceImprId() {
+      return sourceImprId;
+    }
+
+    /**
+      * Sets the value of the 'sourceImprId' field.
+      * @param value The value of 'sourceImprId'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setSourceImprId(java.lang.Long value) {
+      validate(fields()[56], value);
+      this.sourceImprId = value;
+      fieldSetFlags()[56] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sourceImprId' field has been set.
+      * @return True if the 'sourceImprId' field has been set, false otherwise.
+      */
+    public boolean hasSourceImprId() {
+      return fieldSetFlags()[56];
+    }
+
+
+    /**
+      * Clears the value of the 'sourceImprId' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearSourceImprId() {
+      sourceImprId = null;
+      fieldSetFlags()[56] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'oldSessionSkey' field.
+      * @return The value.
+      */
+    public java.lang.Long getOldSessionSkey() {
+      return oldSessionSkey;
+    }
+
+    /**
+      * Sets the value of the 'oldSessionSkey' field.
+      * @param value The value of 'oldSessionSkey'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setOldSessionSkey(java.lang.Long value) {
+      validate(fields()[57], value);
+      this.oldSessionSkey = value;
+      fieldSetFlags()[57] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'oldSessionSkey' field has been set.
+      * @return True if the 'oldSessionSkey' field has been set, false otherwise.
+      */
+    public boolean hasOldSessionSkey() {
+      return fieldSetFlags()[57];
+    }
+
+
+    /**
+      * Clears the value of the 'oldSessionSkey' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearOldSessionSkey() {
+      oldSessionSkey = null;
+      fieldSetFlags()[57] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'partialValidPage' field.
+      * @return The value.
+      */
+    public java.lang.Boolean getPartialValidPage() {
+      return partialValidPage;
+    }
+
+    /**
+      * Sets the value of the 'partialValidPage' field.
+      * @param value The value of 'partialValidPage'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setPartialValidPage(java.lang.Boolean value) {
+      validate(fields()[58], value);
+      this.partialValidPage = value;
+      fieldSetFlags()[58] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'partialValidPage' field has been set.
+      * @return True if the 'partialValidPage' field has been set, false otherwise.
+      */
+    public boolean hasPartialValidPage() {
+      return fieldSetFlags()[58];
+    }
+
+
+    /**
+      * Clears the value of the 'partialValidPage' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearPartialValidPage() {
+      partialValidPage = null;
+      fieldSetFlags()[58] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'botFlags' field.
+      * @return The value.
+      */
+    public java.util.List<java.lang.Integer> getBotFlags() {
+      return botFlags;
+    }
+
+    /**
+      * Sets the value of the 'botFlags' field.
+      * @param value The value of 'botFlags'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setBotFlags(java.util.List<java.lang.Integer> value) {
+      validate(fields()[59], value);
+      this.botFlags = value;
+      fieldSetFlags()[59] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'botFlags' field has been set.
+      * @return True if the 'botFlags' field has been set, false otherwise.
+      */
+    public boolean hasBotFlags() {
+      return fieldSetFlags()[59];
+    }
+
+
+    /**
+      * Clears the value of the 'botFlags' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearBotFlags() {
+      botFlags = null;
+      fieldSetFlags()[59] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'icfBinary' field.
+      * @return The value.
+      */
+    public java.lang.Long getIcfBinary() {
+      return icfBinary;
+    }
+
+    /**
+      * Sets the value of the 'icfBinary' field.
+      * @param value The value of 'icfBinary'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setIcfBinary(long value) {
+      validate(fields()[60], value);
+      this.icfBinary = value;
+      fieldSetFlags()[60] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'icfBinary' field has been set.
+      * @return True if the 'icfBinary' field has been set, false otherwise.
+      */
+    public boolean hasIcfBinary() {
+      return fieldSetFlags()[60];
+    }
+
+
+    /**
+      * Clears the value of the 'icfBinary' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearIcfBinary() {
+      fieldSetFlags()[60] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'eventCnt' field.
+      * @return The value.
+      */
+    public java.lang.Long getEventCnt() {
+      return eventCnt;
+    }
+
+    /**
+      * Sets the value of the 'eventCnt' field.
+      * @param value The value of 'eventCnt'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setEventCnt(java.lang.Long value) {
+      validate(fields()[61], value);
+      this.eventCnt = value;
+      fieldSetFlags()[61] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'eventCnt' field has been set.
+      * @return True if the 'eventCnt' field has been set, false otherwise.
+      */
+    public boolean hasEventCnt() {
+      return fieldSetFlags()[61];
+    }
+
+
+    /**
+      * Clears the value of the 'eventCnt' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearEventCnt() {
+      eventCnt = null;
+      fieldSetFlags()[61] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'referrer' field.
+      * @return The value.
+      */
+    public java.lang.String getReferrer() {
+      return referrer;
+    }
+
+    /**
+      * Sets the value of the 'referrer' field.
+      * @param value The value of 'referrer'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setReferrer(java.lang.String value) {
+      validate(fields()[62], value);
+      this.referrer = value;
+      fieldSetFlags()[62] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'referrer' field has been set.
+      * @return True if the 'referrer' field has been set, false otherwise.
+      */
+    public boolean hasReferrer() {
+      return fieldSetFlags()[62];
+    }
+
+
+    /**
+      * Clears the value of the 'referrer' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearReferrer() {
+      referrer = null;
+      fieldSetFlags()[62] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'forwardedFor' field.
+      * @return The value.
+      */
+    public java.lang.String getForwardedFor() {
+      return forwardedFor;
+    }
+
+    /**
+      * Sets the value of the 'forwardedFor' field.
+      * @param value The value of 'forwardedFor'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setForwardedFor(java.lang.String value) {
+      validate(fields()[63], value);
+      this.forwardedFor = value;
+      fieldSetFlags()[63] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'forwardedFor' field has been set.
+      * @return True if the 'forwardedFor' field has been set, false otherwise.
+      */
+    public boolean hasForwardedFor() {
+      return fieldSetFlags()[63];
+    }
+
+
+    /**
+      * Clears the value of the 'forwardedFor' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearForwardedFor() {
+      forwardedFor = null;
+      fieldSetFlags()[63] = false;
       return this;
     }
 
@@ -5202,9 +4952,9 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return This builder.
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder setRv(java.lang.Boolean value) {
-      validate(fields()[68], value);
+      validate(fields()[64], value);
       this.rv = value;
-      fieldSetFlags()[68] = true;
+      fieldSetFlags()[64] = true;
       return this;
     }
 
@@ -5213,7 +4963,7 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       * @return True if the 'rv' field has been set, false otherwise.
       */
     public boolean hasRv() {
-      return fieldSetFlags()[68];
+      return fieldSetFlags()[64];
     }
 
 
@@ -5223,7 +4973,46 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
       */
     public com.ebay.sojourner.common.model.SojEvent.Builder clearRv() {
       rv = null;
-      fieldSetFlags()[68] = false;
+      fieldSetFlags()[64] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'sojHeader' field.
+      * @return The value.
+      */
+    public java.util.Map<java.lang.String,java.nio.ByteBuffer> getSojHeader() {
+      return sojHeader;
+    }
+
+    /**
+      * Sets the value of the 'sojHeader' field.
+      * @param value The value of 'sojHeader'.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder setSojHeader(java.util.Map<java.lang.String,java.nio.ByteBuffer> value) {
+      validate(fields()[65], value);
+      this.sojHeader = value;
+      fieldSetFlags()[65] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'sojHeader' field has been set.
+      * @return True if the 'sojHeader' field has been set, false otherwise.
+      */
+    public boolean hasSojHeader() {
+      return fieldSetFlags()[65];
+    }
+
+
+    /**
+      * Clears the value of the 'sojHeader' field.
+      * @return This builder.
+      */
+    public com.ebay.sojourner.common.model.SojEvent.Builder clearSojHeader() {
+      sojHeader = null;
+      fieldSetFlags()[65] = false;
       return this;
     }
 
@@ -5238,73 +5027,70 @@ public class SojEvent extends org.apache.avro.specific.SpecificRecordBase implem
           record.rheosHeader = fieldSetFlags()[0] ? this.rheosHeader : (com.ebay.sojourner.common.model.RheosHeader) defaultValue(fields()[0]);
         }
         record.guid = fieldSetFlags()[1] ? this.guid : (java.lang.String) defaultValue(fields()[1]);
-        record.sessionId = fieldSetFlags()[2] ? this.sessionId : (java.lang.String) defaultValue(fields()[2]);
-        record.sessionSkey = fieldSetFlags()[3] ? this.sessionSkey : (java.lang.Long) defaultValue(fields()[3]);
-        record.seqNum = fieldSetFlags()[4] ? this.seqNum : (java.lang.String) defaultValue(fields()[4]);
-        record.sessionStartDt = fieldSetFlags()[5] ? this.sessionStartDt : (java.lang.Long) defaultValue(fields()[5]);
-        record.sojDataDt = fieldSetFlags()[6] ? this.sojDataDt : (java.lang.Long) defaultValue(fields()[6]);
-        record.version = fieldSetFlags()[7] ? this.version : (java.lang.Integer) defaultValue(fields()[7]);
-        record.staticPageType = fieldSetFlags()[8] ? this.staticPageType : (java.lang.Integer) defaultValue(fields()[8]);
-        record.reservedForFuture = fieldSetFlags()[9] ? this.reservedForFuture : (java.lang.Integer) defaultValue(fields()[9]);
-        record.eventAttr = fieldSetFlags()[10] ? this.eventAttr : (java.lang.String) defaultValue(fields()[10]);
-        record.currentImprId = fieldSetFlags()[11] ? this.currentImprId : (java.lang.Long) defaultValue(fields()[11]);
-        record.sourceImprId = fieldSetFlags()[12] ? this.sourceImprId : (java.lang.Long) defaultValue(fields()[12]);
-        record.eventTimestamp = fieldSetFlags()[13] ? this.eventTimestamp : (java.lang.Long) defaultValue(fields()[13]);
-        record.eventCaptureTime = fieldSetFlags()[14] ? this.eventCaptureTime : (java.lang.Long) defaultValue(fields()[14]);
-        record.requestCorrelationId = fieldSetFlags()[15] ? this.requestCorrelationId : (java.lang.String) defaultValue(fields()[15]);
-        record.cguid = fieldSetFlags()[16] ? this.cguid : (java.lang.String) defaultValue(fields()[16]);
-        record.sid = fieldSetFlags()[17] ? this.sid : (java.lang.String) defaultValue(fields()[17]);
-        record.pageId = fieldSetFlags()[18] ? this.pageId : (java.lang.Integer) defaultValue(fields()[18]);
-        record.pageName = fieldSetFlags()[19] ? this.pageName : (java.lang.String) defaultValue(fields()[19]);
-        record.pageFamily = fieldSetFlags()[20] ? this.pageFamily : (java.lang.String) defaultValue(fields()[20]);
-        record.eventFamily = fieldSetFlags()[21] ? this.eventFamily : (java.lang.String) defaultValue(fields()[21]);
-        record.eventAction = fieldSetFlags()[22] ? this.eventAction : (java.lang.String) defaultValue(fields()[22]);
-        record.userId = fieldSetFlags()[23] ? this.userId : (java.lang.String) defaultValue(fields()[23]);
-        record.clickId = fieldSetFlags()[24] ? this.clickId : (java.lang.String) defaultValue(fields()[24]);
-        record.siteId = fieldSetFlags()[25] ? this.siteId : (java.lang.String) defaultValue(fields()[25]);
-        record.ciid = fieldSetFlags()[26] ? this.ciid : (java.lang.String) defaultValue(fields()[26]);
-        record.siid = fieldSetFlags()[27] ? this.siid : (java.lang.String) defaultValue(fields()[27]);
-        record.oldSessionSkey = fieldSetFlags()[28] ? this.oldSessionSkey : (java.lang.Long) defaultValue(fields()[28]);
-        record.partialValidPage = fieldSetFlags()[29] ? this.partialValidPage : (java.lang.Boolean) defaultValue(fields()[29]);
-        record.sessionStartTime = fieldSetFlags()[30] ? this.sessionStartTime : (java.lang.Long) defaultValue(fields()[30]);
-        record.sessionEndTime = fieldSetFlags()[31] ? this.sessionEndTime : (java.lang.Long) defaultValue(fields()[31]);
-        record.botFlags = fieldSetFlags()[32] ? this.botFlags : (java.util.List<java.lang.Integer>) defaultValue(fields()[32]);
-        record.icfBinary = fieldSetFlags()[33] ? this.icfBinary : (java.lang.Long) defaultValue(fields()[33]);
-        record.ingestTime = fieldSetFlags()[34] ? this.ingestTime : (java.lang.Long) defaultValue(fields()[34]);
-        record.generateTime = fieldSetFlags()[35] ? this.generateTime : (java.lang.Long) defaultValue(fields()[35]);
-        record.eventCnt = fieldSetFlags()[36] ? this.eventCnt : (java.lang.Long) defaultValue(fields()[36]);
-        record.dataCenter = fieldSetFlags()[37] ? this.dataCenter : (java.lang.String) defaultValue(fields()[37]);
-        record.rdt = fieldSetFlags()[38] ? this.rdt : (java.lang.Integer) defaultValue(fields()[38]);
-        record.regu = fieldSetFlags()[39] ? this.regu : (java.lang.Integer) defaultValue(fields()[39]);
-        record.iframe = fieldSetFlags()[40] ? this.iframe : (java.lang.Boolean) defaultValue(fields()[40]);
-        record.refererHash = fieldSetFlags()[41] ? this.refererHash : (java.lang.String) defaultValue(fields()[41]);
-        record.sqr = fieldSetFlags()[42] ? this.sqr : (java.lang.String) defaultValue(fields()[42]);
-        record.itemId = fieldSetFlags()[43] ? this.itemId : (java.lang.String) defaultValue(fields()[43]);
-        record.flags = fieldSetFlags()[44] ? this.flags : (java.lang.String) defaultValue(fields()[44]);
-        record.urlQueryString = fieldSetFlags()[45] ? this.urlQueryString : (java.lang.String) defaultValue(fields()[45]);
-        record.webServer = fieldSetFlags()[46] ? this.webServer : (java.lang.String) defaultValue(fields()[46]);
-        record.cookies = fieldSetFlags()[47] ? this.cookies : (java.lang.String) defaultValue(fields()[47]);
-        record.referrer = fieldSetFlags()[48] ? this.referrer : (java.lang.String) defaultValue(fields()[48]);
-        record.bot = fieldSetFlags()[49] ? this.bot : (java.lang.Integer) defaultValue(fields()[49]);
-        record.clientIP = fieldSetFlags()[50] ? this.clientIP : (java.lang.String) defaultValue(fields()[50]);
-        record.remoteIP = fieldSetFlags()[51] ? this.remoteIP : (java.lang.String) defaultValue(fields()[51]);
-        record.agentInfo = fieldSetFlags()[52] ? this.agentInfo : (java.lang.String) defaultValue(fields()[52]);
-        record.forwardedFor = fieldSetFlags()[53] ? this.forwardedFor : (java.lang.String) defaultValue(fields()[53]);
-        record.appId = fieldSetFlags()[54] ? this.appId : (java.lang.String) defaultValue(fields()[54]);
-        record.appVersion = fieldSetFlags()[55] ? this.appVersion : (java.lang.String) defaultValue(fields()[55]);
-        record.osVersion = fieldSetFlags()[56] ? this.osVersion : (java.lang.String) defaultValue(fields()[56]);
-        record.trafficSource = fieldSetFlags()[57] ? this.trafficSource : (java.lang.String) defaultValue(fields()[57]);
-        record.cobrand = fieldSetFlags()[58] ? this.cobrand : (java.lang.String) defaultValue(fields()[58]);
-        record.deviceFamily = fieldSetFlags()[59] ? this.deviceFamily : (java.lang.String) defaultValue(fields()[59]);
-        record.deviceType = fieldSetFlags()[60] ? this.deviceType : (java.lang.String) defaultValue(fields()[60]);
-        record.browserVersion = fieldSetFlags()[61] ? this.browserVersion : (java.lang.String) defaultValue(fields()[61]);
-        record.browserFamily = fieldSetFlags()[62] ? this.browserFamily : (java.lang.String) defaultValue(fields()[62]);
-        record.osFamily = fieldSetFlags()[63] ? this.osFamily : (java.lang.String) defaultValue(fields()[63]);
-        record.enrichedOsVersion = fieldSetFlags()[64] ? this.enrichedOsVersion : (java.lang.String) defaultValue(fields()[64]);
-        record.applicationPayload = fieldSetFlags()[65] ? this.applicationPayload : (java.util.Map<java.lang.String,java.lang.String>) defaultValue(fields()[65]);
-        record.rlogid = fieldSetFlags()[66] ? this.rlogid : (java.lang.String) defaultValue(fields()[66]);
-        record.clientData = fieldSetFlags()[67] ? this.clientData : (java.util.Map<java.lang.String,java.lang.String>) defaultValue(fields()[67]);
-        record.rv = fieldSetFlags()[68] ? this.rv : (java.lang.Boolean) defaultValue(fields()[68]);
+        record.eventTimestamp = fieldSetFlags()[2] ? this.eventTimestamp : (java.lang.Long) defaultValue(fields()[2]);
+        record.eventCaptureTime = fieldSetFlags()[3] ? this.eventCaptureTime : (java.lang.Long) defaultValue(fields()[3]);
+        record.requestCorrelationId = fieldSetFlags()[4] ? this.requestCorrelationId : (java.lang.String) defaultValue(fields()[4]);
+        record.cguid = fieldSetFlags()[5] ? this.cguid : (java.lang.String) defaultValue(fields()[5]);
+        record.sid = fieldSetFlags()[6] ? this.sid : (java.lang.String) defaultValue(fields()[6]);
+        record.pageId = fieldSetFlags()[7] ? this.pageId : (java.lang.Integer) defaultValue(fields()[7]);
+        record.pageName = fieldSetFlags()[8] ? this.pageName : (java.lang.String) defaultValue(fields()[8]);
+        record.pageFamily = fieldSetFlags()[9] ? this.pageFamily : (java.lang.String) defaultValue(fields()[9]);
+        record.eventFamily = fieldSetFlags()[10] ? this.eventFamily : (java.lang.String) defaultValue(fields()[10]);
+        record.eventAction = fieldSetFlags()[11] ? this.eventAction : (java.lang.String) defaultValue(fields()[11]);
+        record.userId = fieldSetFlags()[12] ? this.userId : (java.lang.String) defaultValue(fields()[12]);
+        record.clickId = fieldSetFlags()[13] ? this.clickId : (java.lang.String) defaultValue(fields()[13]);
+        record.siteId = fieldSetFlags()[14] ? this.siteId : (java.lang.String) defaultValue(fields()[14]);
+        record.sessionId = fieldSetFlags()[15] ? this.sessionId : (java.lang.String) defaultValue(fields()[15]);
+        record.seqNum = fieldSetFlags()[16] ? this.seqNum : (java.lang.String) defaultValue(fields()[16]);
+        record.ciid = fieldSetFlags()[17] ? this.ciid : (java.lang.String) defaultValue(fields()[17]);
+        record.siid = fieldSetFlags()[18] ? this.siid : (java.lang.String) defaultValue(fields()[18]);
+        record.rdt = fieldSetFlags()[19] ? this.rdt : (java.lang.Integer) defaultValue(fields()[19]);
+        record.regu = fieldSetFlags()[20] ? this.regu : (java.lang.Integer) defaultValue(fields()[20]);
+        record.iframe = fieldSetFlags()[21] ? this.iframe : (java.lang.Boolean) defaultValue(fields()[21]);
+        record.refererHash = fieldSetFlags()[22] ? this.refererHash : (java.lang.String) defaultValue(fields()[22]);
+        record.sqr = fieldSetFlags()[23] ? this.sqr : (java.lang.String) defaultValue(fields()[23]);
+        record.itemId = fieldSetFlags()[24] ? this.itemId : (java.lang.String) defaultValue(fields()[24]);
+        record.flags = fieldSetFlags()[25] ? this.flags : (java.lang.String) defaultValue(fields()[25]);
+        record.urlQueryString = fieldSetFlags()[26] ? this.urlQueryString : (java.lang.String) defaultValue(fields()[26]);
+        record.webServer = fieldSetFlags()[27] ? this.webServer : (java.lang.String) defaultValue(fields()[27]);
+        record.cookies = fieldSetFlags()[28] ? this.cookies : (java.lang.String) defaultValue(fields()[28]);
+        record.bot = fieldSetFlags()[29] ? this.bot : (java.lang.Integer) defaultValue(fields()[29]);
+        record.clientIP = fieldSetFlags()[30] ? this.clientIP : (java.lang.String) defaultValue(fields()[30]);
+        record.remoteIP = fieldSetFlags()[31] ? this.remoteIP : (java.lang.String) defaultValue(fields()[31]);
+        record.agentInfo = fieldSetFlags()[32] ? this.agentInfo : (java.lang.String) defaultValue(fields()[32]);
+        record.appId = fieldSetFlags()[33] ? this.appId : (java.lang.String) defaultValue(fields()[33]);
+        record.appVersion = fieldSetFlags()[34] ? this.appVersion : (java.lang.String) defaultValue(fields()[34]);
+        record.osVersion = fieldSetFlags()[35] ? this.osVersion : (java.lang.String) defaultValue(fields()[35]);
+        record.trafficSource = fieldSetFlags()[36] ? this.trafficSource : (java.lang.String) defaultValue(fields()[36]);
+        record.cobrand = fieldSetFlags()[37] ? this.cobrand : (java.lang.String) defaultValue(fields()[37]);
+        record.deviceFamily = fieldSetFlags()[38] ? this.deviceFamily : (java.lang.String) defaultValue(fields()[38]);
+        record.deviceType = fieldSetFlags()[39] ? this.deviceType : (java.lang.String) defaultValue(fields()[39]);
+        record.browserVersion = fieldSetFlags()[40] ? this.browserVersion : (java.lang.String) defaultValue(fields()[40]);
+        record.browserFamily = fieldSetFlags()[41] ? this.browserFamily : (java.lang.String) defaultValue(fields()[41]);
+        record.osFamily = fieldSetFlags()[42] ? this.osFamily : (java.lang.String) defaultValue(fields()[42]);
+        record.enrichedOsVersion = fieldSetFlags()[43] ? this.enrichedOsVersion : (java.lang.String) defaultValue(fields()[43]);
+        record.applicationPayload = fieldSetFlags()[44] ? this.applicationPayload : (java.util.Map<java.lang.String,java.lang.String>) defaultValue(fields()[44]);
+        record.rlogid = fieldSetFlags()[45] ? this.rlogid : (java.lang.String) defaultValue(fields()[45]);
+        record.clientData = fieldSetFlags()[46] ? this.clientData : (java.util.Map<java.lang.String,java.lang.String>) defaultValue(fields()[46]);
+        record.ingestTime = fieldSetFlags()[47] ? this.ingestTime : (java.lang.Long) defaultValue(fields()[47]);
+        record.sessionSkey = fieldSetFlags()[48] ? this.sessionSkey : (java.lang.Long) defaultValue(fields()[48]);
+        record.sessionStartDt = fieldSetFlags()[49] ? this.sessionStartDt : (java.lang.Long) defaultValue(fields()[49]);
+        record.sojDataDt = fieldSetFlags()[50] ? this.sojDataDt : (java.lang.Long) defaultValue(fields()[50]);
+        record.version = fieldSetFlags()[51] ? this.version : (java.lang.Integer) defaultValue(fields()[51]);
+        record.staticPageType = fieldSetFlags()[52] ? this.staticPageType : (java.lang.Integer) defaultValue(fields()[52]);
+        record.reservedForFuture = fieldSetFlags()[53] ? this.reservedForFuture : (java.lang.Integer) defaultValue(fields()[53]);
+        record.eventAttr = fieldSetFlags()[54] ? this.eventAttr : (java.lang.String) defaultValue(fields()[54]);
+        record.currentImprId = fieldSetFlags()[55] ? this.currentImprId : (java.lang.Long) defaultValue(fields()[55]);
+        record.sourceImprId = fieldSetFlags()[56] ? this.sourceImprId : (java.lang.Long) defaultValue(fields()[56]);
+        record.oldSessionSkey = fieldSetFlags()[57] ? this.oldSessionSkey : (java.lang.Long) defaultValue(fields()[57]);
+        record.partialValidPage = fieldSetFlags()[58] ? this.partialValidPage : (java.lang.Boolean) defaultValue(fields()[58]);
+        record.botFlags = fieldSetFlags()[59] ? this.botFlags : (java.util.List<java.lang.Integer>) defaultValue(fields()[59]);
+        record.icfBinary = fieldSetFlags()[60] ? this.icfBinary : (java.lang.Long) defaultValue(fields()[60]);
+        record.eventCnt = fieldSetFlags()[61] ? this.eventCnt : (java.lang.Long) defaultValue(fields()[61]);
+        record.referrer = fieldSetFlags()[62] ? this.referrer : (java.lang.String) defaultValue(fields()[62]);
+        record.forwardedFor = fieldSetFlags()[63] ? this.forwardedFor : (java.lang.String) defaultValue(fields()[63]);
+        record.rv = fieldSetFlags()[64] ? this.rv : (java.lang.Boolean) defaultValue(fields()[64]);
+        record.sojHeader = fieldSetFlags()[65] ? this.sojHeader : (java.util.Map<java.lang.String,java.nio.ByteBuffer>) defaultValue(fields()[65]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

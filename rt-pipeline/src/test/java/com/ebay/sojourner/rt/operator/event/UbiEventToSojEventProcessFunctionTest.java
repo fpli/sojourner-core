@@ -25,8 +25,11 @@ class UbiEventToSojEventProcessFunctionTest {
     // wrap user defined function into a the corresponding operator
     OneInputStreamOperatorTestHarness<UbiEvent, SojEvent> harness = ProcessFunctionTestHarnesses
         .forProcessFunction(processFunction);
-
-    harness.processElement(new UbiEvent(), 10);
+    UbiEvent ubiEvent = new UbiEvent();
+    ubiEvent.setEventTimestamp(1000000L);
+    ubiEvent.setSessionStartDt(1000000L);
+    ubiEvent.setSojDataDt(100000L);
+    harness.processElement(ubiEvent, 10);
     List<SojEvent> sojEvents = harness.extractOutputValues();
     assertThat(sojEvents.size()).isEqualTo(1);
   }

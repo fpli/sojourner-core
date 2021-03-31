@@ -45,96 +45,11 @@
     },
     {
       "name": "guid",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "sessionId",
-      "type": [
-        "null",
-        "string"
-      ],
-      "doc": "dataClassification=Internal|isEncrypted=false|description=map from tag snid"
-    },
-    {
-      "name": "sessionSkey",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "seqNum",
-      "type": [
-        "null",
-        "string"
-      ],
-      "doc": "dataClassification=Internal|isEncrypted=false|description=map from tag snsq"
-    },
-    {
-      "name": "sessionStartDt",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "sojDataDt",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "version",
-      "type": [
-        "null",
-        "int"
-      ]
-    },
-    {
-      "name": "staticPageType",
-      "type": [
-        "null",
-        "int"
-      ]
-    },
-    {
-      "name": "reservedForFuture",
-      "type": [
-        "null",
-        "int"
-      ]
-    },
-    {
-      "name": "eventAttr",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "currentImprId",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "sourceImprId",
-      "type": [
-        "null",
-        "long"
-      ]
+      "type": "string"
     },
     {
       "name": "eventTimestamp",
-      "type": [
-        "null",
-        "long"
-      ],
+      "type": "long",
       "doc": "dataClassification=Internal|isEncrypted=false|description=map from timestamp, publish time"
     },
     {
@@ -233,6 +148,22 @@
       "doc": "dataClassification=Internal|isEncrypted=false|description=Site ID, map from tag t"
     },
     {
+      "name": "sessionId",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "dataClassification=Internal|isEncrypted=false|description=map from tag snid"
+    },
+    {
+      "name": "seqNum",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "dataClassification=Internal|isEncrypted=false|description=map from tag snsq"
+    },
+    {
       "name": "ciid",
       "type": [
         "null",
@@ -241,80 +172,6 @@
     },
     {
       "name": "siid",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
-      "name": "oldSessionSkey",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "partialValidPage",
-      "type": [
-        "null",
-        "boolean"
-      ]
-    },
-    {
-      "name": "sessionStartTime",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "sessionEndTime",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "botFlags",
-      "type": [
-        "null",
-        {
-          "type": "array",
-          "items": "int"
-        }
-      ],
-      "default": null
-    },
-    {
-      "name": "icfBinary",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "ingestTime",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "generateTime",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "eventCnt",
-      "type": [
-        "null",
-        "long"
-      ]
-    },
-    {
-      "name": "dataCenter",
       "type": [
         "null",
         "string"
@@ -401,13 +258,6 @@
       "doc": "dataClassification=Internal|isEncrypted=false|description=map from tag ck/C"
     },
     {
-      "name": "referrer",
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    {
       "name": "bot",
       "type": [
         "null",
@@ -437,13 +287,6 @@
         "string"
       ],
       "doc": "dataClassification=Internal|isEncrypted=false|description=map from tag Agent"
-    },
-    {
-      "name": "forwardedFor",
-      "type": [
-        "null",
-        "string"
-      ]
     },
     {
       "name": "appId",
@@ -559,11 +402,136 @@
       "doc": "Includes ForwardFor, ContentLength, Script, Server, Encoding, TMachine, TStamp, TName, TStatus, TDuration, TPayload"
     },
     {
+      "name": "ingestTime",
+      "type": [
+        "null",
+        "long"
+      ]
+    },
+    {
+      "name": "sessionSkey",
+      "type": [
+        "null",
+        "long"
+      ]
+    },
+    {
+      "name": "sessionStartDt",
+      "type": "long"
+    },
+    {
+      "name": "sojDataDt",
+      "type": "long"
+    },
+    {
+      "name": "version",
+      "type": [
+        "null",
+        "int"
+      ]
+    },
+    {
+      "name": "staticPageType",
+      "type": [
+        "null",
+        "int"
+      ]
+    },
+    {
+      "name": "reservedForFuture",
+      "type": [
+        "null",
+        "int"
+      ]
+    },
+    {
+      "name": "eventAttr",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "currentImprId",
+      "type": [
+        "null",
+        "long"
+      ]
+    },
+    {
+      "name": "sourceImprId",
+      "type": [
+        "null",
+        "long"
+      ]
+    },
+    {
+      "name": "oldSessionSkey",
+      "type": [
+        "null",
+        "long"
+      ]
+    },
+    {
+      "name": "partialValidPage",
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    {
+      "name": "botFlags",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": "int"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "icfBinary",
+      "type": "long"
+    },
+    {
+      "name": "eventCnt",
+      "type": [
+        "null",
+        "long"
+      ]
+    },
+    {
+      "name": "referrer",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "forwardedFor",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
       "name": "rv",
       "type": [
         "null",
         "boolean"
       ]
+    },
+    {
+      "name": "sojHeader",
+      "type": [
+        "null",
+        {
+          "type": "map",
+          "values": "bytes"
+        }
+      ],
+      "default": null
     }
   ]
 }

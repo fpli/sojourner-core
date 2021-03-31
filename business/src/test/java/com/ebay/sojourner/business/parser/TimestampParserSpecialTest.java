@@ -37,18 +37,4 @@ public class TimestampParserSpecialTest {
     Assertions.assertEquals(1599726436000L, ubiEvent.getGenerateTime());
     Assertions.assertNull(ubiEvent.getOldSessionSkey());
   }
-
-  @Test
-  @DisplayName("ubievent timestamp is null")
-  public void test2() {
-    rheosHeader.setEventCreateTimestamp(1599726436000L);
-    rawEvent.setRheosHeader(rheosHeader);
-    rawEvent.setIngestTime(1599726436000L);
-    timestampParser.parse(rawEvent, ubiEvent);
-    Assertions.assertNull(ubiEvent.getEventTimestamp());
-    Assertions.assertNull(ubiEvent.getSojDataDt());
-    Assertions.assertEquals(1599726436000L, ubiEvent.getIngestTime());
-    Assertions.assertEquals(1599726436000L, ubiEvent.getGenerateTime());
-    Assertions.assertNull(ubiEvent.getOldSessionSkey());
-  }
 }
