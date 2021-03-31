@@ -1,0 +1,11 @@
+flink:
+  app:
+    name: Sojourner Distributor - RNO
+    source:
+      dc: rno
+    sink:
+      dc: rno
+
+kafka:
+  consumer:
+    group-id: sojourner-distributor-rno

@@ -1,20 +1,26 @@
 package com.ebay.sojourner.distributor.pipeline;
 
+import static com.ebay.sojourner.common.util.Property.FLINK_APP_NAME;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_DC;
+import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_KAFKA_TOPIC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_OP_NAME;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_DC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OP_NAME;
+import static com.ebay.sojourner.common.util.Property.REST_BASE_URL;
+import static com.ebay.sojourner.common.util.Property.REST_CONFIG_PROFILE;
+import static com.ebay.sojourner.common.util.Property.REST_CONFIG_PULL_INTERVAL;
+import static com.ebay.sojourner.common.util.Property.SINK_KAFKA_PARALLELISM;
+import static com.ebay.sojourner.common.util.Property.SOURCE_PARALLELISM;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getLong;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
-import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.distributor.broadcast.SojEventDistProcessFunction;
 import com.ebay.sojourner.distributor.function.CustomTopicConfigSourceFunction;
-import com.ebay.sojourner.distributor.schema.SojEventDistDeserializationSchema;
-import com.ebay.sojourner.distributor.schema.SojEventDistSerializationSchema;
+import com.ebay.sojourner.distributor.schema.RawSojEventWrapperDeserializationSchema;
+import com.ebay.sojourner.distributor.schema.RawSojEventWrapperSerializationSchema;
 import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.connector.kafka.FlinkKafkaProducerFactory;
@@ -47,16 +53,16 @@ public class SojEventDirectDistJob {
 
     DataStream<RawSojEventWrapper> sojEventDataStream = dataStreamBuilder
         .dc(DataCenter.of(getString(FLINK_APP_SOURCE_DC)))
-        .parallelism(getInteger(Property.SOURCE_PARALLELISM))
+        .parallelism(getInteger(SOURCE_PARALLELISM))
         .operatorName(DATA_SOURCE_OP_NAME)
         .uid(DATA_SOURCE_UID)
-        .build(new SojEventDistDeserializationSchema());
+        .build(new RawSojEventWrapperDeserializationSchema());
 
 
     DataStream<PageIdTopicMapping> mappingSourceStream = executionEnvironment
-        .addSource(new CustomTopicConfigSourceFunction(getString(Property.REST_BASE_URL),
-                                                       getLong(Property.REST_CONFIG_PULL_INTERVAL),
-                                                       getString(Property.REST_CONFIG_PROFILE)))
+        .addSource(new CustomTopicConfigSourceFunction(getString(REST_BASE_URL),
+                                                       getLong(REST_CONFIG_PULL_INTERVAL),
+                                                       getString(REST_CONFIG_PROFILE)))
         .setParallelism(1)
         .name(CONFIG_SOURCE_OP_NAME)
         .uid(CONFIG_SOURCE_UID);
@@ -76,18 +82,18 @@ public class SojEventDirectDistJob {
                           .process(new SojEventDistProcessFunction(stateDescriptor))
                           .name(DIST_OP_NAME)
                           .uid(DIST_UID)
-                          .setParallelism(getInteger(Property.SOURCE_PARALLELISM));
+                          .setParallelism(getInteger(SOURCE_PARALLELISM));
 
     KafkaProducerConfig config = KafkaProducerConfig.ofDC(getString(FLINK_APP_SINK_DC));
     FlinkKafkaProducerFactory producerFactory = new FlinkKafkaProducerFactory(config);
 
     sojEventDistStream.addSink(producerFactory.get(
-        getString(Property.FLINK_APP_SINK_KAFKA_TOPIC), new SojEventDistSerializationSchema()))
-                      .setParallelism(getInteger(Property.SINK_KAFKA_PARALLELISM))
+        getString(FLINK_APP_SINK_KAFKA_TOPIC), new RawSojEventWrapperSerializationSchema()))
+                      .setParallelism(getInteger(SINK_KAFKA_PARALLELISM))
                       .name(SINK_OP_NAME)
                       .uid(SINK_UID);
 
     // Submit this job
-    FlinkEnvUtils.execute(executionEnvironment, getString(Property.FLINK_APP_NAME));
+    FlinkEnvUtils.execute(executionEnvironment, getString(FLINK_APP_NAME));
   }
 }
