@@ -1,12 +1,9 @@
 package com.ebay.sojourner.tdq.function;
 
-import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.TdqConfigMapping;
-import com.ebay.sojourner.common.model.TopicPageIdMapping;
 import com.ebay.sojourner.common.util.RestClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.apache.flink.configuration.Configuration;
