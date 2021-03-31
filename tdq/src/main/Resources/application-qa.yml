@@ -1,0 +1,39 @@
+flink:
+  app:
+    name: Sojourner Tdq - QA
+    parallelism:
+      source: 2
+      broadcast: 2
+      metrics: 2
+    data-skew:
+      is-filter: false
+      guid-list:[]
+    source:
+      from-timestamp: 0
+      out-of-orderless-in-min: 3
+      dc: lvs
+
+kafka:
+  consumer:
+    group-id: sojourner-pathfinder-tdq-qa
+    stream: behavior.pathfinder
+    bootstrap-servers:
+      lvs:
+        - rhs-vvrvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-vvrvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-vvrvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-vvrvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-vvrvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+
+rheos:
+  registry-url: https://rheos-services.qa.ebay.com
+  client:
+    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    iaf:
+      secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
+      env: staging
+
+rest-client:
+  base-url: https://sojubdportalservice.vip.qa.ebay.com
+
+ua-parser-env: dev

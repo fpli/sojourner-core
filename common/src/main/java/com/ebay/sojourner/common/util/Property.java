@@ -60,7 +60,7 @@ public class Property {
   public static final String INVALID_BOT_FILTER = "invalid.session.bot.filter";
   public static final String SELECTED_IPS = "selected.ips";
   public static final String SELECTED_AGENTS = "selected.agents";
-
+  public static final String ITM_PAGES = "itm.pages";
   // --------------------- APP PAYLOAD KV Property ---------------------------------
   public static final String SWD_VALUES = "swd.values";
   public static final String ROT_VALUES = "rot.values";
@@ -191,7 +191,10 @@ public class Property {
   public static final String BROADCAST_PARALLELISM = "flink.app.parallelism.broadcast";
   public static final String METRICS_PARALLELISM = "flink.app.parallelism.metrics";
   public static final String SINK_KAFKA_PARALLELISM = "flink.app.parallelism.sink-kafka";
-
+  public static final String METRIICS_COLLECTOR_PARALLELISM = "flink.app.parallelism.metrics-collector";
+  public static final String TDQ_NORMALIZER_PARALLELISM = "flink.app.parallelism.tdq-normalizer";
+  public static final String METRIICS_COLLECTOR_POST_PARALLELISM = "flink.app.parallelism.metrics-collector-post";
+  public static final String METRIICS_COLLECTOR_FINAL_PARALLELISM = "flink.app.parallelism.metrics-collector-final";
   // flink slot share group
   public static final String SOURCE_EVENT_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.source-event";
   public static final String SOURCE_EVENT_LVS_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.source-event-lvs";
@@ -199,7 +202,10 @@ public class Property {
   public static final String SOURCE_EVENT_RNO_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.source-event-rno";
   public static final String SESSION_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.session";
   public static final String CROSS_SESSION_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.cross-session";
-
+  public static final String TDQ_NORMALIZER_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.tdq-normalizer";
+  public static final String METRICS_COLLECTOR_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.metrics-collector";
+  public static final String METRICS_COLLECTOR_POST_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.metrics-collector-post";
+  public static final String METRICS_COLLECTOR_FINAL_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.metrics-collector-final";
   // flink - operator name and uid
   public static final String SOURCE_OPERATOR_NAME_RNO = "flink.app.operator-name.source.rno";
   public static final String SOURCE_OPERATOR_NAME_LVS = "flink.app.operator-name.source.lvs";
@@ -210,6 +216,7 @@ public class Property {
 
   // flink - metric name
   public static final String FLINK_APP_METRIC_NAME = "flink.app.metric.watermark-process-progress";
+  public static final String SOJOURNER_METRICS_COLLECTOR = "flink.app.slot-sharing-group.metrics-collector";
 
   // zookeeper
   public static final String ZOOKEEPER_SERVER = "zookeeper.server";
@@ -266,5 +273,8 @@ public class Property {
   public static final String IS_FILTER = "flink.app.data-skew.is-filter";
   public static final String FILTER_GUID_SET = "flink.app.data-skew.guid-set";
   public static final String FILTER_PAGE_ID_SET = "flink.app.data-skew.pageid-set";
+
+  // missing cnt exclude pagefamilies
+  public static final String MISSING_CNT_EXCLUDE = "missing-cnt-exclude.u";
 
 }

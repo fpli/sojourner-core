@@ -45,10 +45,27 @@ public class Constants {
 
   // flink metrics
   public static final String SOJ_METRICS_GROUP = "sojourner_ubd";
+  public static final String SOJ_METRIC_TYPE = "metric_type";
+  public static final String SOJ_METRIC_NAME = "metric_name";
+  public static final String SOJ_PGAE_FAMILY = "page_family";
+  public static final String SOJ_SITE_ID = "site_id";
+  public static final String SOJ_TAG_NAME = "tag_name";
+  public static final String SOJ_PAGE_ID = "page_id";
+  public static final String TAG_MISSING_CNT_METRICS = "missing_cnt";
+  public static final String TAG_SUM_METRICS = "sum";
+  public static final String PAGE_CNT_METRICS = "cnt";
+  public static final String TOTAL_CNT_METRICS = "total_cnt";
+  public static final String TOTAL_CNT_ITM_METRICS = "total_itm_cnt";
+  public static final String TRANSFORM_ERROR_METRICS = "tansform_error_cnt";
+  public static final String SOJ_EVENT_TIME = "event_time";
+  public static final String SOJ_METRICS_TOTAL = "total";
+  public static final String SOJ_METRICS_TOTAL_ITM = "total_itm";
+  public static final String SOJ_METRICS_TOTAL_TYPE = "total_type";
 
   // flied delimiter
   public static final String FIELD_DELIM = "\007";
-
+  public static final String DOMAIN_DEL="-";
+  public static final String METRIC_DEL="_";
   // signatures suffix
   public static final String GENERATION_PREFFIX = "_g";
   public static final String EXPIRATION_PREFFIX = "_e";
@@ -56,7 +73,7 @@ public class Constants {
   public static final String AGENTIP = "AgentIp";
   public static final String IP = "Ip";
   public static final String GUID = "Guid";
-
+  public static final String G_TAG = "g";
   //Time format/ Time Zone Constants
   public static final String DEFAULT_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
   public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
@@ -80,10 +97,11 @@ public class Constants {
 
   // TAG
   public static final String P_TAG = "p";
+  public static final String T_TAG = "t";
   public static final String TAG_ITEMIDS = "!itemIds";
   public static final String TAG_TRKP = "trkp";
   public static final String TAG_MTSTS = "mtsts";
-
+  public static final String TOTAL_METRICS_NAME = "total_cnt";
   //CHARSET
 
   public static final String CHAR_SET = "UTF-8";
@@ -99,6 +117,10 @@ public class Constants {
       .asList( "TPayload");
 
   public static final int DEFAULT_PAGE_ID = -1;
+
+  //exclude pageFamillies
+  public static final List<String> EXCLUDE_PAGE_FAMILY = Arrays
+          .asList("VI", "XO", "CART", "BINFLOW");
 
 }
 

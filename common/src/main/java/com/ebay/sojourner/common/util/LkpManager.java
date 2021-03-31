@@ -1,7 +1,14 @@
 package com.ebay.sojourner.common.util;
 
-import static com.ebay.sojourner.common.util.UBIConfig.getString;
-import static com.ebay.sojourner.common.util.UBIConfig.getUBIProperty;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,14 +21,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.PathFilter;
+import static com.ebay.sojourner.common.util.UBIConfig.getString;
+import static com.ebay.sojourner.common.util.UBIConfig.getUBIProperty;
 
 @Slf4j
 public class LkpManager {
@@ -45,7 +46,8 @@ public class LkpManager {
     private Set<String> selectedAgents = new CopyOnWriteArraySet<>();
     private Map<String, Long> lkpFileLastUpdDt = new ConcurrentHashMap<>();
     private Map<String, Long> lkpFileLastPreUpdDt = new ConcurrentHashMap<>();
-    private Map<String, Set<Integer>> pageFmlyAllMap = new ConcurrentHashMap<>();
+    private Map<String, Map<Integer, Integer>> pageFmlyAllMap = new ConcurrentHashMap<>();
+    private Set<Integer> itemPages = new CopyOnWriteArraySet<>();
     private volatile FileSystem fileSystem = null;
     private volatile boolean loadLkpFromHDFS = false;
     private volatile LkpRefreshTimeTask lkpRefreshTimeTask;
@@ -98,6 +100,7 @@ public class LkpManager {
         refreshMpxRotetion();
         refreshPageFmlysTotal();
         refreshLargeSessionGuid();
+        refreshItmPages();
         printLkpFileStatus();
         printLkpFileSize();
     }
@@ -171,6 +174,23 @@ public class LkpManager {
         }
     }
 
+    private void refreshItmPages() {
+        String property = Property.ITM_PAGES;
+        if (isUpdate(property)) {
+            Set<Integer> itmPagesMid = new CopyOnWriteArraySet<>();
+            String fileContent = getLkpFileContent(property);
+            if (StringUtils.isBlank(fileContent)) {
+                return;
+            }
+            for (String pageId : fileContent.split(LKP_RECORD_DELIMITER)) {
+                if (StringUtils.isNotBlank(pageId)) {
+                    itmPagesMid.add(Integer.valueOf(pageId));
+                }
+            }
+            itemPages = itmPagesMid;
+            updateLkpFileLastUpdDt(property);
+        }
+    }
     private void refreshLargeSessionGuid() {
         String property = Property.LARGE_SESSION_GUID;
         if (isUpdate(property)) {
@@ -304,24 +324,30 @@ public class LkpManager {
     private void refreshPageFmlysTotal() {
         String property = Property.PAGE_FMLY_ALL;
         if (isUpdate(property)) {
-            Map<String, Set<Integer>> pageFmlyAllMapMid = new ConcurrentHashMap<>();
+            Map<String, Map<Integer, Integer>> pageFmlyAllMapMid = new ConcurrentHashMap<>();
             String pageFmlysValue = getLkpFileContent(property);
-            if (pageFmlysValue == null || pageFmlysValue.equals("")) {
+            if (StringUtils.isBlank(pageFmlysValue)) {
                 return;
             }
             for (String pageFmlyPair : pageFmlysValue.split(LKP_RECORD_DELIMITER)) {
 
                 if (StringUtils.isNotBlank(pageFmlyPair)) {
-                    String[] values = pageFmlyPair.split(LKP_FILED_DELIMITER, 2);
+                    String[] values = pageFmlyPair.split(LKP_FILED_DELIMITER, 3);
                     Integer pageId =
                             StringUtils.isEmpty(values[0]) ? null : Integer.valueOf(values[0]);
                     String pageFmly = StringUtils.isEmpty(values[1]) ? "" : values[1];
                     if (pageFmlyAllMapMid.get(pageFmly) != null) {
-                        pageFmlyAllMapMid.get(pageFmly).add(pageId);
+                        if (MapUtils.isNotEmpty(pageFmlyAllMapMid.get(pageFmly))) {
+                            pageFmlyAllMapMid.get(pageFmly).put(pageId, Integer.valueOf(values[2]));
+                        } else {
+                            Map<Integer, Integer> pageIframeMap = new ConcurrentHashMap<>();
+                            pageIframeMap.put(pageId, Integer.valueOf(values[2]));
+                            pageFmlyAllMapMid.put(pageFmly, pageIframeMap);
+                        }
                     } else {
-                        Set<Integer> pageIdSet = new HashSet<>();
-                        pageIdSet.add(pageId);
-                        pageFmlyAllMapMid.put(pageFmly, pageIdSet);
+                        Map<Integer, Integer> pageIframeMap = new ConcurrentHashMap<>();
+                        pageIframeMap.put(pageId, Integer.valueOf(values[2]));
+                        pageFmlyAllMapMid.put(pageFmly, pageIframeMap);
                     }
                 }
             }
@@ -335,7 +361,7 @@ public class LkpManager {
         if (isUpdate(property)) {
             Map<Long, String> mpxMapMid = new ConcurrentHashMap<>();
             String mpxRotations = getLkpFileContent(property);
-            if (mpxRotations == null || mpxRotations.equals("")) {
+            if (StringUtils.isBlank(mpxRotations)) {
                 return;
             }
             for (String mpx : mpxRotations.split(LKP_RECORD_DELIMITER)) {
@@ -543,7 +569,7 @@ public class LkpManager {
         return pageFmlyMap;
     }
 
-    public Map<String, Set<Integer>> getPageFmlyAllMaps() {
+    public Map<String, Map<Integer,Integer>> getPageFmlyAllMaps() {
         return pageFmlyAllMap;
     }
 
@@ -553,6 +579,9 @@ public class LkpManager {
 
     public Set<String> getSelectedAgents() {
         return selectedAgents;
+    }
+    public Set<Integer> getItmPages() {
+        return itemPages;
     }
 
     public Set<String> getLargeSessionGuid() {
