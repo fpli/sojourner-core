@@ -417,11 +417,17 @@
     },
     {
       "name": "sessionStartDt",
-      "type": "long"
+      "type": [
+        "null",
+        "long"
+      ]
     },
     {
       "name": "sojDataDt",
-      "type": "long"
+      "type": [
+        "null",
+        "long"
+      ]
     },
     {
       "name": "version",
@@ -492,7 +498,10 @@
     },
     {
       "name": "icfBinary",
-      "type": "long"
+      "type": [
+        "null",
+        "long"
+      ]
     },
     {
       "name": "eventCnt",
