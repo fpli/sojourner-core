@@ -2,23 +2,23 @@ flink:
   app:
     name: Sojourner Distributor - PRE PROD
     parallelism:
-      source: 200
-      sink-kafka: 200
+      source: 150
+      sink-kafka: 150
     source:
       dc: rno
-      operator-name: Non-bot SojEvent Source
+      operator-name: Bot SojEvent Source
     sink:
       dc: slc
-      operator-name: Non-bot SojEvent Sink
+      operator-name: Bot SojEvent Sink
       kafka:
         topic: behavior.pulsarv2.test.default
 
 kafka:
   consumer:
     stream: behavior.total.new
-    group-id: sojourner-distributor-pre-prod
+    group-id: sojourner-distributor-pre-prod-bot
     topic:
-      - behavior.total.new.sojevent
+      - behavior.total.new.sojevent.bot
     bootstrap-servers:
       rno:
         - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
@@ -39,4 +39,4 @@ kafka:
 
 rest-client:
   config:
-    profile: pre-prod
+    profile: pre-prod-bot

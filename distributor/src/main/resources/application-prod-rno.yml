@@ -1,0 +1,16 @@
+flink:
+  app:
+    name: Sojourner Distributor - RNO
+    source:
+      dc: rno
+      operator-name: Non-bot SojEvent Source
+    sink:
+      dc: rno
+      operator-name: Non-bot SojEvent Sink
+
+kafka:
+  consumer:
+    group-id: sojourner-distributor-rno
+    topic:
+      - behavior.totalv2.sojevent-nonbot-rno
+      - behavior.totalv2.sojevent-nonbot-lvs

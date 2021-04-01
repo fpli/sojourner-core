@@ -11,20 +11,15 @@ flink:
       max-concurrent: 1
       tolerate-failure-number: 3
     source:
-      operator-name: Non-bot SojEvent Source
       from-timestamp: 0
       out-of-orderless-in-min: 0
     sink:
-      operator-name: Non-bot SojEvent Sink
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
 
 kafka:
   consumer:
     stream: behavior.totalv2
-    topic:
-      - behavior.totalv2.sojevent-nonbot-rno
-      - behavior.totalv2.sojevent-nonbot-lvs
     bootstrap-servers:
       rno:
         - rhs-fxuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.37.tess.io:9092

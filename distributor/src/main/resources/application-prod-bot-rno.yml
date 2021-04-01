@@ -1,0 +1,23 @@
+flink:
+  app:
+    name: Sojourner Distributor - RNO
+    parallelism:
+      source: 150
+      sink-kafka: 150
+    source:
+      dc: rno
+      operator-name: Bot SojEvent Source
+    sink:
+      dc: rno
+      operator-name: Bot SojEvent Sink
+
+kafka:
+  consumer:
+    group-id: sojourner-distributor-rno-bot
+    topic:
+      - behavior.totalv2.sojevent-bot-rno
+      - behavior.totalv2.sojevent-bot-lvs
+
+rest-client:
+  config:
+    profile: prod-bot
