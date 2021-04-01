@@ -42,7 +42,6 @@ public class SojUtils {
         Integer pageId = event.getPageId() == -1 ? -99 : event.getPageId();
         return !event.isRdt()
                 && !event.isIframe()
-                // || urlQueryString.matches("(/roverimp|.*SojPageView).*")
                 && !IntermediateLkp.getInstance().getScPageSet1().contains(pageId)
                 && !IntermediateLkp.getInstance().getScPageSet2().contains(pageId);
     }

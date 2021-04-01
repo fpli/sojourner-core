@@ -48,6 +48,8 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
 
   private String schemaRegistryUrl = null;
 
+  private static final String G_TAG = "g";
+
   public RawEventDeserializationSchema() { }
 
   public RawEventDeserializationSchema(String schemaRegistryUrl) {
@@ -97,6 +99,16 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     encodeTags(sojAMap);
     encodeTags(sojKMap);
     encodeTags(sojCMap);
+
+    // ignore no 'g' tag events
+    Map<String, String> allMap = new HashMap<>();
+    allMap.putAll(sojAMap);
+    allMap.putAll(sojCMap);
+    allMap.putAll(sojKMap);
+    if (!allMap.containsKey(G_TAG)) {
+      log.info("The Event from pathfinder is invalid: {}", allMap);
+      return null;
+    }
 
     // Generate ClientData
     // If clientData is not of type GenericRecord, just skip this message.

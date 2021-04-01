@@ -17,10 +17,7 @@ public class IdentityParser implements FieldParser<RawEvent, UbiEvent> {
     map.putAll(rawEvent.getSojK());
     map.putAll(rawEvent.getSojC());
 
-    if (map.containsKey(G_TAG)) {
-      ubiEvent.setGuid(map.get(G_TAG));
-    }
-
+    ubiEvent.setGuid(map.get(G_TAG));
     ubiEvent.setClientData(rawEvent.getClientData());
     ubiEvent.setUrlQueryString(rawEvent.getClientData().getUrlQueryString());
     ubiEvent.setPageName(rawEvent.getClientData().getTName());
