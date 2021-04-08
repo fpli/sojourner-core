@@ -11,6 +11,8 @@ import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.common.OutputTagConstants;
 import com.ebay.sojourner.flink.connector.hdfs.HdfsConnectorFactory;
+import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
+import com.ebay.sojourner.flink.connector.hdfs.SojSessionDateTimeBucketAssigner;
 import com.ebay.sojourner.flink.connector.kafka.SojSerializableTimestampAssigner;
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.PassThroughDeserializationSchema;
@@ -79,7 +81,8 @@ public class SojournerSessionDumperJob {
     // sink timestamp to hdfs
     sojSessionWatermarkStream
         .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_WATERMARK_PATH), SojWatermark.class))
+            getString(Property.FLINK_APP_SINK_HDFS_WATERMARK_PATH), SojWatermark.class,
+            new SojCommonDateTimeBucketAssigner<>()))
         .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
         .name(getString(Property.SINK_OPERATOR_NAME_WATERMARK))
         .uid(getString(Property.SINK_UID_WATERMARK));
@@ -101,7 +104,8 @@ public class SojournerSessionDumperJob {
     // same day session hdfs sink
     sameDaySessionStream
         .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_SAME_DAY_SESSION_PATH), SojSession.class))
+            getString(Property.FLINK_APP_SINK_HDFS_SAME_DAY_SESSION_PATH), SojSession.class,
+            new SojSessionDateTimeBucketAssigner()))
         .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
         .name(getString(Property.SINK_OPERATOR_NAME_SESSION_SAME_DAY))
         .uid(getString(Property.SINK_UID_SESSION_SAME_DAY));
@@ -109,7 +113,8 @@ public class SojournerSessionDumperJob {
     // cross day session hdfs sink
     crossDaySessionStream
         .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_CROSS_DAY_SESSION_PATH), SojSession.class))
+            getString(Property.FLINK_APP_SINK_HDFS_CROSS_DAY_SESSION_PATH), SojSession.class,
+            new SojSessionDateTimeBucketAssigner()))
         .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
         .name(getString(Property.SINK_OPERATOR_NAME_SESSION_CROSS_DAY))
         .uid(getString(Property.SINK_UID_SESSION_CROSS_DAY));
@@ -117,7 +122,8 @@ public class SojournerSessionDumperJob {
     // open session hdfs sink
     openSessionStream
         .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_OPEN_SESSION_PATH), SojSession.class))
+            getString(Property.FLINK_APP_SINK_HDFS_OPEN_SESSION_PATH), SojSession.class,
+            new SojSessionDateTimeBucketAssigner()))
         .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
         .name(getString(Property.SINK_OPERATOR_NAME_SESSION_OPEN))
         .uid(getString(Property.SINK_UID_SESSION_OPEN));

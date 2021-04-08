@@ -33,7 +33,7 @@ public class ExtractWatermarkProcessFunction<T> extends ProcessFunction<T, SojWa
     watermarkDelayTime = System.currentTimeMillis() - ctx.timerService().currentWatermark();
     int andIncrement = atomicInteger.getAndIncrement();
     if (andIncrement % 1000 == 0) {
-      out.collect(new SojWatermark(ctx.timestamp(),subtaskIndex));
+      out.collect(new SojWatermark(ctx.timerService().currentWatermark(),subtaskIndex));
     }
   }
 }

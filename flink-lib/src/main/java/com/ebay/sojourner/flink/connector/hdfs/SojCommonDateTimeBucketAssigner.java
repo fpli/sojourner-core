@@ -1,7 +1,5 @@
 package com.ebay.sojourner.flink.connector.hdfs;
 
-import com.ebay.sojourner.common.model.SojSession;
-import com.ebay.sojourner.common.util.SojTimestamp;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +8,7 @@ import org.apache.flink.streaming.api.functions.sink.filesystem.BucketAssigner;
 import org.apache.flink.streaming.api.functions.sink.filesystem.bucketassigners.SimpleVersionedStringSerializer;
 import org.apache.flink.util.Preconditions;
 
-public class DateTimeBucketAssignerForEventTime<IN> implements BucketAssigner<IN, String> {
+public class SojCommonDateTimeBucketAssigner<T> implements BucketAssigner<T, String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -22,21 +20,21 @@ public class DateTimeBucketAssignerForEventTime<IN> implements BucketAssigner<IN
 
   private transient DateTimeFormatter dateTimeFormatter;
 
-  public DateTimeBucketAssignerForEventTime() {
+  public SojCommonDateTimeBucketAssigner() {
     this(DEFAULT_FORMAT_STRING);
   }
 
-  public DateTimeBucketAssignerForEventTime(String formatString) {
+  public SojCommonDateTimeBucketAssigner(String formatString) {
     this(formatString, ZoneId.of("-7"));
   }
 
-  public DateTimeBucketAssignerForEventTime(String formatString, ZoneId zoneId) {
+  public SojCommonDateTimeBucketAssigner(String formatString, ZoneId zoneId) {
     this.formatString = Preconditions.checkNotNull(formatString);
     this.zoneId = Preconditions.checkNotNull(zoneId);
   }
 
   @Override
-  public String getBucketId(IN element, BucketAssigner.Context context) {
+  public String getBucketId(T element, BucketAssigner.Context context) {
 
     String defaultTsStr;
 
@@ -44,13 +42,7 @@ public class DateTimeBucketAssignerForEventTime<IN> implements BucketAssigner<IN
       dateTimeFormatter = DateTimeFormatter.ofPattern(formatString).withZone(zoneId);
     }
 
-    if (element instanceof SojSession) {
-      SojSession sojSession = (SojSession) element;
-      defaultTsStr = dateTimeFormatter.format(Instant.ofEpochMilli(
-          SojTimestamp.getSojTimestampToUnixTimestamp(sojSession.getSessionStartDt())));
-    } else {
-      defaultTsStr = dateTimeFormatter.format(Instant.ofEpochMilli(context.timestamp()));
-    }
+    defaultTsStr = dateTimeFormatter.format(Instant.ofEpochMilli(context.timestamp()));
 
     StringBuilder customTsBuilder = new StringBuilder();
     customTsBuilder
@@ -67,7 +59,7 @@ public class DateTimeBucketAssignerForEventTime<IN> implements BucketAssigner<IN
 
   @Override
   public String toString() {
-    return "DateTimeBucketAssignerForEventTime{"
+    return "SojCommonDateTimeBucketAssigner{"
         + "formatString='"
         + formatString
         + '\''

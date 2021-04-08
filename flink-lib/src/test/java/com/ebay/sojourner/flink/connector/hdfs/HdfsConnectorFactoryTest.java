@@ -13,7 +13,7 @@ class HdfsConnectorFactoryTest {
 
   @BeforeEach
   void setUp() {
-    sink = HdfsConnectorFactory.createWithParquet("test", SojSession.class);
+    sink = HdfsConnectorFactory.createWithParquet("test", SojSession.class, new SojSessionDateTimeBucketAssigner());
   }
 
   @Test

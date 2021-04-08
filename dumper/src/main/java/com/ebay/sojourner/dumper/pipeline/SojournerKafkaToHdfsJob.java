@@ -11,6 +11,7 @@ import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.connector.hdfs.HdfsConnectorFactory;
+import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.AvroKafkaDeserializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.JetstreamEventDeserializationSchema;
@@ -42,7 +43,8 @@ public class SojournerKafkaToHdfsJob {
               new KafkaDeserializationSchemaWrapper<>(new JetstreamEventDeserializationSchema()));
       // hdfs sink
       sourceDataStream
-          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, JetStreamOutputEvent.class))
+          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, JetStreamOutputEvent.class,
+              new SojCommonDateTimeBucketAssigner()))
           .setParallelism(sinkParallelNum)
           .name(getString(Property.SINK_OPERATOR_NAME))
           .uid(getString(Property.SINK_UID));
@@ -61,7 +63,8 @@ public class SojournerKafkaToHdfsJob {
 
       // hdfs sink
       sourceDataStream
-          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, JetStreamOutputSession.class))
+          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, JetStreamOutputSession.class,
+              new SojCommonDateTimeBucketAssigner<>()))
           .setParallelism(sinkParallelNum)
           .name(getString(Property.SINK_OPERATOR_NAME))
           .uid(getString(Property.SINK_UID));
@@ -78,7 +81,8 @@ public class SojournerKafkaToHdfsJob {
 
       // hdfs sink
       sourceDataStream
-          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, BotSignature.class))
+          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, BotSignature.class,
+              new SojCommonDateTimeBucketAssigner<>()))
           .setParallelism(sinkParallelNum)
           .name(getString(Property.SINK_OPERATOR_NAME))
           .uid(getString(Property.SINK_UID));
@@ -95,7 +99,8 @@ public class SojournerKafkaToHdfsJob {
 
       // hdfs sink
       sourceDataStream
-          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, PulsarEvent.class))
+          .addSink(HdfsConnectorFactory.createWithParquet(hdfsPath, PulsarEvent.class,
+              new SojCommonDateTimeBucketAssigner<>()))
           .setParallelism(sinkParallelNum)
           .name(getString(Property.SINK_OPERATOR_NAME))
           .uid(getString(Property.SINK_UID));

@@ -9,6 +9,7 @@ import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.connector.hdfs.HdfsConnectorFactory;
+import com.ebay.sojourner.flink.connector.hdfs.SojEventDateTimeBucketAssigner;
 import com.ebay.sojourner.flink.connector.kafka.SojSerializableTimestampAssigner;
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.PassThroughDeserializationSchema;
@@ -58,7 +59,8 @@ public class SojournerEventDumperJobForDQ {
     // hdfs sink
     assignedWatermarkSojEventDataStream
         .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_PATH), SojEvent.class))
+            getString(Property.FLINK_APP_SINK_HDFS_PATH), SojEvent.class,
+            new SojEventDateTimeBucketAssigner()))
         .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
         .name(getString(Property.SINK_OPERATOR_NAME_EVENT))
         .uid(getString(Property.SINK_UID_EVENT));
