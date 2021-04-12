@@ -10,7 +10,7 @@ flink:
 
 kafka:
   consumer:
-    group-id: sojourner-distributor-lvs
+    group-id: sojourner-distributor-prod-lvs
     topic:
       - behavior.totalv2.sojevent-nonbot-rno
       - behavior.totalv2.sojevent-nonbot-lvs

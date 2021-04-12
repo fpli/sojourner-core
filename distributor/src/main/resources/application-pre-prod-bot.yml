@@ -16,7 +16,7 @@ flink:
 kafka:
   consumer:
     stream: behavior.total.new
-    group-id: sojourner-distributor-pre-prod-bot
+    group-id: sojourner-distributor-pre-prod
     topic:
       - behavior.total.new.sojevent.bot
     bootstrap-servers:
