@@ -6,6 +6,7 @@ import com.ebay.sojourner.common.model.SessionAccumulator;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.flink.api.common.functions.AggregateFunction;
 
 @Slf4j
@@ -40,13 +41,22 @@ public class UbiSessionAgg
       accumulator.getUbiSession().setGuid(value.getGuid());
     }
 
-    Set<Integer> sessionBotFlagSet = accumulator.getUbiSession().getBotFlagList();
+    Set<Integer> sessionBotFlagSetDetect = null;
     try {
-      sessionBotFlagSet.addAll(SessionBotDetector.getInstance()
-          .getBotFlagList(accumulator.getUbiSession()));
-      eventBotFlagSet.addAll(sessionBotFlagSet);
+      sessionBotFlagSetDetect = SessionBotDetector.getInstance()
+                                                  .getBotFlagList(accumulator.getUbiSession());
     } catch (Exception e) {
       log.error("start get session botFlagList failed", e);
+    }
+
+    Set<Integer> sessionBotFlagSet = accumulator.getUbiSession().getBotFlagList();
+    if (CollectionUtils.isNotEmpty(eventBotFlagSet)
+        && !sessionBotFlagSet.containsAll(eventBotFlagSet)) {
+      sessionBotFlagSet.addAll(eventBotFlagSet);
+    }
+    if (eventBotFlagSet != null && CollectionUtils.isNotEmpty(sessionBotFlagSetDetect)) {
+      sessionBotFlagSet.addAll(sessionBotFlagSetDetect);
+      eventBotFlagSet.addAll(sessionBotFlagSetDetect);
     }
 
     accumulator.getUbiSession().setBotFlagList(sessionBotFlagSet);
