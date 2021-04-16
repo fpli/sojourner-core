@@ -45,7 +45,7 @@ class AgentIPMetricsTest extends BaseMetricsTest {
   @Test
   void test_end() {
     UbiSession ubiSession = new UbiSession();
-    ubiSession.setAgentInfo("my-agent");
+    ubiSession.setUserAgent("my-agent");
     ubiSession.setClientIp("1.1.1.1");
     ubiSession.setInternalIp("0.0.0.0");
 
