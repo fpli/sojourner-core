@@ -21,7 +21,8 @@ public class BotRule11 extends AbstractBotRule<UbiSession> {
   @Override
   public int getBotFlag(UbiSession ubiSession) throws InterruptedException {
     if (!filter(ubiSession)) {
-      if (ubiSessionHelper.isIabAgent(ubiSession)) {
+      if (ubiSession.getBotFlagList().contains(BotRules.SPECIFIC_SPIDER_IAB)
+          || ubiSessionHelper.isIabAgent(ubiSession)) {
         return BotRules.SPECIFIC_SPIDER_IAB;
       } else {
         return BotRules.NON_BOT_FLAG;

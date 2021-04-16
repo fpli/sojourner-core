@@ -57,10 +57,8 @@ public class UbiSessionHelper {
   }
 
   public boolean isIabAgent(UbiSession session) throws InterruptedException {
-    if (session.getNonIframeRdtEventCnt() > 0 && (session.getUserAgent() != null
-        || session.getAgentInfo() != null)) {
-      String userAgent =
-          session.getUserAgent() == null ? session.getAgentInfo() : session.getUserAgent();
+    if (session.getNonIframeRdtEventCnt() > 0 && session.getUserAgent() != null) {
+      String userAgent = session.getUserAgent();
       Boolean whether = iabCache.get(userAgent);
       if (whether == null) {
         whether = checkIabAgent(userAgent);

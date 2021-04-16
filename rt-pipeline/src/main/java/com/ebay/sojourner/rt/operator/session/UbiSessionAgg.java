@@ -29,8 +29,6 @@ public class UbiSessionAgg
 
   @Override
   public SessionAccumulator add(UbiEvent value, SessionAccumulator accumulator) {
-    Set<Integer> eventBotFlagSet = value.getBotFlags();
-
     try {
       SessionMetrics.getInstance().feed(value, accumulator);
     } catch (Exception e) {
@@ -50,17 +48,13 @@ public class UbiSessionAgg
     }
 
     Set<Integer> sessionBotFlagSet = accumulator.getUbiSession().getBotFlagList();
-    if (CollectionUtils.isNotEmpty(eventBotFlagSet)
-        && !sessionBotFlagSet.containsAll(eventBotFlagSet)) {
-      sessionBotFlagSet.addAll(eventBotFlagSet);
-    }
-    if (eventBotFlagSet != null && CollectionUtils.isNotEmpty(sessionBotFlagSetDetect)) {
+
+    if (CollectionUtils.isNotEmpty(sessionBotFlagSetDetect)) {
       sessionBotFlagSet.addAll(sessionBotFlagSetDetect);
-      eventBotFlagSet.addAll(sessionBotFlagSetDetect);
     }
 
     accumulator.getUbiSession().setBotFlagList(sessionBotFlagSet);
-    value.setBotFlags(eventBotFlagSet);
+    value.setBotFlags(sessionBotFlagSet);
     return accumulator;
   }
 

@@ -48,6 +48,9 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
   @Override
   public void feed(UbiEvent event, SessionAccumulator sessionAccumulator) {
     UbiSession ubiSession = sessionAccumulator.getUbiSession();
+    // change agent info whenever an event feeds
+    ubiSession.setAgentInfo(event.getAgentInfo());
+
     boolean isEarlyEvent = SojEventTimeUtil.isEarlyEvent(event.getEventTimestamp(),
             ubiSession.getAbsStartTimestamp());
     boolean isEarlyEventByMultiCols = SojEventTimeUtil.isEarlyByMultiCOls(event, ubiSession);
@@ -57,13 +60,13 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
             sessionAccumulator.getUbiSession().getStartTimestampNOIFRAME());
     if (isEarlyEvent) {
       if (!ubiSession.isFindFirst()) {
-        ubiSession.setAgentInfo(event.getAgentInfo());
+        ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
       }
     } else if (isEarlyEventByMultiCols) {
       if (!ubiSession.isFindFirst()) {
-        ubiSession.setAgentInfo(event.getAgentInfo());
+        ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
       }
@@ -71,7 +74,7 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
 
     if (isEarlyValidEvent) {
       if (!event.isIframe() && !event.isRdt()) {
-        ubiSession.setAgentInfo(event.getAgentInfo());
+        ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
         ubiSession.setFindFirst(true);
@@ -132,7 +135,7 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
     //  exInternalIp = externalIp == null ? internalIp : externalIp;
 
     sessionAccumulator.getUbiSession()
-        .setUserAgent(sessionAccumulator.getUbiSession().getAgentInfo());
+        .setUserAgent(sessionAccumulator.getUbiSession().getUserAgent());
     sessionAccumulator.getUbiSession().setIp(sessionAccumulator.getUbiSession().getClientIp());
     sessionAccumulator.getUbiSession().setExInternalIp(
         (sessionAccumulator.getUbiSession().getExternalIp() == null) ? (
