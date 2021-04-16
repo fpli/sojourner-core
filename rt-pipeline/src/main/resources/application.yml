@@ -156,3 +156,6 @@ rest-client:
   username: soj-flink-app
 
 ua-parser-env: prod
+agent-whitelist:
+  - GingerClient/0.11.2-RELEASE
+

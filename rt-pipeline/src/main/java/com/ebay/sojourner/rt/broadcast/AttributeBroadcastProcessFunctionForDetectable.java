@@ -4,12 +4,17 @@ import com.ebay.sojourner.common.model.BotSignature;
 import com.ebay.sojourner.common.model.UbiEvent;
 import com.ebay.sojourner.common.model.UbiSession;
 import com.ebay.sojourner.common.util.Constants;
+import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.common.util.SojTimestamp;
 import com.ebay.sojourner.common.util.TypeTransformUtil;
+import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.state.MapStateDesc;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.state.BroadcastState;
 import org.apache.flink.api.common.state.ReadOnlyBroadcastState;
@@ -34,7 +39,7 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
   private Counter agentDecCounter;
   private Counter agentIpIncCounter;
   private Counter agentIpDecCounter;
-
+  private Set<String> agentWhiteList;
   public AttributeBroadcastProcessFunctionForDetectable(OutputTag sessionOutputTag) {
     outputTag = sessionOutputTag;
   }
@@ -71,8 +76,9 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
           .md522Long(TypeTransformUtil.getMD5(ubiEvent.getAgentInfo()));
       Map<String, Map<Integer, Long[]>> agentSignature = attributeSignature.get("agent");
       String agent = long4AgentHash[0] + Constants.FIELD_DELIM + long4AgentHash[1];
+
       if (agentSignature != null && agentSignature.size() > 0
-          && agentSignature.containsKey(agent)) {
+          && agentSignature.containsKey(agent)&&!agentWhiteList.contains(agent)) {
         for (Map.Entry<Integer, Long[]> agentBotFlagMap :
             agentSignature.get(agent).entrySet()) {
           Long[] duration = agentBotFlagMap.getValue();
@@ -320,6 +326,15 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
 
   @Override
   public void open(Configuration parameters) throws Exception {
+     Set<String> agentWhiteListOrigin= FlinkEnvUtils.getSet(Property.AGENT_WHILTELIST);
+    agentWhiteList = new CopyOnWriteArraySet<>();
+
+     for(String agent :agentWhiteListOrigin){
+       long[] long4AgentHash = TypeTransformUtil
+               .md522Long(TypeTransformUtil.getMD5(agent));
+       agentWhiteList.add(long4AgentHash[0] + Constants.FIELD_DELIM + long4AgentHash[1]);
+     }
+
     ipCounter =
         getRuntimeContext()
             .getMetricGroup()

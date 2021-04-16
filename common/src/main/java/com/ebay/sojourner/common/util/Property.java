@@ -277,4 +277,7 @@ public class Property {
   // missing cnt exclude pagefamilies
   public static final String MISSING_CNT_EXCLUDE = "missing-cnt-exclude.u";
 
+  //whilte list user agent
+  public static final String AGENT_WHILTELIST = "agent-whitelist";
+
 }
