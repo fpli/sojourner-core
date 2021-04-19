@@ -1,0 +1,32 @@
+flink:
+  app:
+    name: Sojourner Integration Pre Prod Test
+    parallelism:
+      source: 10
+    source:
+      dc: slc
+
+kafka:
+  consumer:
+    group-id: sojourner-integration-test-customized-topic
+    topic:
+      - behavior.pulsarv2.test.dmp
+      - behavior.pulsarv2.test.ace-saveforlater
+    stream: behavior.pulsarv2.test
+    bootstrap-servers:
+      slc:
+        - rhs-kxwvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+
+    max-poll-records: 3000
+    # 16MB, default value is 50MB
+    fetch-max-bytes: 16777216
+    # 128KB, default value is 64KB
+    receive-buffer: 131072
+    fetch-max-wait-ms: 100
+    # 4MB, default value is 1MB
+    max-partitions-fetch-bytes: 4194304
+    auto-offset-reset: latest
