@@ -59,7 +59,7 @@ public class RheosAvroKafkaSerializer<T extends SpecificRecord> implements Kafka
 
   @Override
   public byte[] encodeValue(T data) {
-    Schema schema = data.getSchema();
+    Schema schema = serializerHelper.getSchema(this.schemaId);
     if (writer == null) {
       writer = new GenericDatumWriter<>(schema);
     }

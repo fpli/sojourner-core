@@ -61,7 +61,7 @@ flink:
             agent: behavior.totalv2.signature.agent-rno
             ip: behavior.totalv2.signature.ip-rno
         subject:
-          event: behavior.pulsarv2.sojevent.schema
+          event: behavior.sojourner.sojevent.schema
           session: behavior.pulsarv2.sojsession.schema
         message-key:
           session: guid

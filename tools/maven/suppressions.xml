@@ -65,5 +65,7 @@ under the License.
   <suppress checks="UncommentedMain"
     files="src/main/java/com/ebay/sojourner/distributor/pipeline/.*.java$"/>
   <suppress checks="UncommentedMain"
-            files="src/main/java/com/ebay/sojourner/tdq/pipeline/.*.java$"/>
+    files="src/main/java/com/ebay/sojourner/tdq/pipeline/.*.java$"/>
+  <suppress checks="UncommentedMain"
+    files="src/main/java/com/ebay/sojourner/integration/pipeline/.*.java$"/>
 </suppressions>
