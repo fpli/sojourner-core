@@ -32,11 +32,13 @@ import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.TPOOL_TA
 import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.TTYPE_TAG;
 import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.URL_QUERY_STRING_TAG;
 
+import com.ebay.sojourner.common.constant.ApplicationPayloadTags;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
 import java.util.Map;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
@@ -56,6 +58,8 @@ public class AddTagMapFunction extends RichMapFunction<SojEvent, RawSojEventWrap
     // add JetStream backward compatible tags in 'applicationPayload' field
     try {
       Map<String, String> applicationPayload = event.getApplicationPayload();
+      // generate UUID for per sojevent
+      applicationPayload.put(ApplicationPayloadTags.UUID, UUID.randomUUID().toString());
       // add tags
       if (event.getClientData().containsKey("TStamp")) {
         applicationPayload.put(EVENT_TS_TAG, event.getClientData().get("TStamp"));

@@ -1,6 +1,7 @@
 package com.ebay.sojourner.common.constant;
 
 public class ApplicationPayloadTags {
+  public static final String UUID = "js_sojuuid";
   public static final String CFLGS_TAG = "cflgs";
   public static final String AGENT_TAG = "Agent";
   public static final String EVENT_TS_TAG = "EventTS";
