@@ -19,16 +19,19 @@ public class PipelineMetricsCollectorProcessFunction extends ProcessFunction<Ubi
   private static final String siteToSink = "site_to_sink";
   private static final String sourceToSink = "source_to_sink";
   private static final String latency = "source_to_sink";
-  private static int latencyWindowSize;
+  private final int latencyWindowSize;
   private transient DropwizardHistogramWrapper siteToSourceWrapper;
   private transient DropwizardHistogramWrapper siteToSinkWrapper;
   private transient DropwizardHistogramWrapper sourceToSinkWrapper;
   private final Map<String, DropwizardHistogramWrapper> domainWrapperMap = new HashMap<>();
 
+  public PipelineMetricsCollectorProcessFunction(int latencyWindowSize) {
+    this.latencyWindowSize = latencyWindowSize;
+  }
+
   @Override
   public void open(Configuration parameters) throws Exception {
     super.open(parameters);
-    latencyWindowSize = 600000 / getRuntimeContext().getNumberOfParallelSubtasks() * 60;
     siteToSourceWrapper = getRuntimeContext().getMetricGroup()
         .addGroup(Constants.SOJ_METRICS_GROUP)
         .histogram(siteToSource, new DropwizardHistogramWrapper(new Histogram(

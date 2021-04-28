@@ -1,24 +1,26 @@
 flink:
   app:
-    name: Sojourner Distributor - Staging
+    name: Sojourner Distributor - Staging Bot
     parallelism:
-      source: 3
-      sink-kafka: 3
+      source: 1
+      sink-kafka: 1
     checkpoint:
       data-dir: /tmp/flink/sojourner/distributor/checkpoint
     source:
       dc: lvs
+      operator-name: Bot SojEvent Source
     sink:
       dc: lvs
+      operator-name: Bot SojEvent Sink
       kafka:
-        topic: behavior.trafficjam.sojevent.deadletter
+        topic: behavior.pulsar.sojevent.deadletter
 
 kafka:
   consumer:
-    stream: behavior.trafficjam
+    stream: behavior.totalv2
     group-id: sojourner-distributor-staging
     topic:
-      - behavior.trafficjam.event.bot
+      - behavior.totalv2.sojevent-bot
     bootstrap-servers:
       lvs:
         - rhs-rurvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
@@ -28,14 +30,14 @@ kafka:
         - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
 
   producer:
-    stream: behavior.trafficjam
+    stream: behavior.pulsar
     bootstrap-servers:
       lvs:
-        - rhs-rurvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-nbrvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-nbrvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-nbrvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-nbrvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-nbrvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
 
 rheos:
   registry-url: https://rheos-services.qa.ebay.com

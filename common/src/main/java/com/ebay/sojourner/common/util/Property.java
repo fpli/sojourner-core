@@ -144,6 +144,9 @@ public class Property {
   // flink - app name
   public static final String FLINK_APP_NAME = "flink.app.name";
 
+  // flink metric window size
+  public static final String METRIC_WINDOW_SIZE = "flink.app.metric.window-size";
+
   // flink source
   public static final String FLINK_APP_SOURCE_DC = "flink.app.source.dc";
   public static final String FLINK_APP_SOURCE_OP_NAME = "flink.app.source.operator-name";

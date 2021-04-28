@@ -23,6 +23,8 @@ flink:
         rno: Pathfinder RNO Source
         lvs: Pathfinder LVS Source
         slc: Pathfinder SLC Source
+    metric:
+      window-size: 70000
     uid:
       source:
         rno: pathfinder-rno-source
