@@ -124,6 +124,7 @@ public class SojUtils {
             && !sojEvent.getApplicationPayload().get("ciid").equals("null")) {
             sojEvent.setCiid(sojEvent.getApplicationPayload().get("ciid"));
         }
+        sojEvent.setCguid(ubiEvent.getCguid());
         return sojEvent;
     }
 

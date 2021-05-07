@@ -9,6 +9,7 @@ import java.util.Map;
 public class IdentityParser implements FieldParser<RawEvent, UbiEvent> {
 
   private static final String G_TAG = "g";
+  private static final String CG_TAG = "n";
 
   @Override
   public void parse(RawEvent rawEvent, UbiEvent ubiEvent) throws Exception {
@@ -18,6 +19,7 @@ public class IdentityParser implements FieldParser<RawEvent, UbiEvent> {
     map.putAll(rawEvent.getSojC());
 
     ubiEvent.setGuid(map.get(G_TAG));
+    ubiEvent.setCguid(map.get(CG_TAG));
     ubiEvent.setClientData(rawEvent.getClientData());
     ubiEvent.setUrlQueryString(rawEvent.getClientData().getUrlQueryString());
     ubiEvent.setPageName(rawEvent.getClientData().getTName());

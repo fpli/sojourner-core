@@ -39,10 +39,12 @@ import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
 import java.util.Map;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
 
+@Slf4j
 public class AddTagMapFunction extends RichMapFunction<SojEvent, RawSojEventWrapper> {
 
   private transient KafkaSerializer<SojEvent> serializer;
@@ -159,6 +161,7 @@ public class AddTagMapFunction extends RichMapFunction<SojEvent, RawSojEventWrap
       byte[] payloads = serializer.encodeValue(event);
       return new RawSojEventWrapper(event.getGuid(), event.getPageId(), null, payloads);
     } catch (Exception ex) {
+      log.error("Failed to add tag", ex);
       throw new RuntimeException(ex);
     }
   }
