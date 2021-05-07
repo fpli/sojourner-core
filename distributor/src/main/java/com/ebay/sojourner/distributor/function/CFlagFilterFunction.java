@@ -15,6 +15,7 @@ public class CFlagFilterFunction extends RichFilterFunction<SojEvent> {
     Map<String, String> applicationPayload = sojEvent.getApplicationPayload();
     return applicationPayload == null
         || StringUtils.isBlank(applicationPayload.get(CFLGS_TAG))
-        || !FlagsUtils.isBitSet(applicationPayload.get(CFLGS_TAG), 0);
+        || !FlagsUtils.isBitSet(applicationPayload.get(CFLGS_TAG), 0)
+        || sojEvent.getPageId() != null;
   }
 }
