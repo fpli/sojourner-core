@@ -29,6 +29,16 @@ kafka:
         - rhs-rurvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
 
+    max-poll-records: 500
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 128KB, default value is 64KB
+    receive-buffer: 131072
+    fetch-max-wait-ms: 100
+    # 1MB, default value is 1MB
+    max-partitions-fetch-bytes: 1048576
+    auto-offset-reset: latest
+
   producer:
     stream: behavior.pulsar
     bootstrap-servers:
@@ -38,6 +48,19 @@ kafka:
         - rhs-nbrvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-nbrvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-nbrvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+
+    # 16KB
+    batch-size: 16384
+    acks: 1
+    linger-ms: 10
+    # 30s
+    request-timeout-ms: 30000
+    retries: 30
+    # 32MB
+    buffer-memory: 33554432
+    compression-type: lz4
+    # 2min
+    delivery-timeout-ms: 120000
 
 
 rheos:
