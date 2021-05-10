@@ -19,6 +19,7 @@ class CFlagFilterFunctionTest {
   void setUp() {
     cFlagFilterFunction = new CFlagFilterFunction();
     sojEvent = new SojEvent();
+    sojEvent.setPageId(3084);
   }
 
   @Test
