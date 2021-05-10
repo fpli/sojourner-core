@@ -13,9 +13,9 @@ public class CFlagFilterFunction extends RichFilterFunction<SojEvent> {
   @Override
   public boolean filter(SojEvent sojEvent) throws Exception {
     Map<String, String> applicationPayload = sojEvent.getApplicationPayload();
-    return applicationPayload == null
+    return sojEvent.getPageId() != null
+        && (applicationPayload == null
         || StringUtils.isBlank(applicationPayload.get(CFLGS_TAG))
-        || !FlagsUtils.isBitSet(applicationPayload.get(CFLGS_TAG), 0)
-        || sojEvent.getPageId() != null;
+        || !FlagsUtils.isBitSet(applicationPayload.get(CFLGS_TAG), 0));
   }
 }
