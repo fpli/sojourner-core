@@ -13,6 +13,10 @@ public class UbiEventMapWithStateFunction
 
   @Override
   public UbiEvent map(UbiEvent value, SessionAccumulator sessionAccumulator) throws Exception {
+
+    value.setUserAgent(sessionAccumulator.getUbiSession().getUserAgent());
+    value.setIp(sessionAccumulator.getUbiSession().getClientIp());
+
     if (!value.isNewSession() && sessionAccumulator.getUbiSession().getSessionId() == null) {
       sessionAccumulator.getUbiSession().setSessionId(value.getSessionId());
       sessionAccumulator.getUbiSession().setSessionSkey(value.getSessionSkey());

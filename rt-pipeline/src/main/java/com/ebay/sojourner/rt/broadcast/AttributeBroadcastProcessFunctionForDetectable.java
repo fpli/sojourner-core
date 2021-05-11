@@ -55,8 +55,8 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
       UbiEvent ubiEvent = signatureDetectable.left();
 
       // ip
-      String ip = TypeTransformUtil.ipToInt(ubiEvent.getClientIP()) == null ? "0"
-          : TypeTransformUtil.ipToInt(ubiEvent.getClientIP()).toString();
+      String ip = TypeTransformUtil.ipToInt(ubiEvent.getIp()) == null ? "0"
+          : TypeTransformUtil.ipToInt(ubiEvent.getIp()).toString();
       Map<String, Map<Integer, Long[]>> ipSignature = attributeSignature.get("ip");
       if (ipSignature != null && ipSignature.size() > 0 && ipSignature.containsKey(ip)) {
         for (Map.Entry<Integer, Long[]> ipBotFlagMap :
@@ -73,7 +73,7 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
 
       // agent
       long[] long4AgentHash = TypeTransformUtil
-          .md522Long(TypeTransformUtil.getMD5(ubiEvent.getAgentInfo()));
+          .md522Long(TypeTransformUtil.getMD5(ubiEvent.getUserAgent()));
       Map<String, Map<Integer, Long[]>> agentSignature = attributeSignature.get("agent");
       String agent = long4AgentHash[0] + Constants.FIELD_DELIM + long4AgentHash[1];
 
@@ -94,8 +94,8 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
       // agentIp
       String agentIp =
           long4AgentHash[0] + Constants.FIELD_DELIM + long4AgentHash[1] + Constants.FIELD_DELIM + (
-              TypeTransformUtil.ipToInt(ubiEvent.getClientIP()) == null ? "0"
-                  : TypeTransformUtil.ipToInt(ubiEvent.getClientIP()).toString());
+              TypeTransformUtil.ipToInt(ubiEvent.getIp()) == null ? "0"
+                  : TypeTransformUtil.ipToInt(ubiEvent.getIp()).toString());
       Map<String, Map<Integer, Long[]>> agentIpSignature = attributeSignature.get("agentIp");
       if (agentIpSignature != null && agentIpSignature.size() > 0
           && agentIpSignature.containsKey(agentIp)) {
@@ -111,7 +111,7 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
         }
       }
 
-      //      if ((UbiSessionHelper.isAgentDeclarative(ubiEvent.getAgentInfo()) && ubiEvent
+      //      if ((UbiSessionHelper.isAgentDeclarative(ubiEvent.getUserAgent()) && ubiEvent
       //      .getBotFlags()
       //          .contains(223))
       //          || (ubiEvent.getBotFlags().contains(220) && ubiEvent.getBotFlags().contains
@@ -119,7 +119,7 @@ public class AttributeBroadcastProcessFunctionForDetectable extends
       //        ubiEvent.getBotFlags().add(202);
       //      }
       //
-      //      if ((UbiSessionHelper.isAgentDeclarative(ubiEvent.getAgentInfo()) && ubiEvent
+      //      if ((UbiSessionHelper.isAgentDeclarative(ubiEvent.getUserAgent()) && ubiEvent
       //      .getBotFlags()
       //          .contains(223))
       //          || (ubiEvent.getBotFlags().contains(220) && ubiEvent.getBotFlags().contains

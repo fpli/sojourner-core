@@ -88,6 +88,8 @@ public class UbiEvent implements Serializable {
   private String streamId;
   private boolean rv;
   private String cguid;
+  private String userAgent;
+  private String ip;
 
   public void updateSessionId() {
     this.sessionId = concatTimestamp(this.guid, this.eventTimestamp);
