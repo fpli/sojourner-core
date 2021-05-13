@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 @Slf4j
 public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator> {
@@ -59,13 +60,17 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
     boolean isEarlyNoIframeEvent = SojEventTimeUtil.isEarlyEvent(event.getEventTimestamp(),
             sessionAccumulator.getUbiSession().getStartTimestampNOIFRAME());
     if (isEarlyEvent) {
-      if (!ubiSession.isFindFirst()) {
+      if ((!ubiSession.isFindFirst()) &&
+              StringUtils.isNotBlank(event.getAgentInfo())
+              && StringUtils.isNotBlank(event.getClientIP())) {
         ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
       }
     } else if (isEarlyEventByMultiCols) {
-      if (!ubiSession.isFindFirst()) {
+      if ((!ubiSession.isFindFirst()) &&
+              StringUtils.isNotBlank(event.getAgentInfo())
+              && StringUtils.isNotBlank(event.getClientIP())) {
         ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
