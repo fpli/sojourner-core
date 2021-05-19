@@ -14,6 +14,7 @@ public class SojEventDistProcessFunction extends
     BroadcastProcessFunction<RawSojEventWrapper, PageIdTopicMapping, RawSojEventWrapper> {
 
   private final MapStateDescriptor<Integer, PageIdTopicMapping> stateDescriptor;
+  private final int ALL_PAGE = 0;
 
   public SojEventDistProcessFunction(MapStateDescriptor<Integer, PageIdTopicMapping> descriptor) {
     this.stateDescriptor = descriptor;
@@ -25,10 +26,19 @@ public class SojEventDistProcessFunction extends
     ReadOnlyBroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);
 
+    // distribute events based on pageid
     int pageId = sojEventWrapper.getPageId();
     PageIdTopicMapping mapping = broadcastState.get(pageId);
     if (mapping != null) {
       for (String topic : mapping.getTopics()) {
+        sojEventWrapper.setTopic(topic);
+        out.collect(sojEventWrapper);
+      }
+    }
+
+    // distribute all events if all_page is set
+    if (broadcastState.get(ALL_PAGE) != null) {
+      for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
         sojEventWrapper.setTopic(topic);
         out.collect(sojEventWrapper);
       }
@@ -41,6 +51,11 @@ public class SojEventDistProcessFunction extends
     log.info("process broadcast pageId topic mapping: {}", mapping);
     BroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);
-    broadcastState.put(mapping.getPageId(), mapping);
+    if (mapping.getTopics() == null) {
+      // remove topic/pageid from state
+      broadcastState.remove(mapping.getPageId());
+    } else {
+      broadcastState.put(mapping.getPageId(), mapping);
+    }
   }
 }

@@ -3,6 +3,7 @@ flink:
     name: Sojourner Distributor - PRE PROD
     parallelism:
       source: 200
+      filter: 200
       sink-kafka: 200
     source:
       dc: rno
@@ -12,6 +13,10 @@ flink:
       operator-name: Non-bot SojEvent Sink
       kafka:
         topic: behavior.pulsarv2.test.default
+    filter:
+      topic-config:
+        - "ads-mfe:behavior.pulsarv2.test.ads-mfe"
+        - "dss-gro:behavior.pulsarv2.test.dss-gro"
 
 kafka:
   consumer:

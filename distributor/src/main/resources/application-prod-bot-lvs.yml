@@ -3,6 +3,7 @@ flink:
     name: Sojourner Distributor Bot - LVS
     parallelism:
       source: 150
+      filter: 1
       sink-kafka: 150
     source:
       dc: lvs

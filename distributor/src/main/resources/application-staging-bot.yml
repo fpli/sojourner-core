@@ -3,6 +3,7 @@ flink:
     name: Sojourner Distributor - Staging Bot
     parallelism:
       source: 1
+      filter: 1
       sink-kafka: 1
     checkpoint:
       data-dir: /tmp/flink/sojourner/distributor/checkpoint

@@ -1,9 +1,10 @@
 package com.ebay.sojourner.common.model;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 
 @Data
 public class CustomTopicConfig {
-  private List<PageIdTopicMapping> mappings;
+  private Set<Integer> pageIds = new HashSet<>();
 }

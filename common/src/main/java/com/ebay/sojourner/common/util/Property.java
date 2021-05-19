@@ -192,6 +192,7 @@ public class Property {
   public static final String AGENT_PARALLELISM = "flink.app.parallelism.agent";
   public static final String IP_PARALLELISM = "flink.app.parallelism.ip";
   public static final String BROADCAST_PARALLELISM = "flink.app.parallelism.broadcast";
+  public static final String FILTER_PARALLELISM = "flink.app.parallelism.filter";
   public static final String METRICS_PARALLELISM = "flink.app.parallelism.metrics";
   public static final String SINK_KAFKA_PARALLELISM = "flink.app.parallelism.sink-kafka";
   public static final String METRIICS_COLLECTOR_PARALLELISM = "flink.app.parallelism.metrics-collector";
