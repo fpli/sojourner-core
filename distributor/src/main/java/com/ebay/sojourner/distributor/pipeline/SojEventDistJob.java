@@ -16,7 +16,6 @@ import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getList;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getLong;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
-import static com.ebay.sojourner.flink.common.OutputTagConstants.SOJ_EVENT_NON_BOT;
 
 import com.ebay.sojourner.common.model.CustomTopicConfig;
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
@@ -27,7 +26,6 @@ import com.ebay.sojourner.distributor.function.AddTagMapFunction;
 import com.ebay.sojourner.distributor.function.CFlagFilterFunction;
 import com.ebay.sojourner.distributor.function.CustomTopicConfigSourceFunction;
 import com.ebay.sojourner.distributor.function.SojEventFilterProcessFunction;
-import com.ebay.sojourner.distributor.function.SojEventSideOutputProcessFunction;
 import com.ebay.sojourner.distributor.function.SojEventToRawSojEventWrapperMapFunction;
 import com.ebay.sojourner.distributor.schema.RawSojEventWrapperSerializationSchema;
 import com.ebay.sojourner.distributor.schema.SojEventDeserializationSchema;
@@ -59,8 +57,6 @@ public class SojEventDistJob {
     final String FILTER_CFLAG_UID = "filter-cflag-events";
     final String ADD_TAG_OP_NAME = "Add Tag";
     final String ADD_TAG_OP_UID = "add-tag";
-    final String SOJ_EVENT_SIDE_OUTPUT_OP_NAME = "Side Output SojEvent Non-Bot";
-    final String SOJ_EVENT_SIDE_OUTPUT_OP_UID = "side-output-sojevent-non-bot";
     final String MAP_RAWSOJEVENTWRAPPER_OP_NAME = "SojEvent to RawSojEventWrapper";
     final String MAP_RAWSOJEVENTWRAPPER_OP_UID = "sojevent-to-rawsojeventwrapper";
     final String DIST_OP_NAME = "SojEvent Filter and Distribution";
@@ -74,36 +70,30 @@ public class SojEventDistJob {
     SourceDataStreamBuilder<SojEvent> dataStreamBuilder =
         new SourceDataStreamBuilder<>(executionEnvironment);
 
-    DataStream<SojEvent> sojEventDataStream = dataStreamBuilder
+    DataStream<SojEvent> sojEventSourceDataStream = dataStreamBuilder
         .dc(DataCenter.of(getString(FLINK_APP_SOURCE_DC)))
         .parallelism(getInteger(SOURCE_PARALLELISM))
         .operatorName(DATA_SOURCE_OP_NAME)
         .uid(DATA_SOURCE_UID)
         .build(new SojEventDeserializationSchema());
 
-    DataStream<SojEvent> sojEventFilteredDataStream =
-        sojEventDataStream.filter(new CFlagFilterFunction())
-                          .name(FILTER_CFLAG_OP_NAME)
-                          .uid(FILTER_CFLAG_UID)
-                          .setParallelism(getInteger(SOURCE_PARALLELISM));
+    DataStream<SojEvent> sojEventFilteredDataStream = sojEventSourceDataStream
+        .filter(new CFlagFilterFunction())
+        .name(FILTER_CFLAG_OP_NAME)
+        .uid(FILTER_CFLAG_UID)
+        .setParallelism(getInteger(SOURCE_PARALLELISM));
 
-    DataStream<SojEvent> addTagDataStream =
-        sojEventFilteredDataStream.map(new AddTagMapFunction())
-                                  .name(ADD_TAG_OP_NAME)
-                                  .uid(ADD_TAG_OP_UID)
-                                  .setParallelism(getInteger(SOURCE_PARALLELISM));
+    DataStream<SojEvent> sojEventDataStream = sojEventFilteredDataStream
+        .map(new AddTagMapFunction())
+        .name(ADD_TAG_OP_NAME)
+        .uid(ADD_TAG_OP_UID)
+        .setParallelism(getInteger(SOURCE_PARALLELISM));
 
-    SingleOutputStreamOperator<SojEvent> outputStream =
-        addTagDataStream.process(new SojEventSideOutputProcessFunction())
-                        .name(SOJ_EVENT_SIDE_OUTPUT_OP_NAME)
-                        .uid(SOJ_EVENT_SIDE_OUTPUT_OP_UID)
-                        .setParallelism(getInteger(FILTER_PARALLELISM));
-
-    DataStream<RawSojEventWrapper> mappedDataStream =
-        outputStream.map(new SojEventToRawSojEventWrapperMapFunction())
-                    .name(MAP_RAWSOJEVENTWRAPPER_OP_NAME)
-                    .uid(MAP_RAWSOJEVENTWRAPPER_OP_UID)
-                    .setParallelism(getInteger(SOURCE_PARALLELISM));
+    DataStream<RawSojEventWrapper> rawSojEventWrapperDataStream = sojEventDataStream
+        .map(new SojEventToRawSojEventWrapperMapFunction())
+        .name(MAP_RAWSOJEVENTWRAPPER_OP_NAME)
+        .uid(MAP_RAWSOJEVENTWRAPPER_OP_UID)
+        .setParallelism(getInteger(SOURCE_PARALLELISM));
 
     ListStateDescriptor<CustomTopicConfig> listStateDescriptor = new ListStateDescriptor<>(
         "customTopicConfigListState",
@@ -126,30 +116,31 @@ public class SojEventDistJob {
     BroadcastStream<PageIdTopicMapping> broadcastStream =
         configSourceStream.broadcast(stateDescriptor);
 
+    // regular sojevents based on pageid
     DataStream<RawSojEventWrapper> sojEventDistStream =
-        mappedDataStream.connect(broadcastStream)
-                        .process(new SojEventDistProcessFunction(stateDescriptor))
-                        .name(DIST_OP_NAME)
-                        .uid(DIST_UID)
-                        .setParallelism(getInteger(SOURCE_PARALLELISM));
+        rawSojEventWrapperDataStream.connect(broadcastStream)
+                                    .process(new SojEventDistProcessFunction(stateDescriptor))
+                                    .name(DIST_OP_NAME)
+                                    .uid(DIST_UID)
+                                    .setParallelism(getInteger(SOURCE_PARALLELISM));
 
-    SingleOutputStreamOperator<RawSojEventWrapper> filteredOutputStream = outputStream
-        .getSideOutput(SOJ_EVENT_NON_BOT)
+    // special sojevents based on complicated filtering logic
+    SingleOutputStreamOperator<RawSojEventWrapper> filteredDataStream = sojEventDataStream
         .process(new SojEventFilterProcessFunction(getList(FLINK_APP_FILTER_TOPIC_CONFIG_KEY)))
         .name(SOJ_EVENT_FILTER_OP_NAME)
         .uid(SOJ_EVENT_FILTER_OP_UID)
         .setParallelism(getInteger(FILTER_PARALLELISM));
 
-    DataStream<RawSojEventWrapper> unionDataStream = sojEventDistStream.union(filteredOutputStream);
+    DataStream<RawSojEventWrapper> allDataStream = sojEventDistStream.union(filteredDataStream);
 
-    // sink
+    // sink to kafka
     KafkaProducerConfig config = KafkaProducerConfig.ofDC(getString(FLINK_APP_SINK_DC));
     FlinkKafkaProducerFactory producerFactory = new FlinkKafkaProducerFactory(config);
-    unionDataStream.addSink(producerFactory.get(
-        getString(FLINK_APP_SINK_KAFKA_TOPIC), new RawSojEventWrapperSerializationSchema()))
-                   .setParallelism(getInteger(SINK_KAFKA_PARALLELISM))
-                   .name(SINK_OP_NAME)
-                   .uid(SINK_UID);
+    allDataStream.addSink(producerFactory.get(getString(FLINK_APP_SINK_KAFKA_TOPIC),
+                                              new RawSojEventWrapperSerializationSchema()))
+                 .setParallelism(getInteger(SINK_KAFKA_PARALLELISM))
+                 .name(SINK_OP_NAME)
+                 .uid(SINK_UID);
 
     // Submit this job
     FlinkEnvUtils.execute(executionEnvironment, getString(FLINK_APP_NAME));
