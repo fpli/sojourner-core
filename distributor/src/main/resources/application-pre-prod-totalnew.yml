@@ -15,7 +15,7 @@ flink:
         topic: behavior.pulsarv2.test.default
     filter:
       topic-config:
-        - ""
+        - "dss-gro:behavior.pulsarv2.test.dss-gro"
 
 kafka:
   consumer:

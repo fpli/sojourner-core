@@ -6,7 +6,7 @@ flink:
       filter: 1
       sink-kafka: 150
     source:
-      dc: rno
+      dc: lvs
       operator-name: Bot SojEvent Source
     sink:
       dc: slc

@@ -6,7 +6,7 @@ flink:
       filter: 200
       sink-kafka: 200
     source:
-      dc: rno
+      dc: lvs
       operator-name: Non-bot SojEvent Source
     sink:
       dc: slc
@@ -15,7 +15,6 @@ flink:
         topic: behavior.pulsarv2.test.default
     filter:
       topic-config:
-        - "ads-mfe:behavior.pulsarv2.test.ads-mfe"
         - "dss-gro:behavior.pulsarv2.test.dss-gro"
 
 kafka:
