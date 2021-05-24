@@ -1,9 +1,11 @@
 package com.ebay.sojourner.distributor.schema;
 
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import com.ebay.sojourner.common.constant.SojHeaders;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.google.common.collect.Lists;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -16,7 +18,7 @@ public class RawSojEventWrapperSerializationSchema
 
   private static final String SCHEMA_VERSION = "2";
   private static final List<Header> headers = Lists.newArrayList(
-      new RecordHeader("schemaVersion", SCHEMA_VERSION.getBytes(StandardCharsets.UTF_8)));
+      new RecordHeader(SojHeaders.SCHEMA_VERSION, SCHEMA_VERSION.getBytes(UTF_8)));
 
   @Override
   public ProducerRecord<byte[], byte[]> serialize(RawSojEventWrapper element,

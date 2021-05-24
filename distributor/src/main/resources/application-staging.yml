@@ -17,7 +17,7 @@ flink:
         topic: behavior.pulsar.sojevent.deadletter
     filter:
       topic-config:
-        - "ads-mfe:behavior.pulsar.customized.ads-mfe"
+        - "dss-gro:behavior.pulsar.customized.dss-gro"
 
 kafka:
   consumer:

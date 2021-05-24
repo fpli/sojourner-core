@@ -1,6 +1,5 @@
 package com.ebay.sojourner.distributor.pipeline;
 
-import static com.ebay.sojourner.common.util.Property.FILTER_PARALLELISM;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_NAME;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_DC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_KAFKA_TOPIC;
@@ -25,7 +24,6 @@ import com.ebay.sojourner.distributor.broadcast.SojEventDistProcessFunction;
 import com.ebay.sojourner.distributor.function.AddTagMapFunction;
 import com.ebay.sojourner.distributor.function.CFlagFilterFunction;
 import com.ebay.sojourner.distributor.function.CustomTopicConfigSourceFunction;
-import com.ebay.sojourner.distributor.function.SojEventFilterProcessFunction;
 import com.ebay.sojourner.distributor.function.SojEventToRawSojEventWrapperMapFunction;
 import com.ebay.sojourner.distributor.schema.RawSojEventWrapperSerializationSchema;
 import com.ebay.sojourner.distributor.schema.SojEventDeserializationSchema;
@@ -41,7 +39,6 @@ import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.BroadcastStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class SojEventDistJob {
@@ -51,7 +48,7 @@ public class SojEventDistJob {
 
     final String DATA_SOURCE_OP_NAME = getString(FLINK_APP_SOURCE_OP_NAME);
     final String DATA_SOURCE_UID = "sojevent-dist-source";
-    final String CONFIG_SOURCE_OP_NAME = "PageId Topic Mapping Source";
+    final String CONFIG_SOURCE_OP_NAME = "PageId Topic Mapping Configs Source";
     final String CONFIG_SOURCE_UID = "pageId-topic-mapping-source";
     final String FILTER_CFLAG_OP_NAME = "Filter out cflag events";
     final String FILTER_CFLAG_UID = "filter-cflag-events";
@@ -61,8 +58,6 @@ public class SojEventDistJob {
     final String MAP_RAWSOJEVENTWRAPPER_OP_UID = "sojevent-to-rawsojeventwrapper";
     final String DIST_OP_NAME = "SojEvent Filter and Distribution";
     final String DIST_UID = "sojevent-filter-and-dist";
-    final String SOJ_EVENT_FILTER_OP_NAME = "Filter SojEvent Non-Bot";
-    final String SOJ_EVENT_FILTER_OP_UID = "filter-sojevent-non-bot";
     final String SINK_OP_NAME = getString(FLINK_APP_SINK_OP_NAME);
     final String SINK_UID = "sojevent-dist-sink";
     final String FLINK_APP_FILTER_TOPIC_CONFIG_KEY = "flink.app.filter.topic-config";
@@ -119,28 +114,21 @@ public class SojEventDistJob {
     // regular sojevents based on pageid
     DataStream<RawSojEventWrapper> sojEventDistStream =
         rawSojEventWrapperDataStream.connect(broadcastStream)
-                                    .process(new SojEventDistProcessFunction(stateDescriptor))
+                                    .process(new SojEventDistProcessFunction(stateDescriptor,
+                                                 getList(FLINK_APP_FILTER_TOPIC_CONFIG_KEY)))
                                     .name(DIST_OP_NAME)
                                     .uid(DIST_UID)
                                     .setParallelism(getInteger(SOURCE_PARALLELISM));
 
-    // special sojevents based on complicated filtering logic
-    SingleOutputStreamOperator<RawSojEventWrapper> filteredDataStream = sojEventDataStream
-        .process(new SojEventFilterProcessFunction(getList(FLINK_APP_FILTER_TOPIC_CONFIG_KEY)))
-        .name(SOJ_EVENT_FILTER_OP_NAME)
-        .uid(SOJ_EVENT_FILTER_OP_UID)
-        .setParallelism(getInteger(FILTER_PARALLELISM));
-
-    DataStream<RawSojEventWrapper> allDataStream = sojEventDistStream.union(filteredDataStream);
 
     // sink to kafka
     KafkaProducerConfig config = KafkaProducerConfig.ofDC(getString(FLINK_APP_SINK_DC));
     FlinkKafkaProducerFactory producerFactory = new FlinkKafkaProducerFactory(config);
-    allDataStream.addSink(producerFactory.get(getString(FLINK_APP_SINK_KAFKA_TOPIC),
-                                              new RawSojEventWrapperSerializationSchema()))
-                 .setParallelism(getInteger(SINK_KAFKA_PARALLELISM))
-                 .name(SINK_OP_NAME)
-                 .uid(SINK_UID);
+    sojEventDistStream.addSink(producerFactory.get(getString(FLINK_APP_SINK_KAFKA_TOPIC),
+                                                   new RawSojEventWrapperSerializationSchema()))
+                      .setParallelism(getInteger(SINK_KAFKA_PARALLELISM))
+                      .name(SINK_OP_NAME)
+                      .uid(SINK_UID);
 
     // Submit this job
     FlinkEnvUtils.execute(executionEnvironment, getString(FLINK_APP_NAME));
