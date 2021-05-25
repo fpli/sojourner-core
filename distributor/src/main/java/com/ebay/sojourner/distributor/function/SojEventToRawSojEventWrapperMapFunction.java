@@ -3,13 +3,13 @@ package com.ebay.sojourner.distributor.function;
 import static com.ebay.sojourner.common.constant.SojHeaders.IS_VALID_EVENT;
 import static com.ebay.sojourner.common.constant.SojHeaders.PLACEMENT_ID;
 import static com.ebay.sojourner.common.constant.SojHeaders.SITE_ID;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.ebay.sojourner.common.util.ByteArrayUtils;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.common.util.ByteArrayUtils;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.flink.api.common.functions.RichMapFunction;
@@ -32,9 +32,9 @@ public class SojEventToRawSojEventWrapperMapFunction
     Map<String, byte[]> headers = new HashMap<>();
     headers.put(IS_VALID_EVENT, ByteArrayUtils.fromBoolean(isValidEvent(event)));
     String plmt = event.getApplicationPayload().get("plmt");
-    headers.put(PLACEMENT_ID, plmt == null ? null : plmt.getBytes(StandardCharsets.UTF_8));
+    headers.put(PLACEMENT_ID, plmt == null ? null : plmt.getBytes(UTF_8));
     String siteId = event.getSiteId();
-    headers.put(SITE_ID, siteId == null ? null : siteId.getBytes(StandardCharsets.UTF_8));
+    headers.put(SITE_ID, siteId == null ? null : siteId.getBytes(UTF_8));
 
     return new RawSojEventWrapper(event.getGuid(), event.getPageId(), event.getBot(), headers,
                                   null, payloads);

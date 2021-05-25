@@ -6,6 +6,7 @@ public class ByteArrayUtils {
   }
 
   public static boolean toBoolean(byte[] value) {
+    if (value == null) return false;
     return value[0] == 1;
   }
 

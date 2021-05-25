@@ -106,6 +106,7 @@ public class SojEventDistProcessFunction extends
   private boolean isEventForDssGro(RawSojEventWrapper sojEventWrapper) {
     Map<String, byte[]> headers = sojEventWrapper.getHeaders();
     return ByteArrayUtils.toBoolean(headers.get(IS_VALID_EVENT))
+        && headers.get(SITE_ID) != null
         && SITE_IDS.contains(new String(headers.get(SITE_ID), UTF_8));
   }
 
