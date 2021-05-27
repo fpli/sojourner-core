@@ -59,6 +59,15 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
             sessionAccumulator.getUbiSession().getStartTimestamp());
     boolean isEarlyNoIframeEvent = SojEventTimeUtil.isEarlyEvent(event.getEventTimestamp(),
             sessionAccumulator.getUbiSession().getStartTimestampNOIFRAME());
+
+    if((StringUtils.isBlank(ubiSession.getUserAgent())
+            || StringUtils.isBlank(ubiSession.getClientIp()))
+            && (StringUtils.isNotBlank(event.getAgentInfo())
+            && StringUtils.isNotBlank(event.getClientIP()))) {
+      ubiSession.setUserAgent(event.getAgentInfo());
+      ubiSession.setClientIp(event.getClientIP());
+    }
+
     if (isEarlyEvent) {
       if ((!ubiSession.isFindFirst()) &&
               StringUtils.isNotBlank(event.getAgentInfo())
