@@ -40,6 +40,7 @@
     <!--<flink.version>1.10.0</flink.version>-->
     <flink.version>1.11.0</flink.version>
     <rheos.client.version>2.0.8</rheos.client.version>
+    <rheos.job.uploader.plugin.version>1.0.1-SNAPSHOT</rheos.job.uploader.plugin.version>
     <calcite.version>1.22.0</calcite.version>
     <http.core.version>4.4.13</http.core.version>
     <junit-jupiter.version>5.6.2</junit-jupiter.version>
@@ -682,6 +683,26 @@
             <target>${java.version}</target>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <tarLongFileMode>posix</tarLongFileMode>
+          </configuration>
+        </plugin>
+
+        <!--job-uploader-maven-plugin-->
+        <plugin>
+          <groupId>io.ebay.rheos.streaming</groupId>
+          <artifactId>job-uploader-maven-plugin</artifactId>
+          <version>${rheos.job.uploader.plugin.version}</version>
+        </plugin>
 
         <!--  Checkstyle plugin  -->
         <plugin>
@@ -713,13 +734,7 @@
           </configuration>
         </plugin>
 
-        <!--  Spotbugs for code statistics analysis  -->
-        <plugin>
-          <groupId>com.github.spotbugs</groupId>
-          <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.0.0</version>
-        </plugin>
-
+        <!-- Test related plugins -->
         <!-- Surefire runs all Java tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -742,27 +757,7 @@
             </systemPropertyVariables>
           </configuration>
         </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.1.0</version>
-          <configuration>
-            <tarLongFileMode>posix</tarLongFileMode>
-          </configuration>
-        </plugin>
-
-        <!--job-uploader-maven-plugin-->
-        <plugin>
-          <groupId>io.ebay.rheos.streaming</groupId>
-          <artifactId>job-uploader-maven-plugin</artifactId>
-          <version>1.0-SNAPSHOT</version>
-        </plugin>
+        <!-- Jacoco -->
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
@@ -806,11 +801,20 @@
             </execution>
           </executions>
         </plugin>
+        <!-- Spotbugs for code statistics analysis  -->
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>4.0.0</version>
+        </plugin>
+        <!--  Sonarqube  -->
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
           <artifactId>sonar-maven-plugin</artifactId>
           <version>3.7.0.1746</version>
         </plugin>
+
+        <!--  Misc plugins  -->
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
@@ -818,6 +822,11 @@
           <configuration>
             <generateBackupPoms>false</generateBackupPoms>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-help-plugin</artifactId>
+          <version>3.2.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -850,6 +859,10 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

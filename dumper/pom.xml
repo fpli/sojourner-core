@@ -28,7 +28,7 @@
       <version>${project.version}</version>
     </dependency>
 
-    <!--  TestThreadLocal Dependencies  -->
+    <!--  Test Dependencies  -->
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-test-utils_${scala.binary.version}</artifactId>
