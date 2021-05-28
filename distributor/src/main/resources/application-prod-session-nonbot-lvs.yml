@@ -1,0 +1,22 @@
+flink:
+  app:
+    name: Sojourner Session Distributor - LVS
+    parallelism:
+      source: 50
+      sink-kafka: 50
+    source:
+      dc: lvs
+      operator-name: Non-bot SojSession Source
+    sink:
+      dc: slc
+      operator-name: Non-bot SojSession Sink
+      kafka:
+        topic: behavior.pulsar.sojsession.sessionend
+
+kafka:
+  consumer:
+    stream: behavior.totalv2
+    group-id: sojourner-distributor-prod-lvs
+    topic:
+      - behavior.totalv2.sojsession-nonbot-rno
+      - behavior.totalv2.sojsession-nonbot-lvs

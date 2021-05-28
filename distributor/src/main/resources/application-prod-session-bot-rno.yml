@@ -1,0 +1,22 @@
+flink:
+  app:
+    name: Sojourner Session Distributor Bot - RNO
+    parallelism:
+      source: 50
+      sink-kafka: 50
+    source:
+      dc: rno
+      operator-name: Bot SojSession Source
+    sink:
+      dc: rno
+      operator-name: Bot SojSession Sink
+      kafka:
+        topic: behavior.pulsar.sojsession.botsession
+
+kafka:
+  consumer:
+    stream: behavior.totalv2
+    group-id: sojourner-distributor-prod-rno
+    topic:
+      - behavior.totalv2.sojsession-bot-rno
+      - behavior.totalv2.sojsession-bot-lvs
