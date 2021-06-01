@@ -23,7 +23,7 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
   @Override
   public void init() throws Exception {
     badIPPages = PropertyUtils.getIntegerSet(
-            UBIConfig.getString(Property.IP_EXCLUDE_PAGES), Property.PROPERTY_DELIMITER);
+        UBIConfig.getString(Property.IP_EXCLUDE_PAGES), Property.PROPERTY_DELIMITER);
     log.info("UBIConfig.getString(Property.IP_EXCLUDE_PAGES): {}",
         UBIConfig.getString(Property.IP_EXCLUDE_PAGES));
     String patternStr = UBIConfig.getString(Property.EXCLUDE_IP_PATTERN);
@@ -53,12 +53,12 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
     ubiSession.setAgentInfo(event.getAgentInfo());
 
     boolean isEarlyEvent = SojEventTimeUtil.isEarlyEvent(event.getEventTimestamp(),
-            ubiSession.getAbsStartTimestamp());
+        ubiSession.getAbsStartTimestamp());
     boolean isEarlyEventByMultiCols = SojEventTimeUtil.isEarlyByMultiCOls(event, ubiSession);
     boolean isEarlyValidEvent = SojEventTimeUtil.isEarlyEvent(event.getEventTimestamp(),
-            sessionAccumulator.getUbiSession().getStartTimestamp());
+        sessionAccumulator.getUbiSession().getStartTimestamp());
     boolean isEarlyNoIframeEvent = SojEventTimeUtil.isEarlyEvent(event.getEventTimestamp(),
-            sessionAccumulator.getUbiSession().getStartTimestampNOIFRAME());
+        sessionAccumulator.getUbiSession().getStartTimestampNOIFRAME());
 
     if((StringUtils.isBlank(ubiSession.getUserAgent())
             || StringUtils.isBlank(ubiSession.getClientIp()))
@@ -70,20 +70,26 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
 
     if (isEarlyEvent) {
       if ((!ubiSession.isFindFirst()) &&
-              StringUtils.isNotBlank(event.getAgentInfo())
-              && StringUtils.isNotBlank(event.getClientIP())) {
+          (StringUtils.isNotBlank(event.getAgentInfo())
+              || StringUtils.isNotBlank(event.getClientIP()))) {
         ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
       }
     } else if (isEarlyEventByMultiCols) {
       if ((!ubiSession.isFindFirst()) &&
-              StringUtils.isNotBlank(event.getAgentInfo())
-              && StringUtils.isNotBlank(event.getClientIP())) {
+          (StringUtils.isNotBlank(event.getAgentInfo())
+              || StringUtils.isNotBlank(event.getClientIP()))) {
         ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
       }
+    } else if ((StringUtils.isBlank(ubiSession.getUserAgent())
+        && StringUtils.isBlank(ubiSession.getClientIp()))
+        && (StringUtils.isNotBlank(event.getAgentInfo())
+        || StringUtils.isNotBlank(event.getClientIP()))) {
+      ubiSession.setUserAgent(event.getAgentInfo());
+      ubiSession.setClientIp(event.getClientIP());
     }
 
     if (isEarlyValidEvent) {
