@@ -121,6 +121,7 @@ public class Constants {
   //exclude pageFamillies
   public static final List<String> EXCLUDE_PAGE_FAMILY = Arrays
           .asList("VI", "XO", "CART", "BINFLOW");
-
+  //Entry Page flag
+  public static final String ENTRY_PAGE="EP";
 }
 

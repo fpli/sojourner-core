@@ -1,10 +1,12 @@
 package com.ebay.sojourner.common.util;
 
+import static com.ebay.sojourner.common.constant.SojHeaders.*;
 import com.ebay.sojourner.common.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.Set;
 @Slf4j
 public class SojUtils {
     private static final String SPLIT_DEL = "\\|";
+
     public static boolean isRover3084Click(UbiEvent event) {
         if (event.getPageId() == -1) {
             return false;
@@ -52,7 +55,7 @@ public class SojUtils {
         sojEvent.setAppId(ubiEvent.getAppId() == null ? null :
                 String.valueOf(ubiEvent.getAppId()));
         sojEvent.setApplicationPayload(
-            PropertyUtils.stringToMap(ubiEvent.getApplicationPayload(), false));
+                PropertyUtils.stringToMap(ubiEvent.getApplicationPayload(), false));
         sojEvent.setAppVersion(ubiEvent.getAppVersion());
         sojEvent.setBotFlags(new ArrayList<>(ubiEvent.getBotFlags()));
         sojEvent.setClientData(
@@ -120,11 +123,17 @@ public class SojUtils {
         sojEvent.setRv(ubiEvent.isRv());
         sojEvent.setBot(RulePriorityUtils.getHighPriorityBotFlag(ubiEvent.getBotFlags()));
         if (sojEvent.getApplicationPayload() != null
-            && StringUtils.isNotBlank(sojEvent.getApplicationPayload().get("ciid"))
-            && !sojEvent.getApplicationPayload().get("ciid").equals("null")) {
+                && StringUtils.isNotBlank(sojEvent.getApplicationPayload().get("ciid"))
+                && !sojEvent.getApplicationPayload().get("ciid").equals("null")) {
             sojEvent.setCiid(sojEvent.getApplicationPayload().get("ciid"));
         }
         sojEvent.setCguid(ubiEvent.getCguid());
+        if (ubiEvent.isEntryPage()) {
+            Map<String, ByteBuffer> sojHeader = new HashMap<>();
+            sojHeader.put(EP,
+                    ByteBuffer.wrap(ByteArrayUtils.fromBoolean(true)));
+            sojEvent.setSojHeader(sojHeader);
+        }
         return sojEvent;
     }
 
@@ -335,11 +344,11 @@ public class SojUtils {
         if (pageId != null) {
             Map<String, Map<Integer, Integer>> pageFmlyMap
                     = LkpManager.getInstance().getPageFmlyAllMaps();
-            Set<Integer> itmPages =LkpManager.getInstance().getItmPages();
+            Set<Integer> itmPages = LkpManager.getInstance().getItmPages();
             for (Map.Entry<String, Map<Integer, Integer>> entry : pageFmlyMap.entrySet()) {
-                if (itmPages.contains(pageId)&&MapUtils.isNotEmpty(entry.getValue())
+                if (itmPages.contains(pageId) && MapUtils.isNotEmpty(entry.getValue())
                         && entry.getValue().containsKey(pageId)
-                        && entry.getValue().get(pageId)==0
+                        && entry.getValue().get(pageId) == 0
                 ) {
                     return true;
                 }
@@ -347,7 +356,6 @@ public class SojUtils {
         }
         return false;
     }
-
 
 
     public static long checkFormat(String type, String value) {

@@ -16,6 +16,7 @@ flink:
     filter:
       topic-config:
         - "dss-gro:behavior.pulsarv2.test.dss-gro"
+        - "entryPage:behavior.pulsarv2.test.sojsession.entrypage"
 
 kafka:
   consumer:

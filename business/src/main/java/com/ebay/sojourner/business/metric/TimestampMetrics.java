@@ -48,6 +48,7 @@ public class TimestampMetrics implements FieldMetrics<UbiEvent, SessionAccumulat
       if (!event.isRdt()) {
         if (ubiSession.getStartTimestampNOIFRAMERDT() == null) {
           ubiSession.setStartTimestampNOIFRAMERDT(event.getEventTimestamp());
+          event.setEntryPage(true);
         } else if (event.getEventTimestamp() != null
                   && ubiSession.getStartTimestampNOIFRAMERDT() > event.getEventTimestamp()) {
           ubiSession.setStartTimestampNOIFRAMERDT(event.getEventTimestamp());
