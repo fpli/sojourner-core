@@ -25,7 +25,7 @@ pipeline {
   }
   post {
     success {
-      slackSend(channel: slack_channel, color: "good", message: "<${BUILD_URL}|${JOB_NAME} #${BUILD_NUMBER}>: :beer: Success after ${currentBuild.durationString.replace(' and counting', '')}\n job version *${readFile('build_version_tmp.txt').trim()}* has been uploaded to Rheos portal")
+      slackSend(channel: slack_channel, color: "good", message: "<${BUILD_URL}|${JOB_NAME} #${BUILD_NUMBER}>: :beer: Success after ${currentBuild.durationString.replace(' and counting', '')}\n job version *${readFile('pomVersion').trim()}* has been uploaded to Rheos portal")
     }
     failure {
       slackSend(channel: slack_channel, color: "danger", message: "<${BUILD_URL}|${JOB_NAME} #${BUILD_NUMBER}>: :alert: Failure after ${currentBuild.durationString.replace(' and counting', '')}")

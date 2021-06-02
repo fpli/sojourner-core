@@ -1,20 +1,20 @@
 package com.ebay.sojourner.distributor.function;
 
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.EACTN;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.EFAM;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.PLMT;
+import static com.ebay.sojourner.common.constant.SojHeaders.EP;
+
+import com.ebay.sojourner.common.model.RawSojEventHeader;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.util.ByteArrayUtils;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
-import org.apache.commons.collections.MapUtils;
+import java.nio.ByteBuffer;
+import java.util.Map;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
-
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.ebay.sojourner.common.constant.SojHeaders.*;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SojEventToRawSojEventWrapperMapFunction
     extends RichMapFunction<SojEvent, RawSojEventWrapper> {
@@ -30,23 +30,28 @@ public class SojEventToRawSojEventWrapperMapFunction
   @Override
   public RawSojEventWrapper map(SojEvent event) throws Exception {
     byte[] payloads = serializer.encodeValue(event);
-    Map<String, byte[]> headers = new HashMap<>();
-    headers.put(IS_VALID_EVENT, ByteArrayUtils.fromBoolean(isValidEvent(event)));
-    String plmt = event.getApplicationPayload().get("plmt");
-    headers.put(PLACEMENT_ID, plmt == null ? null : plmt.getBytes(UTF_8));
-    String siteId = event.getSiteId();
-    headers.put(SITE_ID, siteId == null ? null : siteId.getBytes(UTF_8));
-    Map<String, ByteBuffer> sojHeaderMap= event.getSojHeader();
-    if(MapUtils.isNotEmpty(sojHeaderMap)){
-      headers.put(EP, sojHeaderMap.get(EP).array());
-    }
-    headers.put(SITE_ID, siteId == null ? null : siteId.getBytes(UTF_8));
-    return new RawSojEventWrapper(event.getGuid(), event.getPageId(), event.getBot(), headers,
+    RawSojEventHeader header = new RawSojEventHeader();
+    header.setValidEvent(isValidEvent(event));
+    header.setPlmt(event.getApplicationPayload().get(PLMT));
+    header.setEfam(event.getApplicationPayload().get(EFAM));
+    header.setEactn(event.getApplicationPayload().get(EACTN));
+    header.setSiteId(event.getSiteId());
+    header.setEntryPage(isEntryPage(event));
+
+    return new RawSojEventWrapper(event.getGuid(), event.getPageId(), event.getBot(), header,
                                   null, payloads);
   }
 
   private boolean isValidEvent(SojEvent event) {
     return event.getRdt().equals(0) && !event.getIframe();
+  }
+
+  private boolean isEntryPage(SojEvent event) {
+    Map<String, ByteBuffer> sojHeader = event.getSojHeader();
+    if (sojHeader.containsKey(EP)) {
+      return ByteArrayUtils.toBoolean(sojHeader.get(EP).array());
+    }
+    return false;
   }
 
 }
