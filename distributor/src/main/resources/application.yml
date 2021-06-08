@@ -20,8 +20,7 @@ flink:
     filter:
       topic-config:
         - "dss-gro:behavior.pulsar.customized.dss-gro"
-        - "entryPage:behavior.pulsar.sojsession.entrypage"
-        - "lst-srch:behavior.pulsar.event.lst-srch"
+
 kafka:
   consumer:
     stream: behavior.totalv2
