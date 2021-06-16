@@ -23,6 +23,7 @@
   </appender>
 
   <logger name="com.ebay.sojourner" level="INFO"/>
+  <logger name="org.apache.kafka.clients.consumer.internals" level="WARN"/>
 
   <root level="INFO">
     <appender-ref ref="console"/>

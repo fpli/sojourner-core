@@ -1,17 +1,28 @@
 package com.ebay.sojourner.distributor.broadcast;
 
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.CFLGS_TAG;
+
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
-import com.ebay.sojourner.common.model.RawSojEventHeader;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
-import com.google.common.collect.Sets;
+import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.common.util.FlagsUtils;
+import com.ebay.sojourner.distributor.function.AddTagMapFunction;
+import com.ebay.sojourner.distributor.route.Router;
+import com.ebay.sojourner.distributor.route.SojEventRouter;
+import com.ebay.sojourner.flink.connector.kafka.AvroKafkaDeserializer;
+import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
+import com.ebay.sojourner.flink.connector.kafka.KafkaDeserializer;
+import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.state.BroadcastState;
 import org.apache.flink.api.common.state.MapStateDescriptor;
 import org.apache.flink.api.common.state.ReadOnlyBroadcastState;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.co.BroadcastProcessFunction;
 import org.apache.flink.util.Collector;
 
@@ -21,24 +32,12 @@ public class SojEventDistProcessFunction extends
 
   private final MapStateDescriptor<Integer, PageIdTopicMapping> stateDescriptor;
   private final int ALL_PAGE = 0;
-  private final Set<Integer> MFE_PAGE_IDS = Sets.newHashSet(
-      2299321, 2062300, 2053742, 2053444, 2304207,
-      2054032, 2317508, 2061037, 2063239, 2296363
-  );
-  private final Set<String> SITE_IDS = Sets.newHashSet("0", "2");
-  private final String PVP_HSA_EFAM = "ONEPD";
-  private final Set<String> PVP_HSA_EACTNS = Sets.newHashSet("EXPM", "VIEW", "ACTN");
+  private final AddTagMapFunction addTagMapFunction = new AddTagMapFunction();
+  private transient KafkaDeserializer<SojEvent> deserializer;
+  private transient KafkaSerializer<SojEvent> serializer;
 
-  private final String SRCH_EFAM = "LST";
-  private final String SRCH_EACTN = "SRCH";
-
-  private final String DSS_ADS_MFE = "dss-ads-mfe";
-  private final String DSS_ADS_PVP_HSA = "dss-ads-pvp-hsa";
-
-  private final String DSS_GRO = "dss-gro";
-  private final String SRCH = "lst-srch";
-  private final String ENTRY_PAGE = "entryPage";
   private final Map<String, String> topicConfigMap = new HashMap<>();
+  private final Router<SojEvent> router;
 
   public SojEventDistProcessFunction(MapStateDescriptor<Integer, PageIdTopicMapping> descriptor,
                                      List<String> topicConfigs) {
@@ -51,11 +50,37 @@ public class SojEventDistProcessFunction extends
         }
       }
     }
+    this.router = new SojEventRouter(topicConfigMap);
+  }
+
+  @Override
+  public void open(Configuration parameters) throws Exception {
+    super.open(parameters);
+    this.deserializer = new AvroKafkaDeserializer<>(SojEvent.class);
+    this.serializer = new AvroKafkaSerializer<>(SojEvent.getClassSchema());
   }
 
   @Override
   public void processElement(RawSojEventWrapper sojEventWrapper, ReadOnlyContext ctx,
                              Collector<RawSojEventWrapper> out) throws Exception {
+    // deserialize to SojEvent, add tags and filter out `cflags`
+    byte[] payload = sojEventWrapper.getPayload();
+    SojEvent sojEvent = deserializer.decodeValue(payload);
+
+    // filter out cflag events
+    Map<String, String> applicationPayload = sojEvent.getApplicationPayload();
+    if (applicationPayload == null
+        || StringUtils.isBlank(applicationPayload.get(CFLGS_TAG))
+        || !FlagsUtils.isBitSet(applicationPayload.get(CFLGS_TAG), 0)) {
+      return;
+    }
+
+    // add tags
+    sojEvent = addTagMapFunction.map(sojEvent);
+
+    // serialize sojEvent after adding tags and set to wrapper
+    sojEventWrapper.setPayload(serializer.encodeValue(sojEvent));
+
     ReadOnlyBroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);
 
@@ -69,39 +94,13 @@ public class SojEventDistProcessFunction extends
       }
     }
 
-    if (sojEventWrapper.getBot() == 0) {
+    if (sojEvent.getBot() == 0) {
       // for nonbot sojevents, distribute based on complicated filtering logic
-      // 1. DSS-Ads MFE filter logic
-      if (topicConfigMap.containsKey(DSS_ADS_MFE) && isEventForDssAdsMfe(sojEventWrapper)) {
-        sojEventWrapper.setTopic(topicConfigMap.get(DSS_ADS_MFE));
+      Set<String> topics = router.target(sojEvent);
+      for (String topic : topics) {
+        sojEventWrapper.setTopic(topic);
         out.collect(sojEventWrapper);
       }
-
-      // 2. DSS-Ads PVP HSA filter logic
-      if (topicConfigMap.containsKey(DSS_ADS_PVP_HSA)
-          && isEventForDssAdsPvpHsa(sojEventWrapper)) {
-        sojEventWrapper.setTopic(topicConfigMap.get(DSS_ADS_PVP_HSA));
-        out.collect(sojEventWrapper);
-      }
-
-      // 3. DSS-GRO filter logic
-      if (topicConfigMap.containsKey(DSS_GRO) && isEventForDssGro(sojEventWrapper)) {
-        sojEventWrapper.setTopic(topicConfigMap.get(DSS_GRO));
-        out.collect(sojEventWrapper);
-      }
-
-      // 4. for EntryPage
-      if (topicConfigMap.containsKey(ENTRY_PAGE) && isEventForEntryPage(sojEventWrapper)) {
-        sojEventWrapper.setTopic(topicConfigMap.get(ENTRY_PAGE));
-        out.collect(sojEventWrapper);
-      }
-
-      // 5. for Search
-      if (topicConfigMap.containsKey(SRCH) && isEventForSearch(sojEventWrapper)) {
-        sojEventWrapper.setTopic(topicConfigMap.get(SRCH));
-        out.collect(sojEventWrapper);
-      }
-
     } else {
       // for bot sojevents, distribute all events if all_page(0) is set
       if (broadcastState.get(ALL_PAGE) != null) {
@@ -112,8 +111,6 @@ public class SojEventDistProcessFunction extends
       }
     }
   }
-
-
 
   @Override
   public void processBroadcastElement(PageIdTopicMapping mapping, Context ctx,
@@ -127,30 +124,5 @@ public class SojEventDistProcessFunction extends
     } else {
       broadcastState.put(mapping.getPageId(), mapping);
     }
-  }
-
-  private boolean isEventForDssGro(RawSojEventWrapper sojEventWrapper) {
-    RawSojEventHeader headers = sojEventWrapper.getHeaders();
-    return headers.isValidEvent()
-        && SITE_IDS.contains(headers.getSiteId());
-  }
-
-  private boolean isEventForDssAdsMfe(RawSojEventWrapper sojEventWrapper) {
-    return MFE_PAGE_IDS.contains(sojEventWrapper.getPageId())
-        || sojEventWrapper.getHeaders().getPlmt() != null;
-  }
-
-  private boolean isEventForDssAdsPvpHsa(RawSojEventWrapper sojEventWrapper) {
-    return PVP_HSA_EFAM.equals(sojEventWrapper.getHeaders().getEfam())
-        && PVP_HSA_EACTNS.contains(sojEventWrapper.getHeaders().getEactn());
-  }
-
-  private boolean isEventForEntryPage(RawSojEventWrapper sojEventWrapper) {
-    return sojEventWrapper.getHeaders().isEntryPage();
-  }
-
-  private boolean isEventForSearch(RawSojEventWrapper sojEventWrapper) {
-    return SRCH_EFAM.equals(sojEventWrapper.getHeaders().getEfam())
-        && SRCH_EACTN.equals(sojEventWrapper.getHeaders().getEactn());
   }
 }

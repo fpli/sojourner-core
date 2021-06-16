@@ -17,8 +17,8 @@ flink:
         topic: behavior.pulsar.sojevent.deadletter
     filter:
       topic-config:
-        - "dss-gro:behavior.pulsar.customized.dss-gro"
-        - "entryPage:behavior.pulsar.sojsession.entrypage"
+        - "dss-gro:behavior.pulsar.customized.test"
+        - "entry-page:behavior.pulsar.sojsession.entrypage"
 kafka:
   consumer:
     stream: behavior.totalv2

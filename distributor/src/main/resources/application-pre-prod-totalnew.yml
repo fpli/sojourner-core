@@ -16,8 +16,10 @@ flink:
     filter:
       topic-config:
         - "dss-gro:behavior.pulsarv2.test.dss-gro"
-        - "entryPage:behavior.pulsarv2.test.sojsession.entrypage"
-        - "lst-srch:behavior.pulsarv2.test.event.lst-srch"
+        - "dss-ads-mfe:behavior.pulsarv2.test.ads-mfe"
+        - "dss-ads-pvp-hsa:behavior.pulsarv2.test.ads-pvp-hsa"
+        - "entry-page:behavior.pulsarv2.test.sojsession.entrypage"
+        - "srch-lst:behavior.pulsarv2.test.event.lst-srch"
 
 kafka:
   consumer:
