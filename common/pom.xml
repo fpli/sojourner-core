@@ -87,7 +87,7 @@
     <dependency>
       <groupId>com.ebay.platform.dds</groupId>
       <artifactId>dds-api</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
+      <version>1.0.4</version>
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>

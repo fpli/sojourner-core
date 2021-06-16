@@ -1,12 +1,10 @@
 package com.ebay.sojourner.distributor.broadcast;
 
-import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.CFLGS_TAG;
-
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
-import com.ebay.sojourner.common.util.FlagsUtils;
 import com.ebay.sojourner.distributor.function.AddTagMapFunction;
+import com.ebay.sojourner.distributor.function.CFlagFilterFunction;
 import com.ebay.sojourner.distributor.route.Router;
 import com.ebay.sojourner.distributor.route.SojEventRouter;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaDeserializer;
@@ -18,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.state.BroadcastState;
 import org.apache.flink.api.common.state.MapStateDescriptor;
 import org.apache.flink.api.common.state.ReadOnlyBroadcastState;
@@ -33,6 +30,7 @@ public class SojEventDistProcessFunction extends
   private final MapStateDescriptor<Integer, PageIdTopicMapping> stateDescriptor;
   private final int ALL_PAGE = 0;
   private final AddTagMapFunction addTagMapFunction = new AddTagMapFunction();
+  private final CFlagFilterFunction cFlagFilterFunction = new CFlagFilterFunction();
   private transient KafkaDeserializer<SojEvent> deserializer;
   private transient KafkaSerializer<SojEvent> serializer;
 
@@ -68,10 +66,7 @@ public class SojEventDistProcessFunction extends
     SojEvent sojEvent = deserializer.decodeValue(payload);
 
     // filter out cflag events
-    Map<String, String> applicationPayload = sojEvent.getApplicationPayload();
-    if (applicationPayload == null
-        || StringUtils.isBlank(applicationPayload.get(CFLGS_TAG))
-        || !FlagsUtils.isBitSet(applicationPayload.get(CFLGS_TAG), 0)) {
+    if (!cFlagFilterFunction.filter(sojEvent)) {
       return;
     }
 
