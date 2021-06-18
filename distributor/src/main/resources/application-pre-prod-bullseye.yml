@@ -1,0 +1,63 @@
+flink:
+  app:
+    name: Sojourner Simple Distributor - PRE PROD
+    parallelism:
+      source: 350
+      sink-kafka: 100
+    source:
+      dc: rno
+      operator-name: SojEvent Source
+    sink:
+      operator-name: SojEvent Sink
+      kafka:
+        topic: behavior.pulsarv2.test.default
+        message-key:
+          event: guid,pageId
+    filter:
+      topic-config:
+        - "bullseye-id-link-sign-in:behavior.pulsarv2.test.bullseye-idlink-signin"
+        - "bullseye-view-item:behavior.pulsarv2.test.bullseye.view-item"
+        - "bullseye-interests:behavior.pulsarv2.test.bullseye.interests"
+        - "bullseye-guest-checkout:behavior.pulsarv2.test.bullseye.guest-checkout"
+        - "bullseye-shopping-cart:behavior.pulsarv2.test.bullseye-shoppingcart"
+        - "bullseye-ad-type:behavior.pulsarv2.test.bullseye.adtype"
+        - "bullseye-search:behavior.pulsarv2.test.bullseye.search"
+    distribution:
+      hash-key:
+        - guid
+        - colo
+      dc:
+        - slc
+
+kafka:
+  consumer:
+    stream: behavior.total.new
+    group-id: sojourner-simple-distributor-pre-prod
+    topic:
+      - behavior.total.new.sojevent
+      - behavior.total.new.sojevent.bot
+    bootstrap-servers:
+      rno:
+        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+
+  producer:
+    stream: behavior.pulsarv2.test
+    bootstrap-servers:
+      slc:
+        - rhs-kxwvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-kxwvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+
+rheos:
+  client:
+    id: "urn:ebay-marketplace-consumerid:8128d1ab-1825-4457-af33-aea7e6bfb0dc"
+    iaf:
+      secret: 1568ea67-5921-4cca-89c4-64c0a89a5257
+
+

@@ -2,6 +2,7 @@ package com.ebay.sojourner.flink.common;
 
 import com.ebay.sojourner.common.model.PageCntMetrics;
 import com.ebay.sojourner.common.model.RawEvent;
+import com.ebay.sojourner.common.model.SimpleDistSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.model.TagMissingCntMetrics;
@@ -44,16 +45,25 @@ public class OutputTagConstants {
 
   public static final OutputTag<TagMissingCntMetrics> TAG_MISSING_CNT_METRICS_OUTPUT_TAG =
       new OutputTag<>("tagMissingCntMetrics",
-                      TypeInformation.of(TagMissingCntMetrics.class));
+          TypeInformation.of(TagMissingCntMetrics.class));
   public static final OutputTag<TagSumMetrics> TAG_SUM_METRICS_OUTPUT_TAG =
       new OutputTag<>("tagSumMetrics", TypeInformation.of(TagSumMetrics.class));
   public static final OutputTag<PageCntMetrics> PAGE_CNT_METRICS_OUTPUT_TAG =
       new OutputTag<>("pageCntMetrics", TypeInformation.of(PageCntMetrics.class));
   public static final OutputTag<TransformErrorMetrics> TRANSFORM_ERROR_METRICS_OUTPUT_TAG =
       new OutputTag<>("transformerrorMetrics",
-                      TypeInformation.of(TransformErrorMetrics.class));
+          TypeInformation.of(TransformErrorMetrics.class));
   public static final OutputTag<TotalCntMetrics> TOTAL_CNT_METRICS_OUTPUT_TAG =
       new OutputTag<>("totalCntMetrics",
-                      TypeInformation.of(TotalCntMetrics.class));
+          TypeInformation.of(TotalCntMetrics.class));
+  public static OutputTag<SimpleDistSojEventWrapper> rnoDistOutputTag =
+      new OutputTag<>("simple-distribution-to-rno",
+          TypeInformation.of(SimpleDistSojEventWrapper.class));
+  public static OutputTag<SimpleDistSojEventWrapper> lvsDistOutputTag =
+      new OutputTag<>("simple-distribution-to-lvs",
+          TypeInformation.of(SimpleDistSojEventWrapper.class));
+  public static OutputTag<SimpleDistSojEventWrapper> slcDistOutputTag =
+      new OutputTag<>("simple-distribution-to-slc",
+          TypeInformation.of(SimpleDistSojEventWrapper.class));
 
 }

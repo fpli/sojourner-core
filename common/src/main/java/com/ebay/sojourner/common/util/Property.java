@@ -284,4 +284,8 @@ public class Property {
   //whilte list user agent
   public static final String AGENT_WHILTELIST = "agent-whitelist";
 
+  // simple distributor for behavior.raw
+  public static final String DIST_HASH_KEY = "flink.app.distribution.hash-key";
+  public static final String DIST_DC = "flink.app.distribution.dc";
+
 }
