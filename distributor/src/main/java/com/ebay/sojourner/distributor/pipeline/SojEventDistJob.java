@@ -50,7 +50,7 @@ public class SojEventDistJob {
     final String DIST_UID = "sojevent-filter-and-dist";
     final String SINK_OP_NAME = getString(FLINK_APP_SINK_OP_NAME);
     final String SINK_UID = "sojevent-dist-sink";
-    final String FLINK_APP_FILTER_TOPIC_CONFIG_KEY = "flink.app.filter.topic-config";
+    final String FLINK_APP_DIST_TOPIC_CONFIG_KEY = "flink.app.dist.topic-config";
 
     SourceDataStreamBuilder<RawSojEventWrapper> dataStreamBuilder =
         new SourceDataStreamBuilder<>(executionEnvironment);
@@ -87,7 +87,7 @@ public class SojEventDistJob {
     DataStream<RawSojEventWrapper> sojEventDistStream =
         sojEventSourceDataStream.connect(broadcastStream)
                                 .process(new SojEventDistProcessFunction(stateDescriptor,
-                                              getList(FLINK_APP_FILTER_TOPIC_CONFIG_KEY)))
+                                             getList(FLINK_APP_DIST_TOPIC_CONFIG_KEY)))
                                 .name(DIST_OP_NAME)
                                 .uid(DIST_UID)
                                 .setParallelism(getInteger(SOURCE_PARALLELISM));

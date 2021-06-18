@@ -34,12 +34,12 @@ public class SojEventDistProcessFunction extends
   private transient KafkaDeserializer<SojEvent> deserializer;
   private transient KafkaSerializer<SojEvent> serializer;
 
-  private final Map<String, String> topicConfigMap = new HashMap<>();
   private final Router<SojEvent> router;
 
   public SojEventDistProcessFunction(MapStateDescriptor<Integer, PageIdTopicMapping> descriptor,
                                      List<String> topicConfigs) {
     this.stateDescriptor = descriptor;
+    final Map<String, String> topicConfigMap = new HashMap<>();
     if (topicConfigs != null) {
       for (String topicConfig : topicConfigs) {
         String[] configStr = topicConfig.split(":");
@@ -79,7 +79,7 @@ public class SojEventDistProcessFunction extends
     ReadOnlyBroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);
 
-    // distribute events based on pageid regardless event is bot or not
+    // distribute events based on simple pageid/topic mapping regardless event is bot or not
     int pageId = sojEventWrapper.getPageId();
     PageIdTopicMapping mapping = broadcastState.get(pageId);
     if (mapping != null) {
@@ -89,20 +89,18 @@ public class SojEventDistProcessFunction extends
       }
     }
 
-    if (sojEvent.getBot() == 0) {
-      // for nonbot sojevents, distribute based on complicated filtering logic
-      Set<String> topics = router.target(sojEvent);
-      for (String topic : topics) {
+    // distribute events based on complicated filtering logic, also for bot and non-bot
+    Set<String> topics = router.target(sojEvent);
+    for (String topic : topics) {
+      sojEventWrapper.setTopic(topic);
+      out.collect(sojEventWrapper);
+    }
+
+    // for bot sojevents, distribute all events if all_page(0) is set
+    if (sojEvent.getBot() != 0 && broadcastState.get(ALL_PAGE) != null) {
+      for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
         sojEventWrapper.setTopic(topic);
         out.collect(sojEventWrapper);
-      }
-    } else {
-      // for bot sojevents, distribute all events if all_page(0) is set
-      if (broadcastState.get(ALL_PAGE) != null) {
-        for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
-          sojEventWrapper.setTopic(topic);
-          out.collect(sojEventWrapper);
-        }
       }
     }
   }

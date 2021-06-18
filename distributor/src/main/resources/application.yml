@@ -2,7 +2,6 @@ flink:
   app:
     parallelism:
       source: 200
-      filter: 200
       sink-kafka: 200
     checkpoint:
       data-dir: /opt/flink/sojourner/distributor/checkpoint
@@ -17,9 +16,6 @@ flink:
     sink:
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
-    filter:
-      topic-config:
-        - "dss-gro:behavior.pulsar.customized.dss-gro"
 
 kafka:
   consumer:

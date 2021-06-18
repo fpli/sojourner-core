@@ -3,7 +3,6 @@ flink:
     name: Sojourner Distributor - Staging
     parallelism:
       source: 1
-      filter: 1
       sink-kafka: 1
     checkpoint:
       data-dir: /tmp/flink/sojourner/distributor/checkpoint
@@ -15,7 +14,7 @@ flink:
       operator-name: Non-bot SojEvent Sink
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
-    filter:
+    dist:
       topic-config:
         - "dss-gro:behavior.pulsar.customized.test"
         - "entry-page:behavior.pulsar.sojsession.entrypage"

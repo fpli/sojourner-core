@@ -3,7 +3,6 @@ flink:
     name: Sojourner Distributor Bot - RNO
     parallelism:
       source: 150
-      filter: 1
       sink-kafka: 150
     source:
       dc: rno
@@ -11,6 +10,9 @@ flink:
     sink:
       dc: rno
       operator-name: Bot SojEvent Sink
+    dist:
+      topic-config:
+        - ""
 
 kafka:
   consumer:
