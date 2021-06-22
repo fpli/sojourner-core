@@ -14,7 +14,7 @@ flink:
         topic: behavior.pulsarv2.test.default
     dist:
       topic-config:
-        - "entry-page:behavior.pulsarv2.test.sojsession.entrypage"
+        - ""
 
 kafka:
   consumer:

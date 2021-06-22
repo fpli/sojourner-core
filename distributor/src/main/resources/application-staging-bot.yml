@@ -16,7 +16,7 @@ flink:
         topic: behavior.pulsar.sojevent.deadletter
     dist:
       topic-config:
-        - "entry-page:behavior.pulsar.sojsession.entrypage"
+        - ""
 
 kafka:
   consumer:
