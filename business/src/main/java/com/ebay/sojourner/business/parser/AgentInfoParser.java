@@ -13,7 +13,9 @@ public class AgentInfoParser implements FieldParser<RawEvent, UbiEvent> {
   @Override
   public void parse(RawEvent rawEvent, UbiEvent ubiEvent) throws Exception {
     String agentInfo = rawEvent.getClientData().getAgent();
-    if (StringUtils.isNotBlank(agentInfo)) {
+    if(StringUtils.isBlank(agentInfo) || agentInfo.equalsIgnoreCase("null")){
+      ubiEvent.setAgentInfo("null");
+    }else {
       ubiEvent.setAgentInfo(agentInfo);
     }
   }

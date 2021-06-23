@@ -5,7 +5,7 @@
         agent:
   expect:
     UbiEvent:
-      agentInfo:
+      agentInfo: "null"
 
 - name: test_agent_not_null
   inputs:
