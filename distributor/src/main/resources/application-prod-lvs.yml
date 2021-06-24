@@ -7,6 +7,13 @@ flink:
     sink:
       dc: slc
       operator-name: Non-bot SojEvent Sink
+    dist:
+      topic-config:
+        - "dss-gro:behavior.pulsar.customized.dss-gro"
+        - "dss-ads-mfe:behavior.pulsar.customized.ads-mfe"
+        - "dss-ads-pvp-hsa:behavior.pulsar.customized.ads-pvp-hsa"
+        - "srch-lst:behavior.pulsar.event.lst-srch"
+        - "entry-page:behavior.pulsar.sojsession.entrypage"
 
 kafka:
   consumer:

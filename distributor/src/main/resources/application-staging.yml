@@ -16,8 +16,11 @@ flink:
         topic: behavior.pulsar.sojevent.deadletter
     dist:
       topic-config:
-        - "dss-gro:behavior.pulsar.customized.test"
+        - "dss-gro:behavior.pulsar.customized.dss-gro"
+        - "dss-ads-mfe:behavior.pulsar.customized.ads-mfe"
+        - "dss-ads-pvp-hsa:behavior.pulsar.customized.ads-pvp-hsa"
         - "entry-page:behavior.pulsar.sojsession.entrypage"
+
 kafka:
   consumer:
     stream: behavior.totalv2

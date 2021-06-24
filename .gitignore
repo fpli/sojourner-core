@@ -12,3 +12,6 @@ spark-warehouse/
 .classpath
 .project
 .vscode
+
+application-local.yml
+application-local.yaml
