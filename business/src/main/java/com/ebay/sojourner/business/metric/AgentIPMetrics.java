@@ -62,7 +62,7 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
 
     if (isEarlyEvent) {
       if ((!ubiSession.isFindFirst()) &&
-          (!"null".equals(event.getAgentInfo())
+          (StringUtils.isNotBlank(event.getAgentInfo())
               || StringUtils.isNotBlank(event.getClientIP()))) {
         ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
@@ -70,16 +70,15 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
       }
     } else if (isEarlyEventByMultiCols) {
       if ((!ubiSession.isFindFirst()) &&
-          (!"null".equals(event.getAgentInfo())
+          (StringUtils.isNotBlank(event.getAgentInfo())
               || StringUtils.isNotBlank(event.getClientIP()))) {
         ubiSession.setUserAgent(event.getAgentInfo());
         ubiSession.setClientIp(event.getClientIP());
         setDeviceMetrics(ubiSession, event);
       }
-    } else if ((!ubiSession.isFindFirst()) &&
-        ("null".equals(ubiSession.getUserAgent())
+    } else if ((StringUtils.isBlank(ubiSession.getUserAgent())
         && StringUtils.isBlank(ubiSession.getClientIp()))
-        && (!"null".equals(event.getAgentInfo())
+        && (StringUtils.isNotBlank(event.getAgentInfo())
         || StringUtils.isNotBlank(event.getClientIP()))) {
       ubiSession.setUserAgent(event.getAgentInfo());
       ubiSession.setClientIp(event.getClientIP());
