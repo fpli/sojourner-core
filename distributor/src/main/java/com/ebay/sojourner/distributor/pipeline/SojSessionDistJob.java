@@ -12,6 +12,7 @@ import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 
 import com.ebay.sojourner.common.model.RawSojSessionWrapper;
+import com.ebay.sojourner.distributor.function.SessionEnhanceMapFunction;
 import com.ebay.sojourner.distributor.schema.RawSojSessionDeserializationSchema;
 import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperSerializationSchema;
 import com.ebay.sojourner.flink.common.DataCenter;
@@ -32,6 +33,8 @@ public class SojSessionDistJob {
     final String DATA_SOURCE_UID = "sojsession-dist-source";
     final String SINK_OP_NAME = getString(FLINK_APP_SINK_OP_NAME);
     final String SINK_UID = "sojsession-dist-sink";
+    final String SESSION_ENHANCE_NAME = "SojSession Enhance";
+    final String SESSION_ENHANCE_UID = "sojsession-enhance";
 
     SourceDataStreamBuilder<RawSojSessionWrapper> dataStreamBuilder =
         new SourceDataStreamBuilder<>(executionEnvironment);
@@ -43,10 +46,16 @@ public class SojSessionDistJob {
         .uid(DATA_SOURCE_UID)
         .build(new RawSojSessionDeserializationSchema());
 
+    DataStream<RawSojSessionWrapper> sessionEnhanceDataStream = rawSojSessionWrapperDataStream
+        .map(new SessionEnhanceMapFunction())
+        .setParallelism(getInteger(SOURCE_PARALLELISM))
+        .name(SESSION_ENHANCE_NAME)
+        .uid(SESSION_ENHANCE_UID);
+
     // sink to kafka
     KafkaProducerConfig config = KafkaProducerConfig.ofDC(getString(FLINK_APP_SINK_DC));
     FlinkKafkaProducerFactory producerFactory = new FlinkKafkaProducerFactory(config);
-    rawSojSessionWrapperDataStream
+    sessionEnhanceDataStream
         .addSink(producerFactory.get(FlinkEnvUtils.getString(FLINK_APP_SINK_KAFKA_TOPIC),
             new RawSojSessionWrapperSerializationSchema(
                 FlinkEnvUtils.getString(FLINK_APP_SINK_KAFKA_TOPIC))))

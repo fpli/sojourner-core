@@ -6,8 +6,6 @@ import com.ebay.sojourner.common.model.UbiEvent;
 import com.ebay.sojourner.common.util.Constants;
 import com.ebay.sojourner.common.util.SojTimestamp;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.dropwizard.metrics.DropwizardHistogramWrapper;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
@@ -18,12 +16,10 @@ public class PipelineMetricsCollectorProcessFunction extends ProcessFunction<Ubi
   private static final String siteToSource = "site_to_source";
   private static final String siteToSink = "site_to_sink";
   private static final String sourceToSink = "source_to_sink";
-  private static final String latency = "source_to_sink";
   private final int latencyWindowSize;
   private transient DropwizardHistogramWrapper siteToSourceWrapper;
   private transient DropwizardHistogramWrapper siteToSinkWrapper;
   private transient DropwizardHistogramWrapper sourceToSinkWrapper;
-  private final Map<String, DropwizardHistogramWrapper> domainWrapperMap = new HashMap<>();
 
   public PipelineMetricsCollectorProcessFunction(int latencyWindowSize) {
     this.latencyWindowSize = latencyWindowSize;
@@ -58,25 +54,6 @@ public class PipelineMetricsCollectorProcessFunction extends ProcessFunction<Ubi
     siteToSourceWrapper.update(siteToSource);
     siteToSinkWrapper.update(siteToSink);
     sourceToSinkWrapper.update(sourceToSink);
-
-    if (value.getPageFamily() == null || value.getPageFamily().equals("")) {
-      value.setPageFamily("null");
-    }
-
-    String pageFamilyAndSiteId = value.getPageFamily() + "," + value.getSiteId();
-    if (domainWrapperMap.containsKey(pageFamilyAndSiteId)
-        && domainWrapperMap.get(pageFamilyAndSiteId) != null) {
-      domainWrapperMap.get(pageFamilyAndSiteId).update(sourceToSink);
-    } else {
-      DropwizardHistogramWrapper domainWrapper = getRuntimeContext().getMetricGroup()
-          .addGroup(Constants.SOJ_METRICS_GROUP)
-          .addGroup("siteId", String.valueOf(value.getSiteId()))
-          .addGroup("pageFamily", String.valueOf(value.getPageFamily()))
-          .histogram(latency, new DropwizardHistogramWrapper(new Histogram(
-              new SlidingWindowReservoir(latencyWindowSize))));
-      domainWrapperMap.put(pageFamilyAndSiteId, domainWrapper);
-      domainWrapper.update(sourceToSink);
-    }
     out.collect(null);
   }
 }

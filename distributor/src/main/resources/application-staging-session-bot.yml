@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor - Staging
+    name: Sojourner Session Distributor - Staging Bot
     parallelism:
       source: 1
       sink-kafka: 1
@@ -8,26 +8,19 @@ flink:
       data-dir: /tmp/flink/sojourner/distributor/checkpoint
     source:
       dc: lvs
-      operator-name: Non-bot SojEvent Source
+      operator-name: Bot SojSession Source
     sink:
       dc: lvs
-      operator-name: Non-bot SojEvent Sink
+      operator-name: Bot SojSession Sink
       kafka:
-        topic: behavior.pulsar.sojevent.deadletter
-    dist:
-      topic-config:
-        - "dss-gro:behavior.pulsar.customized.dss-gro"
-        - "dss-ads-mfe:behavior.pulsar.customized.ads-mfe"
-        - "dss-ads-pvp-hsa:behavior.pulsar.customized.ads-pvp-hsa"
-        - "srch-lst:behavior.pulsar.event.lst-srch"
-        - "entry-page:behavior.pulsar.sojsession.entrypage"
+        topic: behavior.pulsar.sojsession.botsession
 
 kafka:
   consumer:
     stream: behavior.totalv2
     group-id: sojourner-distributor-staging
     topic:
-      - behavior.totalv2.sojevent-nonbot
+      - behavior.totalv2.sojsession-bot
     bootstrap-servers:
       lvs:
         - rhs-rurvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
@@ -77,11 +70,3 @@ rheos:
     iaf:
       secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
       env: staging
-
-rest-client:
-  base-url: https://sojsvc.vip.qa.ebay.com
-#  base-url: http://localhost:8080
-  username: soj-flink-app
-  config:
-    pull-interval: 15000
-    profile: staging
