@@ -14,6 +14,16 @@ public class EventDataStreamBuilder {
   public static DataStream<UbiEvent> build(DataStream<RawEvent> sourceDataStream, DataCenter dc) {
 
     return sourceDataStream
+        .filter(new LargeMessageFilterFunction(
+            FlinkEnvUtils.getLong(Property.MAX_MESSAGE_BYTES),
+            FlinkEnvUtils.getLong(Property.MIN_URL_QUERY_STRING_RATIO),
+            FlinkEnvUtils.getInteger(Property.SUB_URL_QUERY_STRING_LENGTH),
+            FlinkEnvUtils.getBoolean(Property.TRUNCATE_URL_QUERY_STRING),
+            FlinkEnvUtils.getBoolean(Property.DEBUG_MODE)))
+        .setParallelism(FlinkEnvUtils.getInteger(Property.EVENT_PARALLELISM))
+        .slotSharingGroup(getSlotGroupForDC(dc))
+        .name(String.format("Large Message Filter %s", dc))
+        .uid(String.format("large-message-filter-%s", dc))
         .map(new EventMapFunction())
         .setParallelism(FlinkEnvUtils.getInteger(Property.EVENT_PARALLELISM))
         .slotSharingGroup(getSlotGroupForDC(dc))

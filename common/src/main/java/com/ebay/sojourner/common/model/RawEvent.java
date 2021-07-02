@@ -20,6 +20,7 @@ public class RawEvent implements Serializable {
   private ClientData clientData;
   private long ingestTime;
   private Long eventTimestamp;
+  private long messageSize;
 
   @Override
   public String toString() {

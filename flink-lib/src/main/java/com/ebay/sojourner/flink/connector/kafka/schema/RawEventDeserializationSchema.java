@@ -59,6 +59,7 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
   @Override
   public RawEvent deserialize(byte[] message) throws IOException {
     long ingestTime = new Date().getTime();
+    long messageSize = message.length;
     RheosEvent rheosEvent =
         RheosEventSerdeFactory.getRheosEventHeaderDeserializer().deserialize(null, message);
     GenericRecord genericRecord =
@@ -121,7 +122,7 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     ClientData clientData = new ClientData();
     parseClientData(clientData, genericClientData);
     RawEvent rawEvent = new RawEvent(rheosHeader, sojAMap, sojKMap, sojCMap, clientData,
-        ingestTime, null);
+        ingestTime, null, messageSize);
     parseEventTimestamp(rawEvent);
     return rawEvent;
   }

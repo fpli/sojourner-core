@@ -144,6 +144,9 @@ public class Property {
   // flink - app name
   public static final String FLINK_APP_NAME = "flink.app.name";
 
+  // flink - debug mode
+  public static final String DEBUG_MODE = "flink.app.debug-mode";
+
   // flink metric window size
   public static final String METRIC_WINDOW_SIZE = "flink.app.metric.window-size";
 
@@ -221,6 +224,12 @@ public class Property {
   // flink - metric name
   public static final String FLINK_APP_METRIC_NAME = "flink.app.metric.watermark-process-progress";
   public static final String SOJOURNER_METRICS_COLLECTOR = "flink.app.slot-sharing-group.metrics-collector";
+
+  // flink - message filter
+  public static final String MAX_MESSAGE_BYTES = "flink.app.message-filter.max-message-bytes";
+  public static final String MIN_URL_QUERY_STRING_RATIO = "flink.app.message-filter.min-url-query-string-ratio";
+  public static final String SUB_URL_QUERY_STRING_LENGTH = "flink.app.message-filter.sub-url-query-string-length";
+  public static final String TRUNCATE_URL_QUERY_STRING = "flink.app.message-filter.truncate-url-query-string";
 
   // zookeeper
   public static final String ZOOKEEPER_SERVER = "zookeeper.server";

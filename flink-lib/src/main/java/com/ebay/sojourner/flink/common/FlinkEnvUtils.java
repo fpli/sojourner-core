@@ -92,7 +92,7 @@ public class FlinkEnvUtils {
   public static Boolean getBoolean(String key) {
     String value = EnvironmentUtils.get(key);
     CONFIG.put(key, value);
-    return Boolean.getBoolean(value);
+    return Boolean.valueOf(value);
   }
 
   public static String getListString(String key) {
