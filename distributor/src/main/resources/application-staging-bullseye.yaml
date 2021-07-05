@@ -1,0 +1,85 @@
+flink:
+  app:
+    name: Sojourner Simple Distributor - Staging
+    parallelism:
+      source: 4
+      sink-kafka: 1
+    source:
+      dc: lvs
+      operator-name: SojEvent Source
+    sink:
+      operator-name: SojEvent Sink
+      kafka:
+        topic: behavior.raw.sojevent.default
+        message-key:
+          event: guid,pageId
+    filter:
+      topic-config:
+        - "bullseye-id-link-sign-in:behavior.raw.bullseye.bullseye_idlink_signin"
+        - "bullseye-view-item:behavior.raw.bullseye.bullseye_viewitem"
+        - "bullseye-interests:behavior.raw.bullseye.interests"
+        - "bullseye-guest-checkout:behavior.raw.bullseye.guest_checkout"
+        - "bullseye-shopping-cart:behavior.raw.bullseye.bullseye_shoppingcart"
+        - "bullseye-ad-type:behavior.raw.bullseye.adtype"
+        - "bullseye-search:behavior.raw.bullseye.bullseye_search"
+    distribution:
+      hash-key:
+        - guid
+        - colo
+      dc:
+        - slc
+
+kafka:
+  consumer:
+    stream: behavior.totalv2
+    group-id: sojourner-simple-distributor-staging
+    topic:
+      - behavior.totalv2.sojevent-nonbot
+      - behavior.totalv2.sojevent-bot
+    bootstrap-servers:
+      lvs:
+        - rhs-rurvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-rurvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-rurvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-rurvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
+        - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+    max-poll-records: 500
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 128KB, default value is 64KB
+    receive-buffer: 131072
+    fetch-max-wait-ms: 100
+    # 1MB, default value is 1MB
+    max-partitions-fetch-bytes: 1048576
+    auto-offset-reset: latest
+
+  producer:
+    stream: behavior.raw
+    bootstrap-servers:
+      slc:
+        - rhs-orrvkiaa-kfk-slc-1.rheos-streaming-qa.svc.33.tess.io:9092
+        - rhs-orrvkiaa-kfk-slc-2.rheos-streaming-qa.svc.33.tess.io:9092
+        - rhs-orrvkiaa-kfk-slc-3.rheos-streaming-qa.svc.33.tess.io:9092
+
+    # 16KB
+    batch-size: 16384
+    acks: 1
+    linger-ms: 10
+    # 30s
+    request-timeout-ms: 30000
+    retries: 30
+    # 32MB
+    buffer-memory: 33554432
+    compression-type: lz4
+    # 2min
+    delivery-timeout-ms: 120000
+
+rheos:
+  registry-url: https://rheos-services.qa.ebay.com
+  client:
+    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    iaf:
+      secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
+      env: staging
+
+

@@ -34,7 +34,7 @@ public class ApplicationPayloadTags {
   public static final String RV_TAG = "rv";
   public static final String TIMESTAMP_TAG = "timestamp";
   public static final String URL_QUERY_STRING_TAG = "urlQueryString";
-
+  public static final String S_QR_TAG = "sQr";
   public static final String PLMT = "plmt"; // placement
   public static final String EFAM = "efam"; // event family
   public static final String EACTN = "eactn"; // event action

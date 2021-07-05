@@ -6,11 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.*;
 
 @Slf4j
 public class SojUtils {
@@ -460,6 +464,44 @@ public class SojUtils {
             log.error("Incorrect format: " + userId);
         }
         return 1;
+    }
+
+    public static void decodeSqr(Map<String,String> applicationPayload){
+        String sqr = null;
+        if (StringUtils.isNotBlank(applicationPayload.get(S_QR_TAG))) {
+            sqr = applicationPayload.get(S_QR_TAG);
+        }
+        try {
+            if (StringUtils.isNotBlank(sqr)) {
+                try {
+                    //different with jetstream,
+                    // we will cut off when length exceed 4096,while jetstream not
+                    String sqrUtf8 = URLDecoder.decode(sqr, "UTF-8");
+                    if (sqrUtf8.length() <= 4096) {
+                        applicationPayload.put(S_QR_TAG,URLDecoder.decode(sqr, "UTF-8"));
+                    } else {
+                        applicationPayload.put(S_QR_TAG,URLDecoder
+                                .decode(sqr, "UTF-8").substring(0, 4096));
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    String replacedChar = RegexReplace
+                            .replace(sqr.replace('+', ' '),
+                                    ".%[^0-9a-fA-F].?.", "",
+                                    1, 0, 'i');
+
+                    String replacedCharUtf8 = SOJURLDecodeEscape.decodeEscapes(replacedChar, '%');
+                    if (replacedCharUtf8.length() <= 4096) {
+                        applicationPayload.put(S_QR_TAG,SOJURLDecodeEscape
+                                .decodeEscapes(replacedChar, '%'));
+                    } else {
+                        applicationPayload.put(S_QR_TAG,SOJURLDecodeEscape
+                                .decodeEscapes(replacedChar, '%').substring(0, 4096));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.debug("Parsing Sqr failed, format incorrect: " + sqr);
+        }
     }
 
 }

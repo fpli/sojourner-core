@@ -36,6 +36,8 @@ import com.ebay.sojourner.common.constant.ApplicationPayloadTags;
 import com.ebay.sojourner.common.model.SojEvent;
 import java.util.Map;
 import java.util.UUID;
+
+import com.ebay.sojourner.common.util.SojUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.RichMapFunction;
 
@@ -142,7 +144,7 @@ public class AddTagMapFunction extends RichMapFunction<SojEvent, SojEvent> {
       applicationPayload.put(RHEOS_UPSTREAM_SEND_TS_TAG,
                              String.valueOf(System.currentTimeMillis()));
     }
-
+    SojUtils.decodeSqr(applicationPayload);
     return event;
   }
 }
