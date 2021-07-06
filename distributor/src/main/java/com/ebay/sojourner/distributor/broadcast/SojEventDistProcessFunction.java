@@ -3,6 +3,7 @@ package com.ebay.sojourner.distributor.broadcast;
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.common.util.Constants;
 import com.ebay.sojourner.distributor.function.AddTagMapFunction;
 import com.ebay.sojourner.distributor.function.CFlagFilterFunction;
 import com.ebay.sojourner.distributor.route.Router;
@@ -20,6 +21,7 @@ import org.apache.flink.api.common.state.BroadcastState;
 import org.apache.flink.api.common.state.MapStateDescriptor;
 import org.apache.flink.api.common.state.ReadOnlyBroadcastState;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.metrics.Counter;
 import org.apache.flink.streaming.api.functions.co.BroadcastProcessFunction;
 import org.apache.flink.util.Collector;
 
@@ -36,8 +38,16 @@ public class SojEventDistProcessFunction extends
 
   private final Router<SojEvent> router;
 
+  // large message monitoring
+  private Counter largeMessageSizeCounter;
+  private Counter droppedEventCounter;
+  private final long maxMessageBytes;
+  private final boolean debugMode;
+  private static final String LARGE_MESSAGE_SIZE_METRIC_NAME = "large-message-size";
+  private static final String DROPPED_EVENT_METRIC_NAME = "dropped-event-count";
+
   public SojEventDistProcessFunction(MapStateDescriptor<Integer, PageIdTopicMapping> descriptor,
-                                     List<String> topicConfigs) {
+      List<String> topicConfigs, long maxMessageBytes, boolean debugMode) {
     this.stateDescriptor = descriptor;
     final Map<String, String> topicConfigMap = new HashMap<>();
     if (topicConfigs != null) {
@@ -49,6 +59,8 @@ public class SojEventDistProcessFunction extends
       }
     }
     this.router = new SojEventRouter(topicConfigMap);
+    this.maxMessageBytes = maxMessageBytes;
+    this.debugMode = debugMode;
   }
 
   @Override
@@ -56,11 +68,25 @@ public class SojEventDistProcessFunction extends
     super.open(parameters);
     this.deserializer = new AvroKafkaDeserializer<>(SojEvent.class);
     this.serializer = new AvroKafkaSerializer<>(SojEvent.getClassSchema());
+
+    // large message monitoring
+    largeMessageSizeCounter =
+        getRuntimeContext()
+            .getMetricGroup()
+            .addGroup(Constants.SOJ_METRICS_GROUP)
+            .counter(LARGE_MESSAGE_SIZE_METRIC_NAME);
+
+    droppedEventCounter =
+        getRuntimeContext()
+            .getMetricGroup()
+            .addGroup(Constants.SOJ_METRICS_GROUP)
+            .counter(DROPPED_EVENT_METRIC_NAME);
+
   }
 
   @Override
   public void processElement(RawSojEventWrapper sojEventWrapper, ReadOnlyContext ctx,
-                             Collector<RawSojEventWrapper> out) throws Exception {
+      Collector<RawSojEventWrapper> out) throws Exception {
     // deserialize to SojEvent, add tags and filter out `cflags`
     byte[] payload = sojEventWrapper.getPayload();
     SojEvent sojEvent = deserializer.decodeValue(payload);
@@ -74,7 +100,20 @@ public class SojEventDistProcessFunction extends
     sojEvent = addTagMapFunction.map(sojEvent);
 
     // serialize sojEvent after adding tags and set to wrapper
-    sojEventWrapper.setPayload(serializer.encodeValue(sojEvent));
+    byte[] value = serializer.encodeValue(sojEvent);
+
+    if (value.length > maxMessageBytes) {
+      log.info("message size is more than max message size, need drop");
+      droppedEventCounter.inc();
+      largeMessageSizeCounter.inc(value.length);
+      if (debugMode) {
+        log.info(String.format("large message size is %s, payload is %s",
+            value.length, sojEvent.toString()));
+      }
+      return;
+    }
+
+    sojEventWrapper.setPayload(value);
 
     ReadOnlyBroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);
@@ -107,7 +146,7 @@ public class SojEventDistProcessFunction extends
 
   @Override
   public void processBroadcastElement(PageIdTopicMapping mapping, Context ctx,
-                                      Collector<RawSojEventWrapper> out) throws Exception {
+      Collector<RawSojEventWrapper> out) throws Exception {
     log.info("process broadcast pageId topic mapping: {}", mapping);
     BroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);

@@ -6,8 +6,12 @@ import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_DC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OP_NAME;
 import static com.ebay.sojourner.common.util.Property.SINK_KAFKA_PARALLELISM;
 import static com.ebay.sojourner.common.util.Property.SOURCE_PARALLELISM;
+import static com.ebay.sojourner.common.util.Property.MAX_MESSAGE_BYTES;
+import static com.ebay.sojourner.common.util.Property.DEBUG_MODE;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getList;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getLong;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getStringList;
 
@@ -80,7 +84,9 @@ public class SojEventSimpleDistJob {
         sojEventDataStream
             .process(new SimpleDistSojEventWrapperProcessFunction(
                 getStringList(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ","),
-                getList(FLINK_APP_FILTER_TOPIC_CONFIG_KEY)))
+                getList(FLINK_APP_FILTER_TOPIC_CONFIG_KEY),
+                getLong(MAX_MESSAGE_BYTES),
+                getBoolean(DEBUG_MODE)))
             .name(MAP_RAWSOJEVENTWRAPPER_OP_NAME)
             .uid(MAP_RAWSOJEVENTWRAPPER_OP_UID)
             .setParallelism(getInteger(SOURCE_PARALLELISM));

@@ -134,6 +134,7 @@ public class Property {
   public static final String COMPRESSION_TYPE = "kafka.producer.compression-type";
   public static final String KAFKA_PRODUCER_BOOTSTRAP_SERVERS = "kafka.producer.bootstrap-servers";
   public static final String PRODUCER_ID = "kafka.producer.producerId";
+  public static final String MAX_REQUEST_SIZE = "kafka.producer.max-request-size";
 
   // rheos
   public static final String RHEOS_KAFKA_REGISTRY_URL = "rheos.registry-url";
@@ -227,7 +228,6 @@ public class Property {
 
   // flink - message filter
   public static final String MAX_MESSAGE_BYTES = "flink.app.message-filter.max-message-bytes";
-  public static final String MIN_URL_QUERY_STRING_RATIO = "flink.app.message-filter.min-url-query-string-ratio";
   public static final String SUB_URL_QUERY_STRING_LENGTH = "flink.app.message-filter.sub-url-query-string-length";
   public static final String TRUNCATE_URL_QUERY_STRING = "flink.app.message-filter.truncate-url-query-string";
 

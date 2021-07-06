@@ -2,6 +2,7 @@ package com.ebay.sojourner.distributor.function;
 
 import com.ebay.sojourner.common.model.SimpleDistSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.common.util.Constants;
 import com.ebay.sojourner.distributor.route.Router;
 import com.ebay.sojourner.distributor.route.SojEventRouter;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
@@ -10,10 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.metrics.Counter;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 
+@Slf4j
 public class SimpleDistSojEventWrapperProcessFunction extends
     ProcessFunction<SojEvent, SimpleDistSojEventWrapper> {
 
@@ -22,8 +26,17 @@ public class SimpleDistSojEventWrapperProcessFunction extends
   private transient KafkaSerializer<SojEvent> serializer;
   private final List<String> keyList;
 
+  // large message monitoring
+  private Counter largeMessageSizeCounter;
+  private Counter droppedEventCounter;
+  private final long maxMessageBytes;
+  private final boolean debugMode;
+  private static final String LARGE_MESSAGE_SIZE_METRIC_NAME = "large-message-size";
+  private static final String DROPPED_EVENT_METRIC_NAME = "dropped-event-count";
+
+
   public SimpleDistSojEventWrapperProcessFunction(List<String> keyList,
-      List<String> topicConfigs) {
+      List<String> topicConfigs, long maxMessageBytes, boolean debugMode) {
     if (topicConfigs != null) {
       for (String topicConfig : topicConfigs) {
         String[] configStr = topicConfig.split(":");
@@ -34,12 +47,29 @@ public class SimpleDistSojEventWrapperProcessFunction extends
     }
     this.keyList = keyList;
     this.router = new SojEventRouter(topicConfigMap);
+    this.maxMessageBytes = maxMessageBytes;
+    this.debugMode = debugMode;
   }
 
   @Override
   public void open(Configuration parameters) throws Exception {
     super.open(parameters);
     this.serializer = new AvroKafkaSerializer<>(SojEvent.getClassSchema());
+
+    // large message monitoring
+    largeMessageSizeCounter =
+        getRuntimeContext()
+            .getMetricGroup()
+            .addGroup(Constants.SOJ_METRICS_GROUP)
+            .counter(LARGE_MESSAGE_SIZE_METRIC_NAME);
+
+    droppedEventCounter =
+        getRuntimeContext()
+            .getMetricGroup()
+            .addGroup(Constants.SOJ_METRICS_GROUP)
+            .counter(DROPPED_EVENT_METRIC_NAME);
+
+
   }
 
   @Override
@@ -47,10 +77,22 @@ public class SimpleDistSojEventWrapperProcessFunction extends
       Collector<SimpleDistSojEventWrapper> out) throws Exception {
 
     Set<String> topics = router.target(sojEvent);
+    byte[] value = serializer.encodeValue(sojEvent);
+    byte[] key = serializer.encodeKey(sojEvent, keyList);
+
+    if (value.length > maxMessageBytes) {
+      log.info("message size is more than max message size, need drop");
+      droppedEventCounter.inc();
+      largeMessageSizeCounter.inc(value.length);
+      if (debugMode) {
+        log.info(String.format("large message size is %s, payload is %s",
+            value.length, sojEvent.toString()));
+      }
+      return;
+    }
+
     for (String topic : topics) {
       SimpleDistSojEventWrapper sojEventWrapper = new SimpleDistSojEventWrapper();
-      byte[] value = serializer.encodeValue(sojEvent);
-      byte[] key = serializer.encodeKey(sojEvent, keyList);
       sojEventWrapper.setGuid(sojEvent.getGuid());
       sojEventWrapper.setColo(sojEvent.getClientData().get("colo"));
       sojEventWrapper.setKey(key);

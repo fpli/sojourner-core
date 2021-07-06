@@ -65,21 +65,23 @@ public class KafkaProducerConfig {
     Properties producerConfig = KafkaCommonConfig.get();
     producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
     producerConfig.put(ProducerConfig.BATCH_SIZE_CONFIG,
-                       getInteger(Property.BATCH_SIZE));
+        getInteger(Property.BATCH_SIZE));
     producerConfig.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG,
-                       getInteger(Property.REQUEST_TIMEOUT_MS));
+        getInteger(Property.REQUEST_TIMEOUT_MS));
     producerConfig.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG,
-                       getInteger(Property.DELIVERY_TIMEOUT_MS));
+        getInteger(Property.DELIVERY_TIMEOUT_MS));
     producerConfig.put(ProducerConfig.RETRIES_CONFIG,
-                       getInteger(Property.REQUEST_RETRIES));
+        getInteger(Property.REQUEST_RETRIES));
     producerConfig.put(ProducerConfig.LINGER_MS_CONFIG,
-                       getInteger(Property.LINGER_MS));
+        getInteger(Property.LINGER_MS));
     producerConfig.put(ProducerConfig.BUFFER_MEMORY_CONFIG,
-                       getInteger(Property.BUFFER_MEMORY));
+        getInteger(Property.BUFFER_MEMORY));
     producerConfig.put(ProducerConfig.ACKS_CONFIG,
-                       getString(Property.ACKS));
+        getString(Property.ACKS));
     producerConfig.put(ProducerConfig.COMPRESSION_TYPE_CONFIG,
-                       getString(Property.COMPRESSION_TYPE));
+        getString(Property.COMPRESSION_TYPE));
+    producerConfig.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG,
+        getInteger(Property.MAX_REQUEST_SIZE));
 
     return producerConfig;
   }

@@ -11,6 +11,9 @@ import static com.ebay.sojourner.common.util.Property.REST_CONFIG_PROFILE;
 import static com.ebay.sojourner.common.util.Property.REST_CONFIG_PULL_INTERVAL;
 import static com.ebay.sojourner.common.util.Property.SINK_KAFKA_PARALLELISM;
 import static com.ebay.sojourner.common.util.Property.SOURCE_PARALLELISM;
+import static com.ebay.sojourner.common.util.Property.MAX_MESSAGE_BYTES;
+import static com.ebay.sojourner.common.util.Property.DEBUG_MODE;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getList;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getLong;
@@ -86,8 +89,11 @@ public class SojEventDistJob {
     // regular sojevents based on pageid
     DataStream<RawSojEventWrapper> sojEventDistStream =
         sojEventSourceDataStream.connect(broadcastStream)
-                                .process(new SojEventDistProcessFunction(stateDescriptor,
-                                             getList(FLINK_APP_DIST_TOPIC_CONFIG_KEY)))
+                                .process(new SojEventDistProcessFunction(
+                                    stateDescriptor,
+                                    getList(FLINK_APP_DIST_TOPIC_CONFIG_KEY),
+                                    getLong(MAX_MESSAGE_BYTES),
+                                    getBoolean(DEBUG_MODE)))
                                 .name(DIST_OP_NAME)
                                 .uid(DIST_UID)
                                 .setParallelism(getInteger(SOURCE_PARALLELISM));

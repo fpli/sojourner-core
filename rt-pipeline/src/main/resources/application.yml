@@ -74,7 +74,6 @@ flink:
             agent-ip: userAgent
     message-filter:
       max-message-bytes: 102400
-      min-url-query-string-ratio: 80
       sub-url-query-string-length: 4096
       truncate-url-query-string: true
     debug-mode: false
@@ -142,6 +141,8 @@ kafka:
     compression-type: lz4
     # 2min
     delivery-timeout-ms: 120000
+    # 1000000 byte
+    max-request-size: 1000000
 
 rheos:
   registry-url: https://rheos-services.stratus.ebay.com

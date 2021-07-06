@@ -16,6 +16,9 @@ flink:
     sink:
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
+    message-filter:
+      max-message-bytes: 262144
+    debug-mode: false
 
 kafka:
   consumer:
@@ -69,6 +72,8 @@ kafka:
     compression-type: lz4
     # 2min
     delivery-timeout-ms: 120000
+    # 1000000 byte
+    max-request-size: 1000000
 
 rheos:
   registry-url: https://rheos-services.stratus.ebay.com

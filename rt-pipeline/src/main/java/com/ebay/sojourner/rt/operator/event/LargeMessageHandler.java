@@ -4,17 +4,16 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.util.Constants;
 import java.net.URLDecoder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.api.common.functions.RichFilterFunction;
+import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.metrics.Counter;
+import org.apache.flink.util.Collector;
 
 @Slf4j
-public class LargeMessageFilterFunction extends RichFilterFunction<RawEvent> {
+public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent> {
 
-  private final long MAX_MESSAGE_BYTES;
-  private final long MIN_URL_QUERY_STRING_RATIO;
-  private final int SUB_URL_QUERY_STRING_LENGTH;
+  private final long maxMessageBytes;
+  private final int subUrlQueryStringBytes;
   private final boolean truncateUrlQueryString;
   private final boolean debugMode;
   private Counter largeMessageCounter;
@@ -32,11 +31,10 @@ public class LargeMessageFilterFunction extends RichFilterFunction<RawEvent> {
   private static final String DROPPED_EVENT_METRIC_NAME = "dropped-event-count";
   private static final String URL_QUERY_STRING_SUB_METRIC_NAME = "url-query-string-sub-event-count";
 
-  public LargeMessageFilterFunction(long MAX_MESSAGE_BYTES, long MIN_URL_QUERY_STRING_RATIO,
-      int SUB_URL_QUERY_STRING_LENGTH, boolean truncateUrlQueryString, boolean debugMode) {
-    this.MAX_MESSAGE_BYTES = MAX_MESSAGE_BYTES;
-    this.MIN_URL_QUERY_STRING_RATIO = MIN_URL_QUERY_STRING_RATIO;
-    this.SUB_URL_QUERY_STRING_LENGTH = SUB_URL_QUERY_STRING_LENGTH;
+  public LargeMessageHandler(long maxMessageBytes, int subUrlQueryStringBytes,
+      boolean truncateUrlQueryString, boolean debugMode) {
+    this.maxMessageBytes = maxMessageBytes;
+    this.subUrlQueryStringBytes = subUrlQueryStringBytes;
     this.truncateUrlQueryString = truncateUrlQueryString;
     this.debugMode = debugMode;
   }
@@ -83,18 +81,32 @@ public class LargeMessageFilterFunction extends RichFilterFunction<RawEvent> {
   }
 
   @Override
-  public boolean filter(RawEvent rawEvent) throws Exception {
+  public void flatMap(RawEvent rawEvent, Collector<RawEvent> collector) throws Exception {
 
-    if (rawEvent.getMessageSize() >= MAX_MESSAGE_BYTES) {
-      String urlQueryString = rawEvent.getClientData().getUrlQueryString();
+    String urlQueryString = rawEvent.getClientData().getUrlQueryString();
+    if (rawEvent.getMessageSize() >= maxMessageBytes) {
       if (debugMode) {
         log.info(String.format("large message size is %s, message payload is %s",
             rawEvent.getMessageSize(), rawEvent.toString()));
       }
       largeMessageCounter.inc();
       largeMessageSizeCounter.inc(rawEvent.getMessageSize());
-      if (truncateUrlQueryString && StringUtils.isNotBlank(urlQueryString) &&
-          urlQueryString.length() >= MAX_MESSAGE_BYTES * MIN_URL_QUERY_STRING_RATIO / 100) {
+      if (!truncateUrlQueryString) {
+        log.info("disable truncate urlQueryString, will drop message directly");
+        droppedEventCounter.inc();
+        return;
+      } else if (urlQueryString != null
+          && rawEvent.getMessageSize() - urlQueryString.length()
+          > maxMessageBytes - subUrlQueryStringBytes) {
+        if (debugMode) {
+          log.info(String.format("urlQueryString size is %s, urlQueryString is %s",
+              urlQueryString.length(), urlQueryString));
+        }
+        log.info(
+            "large message size is not caused by large urlQueryString, will drop message directly");
+        droppedEventCounter.inc();
+        return;
+      } else if (urlQueryString != null) {
         if (debugMode) {
           log.info(String.format("before sub urlQueryString size is %s, urlQueryString is %s",
               urlQueryString.length(), urlQueryString));
@@ -110,22 +122,13 @@ public class LargeMessageFilterFunction extends RichFilterFunction<RawEvent> {
         }
         largeUrlQueryStringAfterSubSizeCounter
             .inc(rawEvent.getClientData().getUrlQueryString().length());
-        return true;
-      } else {
-        if (debugMode) {
-          log.info(String.format("urlQueryString size is %s, urlQueryString is %s",
-              urlQueryString.length(), urlQueryString));
-        }
-        log.info("large message size is not caused by large urlQueryString, need drop");
-        droppedEventCounter.inc();
-        return false;
       }
     }
-    return true;
+    collector.collect(rawEvent);
   }
 
   public String truncateUrlQueryString(String urlQueryString) {
-    String subUrlQueryString = urlQueryString.substring(0, SUB_URL_QUERY_STRING_LENGTH);
+    String subUrlQueryString = urlQueryString.substring(0, subUrlQueryStringBytes);
     int index = subUrlQueryString.lastIndexOf("&");
     if (index <= 0) {
       return "";
