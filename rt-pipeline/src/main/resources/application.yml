@@ -72,6 +72,7 @@ flink:
             ip: ip
             agent: userAgent
             agent-ip: userAgent
+        allow-drop: true
     message-filter:
       max-message-bytes: 102400
       sub-url-query-string-length: 4096

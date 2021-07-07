@@ -118,7 +118,7 @@ public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent>
         rawEvent.getClientData().setUrlQueryString(finalUrlQueryString);
         if (debugMode) {
           log.info(String.format("after sub urlQueryString size is %s, urlQueryString is %s",
-              urlQueryString.length(), urlQueryString));
+              finalUrlQueryString.length(), finalUrlQueryString));
         }
         largeUrlQueryStringAfterSubSizeCounter
             .inc(rawEvent.getClientData().getUrlQueryString().length());

@@ -24,14 +24,14 @@ public class FlinkKafkaProducerFactory {
   public <T extends SpecificRecord> FlinkKafkaProducer<T> get(
       AvroKafkaSerializationSchema<T> serializer) {
     return new FlinkKafkaProducer<>(serializer.defaultTopic, serializer, config.getProperties(),
-                                    Semantic.AT_LEAST_ONCE);
+        Semantic.AT_LEAST_ONCE);
   }
 
   // Rheos kafka producer
   public <T extends SpecificRecord> FlinkKafkaProducer<T> get(Class<T> clazz,
-                                                              String rheosServiceUrls, String topic,
-                                                              String subject, String producerId,
-                                                              String... keys) {
+      String rheosServiceUrls, String topic,
+      String subject, String producerId,
+      String... keys) {
     Preconditions.checkNotNull(rheosServiceUrls);
     Preconditions.checkNotNull(topic);
     Preconditions.checkNotNull(subject);
@@ -41,9 +41,40 @@ public class FlinkKafkaProducerFactory {
         rheosServiceUrls, topic, subject, producerId, config.getProperties());
 
     return new FlinkKafkaProducer<>(topic,
-                                new RheosKafkaSerializationSchema<>(rheosKafkaConfig, clazz, keys),
-                                    config.getProperties(),
-                                    Semantic.AT_LEAST_ONCE);
+        new RheosKafkaSerializationSchema<>(rheosKafkaConfig, clazz, keys),
+        config.getProperties(),
+        Semantic.AT_LEAST_ONCE);
+  }
+
+  public <T> FlinkKafkaProducer<T> get(String topic, KafkaSerializationSchema<T> serializer,
+      boolean allowDrop) {
+    return new SojFlinkKafkaProducer<>(topic, serializer, config.getProperties(),
+        Semantic.AT_LEAST_ONCE, allowDrop);
+  }
+
+  public <T extends SpecificRecord> FlinkKafkaProducer<T> get(
+      AvroKafkaSerializationSchema<T> serializer, boolean allowDrop) {
+    return new SojFlinkKafkaProducer<>(serializer.defaultTopic, serializer, config.getProperties(),
+        Semantic.AT_LEAST_ONCE, allowDrop);
+  }
+
+  // Rheos kafka producer
+  public <T extends SpecificRecord> FlinkKafkaProducer<T> get(Class<T> clazz,
+      String rheosServiceUrls, String topic,
+      String subject, String producerId, boolean allowDrop,
+      String... keys) {
+    Preconditions.checkNotNull(rheosServiceUrls);
+    Preconditions.checkNotNull(topic);
+    Preconditions.checkNotNull(subject);
+    Preconditions.checkNotNull(producerId);
+
+    RheosKafkaProducerConfig rheosKafkaConfig = new RheosKafkaProducerConfig(
+        rheosServiceUrls, topic, subject, producerId, config.getProperties());
+
+    return new SojFlinkKafkaProducer<>(topic,
+        new RheosKafkaSerializationSchema<>(rheosKafkaConfig, clazz, keys),
+        config.getProperties(),
+        Semantic.AT_LEAST_ONCE, allowDrop);
   }
 
 }

@@ -230,6 +230,7 @@ public class Property {
   public static final String MAX_MESSAGE_BYTES = "flink.app.message-filter.max-message-bytes";
   public static final String SUB_URL_QUERY_STRING_LENGTH = "flink.app.message-filter.sub-url-query-string-length";
   public static final String TRUNCATE_URL_QUERY_STRING = "flink.app.message-filter.truncate-url-query-string";
+  public static final String ALLOW_DROP = "flink.app.sink.kafka.allow-drop";
 
   // zookeeper
   public static final String ZOOKEEPER_SERVER = "zookeeper.server";
