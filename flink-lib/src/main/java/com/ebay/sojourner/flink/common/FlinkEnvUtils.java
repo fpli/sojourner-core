@@ -9,10 +9,14 @@ import static com.ebay.sojourner.common.util.Property.TOLERATE_FAILURE_CHECKPOIN
 import com.ebay.sojourner.common.env.EnvironmentUtils;
 import com.ebay.sojourner.flink.state.StateBackendFactory;
 import com.google.common.collect.Maps;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.CheckpointingMode;
@@ -20,6 +24,7 @@ import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+@Slf4j
 public class FlinkEnvUtils {
 
   private static final Map<String, String> CONFIG = Maps.newHashMap();
@@ -34,6 +39,25 @@ public class FlinkEnvUtils {
       EnvironmentUtils.activateProfile(profile);
     }
     EnvironmentUtils.fromProperties(parameterTool.getProperties());
+
+    // load git.properties file if exists
+    try (InputStream input = FlinkEnvUtils.class.getClassLoader()
+                                                .getResourceAsStream("git.properties")) {
+      Properties prop = new Properties();
+
+      if (input == null) {
+        log.info("Not found git.properties file");
+        return;
+      }
+
+      //load git.properties and put props into CONFIG map
+      prop.load(input);
+      for (String key : prop.stringPropertyNames()) {
+        CONFIG.put(key, prop.getProperty(key));
+      }
+    } catch (IOException e) {
+      log.error("Error when loading git.properties file", e);
+    }
   }
 
   public static StreamExecutionEnvironment prepare(String[] args) {

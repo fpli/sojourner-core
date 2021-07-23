@@ -734,6 +734,28 @@
           </configuration>
         </plugin>
 
+        <!-- Build info related plugins  -->
+        <!-- git commit id plugin  -->
+        <plugin>
+          <groupId>pl.project13.maven</groupId>
+          <artifactId>git-commit-id-plugin</artifactId>
+          <version>4.0.5</version>
+          <executions>
+            <execution>
+              <id>get-the-git-infos</id>
+              <phase>initialize</phase>
+              <goals>
+                <goal>revision</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <generateGitPropertiesFile>true</generateGitPropertiesFile>
+            <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+            <commitIdGenerationMode>full</commitIdGenerationMode>
+          </configuration>
+        </plugin>
+
         <!-- Test related plugins -->
         <!-- Surefire runs all Java tests -->
         <plugin>
@@ -832,6 +854,10 @@
     </pluginManagement>
 
     <plugins>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
