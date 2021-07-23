@@ -99,6 +99,8 @@ public class KafkaConsumerConfig {
                        RoundRobinAssignor.class.getName());
     consumerConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                        getString(Property.AUTO_RESET_OFFSET));
+    consumerConfig.put("flink.partition-discovery.interval-millis",
+        getInteger(Property.PARTITION_DISCOVERY_INTERVAL_MS));
     return consumerConfig;
   }
 }

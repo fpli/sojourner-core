@@ -122,6 +122,7 @@ public class Property {
   public static final String KAFKA_CONSUMER_BOOTSTRAP_SERVERS = "kafka.consumer.bootstrap-servers";
   public static final String KAFKA_CONSUMER_TOPIC = "kafka.consumer.topic";
   public static final String KAFKA_CONSUMER_GROUP_ID = "kafka.consumer.group-id";
+  public static final String PARTITION_DISCOVERY_INTERVAL_MS = "kafka.consumer.partition-discovery-interval-ms";
 
   // kafka producer
   public static final String BATCH_SIZE = "kafka.producer.batch-size";

@@ -46,6 +46,8 @@ kafka:
     # 4MB, default value is 1MB
     max-partitions-fetch-bytes: 4194304
     auto-offset-reset: latest
+    # 60s, default is disabled
+    partition-discovery-interval-ms: 60000
 
   producer:
     stream: behavior.pulsar
