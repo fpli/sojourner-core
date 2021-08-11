@@ -1,0 +1,50 @@
+kafka:
+  consumer:
+    stream: behavior.pulsar
+    topic:
+      - behavior.pulsar.customized.vi
+    group-id: sojourner-customized-data-quality-check
+    bootstrap-servers:
+      rno:
+        - rhs-okrvkiaa-kfk-rno-1.rheos-streaming-prod.svc.25.tess.io:9092
+        - rhs-okrvkiaa-kfk-rno-2.rheos-streaming-prod.svc.25.tess.io:9092
+        - rhs-okrvkiaa-kfk-rno-3.rheos-streaming-prod.svc.25.tess.io:9092
+        - rhs-okrvkiaa-kfk-rno-4.rheos-streaming-prod.svc.25.tess.io:9092
+        - rhs-okrvkiaa-kfk-rno-5.rheos-streaming-prod.svc.25.tess.io:9092
+      slc:
+        - rhs-qisvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-qisvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-qisvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-qisvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-qisvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+
+    max-poll-records: 5000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 8MB, default value is 64KB
+    receive-buffer: 8388608
+    fetch-max-wait-ms: 100
+    # 10MB, default value is 1MB
+    max-partitions-fetch-bytes: 10485760
+    auto-offset-reset: latest
+    # 60s, default is disabled
+    partition-discovery-interval-ms: 60000
+
+flink:
+  app:
+    name: Sojourner Customized VI Topic Event HDFS Load Pipeline
+    parallelism:
+      source: 20
+      sink:
+        hdfs: 20
+    operator-name:
+      source: Sojourner Customized VI Topic Event Source
+      sink: Sojourner Customized VI Topic Event Sink
+    uid:
+      source: sojourner-customized-vi-topic-event-source
+      sink: sojourner-customized-vi-topic-event-sink
+    source:
+      dc: rno
+    sink:
+      hdfs:
+        path: hdfs://apollo-rno/sys/soj/ubd/customized-topic-dq-check/topic=vi/
