@@ -2,12 +2,12 @@
   type: UbiSession
   input:
     UbiSession:
-      absEventCnt: 9999
+      eventCnt: 9999
   expectResult: 0
 
 - name: case2
   type: UbiSession
   input:
     UbiSession:
-      absEventCnt: 10001
+      eventCnt: 10001
   expectResult: 15

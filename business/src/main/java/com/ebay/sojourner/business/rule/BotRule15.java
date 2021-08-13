@@ -9,7 +9,7 @@ public class BotRule15 extends AbstractBotRule<UbiSession> {
 
   @Override
   public int getBotFlag(UbiSession ubiSession) {
-    if (ubiSession.getAbsEventCnt() >= MANY_EVENTS_BOUND) {
+    if (ubiSession.getEventCnt() >= MANY_EVENTS_BOUND) {
       return BotRules.MANY_EVENTS_BOT_FLAG;
     } else {
       return BotRules.NON_BOT_FLAG;
