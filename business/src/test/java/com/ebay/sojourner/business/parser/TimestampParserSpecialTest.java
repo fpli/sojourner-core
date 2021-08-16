@@ -34,7 +34,6 @@ public class TimestampParserSpecialTest {
     Assertions.assertEquals(1599726436000L, ubiEvent.getEventTimestamp());
     Assertions.assertEquals(1555200000000L, ubiEvent.getSojDataDt());
     Assertions.assertEquals(1599726436000L, ubiEvent.getIngestTime());
-    Assertions.assertEquals(1599726436000L, ubiEvent.getGenerateTime());
     Assertions.assertNull(ubiEvent.getOldSessionSkey());
   }
 }

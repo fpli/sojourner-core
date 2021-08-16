@@ -122,7 +122,7 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     ClientData clientData = new ClientData();
     parseClientData(clientData, genericClientData);
     RawEvent rawEvent = new RawEvent(rheosHeader, sojAMap, sojKMap, sojCMap, clientData,
-        ingestTime, null, messageSize);
+        ingestTime, null, messageSize, null);
     parseEventTimestamp(rawEvent);
     return rawEvent;
   }

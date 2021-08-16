@@ -19,6 +19,8 @@ flink:
     message-filter:
       max-message-bytes: 262144
     debug-mode: false
+    metric:
+      window-size: 70000
 
 kafka:
   consumer:

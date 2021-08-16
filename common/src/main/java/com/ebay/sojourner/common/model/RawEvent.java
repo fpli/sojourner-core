@@ -1,6 +1,7 @@
 package com.ebay.sojourner.common.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class RawEvent implements Serializable {
   private long ingestTime;
   private Long eventTimestamp;
   private long messageSize;
+  private Map<String, Long> timestamps = new HashMap<>();
 
   @Override
   public String toString() {

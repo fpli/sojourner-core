@@ -1,11 +1,16 @@
 package com.ebay.sojourner.common.util;
 
-import static com.ebay.sojourner.common.constant.SojHeaders.*;
-import com.ebay.sojourner.common.model.*;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.S_QR_TAG;
+import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_CREATE_TIMESTAMP;
+import static com.ebay.sojourner.common.constant.SojHeaders.EP;
+import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_PRODUCER_TIMESTAMP;
+import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_SENT_TIMESTAMP;
 
+import com.ebay.sojourner.common.model.RawEvent;
+import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.common.model.SojSession;
+import com.ebay.sojourner.common.model.UbiEvent;
+import com.ebay.sojourner.common.model.UbiSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
@@ -13,8 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 public class SojUtils {
@@ -132,13 +138,35 @@ public class SojUtils {
             sojEvent.setCiid(sojEvent.getApplicationPayload().get("ciid"));
         }
         sojEvent.setCguid(ubiEvent.getCguid());
-        if (ubiEvent.isEntryPage()) {
-            Map<String, ByteBuffer> sojHeader = new HashMap<>();
-            sojHeader.put(EP,
-                    ByteBuffer.wrap(ByteArrayUtils.fromBoolean(true)));
-            sojEvent.setSojHeader(sojHeader);
+      Map<String, ByteBuffer> sojHeader = new HashMap<>();
+      if (ubiEvent.isEntryPage()) {
+        sojHeader.put(EP,
+            ByteBuffer.wrap(ByteArrayUtils.fromBoolean(true)));
+      }
+
+      Map<String, Long> timestamps = ubiEvent.getTimestamps();
+      if (timestamps != null) {
+        if (timestamps.get(PATHFINDER_CREATE_TIMESTAMP) != null) {
+          sojHeader
+              .put(PATHFINDER_CREATE_TIMESTAMP, ByteBuffer.wrap(
+                  ByteArrayUtils.fromLong(timestamps.get(PATHFINDER_CREATE_TIMESTAMP))));
         }
-        return sojEvent;
+
+        if (timestamps.get(PATHFINDER_SENT_TIMESTAMP) != null) {
+          sojHeader
+              .put(PATHFINDER_SENT_TIMESTAMP, ByteBuffer.wrap(
+                  ByteArrayUtils.fromLong(timestamps.get(PATHFINDER_SENT_TIMESTAMP))));
+        }
+
+        if (timestamps.get(PATHFINDER_PRODUCER_TIMESTAMP) != null) {
+          sojHeader
+              .put(PATHFINDER_PRODUCER_TIMESTAMP, ByteBuffer.wrap(
+                  ByteArrayUtils.fromLong(
+                      ubiEvent.getTimestamps().get(PATHFINDER_PRODUCER_TIMESTAMP))));
+        }
+      }
+      sojEvent.setSojHeader(sojHeader);
+      return sojEvent;
     }
 
     public static SojSession convertUbiSession2SojSession(UbiSession ubiSession) {

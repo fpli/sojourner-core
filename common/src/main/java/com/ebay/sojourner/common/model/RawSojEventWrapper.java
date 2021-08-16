@@ -1,5 +1,6 @@
 package com.ebay.sojourner.common.model;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,4 +11,6 @@ public class RawSojEventWrapper {
   private int pageId;
   private String topic;
   private byte[] payload;
+  private Map<String, Long> timestamps;
+  private Long eventTimestamp;
 }

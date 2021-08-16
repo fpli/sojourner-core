@@ -3,7 +3,9 @@ package com.ebay.sojourner.common.model;
 import com.ebay.sojourner.common.util.Constants;
 import com.ebay.sojourner.common.util.SojTimestamp;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import lombok.Data;
 import lombok.Getter;
@@ -57,7 +59,6 @@ public class UbiEvent implements Serializable {
   private long icfBinary;
   // collect some metrics for monitor and validation
   private long ingestTime;
-  private long generateTime;
   @Getter
   private long eventCnt;
   //metric for monitor
@@ -91,6 +92,7 @@ public class UbiEvent implements Serializable {
   private String userAgent;
   private String ip;
   private boolean entryPage;
+  private Map<String, Long> timestamps = new HashMap<>();
 
   public void updateSessionId() {
     this.sessionId = concatTimestamp(this.guid, this.eventTimestamp);

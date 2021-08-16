@@ -1,6 +1,8 @@
 package com.ebay.sojourner.flink.connector.kafka.schema;
 
+import com.ebay.sojourner.common.constant.SojHeaders;
 import com.ebay.sojourner.common.model.RawEvent;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -11,7 +13,7 @@ public class RawEventKafkaDeserializationSchemaWrapper implements
     KafkaDeserializationSchema<RawEvent> {
 
   private Set<String> skewGuids = new HashSet<>();
-  private RawEventDeserializationSchema rawEventDeserializationSchema;
+  private final RawEventDeserializationSchema rawEventDeserializationSchema;
 
   public RawEventKafkaDeserializationSchemaWrapper(Set<String> skewGuids,
       RawEventDeserializationSchema rawEventDeserializationSchema) {
@@ -30,7 +32,12 @@ public class RawEventKafkaDeserializationSchemaWrapper implements
     if (record.key() != null && skewGuids.contains(new String(record.key()))) {
       return null;
     } else {
-      return rawEventDeserializationSchema.deserialize(record.value());
+      Long produceTimestamp = record.timestamp();
+      RawEvent rawEvent = rawEventDeserializationSchema.deserialize(record.value());
+      HashMap<String, Long> timestamps = new HashMap<>();
+      timestamps.put(SojHeaders.PATHFINDER_PRODUCER_TIMESTAMP, produceTimestamp);
+      rawEvent.setTimestamps(timestamps);
+      return rawEvent;
     }
   }
 

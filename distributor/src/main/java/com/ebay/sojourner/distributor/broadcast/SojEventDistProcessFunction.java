@@ -1,8 +1,13 @@
 package com.ebay.sojourner.distributor.broadcast;
 
+import static com.ebay.sojourner.common.constant.SojHeaders.DISTRIBUTOR_INGEST_TIMESTAMP;
+import static com.ebay.sojourner.common.constant.SojHeaders.REALTIME_PRODUCER_TIMESTAMP;
+
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
+import com.ebay.sojourner.common.model.RheosHeader;
 import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.common.util.ByteArrayUtils;
 import com.ebay.sojourner.common.util.Constants;
 import com.ebay.sojourner.distributor.function.AddTagMapFunction;
 import com.ebay.sojourner.distributor.function.CFlagFilterFunction;
@@ -12,6 +17,7 @@ import com.ebay.sojourner.flink.connector.kafka.AvroKafkaDeserializer;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaDeserializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +97,23 @@ public class SojEventDistProcessFunction extends
     byte[] payload = sojEventWrapper.getPayload();
     SojEvent sojEvent = deserializer.decodeValue(payload);
 
+    // add produceTimestamp and ingestTime into sojHeader
+    Map<String, ByteBuffer> sojHeader = sojEvent.getSojHeader();
+
+    Map<String, Long> timestamps = sojEventWrapper.getTimestamps();
+    if (timestamps != null) {
+      if (timestamps.get(DISTRIBUTOR_INGEST_TIMESTAMP) != null) {
+        sojHeader.put(DISTRIBUTOR_INGEST_TIMESTAMP,
+            ByteBuffer.wrap(ByteArrayUtils.fromLong(timestamps.get(DISTRIBUTOR_INGEST_TIMESTAMP))));
+      }
+
+      if (timestamps.get(REALTIME_PRODUCER_TIMESTAMP) != null) {
+        sojHeader.put(REALTIME_PRODUCER_TIMESTAMP,
+            ByteBuffer.wrap(ByteArrayUtils.fromLong(timestamps.get(REALTIME_PRODUCER_TIMESTAMP))));
+      }
+    }
+    sojEvent.setSojHeader(sojHeader);
+
     // filter out cflag events
     if (!cFlagFilterFunction.filter(sojEvent)) {
       return;
@@ -98,6 +121,15 @@ public class SojEventDistProcessFunction extends
 
     // add tags
     sojEvent = addTagMapFunction.map(sojEvent);
+
+    // add createTimestamp and sentTimestamp into rheosHeader
+    RheosHeader rheosHeader = sojEvent.getRheosHeader();
+    rheosHeader.setEventCreateTimestamp(System.currentTimeMillis());
+    rheosHeader.setEventSentTimestamp(System.currentTimeMillis());
+    sojEvent.setRheosHeader(rheosHeader);
+
+    // add eventTimestamp for latency monitoring
+    sojEventWrapper.setEventTimestamp(sojEvent.getEventTimestamp());
 
     // serialize sojEvent after adding tags and set to wrapper
     byte[] value = serializer.encodeValue(sojEvent);

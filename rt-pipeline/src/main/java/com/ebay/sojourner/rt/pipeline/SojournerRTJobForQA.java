@@ -35,7 +35,7 @@ import com.ebay.sojourner.rt.metric.AgentIpMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.metric.AgentMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.metric.EventMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.metric.IpMetricsCollectorProcessFunction;
-import com.ebay.sojourner.rt.metric.PipelineMetricsCollectorProcessFunction;
+import com.ebay.sojourner.rt.metric.RTPipelineMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.operator.attribute.AgentAttributeAgg;
 import com.ebay.sojourner.rt.operator.attribute.AgentIpAttributeAgg;
 import com.ebay.sojourner.rt.operator.attribute.AgentIpAttributeAggSliding;
@@ -304,7 +304,7 @@ public class SojournerRTJobForQA {
 
     // metrics collector for end to end
     signatureBotDetectionForEvent
-        .process(new PipelineMetricsCollectorProcessFunction(
+        .process(new RTPipelineMetricsCollectorProcessFunction(
             FlinkEnvUtils.getInteger(Property.METRIC_WINDOW_SIZE)))
         .setParallelism(getInteger(Property.METRICS_PARALLELISM))
         .name("Pipeline Metrics Collector")

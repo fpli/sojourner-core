@@ -1,18 +1,18 @@
 package com.ebay.sojourner.distributor.pipeline;
 
+import static com.ebay.sojourner.common.util.Property.DEBUG_MODE;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_NAME;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_DC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_KAFKA_TOPIC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_OP_NAME;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_DC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OP_NAME;
+import static com.ebay.sojourner.common.util.Property.MAX_MESSAGE_BYTES;
 import static com.ebay.sojourner.common.util.Property.REST_BASE_URL;
 import static com.ebay.sojourner.common.util.Property.REST_CONFIG_PROFILE;
 import static com.ebay.sojourner.common.util.Property.REST_CONFIG_PULL_INTERVAL;
 import static com.ebay.sojourner.common.util.Property.SINK_KAFKA_PARALLELISM;
 import static com.ebay.sojourner.common.util.Property.SOURCE_PARALLELISM;
-import static com.ebay.sojourner.common.util.Property.MAX_MESSAGE_BYTES;
-import static com.ebay.sojourner.common.util.Property.DEBUG_MODE;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getList;
@@ -22,8 +22,10 @@ import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 import com.ebay.sojourner.common.model.CustomTopicConfig;
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
+import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.distributor.broadcast.SojEventDistProcessFunction;
 import com.ebay.sojourner.distributor.function.CustomTopicConfigSourceFunction;
+import com.ebay.sojourner.distributor.function.DistPipelineMetricsCollectorProcessFunction;
 import com.ebay.sojourner.distributor.schema.RawSojEventWrapperDeserializationSchema;
 import com.ebay.sojourner.distributor.schema.RawSojEventWrapperSerializationSchema;
 import com.ebay.sojourner.flink.common.DataCenter;
@@ -98,6 +100,13 @@ public class SojEventDistJob {
                                 .uid(DIST_UID)
                                 .setParallelism(getInteger(SOURCE_PARALLELISM));
 
+    // distributor latency monitoring
+    sojEventDistStream
+        .process(new DistPipelineMetricsCollectorProcessFunction(
+            FlinkEnvUtils.getInteger(Property.METRIC_WINDOW_SIZE)))
+        .setParallelism(getInteger(SOURCE_PARALLELISM))
+        .name("Pipeline Metrics Collector")
+        .uid("pipeline-metrics-collector");
 
     // sink to kafka
     KafkaProducerConfig config = KafkaProducerConfig.ofDC(getString(FLINK_APP_SINK_DC));
