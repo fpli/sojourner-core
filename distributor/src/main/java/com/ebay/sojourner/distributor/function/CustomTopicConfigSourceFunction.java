@@ -50,7 +50,7 @@ public class CustomTopicConfigSourceFunction extends RichSourceFunction<PageIdTo
     while (true) {
       try {
         Response response = restClient.get(
-            "/api/custom_topic_config/list/topic_page_ids?profile=" + profile);
+            "/api/custom_topic_config/list/all?profile=" + profile);
         List<TopicPageIdMapping> configs = objectMapper
             .reader()
             .forType(new TypeReference<List<TopicPageIdMapping>>() {})
