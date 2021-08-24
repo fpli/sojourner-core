@@ -38,4 +38,5 @@ public class ApplicationPayloadTags {
   public static final String PLMT = "plmt"; // placement
   public static final String EFAM = "efam"; // event family
   public static final String EACTN = "eactn"; // event action
+  public static final String CP_ID = "callingPageId";
 }

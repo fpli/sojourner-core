@@ -21,6 +21,7 @@ flink:
         - "dss-ads-pvp-hsa:behavior.pulsar.customized.ads-pvp-hsa"
         - "srch-lst:behavior.pulsar.event.lst-srch"
         - "entry-page:behavior.pulsar.sojsession.entrypage"
+        - "mt-mobile-mc3ur:behavior.pulsar.customized.mc3ur"
 
 kafka:
   consumer:

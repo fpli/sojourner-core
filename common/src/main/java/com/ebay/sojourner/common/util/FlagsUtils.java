@@ -17,7 +17,7 @@ public final class FlagsUtils {
         int actualFlag = decodedBuckets[bucket];
         int bitLocation = position % 8;
         int val = (actualFlag >> (7 - bitLocation)) & 1;
-        return val == 1 ? true : false;
+        return val == 1;
       }
     }
     return false;
