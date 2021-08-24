@@ -25,6 +25,7 @@ import com.ebay.sojourner.flink.connector.kafka.KafkaProducerConfig;
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.AvroKafkaSerializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventDeserializationSchema;
+import com.ebay.sojourner.flink.connector.kafka.schema.RawEventKafkaDeserializationSchemaWrapper;
 import com.ebay.sojourner.flink.state.MapStateDesc;
 import com.ebay.sojourner.flink.window.CompositeTrigger;
 import com.ebay.sojourner.flink.window.MidnightOpenSessionTrigger;
@@ -63,7 +64,6 @@ import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindow
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.triggers.EventTimeTrigger;
-import org.apache.flink.streaming.connectors.kafka.internals.KafkaDeserializationSchemaWrapper;
 import org.apache.flink.streaming.runtime.operators.windowing.WindowOperatorHelper;
 import org.apache.flink.types.Either;
 
@@ -74,7 +74,6 @@ public class SojournerRTJobForQA {
     // 0.0 Prepare execution environment
     // 0.1 UBI configuration
     // 0.2 Flink configuration
-    args = new String[]{"--profile", "qa"};
     final StreamExecutionEnvironment executionEnvironment = FlinkEnvUtils.prepare(args);
 
     // 1. Rheos Consumer
@@ -90,8 +89,9 @@ public class SojournerRTJobForQA {
         .fromTimestamp(getString(Property.FLINK_APP_SOURCE_FROM_TIMESTAMP))
         .outOfOrderlessInMin(getInteger(FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN))
         .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
-        .build(new KafkaDeserializationSchemaWrapper<>(new RawEventDeserializationSchema(
-            getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
+        .build(new RawEventKafkaDeserializationSchemaWrapper(
+            FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
+            new RawEventDeserializationSchema()));
 
     // 2. Event Operator
     // 2.1 Parse and transform RawEvent to UbiEvent
