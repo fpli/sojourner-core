@@ -96,7 +96,8 @@ public class SojournerRTJob {
         .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
         .build(new RawEventKafkaDeserializationSchemaWrapper(
             FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
-            new RawEventDeserializationSchema()));
+            new RawEventDeserializationSchema(
+                FlinkEnvUtils.getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
     DataStream<RawEvent> rawEventDataStreamForSLC = dataStreamBuilder
         .dc(SLC)
         .operatorName(getString(Property.SOURCE_OPERATOR_NAME_SLC))
@@ -107,7 +108,8 @@ public class SojournerRTJob {
         .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
         .build(new RawEventKafkaDeserializationSchemaWrapper(
             FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
-            new RawEventDeserializationSchema()));
+            new RawEventDeserializationSchema(
+                FlinkEnvUtils.getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
     DataStream<RawEvent> rawEventDataStreamForLVS = dataStreamBuilder
         .dc(LVS)
         .operatorName(getString(Property.SOURCE_OPERATOR_NAME_LVS))
@@ -118,7 +120,8 @@ public class SojournerRTJob {
         .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
         .build(new RawEventKafkaDeserializationSchemaWrapper(
             FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
-            new RawEventDeserializationSchema()));
+            new RawEventDeserializationSchema(
+                FlinkEnvUtils.getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
 
     // filter skew guid
     /*

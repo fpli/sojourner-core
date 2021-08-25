@@ -91,7 +91,8 @@ public class SojournerRTJobForQA {
         .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
         .build(new RawEventKafkaDeserializationSchemaWrapper(
             FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
-            new RawEventDeserializationSchema()));
+            new RawEventDeserializationSchema(
+                FlinkEnvUtils.getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
 
     // 2. Event Operator
     // 2.1 Parse and transform RawEvent to UbiEvent
