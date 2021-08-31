@@ -34,6 +34,9 @@ public class RawEventKafkaDeserializationSchemaWrapper implements
     } else {
       Long produceTimestamp = record.timestamp();
       RawEvent rawEvent = rawEventDeserializationSchema.deserialize(record.value());
+      if (rawEvent == null) {
+        return null;
+      }
       HashMap<String, Long> timestamps = new HashMap<>();
       timestamps.put(SojHeaders.PATHFINDER_PRODUCER_TIMESTAMP, produceTimestamp);
       rawEvent.setTimestamps(timestamps);
