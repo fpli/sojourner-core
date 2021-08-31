@@ -6,6 +6,7 @@ import com.ebay.sojourner.flink.connector.kafka.KafkaDeserializer;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.flink.api.common.serialization.DeserializationSchema.InitializationContext;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -15,10 +16,6 @@ public class BullseyeSojEventDeserializationSchema
     implements KafkaDeserializationSchema<SojEvent> {
 
   private transient KafkaDeserializer<SojEvent> deserializer;
-
-  public BullseyeSojEventDeserializationSchema() {
-    this.deserializer = new AvroKafkaDeserializer<>(SojEvent.class);;
-  }
 
   private final Set<Integer> BULLSEYE_PAGE_IDS = Sets.newHashSet(
       2376473, 2493971, 2493972, 2493975, 2493976, 2508507, 2500857, 2503558,
@@ -33,29 +30,19 @@ public class BullseyeSojEventDeserializationSchema
 
   @Override
   public SojEvent deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
+    SojEvent sojEvent = deserializer.decodeValue(record.value());
 
-    if (this.deserializer == null) {
-      this.deserializer = new AvroKafkaDeserializer<>(SojEvent.class);
-    }
-
-    String k = new String(record.key());
-    String[] str = k.split(",");
-    if (str.length < 2) {
-      log.error("Error when deserialize SojEvent with key: {}", k);
+    // only keep the necessary pageids
+    int pageId = sojEvent.getPageId();
+    if (!BULLSEYE_PAGE_IDS.contains(pageId)) {
       return null;
     }
+    return sojEvent;
+  }
 
-    int pageId = 0;
-    try {
-      pageId = Integer.parseInt(str[1]);
-      if (!BULLSEYE_PAGE_IDS.contains(pageId)) {
-        return null;
-      }
-    } catch (Exception e) {
-      log.error("Cannot parse pageId from message key: {}", k);
-      return null;
-    }
-    return deserializer.decodeValue(record.value());
+  @Override
+  public void open(InitializationContext context) throws Exception {
+    this.deserializer = new AvroKafkaDeserializer<>(SojEvent.class);
   }
 
   @Override

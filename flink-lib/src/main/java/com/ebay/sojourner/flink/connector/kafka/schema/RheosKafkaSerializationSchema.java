@@ -6,6 +6,7 @@ import com.ebay.sojourner.flink.connector.kafka.RheosKafkaProducerConfig;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.flink.api.common.serialization.SerializationSchema.InitializationContext;
 import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.jetbrains.annotations.Nullable;
@@ -23,17 +24,17 @@ public class RheosKafkaSerializationSchema<T extends SpecificRecord> implements
     this.rheosKafkaConfig = rheosKafkaConfig;
     this.clazz = clazz;
     this.keys = Lists.newArrayList(keys);
-    this.rheosKafkaSerializer = new RheosAvroKafkaSerializer<>(rheosKafkaConfig, clazz);
   }
 
   @Override
   public ProducerRecord<byte[], byte[]> serialize(T element, @Nullable Long timestamp) {
-    if (rheosKafkaSerializer == null) {
-      rheosKafkaSerializer = new RheosAvroKafkaSerializer<>(rheosKafkaConfig, clazz);
-    }
-
     return new ProducerRecord<>(rheosKafkaConfig.getTopic(),
                                 rheosKafkaSerializer.encodeKey(element, keys),
                                 rheosKafkaSerializer.encodeValue(element));
+  }
+
+  @Override
+  public void open(InitializationContext context) throws Exception {
+    this.rheosKafkaSerializer = new RheosAvroKafkaSerializer<>(rheosKafkaConfig, clazz);
   }
 }

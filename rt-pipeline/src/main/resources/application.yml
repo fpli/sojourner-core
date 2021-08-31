@@ -67,7 +67,7 @@ flink:
           session: behavior.pulsarv2.sojsession.schema
         message-key:
           session: guid
-          event: guid,pageId
+          event: guid
           signature:
             ip: ip
             agent: userAgent

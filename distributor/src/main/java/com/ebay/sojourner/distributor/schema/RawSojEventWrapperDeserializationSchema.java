@@ -24,23 +24,11 @@ public class RawSojEventWrapperDeserializationSchema
     long ingestTime = new Date().getTime();
     String k = new String(record.key());
     String[] str = k.split(",");
-    if (str.length < 2) {
-      log.error("Error when deserialize SojEvent with key: {}", k);
-      return null;
-    }
-
-    int pageId = 0;
-    try {
-      pageId = Integer.parseInt(str[1]);
-    } catch (Exception e) {
-      log.error("Cannot parse pageId from message key: {}", k);
-      return null;
-    }
 
     Map<String, Long> timestamps = new HashMap<>();
     timestamps.put(SojHeaders.DISTRIBUTOR_INGEST_TIMESTAMP, ingestTime);
     timestamps.put(SojHeaders.REALTIME_PRODUCER_TIMESTAMP, record.timestamp());
-    return new RawSojEventWrapper(str[0], pageId, null, record.value(),
+    return new RawSojEventWrapper(str[0], -1, null, record.value(),
         timestamps, null);
   }
 

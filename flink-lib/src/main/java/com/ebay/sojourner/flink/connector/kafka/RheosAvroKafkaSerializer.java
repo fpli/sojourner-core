@@ -25,7 +25,8 @@ public class RheosAvroKafkaSerializer<T extends SpecificRecord> implements Kafka
   private static final String FIELD_DELIM = ",";
   private final RheosKafkaProducerConfig rheosKafkaConfig;
   private final SchemaRegistryAwareAvroSerializerHelper<T> serializerHelper;
-  private DatumWriter<RheosEvent> writer; // init when using
+  private final DatumWriter<RheosEvent> writer; // all event are wrapped as RheosEvent
+  private final Schema schema;
   private final int schemaId;
 
   public RheosAvroKafkaSerializer(RheosKafkaProducerConfig rheosKafkaConfig, Class<T> clazz) {
@@ -33,6 +34,8 @@ public class RheosAvroKafkaSerializer<T extends SpecificRecord> implements Kafka
     this.serializerHelper =
         new SchemaRegistryAwareAvroSerializerHelper<>(rheosKafkaConfig.toConfigMap(), clazz);
     this.schemaId = serializerHelper.getSchemaId(rheosKafkaConfig.getSchemaSubject());
+    this.schema = serializerHelper.getSchema(this.schemaId);
+    this.writer = new GenericDatumWriter<>(schema);
   }
 
   @Override
@@ -59,15 +62,10 @@ public class RheosAvroKafkaSerializer<T extends SpecificRecord> implements Kafka
 
   @Override
   public byte[] encodeValue(T data) {
-    Schema schema = serializerHelper.getSchema(this.schemaId);
-    if (writer == null) {
-      writer = new GenericDatumWriter<>(schema);
-    }
-
+    // convert SpecificRecord to GenericRecord
     GenericRecord record = (GenericRecord) GenericData.get().deepCopy(schema, data);
-
+    // assemble RheosEvent
     RheosEvent rheosEvent = new RheosEvent(record);
-
     rheosEvent.setEventCreateTimestamp(System.currentTimeMillis());
     rheosEvent.setEventSentTimestamp(System.currentTimeMillis());
     rheosEvent.setSchemaId(this.schemaId);

@@ -151,7 +151,8 @@ public class SojEventDistProcessFunction extends
         ctx.getBroadcastState(stateDescriptor);
 
     // distribute events based on simple pageid/topic mapping regardless event is bot or not
-    int pageId = sojEventWrapper.getPageId();
+    int pageId = sojEvent.getPageId();
+    sojEventWrapper.setPageId(pageId);
     PageIdTopicMapping mapping = broadcastState.get(pageId);
     if (mapping != null) {
       for (String topic : mapping.getTopics()) {
