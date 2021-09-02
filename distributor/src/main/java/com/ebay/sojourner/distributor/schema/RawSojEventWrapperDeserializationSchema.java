@@ -22,14 +22,11 @@ public class RawSojEventWrapperDeserializationSchema
   @Override
   public RawSojEventWrapper deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
     long ingestTime = new Date().getTime();
-    String k = new String(record.key());
-    String[] str = k.split(",");
-
     Map<String, Long> timestamps = new HashMap<>();
     timestamps.put(SojHeaders.DISTRIBUTOR_INGEST_TIMESTAMP, ingestTime);
     timestamps.put(SojHeaders.REALTIME_PRODUCER_TIMESTAMP, record.timestamp());
-    return new RawSojEventWrapper(str[0], -1, null, record.value(),
-        timestamps, null);
+    return new RawSojEventWrapper(null, record.key(), record.value(),
+                                  timestamps, null);
   }
 
   @Override

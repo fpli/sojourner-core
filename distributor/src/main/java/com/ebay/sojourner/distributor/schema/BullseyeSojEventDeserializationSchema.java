@@ -1,6 +1,8 @@
 package com.ebay.sojourner.distributor.schema;
 
+import com.ebay.sojourner.common.constant.KafkaMessageHeaders;
 import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.flink.common.KafkaHeaderUtils;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaDeserializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaDeserializer;
 import com.google.common.collect.Sets;
@@ -10,6 +12,7 @@ import org.apache.flink.api.common.serialization.DeserializationSchema.Initializ
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.header.Headers;
 
 @Slf4j
 public class BullseyeSojEventDeserializationSchema
@@ -30,14 +33,13 @@ public class BullseyeSojEventDeserializationSchema
 
   @Override
   public SojEvent deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
-    SojEvent sojEvent = deserializer.decodeValue(record.value());
-
+    Headers headers = record.headers();
+    Integer pageId = KafkaHeaderUtils.getInt(KafkaMessageHeaders.PAGE_ID, headers);
     // only keep the necessary pageids
-    int pageId = sojEvent.getPageId();
-    if (!BULLSEYE_PAGE_IDS.contains(pageId)) {
-      return null;
+    if (pageId != null && BULLSEYE_PAGE_IDS.contains(pageId)) {
+      return deserializer.decodeValue(record.value());
     }
-    return sojEvent;
+    return null;
   }
 
   @Override

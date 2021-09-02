@@ -374,28 +374,24 @@ public class SojournerRTJob {
 
     // kafka sink for bot and nonbot sojevent
     sojEventWithSessionId
-        .addSink(producerFactory.get(
-            SojEvent.class,
+        .addSink(producerFactory.getSojEventProducer(
             getString(Property.RHEOS_KAFKA_REGISTRY_URL),
             getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_NON_BOT),
             getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
             getString(Property.PRODUCER_ID),
-            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP),
-            getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
+            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP)))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Nonbot SojEvent")
         .uid("nonbot-sojevent-sink");
 
     botSojEventStream
-        .addSink(producerFactory.get(
-            SojEvent.class,
+        .addSink(producerFactory.getSojEventProducer(
             getString(Property.RHEOS_KAFKA_REGISTRY_URL),
             getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_BOT),
             getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
             getString(Property.PRODUCER_ID),
-            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP),
-            getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
+            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP)))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Bot SojEvent")

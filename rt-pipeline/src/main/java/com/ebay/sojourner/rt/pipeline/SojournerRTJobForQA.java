@@ -2,6 +2,7 @@ package com.ebay.sojourner.rt.pipeline;
 
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_DC;
 import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getStringArray;
@@ -279,29 +280,25 @@ public class SojournerRTJobForQA {
         .uid("bot-session-sink-id");
 
     // kafka sink for bot and nonbot sojevent
-    sojEventWithSessionId.addSink(producerFactory.get(
-        SojEvent.class,
+    sojEventWithSessionId.addSink(producerFactory.getSojEventProducer(
         getString(Property.RHEOS_KAFKA_REGISTRY_URL),
         getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_NON_BOT),
         getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
         getString(Property.PRODUCER_ID),
-        FlinkEnvUtils.getBoolean(Property.ALLOW_DROP),
-        getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
-        .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .name("SojEvent")
-        .uid("event-sink-id");
+        getBoolean(Property.ALLOW_DROP)))
+                         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
+                         .name("SojEvent")
+                         .uid("event-sink-id");
 
-    botSojEventStream.addSink(producerFactory.get(
-        SojEvent.class,
+    botSojEventStream.addSink(producerFactory.getSojEventProducer(
         getString(Property.RHEOS_KAFKA_REGISTRY_URL),
         getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_BOT),
         getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
         getString(Property.PRODUCER_ID),
-        FlinkEnvUtils.getBoolean(Property.ALLOW_DROP),
-        getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
-        .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .name("Bot SojEvent")
-        .uid("bot-event-sink-id");
+        getBoolean(Property.ALLOW_DROP)))
+                     .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
+                     .name("Bot SojEvent")
+                     .uid("bot-event-sink-id");
 
     // metrics collector for end to end
     signatureBotDetectionForEvent
@@ -379,7 +376,7 @@ public class SojournerRTJobForQA {
         getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_LATE),
         getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
         getString(Property.PRODUCER_ID),
-        FlinkEnvUtils.getBoolean(Property.ALLOW_DROP),
+        getBoolean(Property.ALLOW_DROP),
         getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
         .setParallelism(getInteger(Property.SESSION_PARALLELISM))
         .name("Late SojEvent")

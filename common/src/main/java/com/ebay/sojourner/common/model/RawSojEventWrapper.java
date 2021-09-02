@@ -7,9 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class RawSojEventWrapper {
-  private String guid;
-  private int pageId;
   private String topic;
+  private byte[] key;
   private byte[] payload;
   private Map<String, Long> timestamps;
   private Long eventTimestamp;

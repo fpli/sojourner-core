@@ -1,7 +1,9 @@
 package com.ebay.sojourner.flink.connector.kafka;
 
+import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.flink.connector.kafka.schema.AvroKafkaSerializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.RheosKafkaSerializationSchema;
+import com.ebay.sojourner.flink.connector.kafka.schema.SojEventKafkaSerializationSchema;
 import com.google.common.base.Preconditions;
 import org.apache.avro.specific.SpecificRecord;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
@@ -75,6 +77,23 @@ public class FlinkKafkaProducerFactory {
         new RheosKafkaSerializationSchema<>(rheosKafkaConfig, clazz, keys),
         config.getProperties(),
         Semantic.AT_LEAST_ONCE, allowDrop);
+  }
+
+  public FlinkKafkaProducer<SojEvent> getSojEventProducer(String rheosServiceUrl, String topic,
+                                                          String subject, String producerId,
+                                                          boolean allowDrop) {
+    Preconditions.checkNotNull(rheosServiceUrl);
+    Preconditions.checkNotNull(topic);
+    Preconditions.checkNotNull(subject);
+    Preconditions.checkNotNull(producerId);
+
+    RheosKafkaProducerConfig rheosKafkaConfig = new RheosKafkaProducerConfig(
+        rheosServiceUrl, topic, subject, producerId, config.getProperties());
+
+    return new SojFlinkKafkaProducer<>(topic,
+                                       new SojEventKafkaSerializationSchema(rheosKafkaConfig),
+                                       config.getProperties(),
+                                       Semantic.AT_LEAST_ONCE, allowDrop);
   }
 
 }
