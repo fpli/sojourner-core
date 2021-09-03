@@ -11,7 +11,9 @@ public class RulePriorityUtils {
       return BotRules.NON_BOT_FLAG;
     }
 
-    if (botFlags.contains(BotRules.MANY_EVENTS_BOT_FLAG)) {
+    if (botFlags.contains(BotRules.BLACK_USER_ID)) {
+      return BotRules.BLACK_USER_ID;
+    } else if (botFlags.contains(BotRules.MANY_EVENTS_BOT_FLAG)) {
       return BotRules.MANY_EVENTS_BOT_FLAG;
     } else if (botFlags.contains(BotRules.SPIDER_BOT_FLAG)) {
       return BotRules.SPIDER_BOT_FLAG;

@@ -36,5 +36,7 @@ public class BotRules {
   public static final int SAME_AGENT_IP = 211;
   // ICF BOT Flag (801 ~ 856 represent 1 ~ 56)
   public static final int ICF_PREFIX = 8;
+  // userid new rule
+  public static final int BLACK_USER_ID = 16;
 
 }

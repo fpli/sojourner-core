@@ -53,6 +53,11 @@ public class UbiSessionAgg
       sessionBotFlagSet.addAll(sessionBotFlagSetDetect);
     }
 
+    Set<Integer> eventBotFlags = value.getBotFlags();
+    if (CollectionUtils.isNotEmpty(eventBotFlags)) {
+      sessionBotFlagSet.addAll(eventBotFlags);
+    }
+
     accumulator.getUbiSession().setBotFlagList(sessionBotFlagSet);
     value.setBotFlags(sessionBotFlagSet);
     return accumulator;

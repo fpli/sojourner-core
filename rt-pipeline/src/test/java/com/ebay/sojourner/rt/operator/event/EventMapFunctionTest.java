@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
+import com.ebay.sojourner.business.detector.NewEventBotDetector;
 import com.ebay.sojourner.business.parser.EventParser;
 import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
@@ -22,6 +23,7 @@ class EventMapFunctionTest {
   EventMapFunction mapFunction;
   RuntimeContext mockRuntimeContext = mock(RuntimeContext.class);
   EventParser mockEventParser = mock(EventParser.class);
+  NewEventBotDetector newEventBotDetector = mock(NewEventBotDetector.class);
 
   @BeforeEach
   void setUp() {
@@ -43,6 +45,7 @@ class EventMapFunctionTest {
     AverageAccumulator avgEventParserDuration = new AverageAccumulator();
     Whitebox.setInternalState(mapFunction, "parser", mockEventParser);
     Whitebox.setInternalState(mapFunction, "avgEventParserDuration", avgEventParserDuration);
+    Whitebox.setInternalState(mapFunction, "newEventBotDetector", newEventBotDetector);
     doNothing().when(mockEventParser).parse(any(), any());
     UbiEvent ubiEvent = mapFunction.map(rawEvent);
     assertThat(ubiEvent).isNotNull();
