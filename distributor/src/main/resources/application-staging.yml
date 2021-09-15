@@ -7,10 +7,10 @@ flink:
     checkpoint:
       data-dir: /tmp/flink/sojourner/distributor/checkpoint
     source:
-      dc: lvs
+      dc: slc
       operator-name: Non-bot SojEvent Source
     sink:
-      dc: lvs
+      dc: slc
       operator-name: Non-bot SojEvent Sink
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
@@ -36,6 +36,12 @@ kafka:
         - rhs-rurvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-rurvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+      slc:
+        - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
 
     max-poll-records: 500
     # 50MB, default value is 50MB
@@ -56,6 +62,12 @@ kafka:
         - rhs-nbrvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-nbrvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-nbrvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+      slc:
+        - rhs-rbrvkiaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-rbrvkiaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-rbrvkiaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-rbrvkiaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-rbrvkiaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
 
     # 16KB
     batch-size: 16384

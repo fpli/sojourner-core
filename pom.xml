@@ -39,7 +39,7 @@
     <avro.version>1.8.2</avro.version>
     <!--<flink.version>1.10.0</flink.version>-->
     <flink.version>1.11.0</flink.version>
-    <rheos.client.version>2.0.8</rheos.client.version>
+    <rheos.client.version>2.0.11</rheos.client.version>
     <rheos.job.uploader.plugin.version>1.0.1-SNAPSHOT</rheos.job.uploader.plugin.version>
     <calcite.version>1.22.0</calcite.version>
     <http.core.version>4.4.13</http.core.version>

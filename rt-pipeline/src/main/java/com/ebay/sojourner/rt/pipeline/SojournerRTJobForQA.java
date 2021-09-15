@@ -84,9 +84,9 @@ public class SojournerRTJobForQA {
         new SourceDataStreamBuilder<>(executionEnvironment);
 
     DataStream<RawEvent> rawEventDataStream = dataStreamBuilder
-        .dc(DataCenter.LVS)
-        .operatorName(getString(Property.SOURCE_OPERATOR_NAME_LVS))
-        .uid(getString(Property.SOURCE_UID_LVS))
+        .dc(DataCenter.SLC)
+        .operatorName(getString(Property.SOURCE_OPERATOR_NAME_SLC))
+        .uid(getString(Property.SOURCE_UID_SLC))
         .fromTimestamp(getString(Property.FLINK_APP_SOURCE_FROM_TIMESTAMP))
         .outOfOrderlessInMin(getInteger(FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN))
         .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
@@ -101,9 +101,9 @@ public class SojournerRTJobForQA {
     DataStream<UbiEvent> ubiEventDataStream = rawEventDataStream
         .map(new EventMapFunction())
         .setParallelism(getInteger(Property.EVENT_PARALLELISM))
-        .name("Event Operator For lvs")
+        .name("Event Operator For slc")
         .disableChaining()
-        .uid("event-lvs-id");
+        .uid("event-slc-id");
 
     // refine windowsoperator
     // 3. Session Operator

@@ -23,9 +23,9 @@ flink:
     source:
       from-timestamp: 0
       out-of-orderless-in-min: 3
-      dc: lvs
+      dc: slc
     sink:
-      dc: lvs
+      dc: slc
       kafka:
         topic:
           session:
@@ -51,6 +51,12 @@ kafka:
         - rhs-vvrvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-vvrvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-vvrvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+      slc:
+        - rhs-jhnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-jhnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-jhnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-jhnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-jhnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
 
     max-poll-records: 500
     # 50MB, default value is 50MB
@@ -72,6 +78,12 @@ kafka:
         - rhs-rurvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-rurvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
         - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
+      slc:
+        - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
 
     # 16KB
     batch-size: 16384
