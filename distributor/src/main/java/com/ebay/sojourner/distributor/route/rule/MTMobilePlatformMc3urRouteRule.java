@@ -1,6 +1,7 @@
 package com.ebay.sojourner.distributor.route.rule;
 
 import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.CALLING_PAGE_ID;
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.EFAM;
 
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.distributor.route.Route;
@@ -19,8 +20,9 @@ public class MTMobilePlatformMc3urRouteRule extends AbstractSojEventRouteRule {
     Integer pageId = sojEvent.getPageId();
     return pageId != null && (MC3UR_PAGE_IDS.contains(pageId)
         || (pageId.equals(2356359)
-              && "2380424".equals(sojEvent.getApplicationPayload().get(CALLING_PAGE_ID)))
+            && "2380424".equals(sojEvent.getApplicationPayload().get(CALLING_PAGE_ID)))
         || (pageId.equals(2208336)
-              && "2481888".equals(sojEvent.getApplicationPayload().get(CALLING_PAGE_ID))));
+            && "2481888".equals(sojEvent.getApplicationPayload().get(CALLING_PAGE_ID))
+            && "NOTF".equals(sojEvent.getApplicationPayload().get(EFAM))));
   }
 }
