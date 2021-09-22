@@ -26,14 +26,15 @@ public class SojEventKafkaSerializationSchema extends RheosKafkaSerializationSch
 
   @Override
   public ProducerRecord<byte[], byte[]> serialize(SojEvent element, @Nullable Long timestamp) {
+    int pageId = element.getPageId() == null ? -1 : element.getPageId();
     Header pageIdHeader = new RecordHeader(KafkaMessageHeaders.PAGE_ID,
-                                           Ints.toByteArray(element.getPageId()));
+        Ints.toByteArray(pageId));
 
     return new ProducerRecord<>(rheosKafkaConfig.getTopic(),
-                                null,
-                                element.getGuid().getBytes(StandardCharsets.UTF_8),
-                                rheosKafkaSerializer.encodeValue(element),
-                                Lists.newArrayList(pageIdHeader));
+        null,
+        element.getGuid().getBytes(StandardCharsets.UTF_8),
+        rheosKafkaSerializer.encodeValue(element),
+        Lists.newArrayList(pageIdHeader));
   }
 
   @Override
