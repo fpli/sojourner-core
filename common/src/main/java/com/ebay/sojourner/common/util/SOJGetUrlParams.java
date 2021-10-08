@@ -1,7 +1,7 @@
 package com.ebay.sojourner.common.util;
 
-import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.apache.commons.lang3.StringUtils;
 
 public class SOJGetUrlParams {
@@ -13,8 +13,8 @@ public class SOJGetUrlParams {
 
     // test valid url
     try {
-      URL aURL = new URL(url);
-    } catch (IOException e) {
+      URI uri = new URI(url);
+    } catch (URISyntaxException e) {
       // if not valid url, return null
       return "";
     }

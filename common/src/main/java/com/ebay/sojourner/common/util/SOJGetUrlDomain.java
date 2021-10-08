@@ -1,7 +1,7 @@
 package com.ebay.sojourner.common.util;
 
-import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.apache.commons.lang3.StringUtils;
 
 public class SOJGetUrlDomain {
@@ -14,14 +14,14 @@ public class SOJGetUrlDomain {
       return "";
     }
 
-    URL url;
+    URI uri;
 
     try {
-      url = new URL(urlString);
-    } catch (IOException e) {
+      uri = new URI(urlString);
+    } catch (URISyntaxException e) {
       return "";
     }
 
-    return url.getHost();
+    return uri.getHost();
   }
 }
