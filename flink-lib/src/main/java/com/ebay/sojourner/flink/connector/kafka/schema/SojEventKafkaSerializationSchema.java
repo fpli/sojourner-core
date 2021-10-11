@@ -8,7 +8,6 @@ import com.ebay.sojourner.flink.connector.kafka.RheosKafkaProducerConfig;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import java.nio.charset.StandardCharsets;
-import org.apache.flink.api.common.serialization.SerializationSchema.InitializationContext;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
@@ -22,10 +21,15 @@ public class SojEventKafkaSerializationSchema extends RheosKafkaSerializationSch
   public SojEventKafkaSerializationSchema(RheosKafkaProducerConfig rheosKafkaConfig) {
     super(rheosKafkaConfig, SojEvent.class, "guid");
     this.rheosKafkaConfig = rheosKafkaConfig;
+    this.rheosKafkaSerializer = new RheosAvroKafkaSerializer<>(rheosKafkaConfig, SojEvent.class);
   }
 
   @Override
   public ProducerRecord<byte[], byte[]> serialize(SojEvent element, @Nullable Long timestamp) {
+    if (rheosKafkaSerializer == null) {
+      rheosKafkaSerializer = new RheosAvroKafkaSerializer<>(rheosKafkaConfig, SojEvent.class);
+    }
+
     int pageId = element.getPageId() == null ? -1 : element.getPageId();
     Header pageIdHeader = new RecordHeader(KafkaMessageHeaders.PAGE_ID,
         Ints.toByteArray(pageId));
@@ -35,10 +39,5 @@ public class SojEventKafkaSerializationSchema extends RheosKafkaSerializationSch
         element.getGuid().getBytes(StandardCharsets.UTF_8),
         rheosKafkaSerializer.encodeValue(element),
         Lists.newArrayList(pageIdHeader));
-  }
-
-  @Override
-  public void open(InitializationContext context) throws Exception {
-    this.rheosKafkaSerializer = new RheosAvroKafkaSerializer<>(rheosKafkaConfig, SojEvent.class);
   }
 }
