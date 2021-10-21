@@ -19,6 +19,7 @@ flink:
         - "dss-ads-pvp-hsa:behavior.pulsarv2.test.ads-pvp-hsa"
         - "entry-page:behavior.pulsarv2.test.sojsession.entrypage"
         - "srch-lst:behavior.pulsarv2.test.event.lst-srch"
+        - "expc-native-events:behavior.pulsarv2.test.expc-native-events"
 
 kafka:
   consumer:
