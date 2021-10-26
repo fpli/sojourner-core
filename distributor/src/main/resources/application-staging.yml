@@ -22,6 +22,7 @@ flink:
         - "srch-lst:behavior.pulsar.event.lst-srch"
         - "entry-page:behavior.pulsar.sojsession.entrypage"
         - "mt-mobile-mc3ur:behavior.pulsar.customized.mc3ur"
+        - "expc-native-events:behavior.pulsar.customized.expc-native-events"
 
 kafka:
   consumer:
