@@ -62,8 +62,16 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     long messageSize = message.length;
     RheosEvent rheosEvent =
         RheosEventSerdeFactory.getRheosEventHeaderDeserializer().deserialize(null, message);
-    GenericRecord genericRecord =
-        RheosEventSerdeFactory.getRheosEventDeserializer(schemaRegistryUrl).decode(rheosEvent);
+    GenericRecord genericRecord = null;
+    try {
+      genericRecord = RheosEventSerdeFactory.getRheosEventDeserializer(schemaRegistryUrl)
+                                            .decode(rheosEvent);
+    } catch (Exception e) {
+      log.error("Error when deserializing RawEvent from Pathfinder, schemaId: {}, timestamp: {}",
+                rheosEvent.getSchemaId(), rheosEvent.getEventCreateTimestamp(), e);
+      // add metrics here
+      return null;
+    }
 
     // Generate RheosHeader
     RheosHeader rheosHeader =
