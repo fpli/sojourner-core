@@ -201,6 +201,20 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     Object tDuration = genericRecord.get("TDuration");
     clentData.setTDuration(tDuration != null ? tDuration.toString() : "");
 
+    // add tags for UA-CH project
+    // (ch_ua_model,ch_ua_platform_version,ch_ua_full_version,ch_ua_mobile)
+    Object chUaModel = genericRecord.get("ch_ua_model");
+    clentData.setChUaModel(chUaModel != null ? chUaModel.toString() : "");
+
+    Object chUaPlatformVersion = genericRecord.get("ch_ua_platform_version");
+    clentData.setChUaModel(chUaPlatformVersion != null ? chUaPlatformVersion.toString() : "");
+
+    Object chUaFullVersion = genericRecord.get("ch_ua_full_version");
+    clentData.setChUaModel(chUaFullVersion != null ? chUaFullVersion.toString() : "");
+
+    Object chUaMobile = genericRecord.get("ch_ua_mobile");
+    clentData.setChUaModel(chUaMobile != null ? chUaMobile.toString() : "");
+
     // TODO will deprecated when all applied new schema
     if (genericRecord.get("TPayload") != null) {
       parseTPayload(clentData, genericRecord.get("TPayload").toString());

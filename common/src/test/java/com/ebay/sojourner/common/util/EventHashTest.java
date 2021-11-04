@@ -40,6 +40,6 @@ public class EventHashTest {
     ubiEvent.setCurrentImprId(1L);
     ubiEvent.setSourceImprId(1L);
     ubiEvent.setClientData(clientData);
-    Assertions.assertEquals(2143417446, eventHash.hashCode(ubiEvent));
+    Assertions.assertEquals(-792913298, eventHash.hashCode(ubiEvent));
   }
 }
