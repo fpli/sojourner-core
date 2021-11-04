@@ -93,6 +93,10 @@ public class TypeTransformUtil {
       return null;
     }
     String ipAddr = cipAddr.toString();
+    if (!IsValidIPv4.isValidIP(ipAddr)) {
+      log.warn("Error format of IP: {}", ipAddr);
+      return ipAddr.hashCode();
+    }
 
     try {
       byte[] bytes = InetAddress.getByName(ipAddr).getAddress();
