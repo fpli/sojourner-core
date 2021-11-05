@@ -644,16 +644,19 @@
       </activation>
       <properties>
         <sonar.host.url>
-          http://sonar.soj-ops-ns.svc.53.tess.io/
+          https://sonar-01-es.vip.es.ebay.com/
         </sonar.host.url>
         <sonar.projectKey>
-          sojourner-core
+          sojourner
         </sonar.projectKey>
+        <sonar.projectName>
+          Sojourner Core
+        </sonar.projectName>
         <sonar.moduleKey>
           ${project.groupId}:${project.artifactId}
         </sonar.moduleKey>
         <sonar.login>
-          edf22899669152e3564a64906f8e0f473002136e
+          de114feccb60631c4cda477bf28efd30f12cb9a8
         </sonar.login>
       </properties>
     </profile>

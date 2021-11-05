@@ -16,6 +16,10 @@
   <packaging>jar</packaging>
   <name>Sojourner - Integration</name>
 
+  <properties>
+    <sonar.skip>true</sonar.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.ebay.sojourner</groupId>
