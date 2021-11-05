@@ -114,7 +114,7 @@ public class CobrandParser implements FieldParser<RawEvent, UbiEvent> {
           return;
         }
       } catch (NullPointerException e) {
-        log.error("cobrand parser failed", e);
+        // log.error("cobrand parser failed", e);
       }
     }
 

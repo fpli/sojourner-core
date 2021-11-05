@@ -31,7 +31,7 @@ public class PageIdParser implements FieldParser<RawEvent, UbiEvent> {
                 ubiEvent.setPageFamily(SojUtils.getPageFmly(Integer.parseInt(value)));
             }
         } catch (NumberFormatException e) {
-            log.warn("Parsing PageId failed, format incorrect...");
+            // log.warn("Parsing PageId failed, format incorrect...");
         }
     }
 

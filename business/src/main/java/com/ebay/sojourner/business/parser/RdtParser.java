@@ -26,7 +26,7 @@ public class RdtParser implements FieldParser<RawEvent, UbiEvent> {
         ubiEvent.setRdt(false);
       }
     } catch (Exception e) {
-      log.error("Parsing rdt failed, format wrong...", e);
+      // log.error("Parsing rdt failed, format wrong...", e);
       ubiEvent.setRdt(false);
     }
   }

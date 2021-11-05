@@ -35,7 +35,7 @@ public class CiidParser implements FieldParser<RawEvent, UbiEvent> {
           ubiEvent.setCurrentImprId(result);
         }
       } catch (Exception e) {
-        log.debug("Parsing Ciid failed, format incorrect: " + ciid);
+        // log.debug("Parsing Ciid failed, format incorrect: " + ciid);
       }
     }
   }

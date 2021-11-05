@@ -29,7 +29,7 @@ public class SiteIdParser implements FieldParser<RawEvent, UbiEvent> {
         ubiEvent.setSiteId(Integer.parseInt(siteId));
       }
     } catch (Exception e) {
-      log.debug("Parsing SiteId failed, format wrong...");
+      // log.debug("Parsing SiteId failed, format wrong...");
     }
   }
 

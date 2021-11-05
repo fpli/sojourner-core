@@ -32,14 +32,14 @@ public class ItemIdParser implements FieldParser<RawEvent, UbiEvent> {
       try {
         itemId = Long.parseLong(itemId1.trim());
       } catch (Exception e) {
-        log.info("Parsing ItemId failed, format incorrect: " + itemId1);
+        // log.info("Parsing ItemId failed, format incorrect: " + itemId1);
       }
     } else {
       if (IntegerField.getIntVal(itemId2) != null) {
         try {
           itemId = Long.parseLong(itemId2.trim());
         } catch (Exception e) {
-          log.info("Parsing ItemId failed, format incorrect: " + itemId2);
+          // log.info("Parsing ItemId failed, format incorrect: " + itemId2);
         }
       }
     }

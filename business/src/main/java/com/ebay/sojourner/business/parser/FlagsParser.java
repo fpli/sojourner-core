@@ -22,7 +22,7 @@ public class FlagsParser implements FieldParser<RawEvent, UbiEvent> {
       try {
         ubiEvent.setFlags(flags.trim());
       } catch (NumberFormatException e) {
-        log.debug("Flag format is incorrect");
+        // log.debug("Flag format is incorrect");
       }
     }
   }

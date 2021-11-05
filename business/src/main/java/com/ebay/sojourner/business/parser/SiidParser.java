@@ -31,7 +31,7 @@ public class SiidParser implements FieldParser<RawEvent, UbiEvent> {
         }
       }
     } catch (Exception e) {
-      log.error("Parsing Ciid failed, the siid value is: " + siid);
+      // log.error("Parsing Ciid failed, the siid value is: " + siid);
     }
   }
 

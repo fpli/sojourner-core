@@ -31,7 +31,7 @@ public class ReferrerHashParser implements FieldParser<RawEvent, UbiEvent> {
         }
       }
     } catch (NumberFormatException e) {
-      log.debug("Parsing ReffererHash failed, format incorrect...");
+      // log.debug("Parsing ReffererHash failed, format incorrect...");
     }
   }
 

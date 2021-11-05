@@ -49,7 +49,7 @@ public class SqrParser implements FieldParser<RawEvent, UbiEvent> {
         }
       }
     } catch (Exception e) {
-      log.debug("Parsing Sqr failed, format incorrect: " + sqr);
+      // log.debug("Parsing Sqr failed, format incorrect: " + sqr);
     }
   }
 

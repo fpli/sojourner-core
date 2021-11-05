@@ -41,7 +41,7 @@ public class ClientIPParser implements FieldParser<RawEvent, UbiEvent> {
         }
       }
     } catch (Exception e) {
-      log.debug("Parsing ClientIP failed, format incorrect: " + clientData);
+      // log.debug("Parsing ClientIP failed, format incorrect: " + clientData);
     }
   }
 }

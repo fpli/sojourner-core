@@ -20,7 +20,7 @@ public class ReguParser implements FieldParser<RawEvent, UbiEvent> {
         ubiEvent.setRegu(0);
       }
     } catch (Exception e) {
-      log.debug("Parsing regu failed, format incorrect");
+      // log.debug("Parsing regu failed, format incorrect");
       ubiEvent.setRegu(0);
     }
   }

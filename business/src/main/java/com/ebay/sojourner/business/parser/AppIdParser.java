@@ -57,7 +57,7 @@ public class AppIdParser implements FieldParser<RawEvent, UbiEvent> {
         ubiEvent.setAppId(Integer.parseInt(appid));
       }
     } catch (NumberFormatException e) {
-      log.warn("Parsing appId failed, format incorrect: " + appid);
+      // log.warn("Parsing appId failed, format incorrect: " + appid);
     }
   }
 

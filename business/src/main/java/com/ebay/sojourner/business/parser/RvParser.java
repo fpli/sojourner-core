@@ -50,7 +50,7 @@ public class RvParser implements FieldParser<RawEvent, UbiEvent> {
         }
 
       } catch (Exception e) {
-        log.debug("Parsing cflgs failed, format incorrect: " + cflgs);
+        // log.debug("Parsing cflgs failed, format incorrect: " + cflgs);
       }
     } else {
       ubiEvent.setRv(true);

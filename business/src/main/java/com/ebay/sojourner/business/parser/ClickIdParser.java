@@ -38,7 +38,7 @@ public class ClickIdParser implements FieldParser<RawEvent, UbiEvent> {
         ubiEvent.setClickId((int) result);
       }
     } catch (NumberFormatException e) {
-      log.debug("Parsing ClickId failed, format incorrect: " + clickId);
+      // log.debug("Parsing ClickId failed, format incorrect: " + clickId);
     }
   }
 }

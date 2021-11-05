@@ -37,7 +37,7 @@ public class UserIdParser implements FieldParser<RawEvent, UbiEvent> {
         }
       }
     } catch (Exception e) {
-      log.error("Incorrect format: " + userId);
+      // log.error("Incorrect format: " + userId);
     }
   }
 

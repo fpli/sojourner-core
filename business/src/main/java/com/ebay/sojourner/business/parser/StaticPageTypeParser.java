@@ -39,7 +39,7 @@ public class StaticPageTypeParser implements FieldParser<RawEvent, UbiEvent> {
       }
       ubiEvent.setStaticPageType(result);
     } catch (Exception e) {
-      log.error("Parse static page type error: " + e.getMessage());
+      // log.error("Parse static page type error: " + e.getMessage());
     }
   }
 
