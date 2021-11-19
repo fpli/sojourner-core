@@ -207,13 +207,14 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     clentData.setChUaModel(chUaModel != null ? chUaModel.toString() : "");
 
     Object chUaPlatformVersion = genericRecord.get("ch_ua_platform_version");
-    clentData.setChUaModel(chUaPlatformVersion != null ? chUaPlatformVersion.toString() : "");
+    clentData.setChUaPlatformVersion(
+            chUaPlatformVersion != null ? chUaPlatformVersion.toString() : "");
 
     Object chUaFullVersion = genericRecord.get("ch_ua_full_version");
-    clentData.setChUaModel(chUaFullVersion != null ? chUaFullVersion.toString() : "");
+    clentData.setChUaFullVersion(chUaFullVersion != null ? chUaFullVersion.toString() : "");
 
     Object chUaMobile = genericRecord.get("ch_ua_mobile");
-    clentData.setChUaModel(chUaMobile != null ? chUaMobile.toString() : "");
+    clentData.setChUaMobile(chUaMobile != null ? chUaMobile.toString() : "");
 
     // TODO will deprecated when all applied new schema
     if (genericRecord.get("TPayload") != null) {
