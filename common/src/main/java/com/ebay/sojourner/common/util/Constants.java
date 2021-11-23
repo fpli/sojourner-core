@@ -44,7 +44,9 @@ public class Constants {
   public static final int HASH_STUB = 37;
 
   // flink metrics
+  @Deprecated
   public static final String SOJ_METRICS_GROUP = "sojourner_ubd";
+  public static final String SOJ_METRIC_GROUP = "sojourner";
   public static final String SOJ_METRIC_TYPE = "metric_type";
   public static final String SOJ_METRIC_NAME = "metric_name";
   public static final String SOJ_PGAE_FAMILY = "page_family";
@@ -61,6 +63,7 @@ public class Constants {
   public static final String SOJ_METRICS_TOTAL = "total";
   public static final String SOJ_METRICS_TOTAL_ITM = "total_itm";
   public static final String SOJ_METRICS_TOTAL_TYPE = "total_type";
+  public static final String SOJ_METRIC_DROPPED_EVENT_CNT = "dropped_event_cnt";
 
   // flied delimiter
   public static final String FIELD_DELIM = "\007";

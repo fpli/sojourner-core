@@ -25,6 +25,7 @@ import org.apache.avro.util.Utf8;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.metrics.Counter;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -50,10 +51,19 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
 
   private static final String G_TAG = "g";
 
+  private transient Counter droppedEventCounter;
+
   public RawEventDeserializationSchema() { }
 
   public RawEventDeserializationSchema(String schemaRegistryUrl) {
     this.schemaRegistryUrl = schemaRegistryUrl;
+  }
+
+  @Override
+  public void open(InitializationContext context) throws Exception {
+    this.droppedEventCounter = context.getMetricGroup()
+                                      .addGroup(Constants.SOJ_METRIC_TYPE)
+                                      .counter(Constants.SOJ_METRIC_DROPPED_EVENT_CNT);
   }
 
   @Override
@@ -69,7 +79,7 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     } catch (Exception e) {
       log.error("Error when deserializing RawEvent from Pathfinder, schemaId: {}, timestamp: {}",
                 rheosEvent.getSchemaId(), rheosEvent.getEventCreateTimestamp(), e);
-      // add metrics here
+      droppedEventCounter.inc();
       return null;
     }
 

@@ -5,6 +5,7 @@ import com.ebay.sojourner.common.model.RawEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.flink.api.common.serialization.DeserializationSchema.InitializationContext;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -19,6 +20,11 @@ public class RawEventKafkaDeserializationSchemaWrapper implements
       RawEventDeserializationSchema rawEventDeserializationSchema) {
     this.skewGuids = skewGuids;
     this.rawEventDeserializationSchema = rawEventDeserializationSchema;
+  }
+
+  @Override
+  public void open(InitializationContext context) throws Exception {
+    rawEventDeserializationSchema.open(context);
   }
 
   @Override
