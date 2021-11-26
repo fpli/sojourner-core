@@ -1,8 +1,6 @@
 package com.ebay.sojourner.rt.pipeline;
 
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_DC;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_FROM_TIMESTAMP;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN;
+import static com.ebay.sojourner.common.util.Property.*;
 import static com.ebay.sojourner.flink.common.DataCenter.LVS;
 import static com.ebay.sojourner.flink.common.DataCenter.RNO;
 import static com.ebay.sojourner.flink.common.DataCenter.SLC;
@@ -20,7 +18,6 @@ import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.model.UbiEvent;
 import com.ebay.sojourner.common.model.UbiSession;
 import com.ebay.sojourner.common.util.Constants;
-import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.common.OutputTagConstants;
 import com.ebay.sojourner.flink.connector.kafka.FlinkKafkaProducerFactory;
@@ -88,67 +85,70 @@ public class SojournerRTJob {
 
     DataStream<RawEvent> rawEventDataStreamForRNO = dataStreamBuilder
         .dc(RNO)
-        .operatorName(getString(Property.SOURCE_OPERATOR_NAME_RNO))
-        .uid(getString(Property.SOURCE_UID_RNO))
-        .slotGroup(getString(Property.SOURCE_EVENT_RNO_SLOT_SHARE_GROUP))
+        .operatorName(getString(SOURCE_OPERATOR_NAME_RNO))
+        .uid(getString(SOURCE_UID_RNO))
+        .slotGroup(getString(SOURCE_EVENT_RNO_SLOT_SHARE_GROUP))
         .outOfOrderlessInMin(getInteger(FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN))
         .fromTimestamp(getString(FLINK_APP_SOURCE_FROM_TIMESTAMP))
-        .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
+        .idleSourceTimeout(getInteger(FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
         .build(new RawEventKafkaDeserializationSchemaWrapper(
-            FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
+            FlinkEnvUtils.getSet(FILTER_GUID_SET),
             new RawEventDeserializationSchema(
-                FlinkEnvUtils.getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
+                FlinkEnvUtils.getString(RHEOS_KAFKA_REGISTRY_URL),
+                    FlinkEnvUtils.getInteger(TRACKING_SCHEMAID))));
     DataStream<RawEvent> rawEventDataStreamForSLC = dataStreamBuilder
         .dc(SLC)
-        .operatorName(getString(Property.SOURCE_OPERATOR_NAME_SLC))
-        .uid(getString(Property.SOURCE_UID_SLC))
-        .slotGroup(getString(Property.SOURCE_EVENT_SLC_SLOT_SHARE_GROUP))
+        .operatorName(getString(SOURCE_OPERATOR_NAME_SLC))
+        .uid(getString(SOURCE_UID_SLC))
+        .slotGroup(getString(SOURCE_EVENT_SLC_SLOT_SHARE_GROUP))
         .outOfOrderlessInMin(getInteger(FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN))
         .fromTimestamp(getString(FLINK_APP_SOURCE_FROM_TIMESTAMP))
-        .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
+        .idleSourceTimeout(getInteger(FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
         .build(new RawEventKafkaDeserializationSchemaWrapper(
-            FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
+            FlinkEnvUtils.getSet(FILTER_GUID_SET),
             new RawEventDeserializationSchema(
-                FlinkEnvUtils.getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
+                FlinkEnvUtils.getString(RHEOS_KAFKA_REGISTRY_URL),
+                    FlinkEnvUtils.getInteger(TRACKING_SCHEMAID))));
     DataStream<RawEvent> rawEventDataStreamForLVS = dataStreamBuilder
         .dc(LVS)
-        .operatorName(getString(Property.SOURCE_OPERATOR_NAME_LVS))
-        .uid(getString(Property.SOURCE_UID_LVS))
-        .slotGroup(getString(Property.SOURCE_EVENT_LVS_SLOT_SHARE_GROUP))
+        .operatorName(getString(SOURCE_OPERATOR_NAME_LVS))
+        .uid(getString(SOURCE_UID_LVS))
+        .slotGroup(getString(SOURCE_EVENT_LVS_SLOT_SHARE_GROUP))
         .outOfOrderlessInMin(getInteger(FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN))
         .fromTimestamp(getString(FLINK_APP_SOURCE_FROM_TIMESTAMP))
-        .idleSourceTimeout(getInteger(Property.FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
+        .idleSourceTimeout(getInteger(FLINK_APP_IDLE_SOURCE_TIMEOUT_IN_MIN))
         .build(new RawEventKafkaDeserializationSchemaWrapper(
-            FlinkEnvUtils.getSet(Property.FILTER_GUID_SET),
+            FlinkEnvUtils.getSet(FILTER_GUID_SET),
             new RawEventDeserializationSchema(
-                FlinkEnvUtils.getString(Property.RHEOS_KAFKA_REGISTRY_URL))));
+                FlinkEnvUtils.getString(RHEOS_KAFKA_REGISTRY_URL),
+                    FlinkEnvUtils.getInteger(TRACKING_SCHEMAID))));
 
     // filter skew guid
     /*
         DataStream<RawEvent> filteredRawEventDataStreamForLVS = rawEventDataStreamForLVS
             .process(new DataSkewProcessFunction(OutputTagConstants.dataSkewOutputTag,
-                FlinkEnvUtils.getBoolean(Property.IS_FILTER),
-                FlinkEnvUtils.getSet(Property.FILTER_PAGE_ID_SET)))
-            .setParallelism(FlinkEnvUtils.getInteger(Property.SOURCE_PARALLELISM))
-            .slotSharingGroup(FlinkEnvUtils.getString(Property.SOURCE_EVENT_LVS_SLOT_SHARE_GROUP))
+                FlinkEnvUtils.getBoolean(IS_FILTER),
+                FlinkEnvUtils.getSet(FILTER_PAGE_ID_SET)))
+            .setParallelism(FlinkEnvUtils.getInteger(SOURCE_PARALLELISM))
+            .slotSharingGroup(FlinkEnvUtils.getString(SOURCE_EVENT_LVS_SLOT_SHARE_GROUP))
             .name("Filter LVS Skew Guid")
             .uid("filter-lvs-skew-guid");
 
         DataStream<RawEvent> filteredRawEventDataStreamForSLC = rawEventDataStreamForSLC
             .process(new DataSkewProcessFunction(OutputTagConstants.dataSkewOutputTag,
-                FlinkEnvUtils.getBoolean(Property.IS_FILTER),
-                FlinkEnvUtils.getSet(Property.FILTER_PAGE_ID_SET)))
-            .setParallelism(FlinkEnvUtils.getInteger(Property.SOURCE_PARALLELISM))
-            .slotSharingGroup(FlinkEnvUtils.getString(Property.SOURCE_EVENT_SLC_SLOT_SHARE_GROUP))
+                FlinkEnvUtils.getBoolean(IS_FILTER),
+                FlinkEnvUtils.getSet(FILTER_PAGE_ID_SET)))
+            .setParallelism(FlinkEnvUtils.getInteger(SOURCE_PARALLELISM))
+            .slotSharingGroup(FlinkEnvUtils.getString(SOURCE_EVENT_SLC_SLOT_SHARE_GROUP))
             .name("Filter SLC Skew Guid")
             .uid("filter-slc-skew-guid");
 
         DataStream<RawEvent> filteredRawEventDataStreamForRNO = rawEventDataStreamForRNO
         .process(new DataSkewProcessFunction(OutputTagConstants.dataSkewOutputTag,
-            FlinkEnvUtils.getBoolean(Property.IS_FILTER),
-            FlinkEnvUtils.getSet(Property.FILTER_PAGE_ID_SET)))
-        .setParallelism(FlinkEnvUtils.getInteger(Property.SOURCE_PARALLELISM))
-        .slotSharingGroup(FlinkEnvUtils.getString(Property.SOURCE_EVENT_RNO_SLOT_SHARE_GROUP))
+            FlinkEnvUtils.getBoolean(IS_FILTER),
+            FlinkEnvUtils.getSet(FILTER_PAGE_ID_SET)))
+        .setParallelism(FlinkEnvUtils.getInteger(SOURCE_PARALLELISM))
+        .slotSharingGroup(FlinkEnvUtils.getString(SOURCE_EVENT_RNO_SLOT_SHARE_GROUP))
         .name("Filter RNO Skew Guid")
         .uid("filter-rno-skew-guid");
         */
@@ -191,8 +191,8 @@ public class SojournerRTJob {
         OutputTagConstants.mappedEventOutputTag);
 
     ubiSessionDataStream
-        .setParallelism(getInteger(Property.SESSION_PARALLELISM))
-        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(SESSION_PARALLELISM))
+        .slotSharingGroup(getString(SESSION_SLOT_SHARE_GROUP))
         .name("Session Operator")
         .uid("session-operator");
 
@@ -206,13 +206,13 @@ public class SojournerRTJob {
     DataStream<SessionCore> sessionCoreDataStream =
         ubiSessionDataStream
             .filter(new OpenSessionFilterFunction())
-            .setParallelism(getInteger(Property.SESSION_PARALLELISM))
-            .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(SESSION_PARALLELISM))
+            .slotSharingGroup(getString(SESSION_SLOT_SHARE_GROUP))
             .name("UbiSession Open Filter") //add opensession filter name
             .uid("ubisession-open-filter") //add opensession filter uid
             .map(new UbiSessionToSessionCoreMapFunction())
-            .setParallelism(getInteger(Property.SESSION_PARALLELISM))
-            .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(SESSION_PARALLELISM))
+            .slotSharingGroup(getString(SESSION_SLOT_SHARE_GROUP))
             .name("UbiSession To SessionCore")
             .uid("ubisession-to-sessioncore");
 
@@ -226,8 +226,8 @@ public class SojournerRTJob {
             .keyBy("userAgent", "ip")
             .window(TumblingEventTimeWindows.of(Time.minutes(5)))
             .aggregate(new AgentIpAttributeAgg(), new AgentIpWindowProcessFunction())
-            .setParallelism(getInteger(Property.PRE_AGENT_IP_PARALLELISM))
-            .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(PRE_AGENT_IP_PARALLELISM))
+            .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("Attribute Operator (Agent+IP Pre-Aggregation)")
             .uid("attribute-operator-pre-aggregation");
 
@@ -239,8 +239,8 @@ public class SojournerRTJob {
         .aggregate(
             new AgentIpAttributeAggSliding(),
             new AgentIpSignatureWindowProcessFunction())
-        .setParallelism(getInteger(Property.AGENT_IP_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(AGENT_IP_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Attribute Operator (Agent+IP)")
         .uid("attribute-operator-agent-ip");
 
@@ -250,8 +250,8 @@ public class SojournerRTJob {
             Time.hours(24), Time.hours(12), Time.hours(7)))
         .trigger(OnElementEarlyFiringTrigger.create())
         .aggregate(new AgentAttributeAgg(), new AgentWindowProcessFunction())
-        .setParallelism(getInteger(Property.AGENT_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(AGENT_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Attribute Operator (Agent)")
         .uid("attribute-operator-agent");
 
@@ -261,8 +261,8 @@ public class SojournerRTJob {
             Time.hours(24), Time.hours(12), Time.hours(7))) // sliding  to 3hours
         .trigger(OnElementEarlyFiringTrigger.create())
         .aggregate(new IpAttributeAgg(), new IpWindowProcessFunction())
-        .setParallelism(getInteger(Property.IP_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(IP_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Attribute Operator (IP)")
         .uid("attribute-operator-ip");
 
@@ -279,16 +279,16 @@ public class SojournerRTJob {
     DataStream<Either<UbiEvent, UbiSession>> ubiSessionTransDataStream =
         ubiSessionDataStream
             .map(new DetectableSessionMapFunction())
-            .setParallelism(getInteger(Property.SESSION_PARALLELISM))
-            .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(SESSION_PARALLELISM))
+            .slotSharingGroup(getString(SESSION_SLOT_SHARE_GROUP))
             .name("Transform UbiSession for Union")
             .uid("transform-ubisession-for-union");
 
     DataStream<Either<UbiEvent, UbiSession>> ubiEventTransDataStream =
         ubiEventWithSessionId
             .map(new DetectableEventMapFunction())
-            .setParallelism(getInteger(Property.SESSION_PARALLELISM))
-            .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(SESSION_PARALLELISM))
+            .slotSharingGroup(getString(SESSION_SLOT_SHARE_GROUP))
             .name("Transform UbiEvent for Union")
             .uid("transform-ubievent-for-union");
 
@@ -301,8 +301,8 @@ public class SojournerRTJob {
             .process(
                 new AttributeBroadcastProcessFunctionForDetectable(
                     OutputTagConstants.sessionOutputTag))
-            .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-            .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(BROADCAST_PARALLELISM))
+            .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("Signature Bot Detector")
             .uid("signature-bot-detector");
 
@@ -314,8 +314,8 @@ public class SojournerRTJob {
         signatureBotDetectionForEvent
             .process(new UbiEventToSojEventProcessFunction(
                 OutputTagConstants.botEventOutputTag))
-            .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-            .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(BROADCAST_PARALLELISM))
+            .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("UbiEvent to SojEvent")
             .uid("ubievent-to-sojevent");
 
@@ -328,8 +328,8 @@ public class SojournerRTJob {
             .process(
                 new UbiSessionToSojSessionProcessFunction(
                     OutputTagConstants.botSessionOutputTag))
-            .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-            .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            .setParallelism(getInteger(BROADCAST_PARALLELISM))
+            .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("UbiSession to SojSession")
             .uid("ubisession-to-sojsession");
 
@@ -349,148 +349,148 @@ public class SojournerRTJob {
     sojSessionStream
         .addSink(producerFactory.get(
             SojSession.class,
-            getString(Property.RHEOS_KAFKA_REGISTRY_URL),
-            getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_SESSION_NON_BOT),
-            getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_SESSION),
-            getString(Property.PRODUCER_ID),
-            getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SESSION, ",")))
-        .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            getString(RHEOS_KAFKA_REGISTRY_URL),
+            getString(FLINK_APP_SINK_KAFKA_TOPIC_SESSION_NON_BOT),
+            getString(FLINK_APP_SINK_KAFKA_SUBJECT_SESSION),
+            getString(PRODUCER_ID),
+            getStringArray(FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SESSION, ",")))
+        .setParallelism(getInteger(BROADCAST_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Nonbot SojSession")
         .uid("nonbot-sojsession-sink");
 
     botSojSessionStream
         .addSink(producerFactory.get(
             SojSession.class,
-            getString(Property.RHEOS_KAFKA_REGISTRY_URL),
-            getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_SESSION_BOT),
-            getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_SESSION),
-            getString(Property.PRODUCER_ID),
-            getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SESSION, ",")))
-        .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            getString(RHEOS_KAFKA_REGISTRY_URL),
+            getString(FLINK_APP_SINK_KAFKA_TOPIC_SESSION_BOT),
+            getString(FLINK_APP_SINK_KAFKA_SUBJECT_SESSION),
+            getString(PRODUCER_ID),
+            getStringArray(FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SESSION, ",")))
+        .setParallelism(getInteger(BROADCAST_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Bot SojSession")
         .uid("bot-sojsession-sink");
 
     // kafka sink for bot and nonbot sojevent
     sojEventWithSessionId
         .addSink(producerFactory.getSojEventProducer(
-            getString(Property.RHEOS_KAFKA_REGISTRY_URL),
-            getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_NON_BOT),
-            getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
-            getString(Property.PRODUCER_ID),
-            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP)))
-        .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            getString(RHEOS_KAFKA_REGISTRY_URL),
+            getString(FLINK_APP_SINK_KAFKA_TOPIC_EVENT_NON_BOT),
+            getString(FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
+            getString(PRODUCER_ID),
+            FlinkEnvUtils.getBoolean(ALLOW_DROP)))
+        .setParallelism(getInteger(BROADCAST_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Nonbot SojEvent")
         .uid("nonbot-sojevent-sink");
 
     botSojEventStream
         .addSink(producerFactory.getSojEventProducer(
-            getString(Property.RHEOS_KAFKA_REGISTRY_URL),
-            getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_BOT),
-            getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
-            getString(Property.PRODUCER_ID),
-            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP)))
-        .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            getString(RHEOS_KAFKA_REGISTRY_URL),
+            getString(FLINK_APP_SINK_KAFKA_TOPIC_EVENT_BOT),
+            getString(FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
+            getString(PRODUCER_ID),
+            FlinkEnvUtils.getBoolean(ALLOW_DROP)))
+        .setParallelism(getInteger(BROADCAST_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Bot SojEvent")
         .uid("bot-sojevent-sink");
 
     // metrics collector for end to end
     signatureBotDetectionForEvent
         .process(new RTPipelineMetricsCollectorProcessFunction(
-            FlinkEnvUtils.getInteger(Property.METRIC_WINDOW_SIZE)))
-        .setParallelism(getInteger(Property.METRICS_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            FlinkEnvUtils.getInteger(METRIC_WINDOW_SIZE)))
+        .setParallelism(getInteger(METRICS_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Pipeline Metrics Collector")
         .uid("pipeline-metrics-collector");
 
     // metrics collector for event rules hit
     signatureBotDetectionForEvent
         .process(new EventMetricsCollectorProcessFunction())
-        .setParallelism(getInteger(Property.METRICS_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(METRICS_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Event Metrics Collector")
         .uid("event-metrics-collector");
 
     // metrics collector for signature generation or expiration
     agentIpSignatureDataStream
         .process(new AgentIpMetricsCollectorProcessFunction())
-        .setParallelism(getInteger(Property.AGENT_IP_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(AGENT_IP_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("AgentIp Metrics Collector")
         .uid("agent-ip-metrics-collector");
 
     agentSignatureDataStream
         .process(new AgentMetricsCollectorProcessFunction())
-        .setParallelism(getInteger(Property.AGENT_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(AGENT_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Agent Metrics Collector")
         .uid("agent-metrics-id");
 
     ipSignatureDataStream
         .process(new IpMetricsCollectorProcessFunction())
-        .setParallelism(getInteger(Property.IP_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(IP_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Ip Metrics Collector")
         .uid("ip-metrics-id");
 
     // signature sink
     agentIpSignatureDataStream
         .addSink(producerFactory.get(new AvroKafkaSerializationSchema<>(
-            getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_SIGNATURE_AGENT_IP),
-            getStringList(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_AGENT_IP,
+            getString(FLINK_APP_SINK_KAFKA_TOPIC_SIGNATURE_AGENT_IP),
+            getStringList(FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_AGENT_IP,
                 ",")
         )))
-        .setParallelism(getInteger(Property.DEFAULT_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(DEFAULT_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name(String.format("%s Signature", Constants.AGENTIP))
         .uid(String.format("signature-%s-sink", Constants.AGENTIP));
     agentSignatureDataStream
         .addSink(producerFactory.get(new AvroKafkaSerializationSchema<>(
-            getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_SIGNATURE_AGENT),
-            getStringList(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_AGENT,
+            getString(FLINK_APP_SINK_KAFKA_TOPIC_SIGNATURE_AGENT),
+            getStringList(FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_AGENT,
                 ",")
         )))
-        .setParallelism(getInteger(Property.DEFAULT_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(DEFAULT_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name(String.format("%s Signature", Constants.AGENT))
         .uid(String.format("signature-%s-sink", Constants.AGENT));
 
     ipSignatureDataStream
         .addSink(producerFactory.get(new AvroKafkaSerializationSchema<>(
-            getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_SIGNATURE_IP),
-            getStringList(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_IP,
+            getString(FLINK_APP_SINK_KAFKA_TOPIC_SIGNATURE_IP),
+            getStringList(FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_IP,
                 ",")
         )))
-        .setParallelism(getInteger(Property.DEFAULT_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(DEFAULT_PARALLELISM))
+        .slotSharingGroup(getString(CROSS_SESSION_SLOT_SHARE_GROUP))
         .name(String.format("%s Signature", Constants.IP))
         .uid(String.format("signature-%s-sink", Constants.IP));
 
     // kafka sink for late event
     DataStream<SojEvent> lateSojEventStream = latedStream
         .map(new UbiEventToSojEventMapFunction())
-        .setParallelism(getInteger(Property.SESSION_PARALLELISM))
-        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
+        .setParallelism(getInteger(SESSION_PARALLELISM))
+        .slotSharingGroup(getString(SESSION_SLOT_SHARE_GROUP))
         .name("Late UbiEvent to SojEvent")
         .uid("late-ubievent-to-sojevent");
 
     lateSojEventStream.addSink(producerFactory.get(
         SojEvent.class,
-        getString(Property.RHEOS_KAFKA_REGISTRY_URL),
-        getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_LATE),
-        getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
-        getString(Property.PRODUCER_ID),
-        FlinkEnvUtils.getBoolean(Property.ALLOW_DROP),
-        getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
-        .setParallelism(getInteger(Property.SESSION_PARALLELISM))
-        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
+        getString(RHEOS_KAFKA_REGISTRY_URL),
+        getString(FLINK_APP_SINK_KAFKA_TOPIC_EVENT_LATE),
+        getString(FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
+        getString(PRODUCER_ID),
+        FlinkEnvUtils.getBoolean(ALLOW_DROP),
+        getStringArray(FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
+        .setParallelism(getInteger(SESSION_PARALLELISM))
+        .slotSharingGroup(getString(SESSION_SLOT_SHARE_GROUP))
         .name("Late SojEvent")
         .uid("late-sojevent-sink");
 
     // Submit this job
-    FlinkEnvUtils.execute(executionEnvironment, getString(Property.FLINK_APP_NAME));
+    FlinkEnvUtils.execute(executionEnvironment, getString(FLINK_APP_NAME));
   }
 }

@@ -166,7 +166,8 @@ zookeeper:
 rest-client:
   base-url: https://sojsvc.vip.ebay.com
   username: soj-flink-app
-
+tracking:
+  schemaid: 7171
 ua-parser-env: prod
 agent-whitelist:
   - GingerClient/0.11.2-RELEASE

@@ -21,6 +21,9 @@ public class TimeStampParserTest {
   private static String parser = null;
   private static String caseItem = null;
   private static TimestampParser timestampParser = null;
+  private static IcfParser icfParser = null;
+  private static AppIdParser appIdParser =null;
+
   private static HashMap<String, Object> map = null;
 
   @BeforeAll
@@ -83,6 +86,30 @@ public class TimeStampParserTest {
         System.out.println(
             VaildateResult.validateString(
                 entry.getValue(), TypeTransUtil.LongToString(ubiEvent.getEventTimestamp())));
+      }
+    } catch (Exception e) {
+      logger.error("timestamp test fail!!!");
+    }
+  }
+
+  @Test
+  public void testTimeStampParser4() {
+    timestampParser = new TimestampParser();
+    icfParser = new IcfParser();
+    appIdParser= new AppIdParser();
+    ubiEvent = new UbiEvent();
+    caseItem = ParserConstants.CASE4;
+
+    try {
+      HashMap<RawEvent, Object> rawEventAndExpectResult =
+              LoadRawEventAndExpect.getRawEventAndExpect(map, parser, caseItem);
+      for (Map.Entry<RawEvent, Object> entry : rawEventAndExpectResult.entrySet()) {
+        icfParser.parse(entry.getKey(), ubiEvent);
+        ubiEvent.setAppId(35023);
+        timestampParser.parse(entry.getKey(), ubiEvent);
+        System.out.println(
+                VaildateResult.validateString(
+                        entry.getValue(), TypeTransUtil.LongToString(ubiEvent.getEventTimestamp())));
       }
     } catch (Exception e) {
       logger.error("timestamp test fail!!!");

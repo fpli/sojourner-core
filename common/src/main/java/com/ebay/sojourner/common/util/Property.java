@@ -248,6 +248,9 @@ public class Property {
   public static final String REST_CONFIG_ENV = "rest-client.config.env";
   public static final String REST_CONFIG_PROFILE = "rest-client.config.profile";
 
+  //Track schemaid for uach
+
+  public static final String TRACKING_SCHEMAID = "tracking.schemaid";
   // ------------------------- batch pipeline common property ---------------------------
   // flink - parallelism
   public static final String SINK_HDFS_PARALLELISM = "flink.app.parallelism.sink.hdfs";

@@ -458,3 +458,15 @@ timestampParser:
     sojC:
       a: abc
     expectResult: "2210525044233000"
+
+  case4:
+    rheosHeader:
+      eventCreateTimestamp: 1561444233
+    sojA:
+      flgs: "ts=e%ay"
+    sojK:
+      p: "5670"
+      mtsts: "2021-11-22T17%3A13%3A26.595Z"
+    sojC:
+      app: "35023"
+    expectResult: "3846564806595000"
