@@ -532,13 +532,4 @@ public class SojUtils {
         }
     }
 
-    public static String getTimestampStr(String timestampOrigin){
-        if(timestampOrigin.length()>23){
-            return timestampOrigin.substring(0,23);
-        }else{
-            return timestampOrigin;
-        }
-
-    }
-
 }

@@ -11,6 +11,9 @@ public class BotRules {
   public static final int AUTO_CAPTCHA_BOT_FLAG = 10;
   public static final int MANY_FAST_EVENTS_BOT_FLAG = 12;
   public static final int MANY_EVENTS_BOT_FLAG = 15;
+  public static final int AKAMAI_BOT_FLAG = 17;
+
+
   // Intraday New BOT Flag
   public static final int MANY_VIEW_WITHOUT_SIID = 203;
   public static final int MANY_SRP_WITHOUT_SIID = 204;

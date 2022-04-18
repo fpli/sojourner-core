@@ -1,0 +1,10 @@
+- name: test1
+  inputs:
+    UbiEvent:
+      applicationPayload: 'uaid=fb9452b517f0a69c39b663bdff7bbb1bS0&bot_provider=%7B%22providers%22%3A%7B%22AK%22%3A%7B%22headers%22%3A%7B%22akb%22%3A%22Unknown+Bot+%28FA0C46C520C5B967850165F19B2BF14F%29%3Amonitor%3ACookie+Integrity+Failed%22%7D%7D%7D%7D&!uqc=590080,590080,590080,590080,590080,590080,590080,590080'
+    SessionAccumulator:
+      ubiSession:
+        botProvider:
+  expect:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(FA0C46C520C5B967850165F19B2BF14F):monitor:Cookie+Integrity+Failed"}}}}'

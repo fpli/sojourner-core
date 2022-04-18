@@ -139,6 +139,7 @@ public class UbiSession implements Serializable, Cloneable {
   private long sessionEndDt;
   private String streamId;
   private boolean openEmit = false;
+  private String botProvider;
 
   // for adjust useragent and ip
   private int clickId = Integer.MAX_VALUE;

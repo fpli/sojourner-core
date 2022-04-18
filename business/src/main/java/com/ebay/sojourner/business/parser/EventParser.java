@@ -17,8 +17,6 @@ public class EventParser extends RecordParser<RawEvent, UbiEvent> {
       addFieldParser(new IdentityParser());
       // icf
       addFieldParser(new IcfParser());
-      // add appid for iphone data filter
-      addFieldParser(new AppIdParser());
       addFieldParser(new TimestampParser());
       addFieldParser(new CiidParser());
       addFieldParser(new ClickIdParser());
@@ -41,6 +39,8 @@ public class EventParser extends RecordParser<RawEvent, UbiEvent> {
       // Finding Flag should after Page Id
       addFieldParser(new FindingFlagParser());
       addFieldParser(new StaticPageTypeParser());
+      // add appid for iphone data filter
+      addFieldParser(new AppIdParser());
       // new metrics
       addFieldParser(new CobrandParser());
       addFieldParser(new PartialValidPageParser());

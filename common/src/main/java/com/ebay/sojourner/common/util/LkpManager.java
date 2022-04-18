@@ -414,8 +414,9 @@ public class LkpManager {
             instream = fileSystem.open(path);
         } catch (Exception e) {
             //            log.error("can't open HDFS lkp file {}", path, e);
-            log.warn("Load file failed from [{}], will try to load from classpath: {}",
-                    path, resource);
+            log.warn("Load file failed from [{}], will try to load from classpath: {}, "
+                    + "Exception details:[{}]",
+                    path, resource,ExceptionUtils.getStackTrace(e));
             loadLkpFromHDFS = false;
             if (firstRun || lkpFileLastUpdDt.get(resource) == null) {
                 try {

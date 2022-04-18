@@ -3,7 +3,12 @@ package com.ebay.sojourner.flink.connector.kafka.schema;
 import com.ebay.sojourner.common.model.ClientData;
 import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.RheosHeader;
-import com.ebay.sojourner.common.util.*;
+import com.ebay.sojourner.common.util.CalTimeOfDay;
+import com.ebay.sojourner.common.util.Constants;
+import com.ebay.sojourner.common.util.PropertyUtils;
+import com.ebay.sojourner.common.util.SOJNVL;
+import com.ebay.sojourner.common.util.SOJURLDecodeEscape;
+import com.ebay.sojourner.common.util.SojTimestamp;
 import com.ebay.sojourner.flink.connector.kafka.RheosEventSerdeFactory;
 import io.ebay.rheos.schema.event.RheosEvent;
 import java.io.IOException;
@@ -17,7 +22,6 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.util.Utf8;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -44,7 +48,6 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
   private static String[] tagsToEncode = new String[]{Constants.TAG_ITEMIDS, Constants.TAG_TRKP};
 
   private String schemaRegistryUrl = null;
-  private int schemaId;
 
   private static final String G_TAG = "g";
 
@@ -54,11 +57,6 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
 
   public RawEventDeserializationSchema(String schemaRegistryUrl) {
     this.schemaRegistryUrl = schemaRegistryUrl;
-  }
-
-  public RawEventDeserializationSchema(String schemaRegistryUrl,int schemaId) {
-    this(schemaRegistryUrl);
-    this.schemaId= schemaId;
   }
 
   @Override
@@ -84,10 +82,7 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
       droppedEventCounter.inc();
       return null;
     }
-    if(rheosEvent.getSchemaId()==schemaId&&RandomUtils.nextInt(10000000)==1){
-      log.debug("new-events-info: schmeId:{},content:{}",rheosEvent.getSchemaId(),
-              genericRecord.toString());
-    }
+
     // Generate RheosHeader
     RheosHeader rheosHeader =
         new RheosHeader(
@@ -518,11 +513,9 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
             if (mtstsString.endsWith("Z") || mtstsString.contains("T")) {
               mtstsString = mtstsString.replaceAll("T", " ")
                   .replaceAll("Z", "");
-              mtstsString= SojUtils.getTimestampStr(mtstsString);
               eventTimestamp =
                   SojTimestamp.getSojTimestamp(formaterUtc.parseDateTime(mtstsString).getMillis());
             } else {
-              mtstsString= SojUtils.getTimestampStr(mtstsString);
               eventTimestamp = SojTimestamp
                   .getSojTimestamp(formater.parseDateTime(mtstsString).getMillis());
             }

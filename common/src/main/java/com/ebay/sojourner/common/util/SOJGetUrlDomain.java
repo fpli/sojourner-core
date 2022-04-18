@@ -2,8 +2,11 @@ package com.ebay.sojourner.common.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+@Slf4j
 public class SOJGetUrlDomain {
 
   /*
@@ -21,7 +24,10 @@ public class SOJGetUrlDomain {
     } catch (URISyntaxException e) {
       return "";
     }
-
-    return uri.getHost();
+    if(uri.getHost()==null){
+      return "";
+    }else{
+      return uri.getHost();
+    }
   }
 }

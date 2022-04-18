@@ -98,6 +98,7 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setSessionEndDt(ubiSessionTmp.getSessionEndDt());
     ubiSession.setStreamId(ubiSessionTmp.getStreamId());
     ubiSession.setBuserId(ubiSessionTmp.getBuserId());
+    ubiSession.setValidPageCnt(ubiSessionTmp.getValidPageCnt());
     ubiSession.setOpenEmit(isOpen);
     out.collect(ubiSession);
   }

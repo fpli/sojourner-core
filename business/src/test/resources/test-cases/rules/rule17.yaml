@@ -1,0 +1,191 @@
+- name: case1
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider:
+  expectResult: 0
+
+- name: case2
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Request+Anomaly","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case3
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:HTTP+Libraries","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case4
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Scraper+Reputation","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case5
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Declared+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case6
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Impersonators+of+Known+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case7
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Site+Monitoring+and+Web+Development+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case8
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:RSS+Feed+Reader+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case9
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:SynAck+(Bug-Bounty)","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case10
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Registration","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case11
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Online+Advertising+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case12
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:RSS+Feed+Reader+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case13
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Web+Search+Engine+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case14
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Headless+Browsers/Automation+Tools","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case15
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Open+Source+Crawlers/Scraping+Platforms","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case16
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Development+Frameworks","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case17
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Social+Media+or+Blog+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case18
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:SEO,+Analytics+or+Marketing+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case19
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Enterprise+Data+Aggregator+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case20
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Web+Services+Libraries","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+
+- name: case21
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:E-Commerce+Search+Engine+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case22
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Web+Archiver+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case23
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:News+Aggregator+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17
+
+- name: case24
+  type: UbiSession
+  input:
+    UbiSession:
+      botProvider: '{"providers":{"AK":{"headers":{"akb":"Unknown+Bot+(A2B010573EA3B3CBF24FDE263D8
+      64284):monitor:Academic+or+Research+Bots","akr":"ID=90.155.37.185;WEBSCRP=5"}}}}'
+  expectResult: 17

@@ -10,6 +10,7 @@ import com.ebay.sojourner.business.rule.BotRule10;
 import com.ebay.sojourner.business.rule.BotRule11;
 import com.ebay.sojourner.business.rule.BotRule12;
 import com.ebay.sojourner.business.rule.BotRule15;
+import com.ebay.sojourner.business.rule.BotRule17;
 import com.ebay.sojourner.business.rule.BotRule203;
 import com.ebay.sojourner.business.rule.BotRule204;
 import com.ebay.sojourner.business.rule.BotRule205;
@@ -48,6 +49,8 @@ public class SessionBotDetectorTest {
   BotRule212 mockRule212 = mock(BotRule212.class);
   BotRule215 mockRule215 = mock(BotRule215.class);
   BotRule11 mockRule11 = mock(BotRule11.class);
+  BotRule17 mockRule17 = mock(BotRule17.class);
+
 
   @Before
   public void setUp() throws Exception {
@@ -64,6 +67,7 @@ public class SessionBotDetectorTest {
     PowerMockito.whenNew(BotRule212.class).withNoArguments().thenReturn(mockRule212);
     PowerMockito.whenNew(BotRule215.class).withNoArguments().thenReturn(mockRule215);
     PowerMockito.whenNew(BotRule11.class).withNoArguments().thenReturn(mockRule11);
+    PowerMockito.whenNew(BotRule17.class).withNoArguments().thenReturn(mockRule17);
     when(mockBotFilter.filter(any(), any())).thenReturn(false);
     when(mockRule1.getBotFlag(any())).thenReturn(1);
     sessionBotDetector = SessionBotDetector.getInstance();
@@ -83,6 +87,6 @@ public class SessionBotDetectorTest {
   public void initBotRules() {
     Set<Rule> botRules = Whitebox
         .getInternalState(sessionBotDetector, "botRules", SessionBotDetector.class);
-    assertThat(botRules.size()).isEqualTo(12);
+    assertThat(botRules.size()).isEqualTo(13);
   }
 }
