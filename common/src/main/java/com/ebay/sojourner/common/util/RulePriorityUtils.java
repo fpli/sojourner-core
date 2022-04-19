@@ -57,6 +57,8 @@ public class RulePriorityUtils {
       return BotRules.SUSPECTED_IP_ON_AGENT;
     } else if (botFlags.contains(BotRules.SAME_AGENT_IP)) {
       return BotRules.SAME_AGENT_IP;
+    }else if (botFlags.contains(BotRules.AKAMAI_BOT_FLAG)) {
+      return BotRules.AKAMAI_BOT_FLAG;
     }
 
     return BotRules.NON_BOT_FLAG;
