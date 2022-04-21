@@ -39,26 +39,26 @@ public class RulePriorityUtils {
       return BotRules.MANY_VALID_PAGE;
     } else if (botFlags.contains(BotRules.HIGH_DENSITY_VIEWS)) {
       return BotRules.HIGH_DENSITY_VIEWS;
-    } else if (botFlags.contains(BotRules.SCS_ON_AGENTIP)) {
-      return BotRules.SCS_ON_AGENTIP;
+    }else if (botFlags.contains(BotRules.AKAMAI_BOT_FLAG)) {
+      return BotRules.AKAMAI_BOT_FLAG;
+    } else if (botFlags.contains(BotRules.SPECIFIC_SPIDER_IAB)) {
+      return BotRules.SPECIFIC_SPIDER_IAB;
     } else if (botFlags.contains(BotRules.SCS_CONFIRM_ON_AGENTIP)) {
       return BotRules.SCS_CONFIRM_ON_AGENTIP;
+    } else if (botFlags.contains(BotRules.SCS_ON_AGENTIP)) {
+      return BotRules.SCS_ON_AGENTIP;
     } else if (botFlags.contains(BotRules.SCS_ON_AGENT)) {
       return BotRules.SCS_ON_AGENT;
     } else if (botFlags.contains(BotRules.SCS_ON_IP)) {
       return BotRules.SCS_ON_IP;
     } else if (botFlags.contains(BotRules.FAST_REGULAR_AGENTIP_EXTEND)) {
       return BotRules.FAST_REGULAR_AGENTIP_EXTEND;
-    } else if (botFlags.contains(BotRules.SPECIFIC_SPIDER_IAB)) {
-      return BotRules.SPECIFIC_SPIDER_IAB;
     } else if (botFlags.contains(BotRules.DECLARED_AGENT)) {
       return BotRules.DECLARED_AGENT;
     } else if (botFlags.contains(BotRules.SUSPECTED_IP_ON_AGENT)) {
       return BotRules.SUSPECTED_IP_ON_AGENT;
     } else if (botFlags.contains(BotRules.SAME_AGENT_IP)) {
       return BotRules.SAME_AGENT_IP;
-    }else if (botFlags.contains(BotRules.AKAMAI_BOT_FLAG)) {
-      return BotRules.AKAMAI_BOT_FLAG;
     }
 
     return BotRules.NON_BOT_FLAG;
