@@ -7,19 +7,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
-public class BotRule17Test extends BaseRulesTest<UbiSession> {
+public class BotRule18Test extends BaseRulesTest<UbiSession> {
 
-  private BotRule17 botRule17;
+  private BotRule18 botRule18;
   private List<RulesTestCase> rulesTestCaseList;
 
   @BeforeEach
   public void setup() throws Exception {
-    botRule17 = new BotRule17();
-    rulesTestCaseList = loadTestCases("rule17.yaml");
+    botRule18 = new BotRule18();
+    rulesTestCaseList = loadTestCases("rule18.yaml");
   }
 
   @TestFactory
   public Collection<DynamicTest> dynamicTests() {
-    return generateDynamicTests(rulesTestCaseList, botRule17);
+    return generateDynamicTests(rulesTestCaseList, botRule18);
   }
 }

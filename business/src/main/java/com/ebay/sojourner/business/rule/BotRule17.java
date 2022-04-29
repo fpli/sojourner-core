@@ -17,8 +17,8 @@ public class BotRule17 extends AbstractBotRule<UbiSession> {
       "Web Archiver Bots", "Aggressive Web Crawlers", "News Aggregator Bots",
       "Academic or Research Bots"};
 
-  private int detectSpiderAgent(UbiSession ubiSession) {
-
+  @Override
+  public int getBotFlag(UbiSession ubiSession) {
     String botProvider = ubiSession.getBotProvider();
     String akamaiStr = SOJStrBetweenEndList.strBetweenEndList(botProvider, "monitor:", "\"}");
     if (akamaiStr != null) {
@@ -33,6 +33,7 @@ public class BotRule17 extends AbstractBotRule<UbiSession> {
     }
   }
 
+
   public boolean matches(String akamaiStr) {
     for (String str : AKAMAI_BOTS) {
       if (str.equals(akamaiStr)) {
@@ -40,10 +41,5 @@ public class BotRule17 extends AbstractBotRule<UbiSession> {
       }
     }
     return false;
-  }
-
-  @Override
-  public int getBotFlag(UbiSession ubiSession) {
-    return detectSpiderAgent(ubiSession);
   }
 }

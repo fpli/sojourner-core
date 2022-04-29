@@ -1,0 +1,123 @@
+- name: case1
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent:
+      lastAgent:
+  expectResult: 0
+
+- name: case2
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: AA
+      lastAgent:
+  expectResult: 0
+
+- name: case3
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent:
+      lastAgent: BB
+  expectResult: 0
+
+- name: case4
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: eBay1
+      lastAgent: BB
+  expectResult: 0
+
+- name: case5
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: ebay1
+      lastAgent: BB
+  expectResult: 0
+
+- name: case6
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: eeBay1
+      lastAgent: BB
+  expectResult: 18
+
+- name: case7
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: eeBay1
+      lastAgent: BB
+  expectResult: 18
+
+- name: case8
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: AA
+      lastAgent: OPR/
+  expectResult: 0
+
+- name: case8
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: AA
+      lastAgent: AOPR/
+  expectResult: 0
+
+- name: case9
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: AA
+      lastAgent: AOPR/2
+  expectResult: 0
+
+
+- name: case10
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: AA
+      lastAgent: GingerClient1
+  expectResult: 0
+
+
+- name: case11
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: AA
+      lastAgent: aGingerClient1
+  expectResult: 18
+
+- name: case12
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: GingerClient1
+      lastAgent: BB
+  expectResult: 0
+
+
+- name: case13
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: aGingerClient1
+      lastAgent: BBBotRule18
+  expectResult: 18
+
+
+- name: case14
+  type: UbiSession
+  input:
+    UbiSession:
+      firstAgent: AA
+      lastAgent: BB
+  expectResult: 18

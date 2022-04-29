@@ -11,3 +11,65 @@
   expect:
     UbiSession:
       validPageCnt: 1
+
+- name: valid page and startTimestampForValidPage > eventTimestamp
+  inputs:
+    UbiEvent:
+      urlQueryString: /roverimp/ebay
+      partialValidPage: 1
+      iframe: 0
+      pageId: 1
+      eventTimestamp: 1579505089
+    SessionAccumulator:
+      ubiSession:
+        startTimestampForValidPage: 1579505090
+  expect:
+    UbiSession:
+      startTimestampForValidPage: 1579505089
+
+
+- name: valid page and startTimestampForValidPage isNull
+  inputs:
+    UbiEvent:
+      urlQueryString: /roverimp/ebay
+      partialValidPage: 1
+      iframe: 0
+      pageId: 1
+      eventTimestamp: 1579505089
+    SessionAccumulator:
+      ubiSession:
+        startTimestampForValidPage:
+  expect:
+    UbiSession:
+      startTimestampForValidPage: 1579505089
+
+- name: valid page and endTimestampForValidPage < eventTimestamp
+  inputs:
+    UbiEvent:
+      urlQueryString: /roverimp/ebay
+      partialValidPage: 1
+      iframe: 0
+      pageId: 1
+      eventTimestamp: 1579505090
+    SessionAccumulator:
+      ubiSession:
+        endTimestampForValidPage: 1579505089
+  expect:
+    UbiSession:
+      endTimestampForValidPage: 1579505090
+
+
+- name: valid page and endTimestampForValidPage isNull
+  inputs:
+    UbiEvent:
+      urlQueryString: /roverimp/ebay
+      partialValidPage: 1
+      iframe: 0
+      pageId: 1
+      eventTimestamp: 1579505089
+    SessionAccumulator:
+      ubiSession:
+        endTimestampForValidPage:
+  expect:
+    UbiSession:
+      endTimestampForValidPage: 1579505089

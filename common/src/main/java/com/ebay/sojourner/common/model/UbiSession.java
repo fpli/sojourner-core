@@ -30,6 +30,8 @@ public class UbiSession implements Serializable, Cloneable {
   private Long startTimestamp;
   private Long startTimestampNOIFRAMERDT;
   private Long endTimestampNOIFRAMERDT;
+  private Long startTimestampForValidPage;
+  private Long endTimestampForValidPage;
   private Long startTimestampNOIFRAME;
   private Long startTimestampForAgentString;
   private Long startTimestampForReferrer;
@@ -54,6 +56,8 @@ public class UbiSession implements Serializable, Cloneable {
   private String firstCguid; //cguid in jetstream
   private Long firstMappedUserId;
   private Integer firstAppId; // appid in jetstream
+  private String firstAgent;
+  private String lastAgent;
   private Long endTimestamp;
   private int homepageCnt;
   private int grCnt;

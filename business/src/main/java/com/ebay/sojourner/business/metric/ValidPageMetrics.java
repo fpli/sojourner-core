@@ -2,8 +2,10 @@ package com.ebay.sojourner.business.metric;
 
 import com.ebay.sojourner.common.model.SessionAccumulator;
 import com.ebay.sojourner.common.model.UbiEvent;
+import com.ebay.sojourner.common.model.UbiSession;
 import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.common.util.PropertyUtils;
+import com.ebay.sojourner.common.util.SojEventTimeUtil;
 import com.ebay.sojourner.common.util.UBIConfig;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +39,8 @@ public class ValidPageMetrics implements FieldMetrics<UbiEvent, SessionAccumulat
 
   @Override
   public void feed(UbiEvent event, SessionAccumulator sessionAccumulator) throws Exception {
+
+    UbiSession ubiSession = sessionAccumulator.getUbiSession();
     // here simplify e.page_id IS NULL AND e.cs_tracking = 1 to e.page_id IS NULL
     // change logic to allign with caleb on 2018-02-26
     int csTracking = 0;
@@ -49,9 +53,21 @@ public class ValidPageMetrics implements FieldMetrics<UbiEvent, SessionAccumulat
         && !event.isIframe()
         && ((event.getPageId() != -1 && !invalidPageIds.contains(event.getPageId()))
         || csTracking == 0)) {
-      sessionAccumulator
-          .getUbiSession()
-          .setValidPageCnt(sessionAccumulator.getUbiSession().getValidPageCnt() + 1);
+      ubiSession
+          .setValidPageCnt(ubiSession.getValidPageCnt() + 1);
+
+      if (SojEventTimeUtil
+          .isEarlyEvent(event.getEventTimestamp(), ubiSession.getStartTimestampForValidPage())) {
+        ubiSession.setStartTimestampForValidPage(event.getEventTimestamp());
+        ubiSession.setFirstAgent(event.getAgentInfo());
+      }
+
+      if (SojEventTimeUtil
+          .isLateEvent(event.getEventTimestamp(), ubiSession.getEndTimestampForValidPage())) {
+        ubiSession.setEndTimestampForValidPage(event.getEventTimestamp());
+        ubiSession.setLastAgent(event.getAgentInfo());
+      }
+
     }
   }
 

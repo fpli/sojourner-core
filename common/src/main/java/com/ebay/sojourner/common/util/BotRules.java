@@ -12,6 +12,7 @@ public class BotRules {
   public static final int MANY_FAST_EVENTS_BOT_FLAG = 12;
   public static final int MANY_EVENTS_BOT_FLAG = 15;
   public static final int AKAMAI_BOT_FLAG = 17;
+  public static final int AGENT_HOPPING_BOT_FLAG = 18;
 
 
   // Intraday New BOT Flag

@@ -41,6 +41,8 @@ public class RulePriorityUtils {
       return BotRules.HIGH_DENSITY_VIEWS;
     }else if (botFlags.contains(BotRules.AKAMAI_BOT_FLAG)) {
       return BotRules.AKAMAI_BOT_FLAG;
+    }else if (botFlags.contains(BotRules.AGENT_HOPPING_BOT_FLAG)) {
+      return BotRules.AGENT_HOPPING_BOT_FLAG;
     } else if (botFlags.contains(BotRules.SPECIFIC_SPIDER_IAB)) {
       return BotRules.SPECIFIC_SPIDER_IAB;
     } else if (botFlags.contains(BotRules.SCS_CONFIRM_ON_AGENTIP)) {
