@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor - PRE PROD BOT
+    name: Sojourner Bot Event Distributor - Pre-Prod
     parallelism:
       source: 150
       sink-kafka: 150

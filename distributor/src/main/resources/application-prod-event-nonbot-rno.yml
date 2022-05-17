@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor - RNO
+    name: Sojourner Non-Bot Event Distributor - Prod - RNO
     source:
       dc: rno
       operator-name: Non-bot SojEvent Source
@@ -16,6 +16,7 @@ flink:
         - "entry-page:behavior.pulsar.sojsession.entrypage"
         - "mt-mobile-mc3ur:behavior.pulsar.customized.mc3ur"
         - "expc-native-events:behavior.pulsar.customized.expc-native-events"
+        - "srch-auto-complete:behavior.pulsar.customized.srch-auto-complete"
 
 kafka:
   consumer:

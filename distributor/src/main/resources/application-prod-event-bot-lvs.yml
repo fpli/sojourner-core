@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor Bot - LVS
+    name: Sojourner Bot Event Distributor - Prod - LVS
     parallelism:
       source: 150
       sink-kafka: 150

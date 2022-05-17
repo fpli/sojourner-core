@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor - Staging Bot
+    name: Sojourner Non-Bot Event Distributor - Staging
     parallelism:
       source: 1
       sink-kafka: 1
@@ -8,22 +8,29 @@ flink:
       data-dir: /tmp/flink/sojourner/distributor/checkpoint
     source:
       dc: slc
-      operator-name: Bot SojEvent Source
+      operator-name: Non-bot SojEvent Source
     sink:
       dc: slc
-      operator-name: Bot SojEvent Sink
+      operator-name: Non-bot SojEvent Sink
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
     dist:
       topic-config:
-        - ""
+        - "dss-gro:behavior.pulsar.customized.dss-gro"
+        - "dss-ads-mfe:behavior.pulsar.customized.ads-mfe"
+        - "dss-ads-pvp-hsa:behavior.pulsar.customized.ads-pvp-hsa"
+        - "srch-lst:behavior.pulsar.event.lst-srch"
+        - "entry-page:behavior.pulsar.sojsession.entrypage"
+        - "mt-mobile-mc3ur:behavior.pulsar.customized.mc3ur"
+        - "expc-native-events:behavior.pulsar.customized.expc-native-events"
+        - "srch-auto-complete:behavior.pulsar.customized.srch-auto-complete"
 
 kafka:
   consumer:
     stream: behavior.totalv2
     group-id: sojourner-distributor-staging
     topic:
-      - behavior.totalv2.sojevent-bot
+      - behavior.totalv2.sojevent-nonbot
     bootstrap-servers:
       lvs:
         - rhs-rurvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
@@ -77,6 +84,7 @@ kafka:
     # 2min
     delivery-timeout-ms: 120000
 
+
 rheos:
   registry-url: https://rheos-services.qa.ebay.com
   client:
@@ -91,4 +99,4 @@ rest-client:
   username: soj-flink-app
   config:
     pull-interval: 15000
-    profile: staging-bot
+    profile: staging

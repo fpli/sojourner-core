@@ -1,32 +1,24 @@
 flink:
   app:
-    name: Sojourner Distributor - PRE PROD
+    name: Sojourner Bot Session Distributor - Pre-Prod
     parallelism:
-      source: 200
-      sink-kafka: 200
+      source: 50
+      sink-kafka: 50
     source:
       dc: rno
-      operator-name: Non-bot SojEvent Source
+      operator-name: Bot SojSession Source
     sink:
       dc: slc
-      operator-name: Non-bot SojEvent Sink
+      operator-name: Bot SojSession Sink
       kafka:
-        topic: behavior.pulsarv2.test.default
-    dist:
-      topic-config:
-        - "dss-gro:behavior.pulsarv2.test.dss-gro"
-        - "dss-ads-mfe:behavior.pulsarv2.test.ads-mfe"
-        - "dss-ads-pvp-hsa:behavior.pulsarv2.test.ads-pvp-hsa"
-        - "entry-page:behavior.pulsarv2.test.sojsession.entrypage"
-        - "srch-lst:behavior.pulsarv2.test.event.lst-srch"
-        - "expc-native-events:behavior.pulsarv2.test.expc-native-events"
+        topic: behavior.pulsarv2.test.session-bot
 
 kafka:
   consumer:
     stream: behavior.total.new
     group-id: sojourner-distributor-pre-prod
     topic:
-      - behavior.total.new.sojevent
+      - behavior.total.new.sojsession.bot
     bootstrap-servers:
       rno:
         - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
@@ -44,7 +36,3 @@ kafka:
         - rhs-kxwvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
         - rhs-kxwvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
         - rhs-kxwvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
-
-rest-client:
-  config:
-    profile: pre-prod
