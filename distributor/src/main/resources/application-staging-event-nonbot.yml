@@ -2,8 +2,8 @@ flink:
   app:
     name: Sojourner Non-Bot Event Distributor - Staging
     parallelism:
-      source: 1
-      sink-kafka: 1
+      source: 4
+      sink-kafka: 4
     checkpoint:
       data-dir: /tmp/flink/sojourner/distributor/checkpoint
     source:
@@ -17,7 +17,6 @@ flink:
     dist:
       topic-config:
         - "dss-gro:behavior.pulsar.customized.dss-gro"
-        - "dss-ads-mfe:behavior.pulsar.customized.ads-mfe"
         - "dss-ads-pvp-hsa:behavior.pulsar.customized.ads-pvp-hsa"
         - "srch-lst:behavior.pulsar.event.lst-srch"
         - "entry-page:behavior.pulsar.sojsession.entrypage"

@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Session Distributor - LVS
+    name: Sojourner Non-Bot Session Distributor - Prod - LVS
     parallelism:
       source: 50
       sink-kafka: 50

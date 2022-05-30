@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Session Distributor - RNO
+    name: Sojourner Non-Bot Session Distributor - Prod - RNO
     parallelism:
       source: 50
       sink-kafka: 50

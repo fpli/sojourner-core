@@ -1,13 +1,13 @@
 flink:
   app:
     parallelism:
-      source: 200
-      sink-kafka: 200
+      source: 400
+      sink-kafka: 400
     checkpoint:
       data-dir: /opt/flink/sojourner/distributor/checkpoint
       interval-ms: 300000
       timeout-ms: 900000
-      min-pause-between-ms: 120000
+      min-pause-between-ms: 60000
       max-concurrent: 1
       tolerate-failure-number: 5
     source:
@@ -66,17 +66,20 @@ kafka:
         - rhs-qisvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
         - rhs-qisvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
         - rhs-qisvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+
+    # 512KB
     batch-size: 524288
     acks: 1
-    linger-ms: 50
+    linger-ms: 200
     # 30s
     request-timeout-ms: 30000
     retries: 30
+    # 256MB
     buffer-memory: 268435456
     compression-type: lz4
-    # 2min
-    delivery-timeout-ms: 120000
-    # 1000000 byte
+    # 3min
+    delivery-timeout-ms: 180000
+    # 1000000 byte / 1MB
     max-request-size: 1000000
 
 rheos:
