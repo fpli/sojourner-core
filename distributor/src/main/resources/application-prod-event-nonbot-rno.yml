@@ -1,6 +1,9 @@
 flink:
   app:
     name: Sojourner Non-Bot Event Distributor - Prod - RNO
+    parallelism:
+      source: 400
+      sink-kafka: 100
     source:
       dc: rno
       operator-name: Non-bot SojEvent Source

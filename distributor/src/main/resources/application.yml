@@ -1,8 +1,5 @@
 flink:
   app:
-    parallelism:
-      source: 400
-      sink-kafka: 400
     checkpoint:
       data-dir: /opt/flink/sojourner/distributor/checkpoint
       interval-ms: 300000

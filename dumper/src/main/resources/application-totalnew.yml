@@ -2,7 +2,7 @@ kafka:
   consumer:
     stream: behavior.total.new
     topic:
-      - behavior.total.new.sojevent
+      - behavior.total.new.sojevent.nonbot
     group-id: sojourner-total-new-dumper
     bootstrap-servers:
       rno:

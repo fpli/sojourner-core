@@ -1,6 +1,9 @@
 flink:
   app:
     name: Sojourner Non-Bot Event Distributor - Prod - LVS
+    parallelism:
+      source: 400
+      sink-kafka: 100
     source:
       dc: lvs
       operator-name: Non-bot SojEvent Source

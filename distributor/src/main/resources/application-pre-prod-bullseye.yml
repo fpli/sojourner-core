@@ -2,7 +2,7 @@ flink:
   app:
     name: Sojourner Simple Distributor - PRE PROD
     parallelism:
-      source: 800
+      source: 360
       sink-kafka: 100
     source:
       dc: rno
@@ -34,7 +34,7 @@ kafka:
     stream: behavior.total.new
     group-id: sojourner-simple-distributor-pre-prod
     topic:
-      - behavior.total.new.sojevent
+      - behavior.total.new.sojevent.nonbot
       - behavior.total.new.sojevent.bot
     bootstrap-servers:
       rno:

@@ -9,7 +9,7 @@ flink:
             non-bot: behavior.total.new.sojsession
           event:
             bot: behavior.total.new.sojevent.bot
-            non-bot: behavior.total.new.sojevent
+            non-bot: behavior.total.new.sojevent.nonbot
             late: behavior.total.new.late-event
           signature:
             agent-ip: behavior.total.new.signature.agentIp
