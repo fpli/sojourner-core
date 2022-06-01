@@ -1,0 +1,31 @@
+flink:
+  app:
+    sink:
+      dc: rno
+      kafka:
+        topic:
+          session:
+            bot: behavior.total.new.sojsession.bot
+            non-bot: behavior.total.new.sojsession
+          event:
+            bot: behavior.total.new.sojevent.bot
+            non-bot: behavior.total.new.sojevent
+            late: behavior.total.new.late-event
+          signature:
+            agent-ip: behavior.total.new.signature.agentIp
+            agent: behavior.total.new.signature.agent
+            ip: behavior.total.new.signature.ip
+
+kafka:
+  consumer:
+    group-id: sojourner-pathfinder-realtime-test
+
+  producer:
+    stream: behavior.total.new
+    bootstrap-servers:
+      rno:
+        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
