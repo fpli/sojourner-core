@@ -1,0 +1,55 @@
+kafka:
+  consumer:
+    topic:
+      - behavior.totalv2.sojsession-bot-rno
+    group-id: sojourner-total-dumper-rno
+
+flink:
+  app:
+    name: Sojourner RNO Bot Session HDFS Load Pipeline
+    parallelism:
+      source: 50
+      sink:
+        hdfs: 50
+    operator-name:
+      source: Sojourner Total RNO Bot Session Source
+      pass-through: RNO Byte To Bot Session
+      assgin-watermark: RNO Bot Session Watermark Assign
+      extract-watermark: RNO Bot Session Timestamp Extract
+      session-split: RNO Bot Session Split
+      sink:
+        session:
+          open: Sojourner Total RNO Bot Open Session Sink
+          same-day: Sojourner Total RNO Bot Same Day Session Sink
+          cross-day: Sojourner Total RNO Bot Cross Day Session Sink
+        watermark: Sojourner Total RNO Bot Session Watermark Sink
+    uid:
+      source: sojourner-total-rno-bot-session-source
+      pass-through: rno-byte-to-bot-session
+      assgin-watermark: rno-bot-session-watermak-assign
+      extract-watermark: rno-bot-session-timestamp-extract
+      session-split: rno-bot-session-split
+      sink:
+        session:
+          open: sojourner-total-rno-bot-open-session-sink
+          same-day: sojourner-total-rno-bot-same-day-session-sink
+          cross-day: sojourner-total-rno-bot-cross-day-session-sink
+        watermark: sojourner-total-rno-bot-session-watermark-sink
+    metric:
+      watermark-process-progress: sojourner-ubd-bot-session-watermark-delay-time
+    source:
+      dc: rno
+    sink:
+      hdfs:
+        path:
+          open: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=open/type=bot
+          same-day: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=sameday/type=bot
+          cross-day: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=crossday/type=bot
+        watermark-path: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/ubi_session_watermark_lkp/type=bot
+
+#      hdfs:
+#        path:
+#          open: hdfs://apollo-rno/sys/soj/ubd/sessions/category=open/type=bot
+#          same-day: hdfs://apollo-rno/sys/soj/ubd/sessions/category=sameday/type=bot
+#          cross-day: hdfs://apollo-rno/sys/soj/ubd/sessions/category=crossday/type=bot
+#        watermark-path: hdfs://apollo-rno/sys/soj/ubd/watermark/sessions/type=bot

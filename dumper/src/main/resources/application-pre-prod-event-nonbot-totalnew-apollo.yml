@@ -1,0 +1,46 @@
+kafka:
+  consumer:
+    stream: behavior.total.new
+    topic:
+      - behavior.total.new.sojevent.nonbot
+    group-id: sojourner-total-new-dumper
+    bootstrap-servers:
+      rno:
+        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+
+flink:
+  app:
+    name: Sojourner RNO Non Bot Event HDFS Load Pipeline TEST
+    parallelism:
+      source: 200
+      sink:
+        hdfs: 400
+    operator-name:
+      source: Sojourner Total New RNO Nonbot Event Source
+      pass-through: RNO Byte To Nonbot Event
+      assgin-watermark: RNO Nonbot Event Watermark Assign
+      extract-watermark: RNO Nonbot Event Timestamp Extract
+      sink:
+        event: Sojourner Total New RNO Nonbot Event Sink
+        watermark: Sojourner Total New RNO Nonbot Event Watermark Sink
+    uid:
+      source: sojourner-total-new-rno-nonbot-event-source
+      pass-through: rno-byte-to-nonbot-event
+      assgin-watermark: rno-nonbot-event-watermak-assign
+      extract-watermark: rno-nonbot-event-timestamp-extract
+      sink:
+        event: sojourner-total-new-rno-nonbot-event-sink
+        watermark: sojourner-total-new-rno-nonbot-event-watermark-sink
+    metric:
+      watermark-process-progress: sojourner-ubd-nonbot-event-watermark-delay-time
+    source:
+      dc: rno
+    sink:
+      hdfs:
+        path: hdfs://apollo-rno/sys/soj/ubd/events/type=nonbot
+        watermark-path: hdfs://apollo-rno/sys/soj/ubd/watermark/events/type=nonbot
+

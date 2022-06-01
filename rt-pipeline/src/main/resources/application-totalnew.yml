@@ -6,7 +6,7 @@ flink:
         topic:
           session:
             bot: behavior.total.new.sojsession.bot
-            non-bot: behavior.total.new.sojsession
+            non-bot: behavior.total.new.sojsession.nonbot
           event:
             bot: behavior.total.new.sojevent.bot
             non-bot: behavior.total.new.sojevent.nonbot
