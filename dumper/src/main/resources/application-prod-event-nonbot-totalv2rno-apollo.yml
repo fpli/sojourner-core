@@ -10,7 +10,7 @@ flink:
     parallelism:
       source: 200
       sink:
-        hdfs: 400
+        hdfs: 500
     operator-name:
       source: Sojourner Total RNO Nonbot Event Source
       pass-through: RNO Byte To Nonbot Event
