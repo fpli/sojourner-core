@@ -1,15 +1,15 @@
 flink:
   app:
-    name: Sojourner Realtime Pipeline - RNO
+    name: Sojourner Realtime Pipeline - totalv2rno
     parallelism:
-      default: 120
-      source: 125
-      event: 125
-      session: 600
-      pre-agent-ip: 120
-      agent-ip: 120
-      agent: 120
-      ip: 120
+      default: 150
+      source: 200
+      event: 200
+      session: 1000
+      pre-agent-ip: 150
+      agent-ip: 150
+      agent: 150
+      ip: 150
       broadcast: 510
       metrics: 510
     slot-sharing-group:
@@ -74,7 +74,7 @@ flink:
             agent-ip: userAgent
         allow-drop: true
     message-filter:
-      max-message-bytes: 102400
+      max-message-bytes: 204800
       sub-url-query-string-length: 4096
       truncate-url-query-string: true
     debug-mode: false
@@ -142,8 +142,8 @@ kafka:
     retries: 30
     buffer-memory: 268435456
     compression-type: lz4
-    # 2min
-    delivery-timeout-ms: 120000
+    # 3min
+    delivery-timeout-ms: 180000
     # 1000000 byte
     max-request-size: 1000000
 

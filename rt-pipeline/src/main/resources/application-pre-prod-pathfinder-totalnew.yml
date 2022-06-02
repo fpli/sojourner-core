@@ -1,5 +1,6 @@
 flink:
   app:
+    name: Sojourner Realtime Pipeline - totalnew
     sink:
       dc: rno
       kafka:

@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Realtime Pipeline - LVS
+    name: Sojourner Realtime Pipeline - totalv2lvs
     sink:
       dc: lvs
       kafka:
