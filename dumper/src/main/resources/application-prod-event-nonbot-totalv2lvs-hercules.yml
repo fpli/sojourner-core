@@ -2,13 +2,14 @@ kafka:
   consumer:
     topic:
       - behavior.totalv2.sojevent-nonbot-lvs
+      - behavior.totalv2.sojevent-nonbot-rno
     group-id: sojourner-total-dumper-lvs
 
 flink:
   app:
     name: Sojourner LVS Non Bot Event HDFS Load Pipeline
     parallelism:
-      source: 200
+      source: 400
       sink:
         hdfs: 500
     operator-name:

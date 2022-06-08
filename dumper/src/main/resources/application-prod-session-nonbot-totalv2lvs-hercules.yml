@@ -2,6 +2,7 @@ kafka:
   consumer:
     topic:
       - behavior.totalv2.sojsession-nonbot-lvs
+      - behavior.totalv2.sojsession-nonbot-rno
     group-id: sojourner-total-dumper-lvs
 
 flink:
