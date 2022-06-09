@@ -2,7 +2,7 @@ flink:
   app:
     name: Sojourner Simple Distributor - PROD
     parallelism:
-      source: 800
+      source: 400
       sink-kafka: 100
     source:
       dc: lvs
