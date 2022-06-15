@@ -18,7 +18,8 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.DiscardingSink;
 
-public class SojIntegrationCustomizedTopicJob {
+public class SojIntegrationTopicConsumerJob {
+
   public static void main(String[] args) throws Exception {
 
     final StreamExecutionEnvironment executionEnvironment = FlinkEnvUtils.prepare(args);
@@ -38,14 +39,13 @@ public class SojIntegrationCustomizedTopicJob {
         rheosEventDataStream.map(new RheosEventToSojEventMapFunction(
             getString(Property.RHEOS_KAFKA_REGISTRY_URL)))
                             .setParallelism(getInteger(SOURCE_PARALLELISM))
-                            .name("RheosEvent map to SojEvent")
+                            .name("RheosEvent to SojEvent")
                             .uid("map");
-
 
     dataStream.addSink(new DiscardingSink<>())
               .setParallelism(getInteger(SOURCE_PARALLELISM))
-              .name("Discard Sink")
-              .uid("discard-sink");
+              .name("Sink")
+              .uid("sink");
 
     // Submit this job
     FlinkEnvUtils.execute(executionEnvironment, getString(FLINK_APP_NAME));

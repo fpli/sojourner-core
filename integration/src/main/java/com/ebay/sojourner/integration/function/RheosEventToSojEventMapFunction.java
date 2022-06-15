@@ -31,9 +31,9 @@ public class RheosEventToSojEventMapFunction extends RichMapFunction<RheosEvent,
 
   @Override
   public SojEvent map(RheosEvent value) throws Exception {
-    // log.info("schemaId: {}, eventId: {}", value.getSchemaId(), value.getEventId());
 
     GenericRecord genericRecord = genericRecordDomainDataDecoder.decode(value);
+    log.info("schemaId: {}, rheosEvent: {}", value.getSchemaId(), genericRecord);
 
     return new SojEvent();
   }

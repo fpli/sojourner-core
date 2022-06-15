@@ -36,7 +36,6 @@ flink:
       timeout-ms: 900000
       min-pause-between-ms: 120000
       max-concurrent: 1
-      tolerate-failure-number: 3
     hot-deploy: false
     source:
       from-timestamp: 0

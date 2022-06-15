@@ -4,7 +4,6 @@ import static com.ebay.sojourner.common.util.Property.CHECKPOINT_INTERVAL_MS;
 import static com.ebay.sojourner.common.util.Property.CHECKPOINT_MAX_CONCURRENT;
 import static com.ebay.sojourner.common.util.Property.CHECKPOINT_MIN_PAUSE_BETWEEN_MS;
 import static com.ebay.sojourner.common.util.Property.CHECKPOINT_TIMEOUT_MS;
-import static com.ebay.sojourner.common.util.Property.TOLERATE_FAILURE_CHECKPOINT_NUMBER;
 
 import com.ebay.sojourner.common.env.EnvironmentUtils;
 import com.ebay.sojourner.flink.state.StateBackendFactory;
@@ -74,7 +73,6 @@ public class FlinkEnvUtils {
     conf.setMinPauseBetweenCheckpoints(getInteger(CHECKPOINT_MIN_PAUSE_BETWEEN_MS));//2min
     conf.setCheckpointTimeout(getInteger(CHECKPOINT_TIMEOUT_MS));//15min
     conf.setMaxConcurrentCheckpoints(getInteger(CHECKPOINT_MAX_CONCURRENT));
-    conf.setTolerableCheckpointFailureNumber(getInteger(TOLERATE_FAILURE_CHECKPOINT_NUMBER));
 
     // state config
     env.setStateBackend(StateBackendFactory.getStateBackend(StateBackendFactory.ROCKSDB));

@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 
+@Deprecated
 public class JetstreamEventDeserializationSchema implements
     DeserializationSchema<JetStreamOutputEvent> {
 

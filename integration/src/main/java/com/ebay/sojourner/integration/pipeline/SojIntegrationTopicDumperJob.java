@@ -14,7 +14,7 @@ import com.ebay.sojourner.flink.connector.kafka.schema.AvroKafkaDeserializationS
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-public class SojCustomizedTopicDumperJob {
+public class SojIntegrationTopicDumperJob {
   public static void main(String[] args) throws Exception {
 
     final StreamExecutionEnvironment executionEnvironment = FlinkEnvUtils.prepare(args);
