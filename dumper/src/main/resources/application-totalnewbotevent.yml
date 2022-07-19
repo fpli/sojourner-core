@@ -41,5 +41,5 @@ flink:
       dc: rno
     sink:
       hdfs:
-        path: hdfs://apollo-rno/sys/soj/ubd/events/type=bot
-        watermark-path: hdfs://apollo-rno/sys/soj/ubd/watermark/events/type=bot
+        path: hdfs://apollo-router/sys/soj/ubd/events/type=bot
+        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/events/type=bot

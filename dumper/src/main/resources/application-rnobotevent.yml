@@ -33,8 +33,8 @@ flink:
       dc: lvs
     sink:
       hdfs:
-        path: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/stg_ubi_event_dump_w/type=bot
-        watermark-path: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/ubi_event_watermark_lkp/type=bot
+        path: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_event_dump_w/type=bot
+        watermark-path: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/ubi_event_watermark_lkp/type=bot
 #      hdfs:
 #        path: hdfs://apollo-rno/sys/soj/ubd/events/type=bot
 #        watermark-path: hdfs://apollo-rno/sys/soj/ubd/watermark/events/type=bot

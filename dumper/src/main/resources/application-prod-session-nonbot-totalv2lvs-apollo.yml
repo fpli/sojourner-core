@@ -43,15 +43,15 @@ flink:
     sink:
       hdfs:
         path:
-          open: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=open/type=nonbot
-          same-day: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=sameday/type=nonbot
-          cross-day: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=crossday/type=nonbot
-        watermark-path: hdfs://apollo-rno/sys/edw/working/ubi/ubi_w/soj/ubi_session_watermark_lkp/type=nonbot
+          open: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=open/type=nonbot
+          same-day: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=sameday/type=nonbot
+          cross-day: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/category=crossday/type=nonbot
+        watermark-path: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/ubi_session_watermark_lkp/type=nonbot
 #      hdfs:
 #        path:
-#          open: hdfs://apollo-rno/sys/soj/ubd/sessions/category=open/type=nonbot
-#          same-day: hdfs://apollo-rno/sys/soj/ubd/sessions/category=sameday/type=nonbot
-#          cross-day: hdfs://apollo-rno/sys/soj/ubd/sessions/category=crossday/type=nonbot
-#        watermark-path: hdfs://apollo-rno/sys/soj/ubd/watermark/sessions/type=nonbot
+#          open: hdfs://apollo-router/sys/soj/ubd/sessions/category=open/type=nonbot
+#          same-day: hdfs://apollo-router/sys/soj/ubd/sessions/category=sameday/type=nonbot
+#          cross-day: hdfs://apollo-router/sys/soj/ubd/sessions/category=crossday/type=nonbot
+#        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/sessions/type=nonbot
 
 

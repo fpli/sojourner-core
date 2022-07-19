@@ -50,9 +50,9 @@ flink:
     sink:
       hdfs:
         path:
-          open: hdfs://apollo-rno/sys/soj/ubd/sessions/category=open/type=bot
-          same-day: hdfs://apollo-rno/sys/soj/ubd/sessions/category=sameday/type=bot
-          cross-day: hdfs://apollo-rno/sys/soj/ubd/sessions/category=crossday/type=bot
-        watermark-path: hdfs://apollo-rno/sys/soj/ubd/watermark/sessions/type=bot
+          open: hdfs://apollo-router/sys/soj/ubd/sessions/category=open/type=bot
+          same-day: hdfs://apollo-router/sys/soj/ubd/sessions/category=sameday/type=bot
+          cross-day: hdfs://apollo-router/sys/soj/ubd/sessions/category=crossday/type=bot
+        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/sessions/type=bot
 
 
