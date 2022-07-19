@@ -39,4 +39,6 @@ public class ApplicationPayloadTags {
   public static final String EFAM = "efam"; // event family
   public static final String EACTN = "eactn"; // event action
   public static final String CALLING_PAGE_ID = "cp";
+
+  public static final String SRP_GIST = "srpGist";
 }

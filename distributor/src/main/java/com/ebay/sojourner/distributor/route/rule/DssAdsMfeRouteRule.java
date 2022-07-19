@@ -8,6 +8,7 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 
 
+@Deprecated
 @Route(key = "dss-ads-mfe")
 public class DssAdsMfeRouteRule extends AbstractSojEventRouteRule {
 
