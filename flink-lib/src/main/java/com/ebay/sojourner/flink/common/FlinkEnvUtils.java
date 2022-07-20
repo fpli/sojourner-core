@@ -74,6 +74,9 @@ public class FlinkEnvUtils {
     conf.setCheckpointTimeout(getInteger(CHECKPOINT_TIMEOUT_MS));//15min
     conf.setMaxConcurrentCheckpoints(getInteger(CHECKPOINT_MAX_CONCURRENT));
 
+    // set tolerable checkpoint failure number to Integer.MAX_VALUE to prevent flink job restart
+    conf.setTolerableCheckpointFailureNumber(Integer.MAX_VALUE);
+
     // state config
     env.setStateBackend(StateBackendFactory.getStateBackend(StateBackendFactory.ROCKSDB));
 
