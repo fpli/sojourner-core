@@ -8,15 +8,19 @@ import com.ebay.sojourner.common.util.Base64Ebay;
 import com.ebay.sojourner.common.util.BitUtils;
 import com.ebay.sojourner.common.util.Constants;
 import com.ebay.sojourner.common.util.GUID2Date;
+import com.ebay.sojourner.common.util.IsValidGuid;
 import com.ebay.sojourner.common.util.LkpManager;
+import com.ebay.sojourner.common.util.RulePriorityUtils;
 import com.ebay.sojourner.common.util.SessionCoreHelper;
 import com.ebay.sojourner.common.util.SessionFlags;
 import com.ebay.sojourner.common.util.SojTimestamp;
 import com.ebay.sojourner.common.util.TypeTransformUtil;
 import com.ebay.sojourner.common.util.UbiLookups;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.RichMapFunction;
 
+@Slf4j
 public class UbiSessionToSessionCoreMapFunction extends RichMapFunction<UbiSession, SessionCore> {
 
   @Override
@@ -40,7 +44,8 @@ public class UbiSessionToSessionCoreMapFunction extends RichMapFunction<UbiSessi
 
     core.setIp(TypeTransformUtil.ipToInt(session.getIp()) == null ? 0
         : TypeTransformUtil.ipToInt(session.getIp()));
-    core.setBotFlag(session.getBotFlag());
+    core.setBotFlag(RulePriorityUtils.getHighPriorityBotFlag(
+        session.getBotFlagList()));
     if (session.getFirstCguid() != null) {
       long[] long4Cguid = TypeTransformUtil.md522Long(session.getFirstCguid());
       Guid cguid = new Guid();
@@ -197,6 +202,20 @@ public class UbiSessionToSessionCoreMapFunction extends RichMapFunction<UbiSessi
     if (!StringUtils.equals(session.getUserAgent(), session.getAgentString())) {
       flags = BitUtils.setBit(flags, SessionFlags.AGENT_STRING_DIFF);
     }
+
+    if (session.getIsIPExternal()!=null && session.getIsIPExternal().booleanValue()) {
+      flags = BitUtils.setBit(flags, SessionFlags.IS_IP_EXTERNAL_FLAG_POS);
+    }
+
+    if (session.getStartTimestamp() != null) {
+      flags = BitUtils.setBit(flags, SessionFlags.VALID_SESSSION_FLAG_POS);
+    }
+
+
+    if (IsValidGuid.isValidGuid(session.getGuid())) {
+      flags = BitUtils.setBit(flags, SessionFlags.VALID_GUID_FLAG_POS);
+    }
+
     return flags;
   }
 

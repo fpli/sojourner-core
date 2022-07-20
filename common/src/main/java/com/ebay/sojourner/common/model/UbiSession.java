@@ -144,12 +144,14 @@ public class UbiSession implements Serializable, Cloneable {
   private String streamId;
   private boolean openEmit = false;
   private String botProvider;
+  private Boolean isIPExternal;
 
   // for adjust useragent and ip
   private int clickId = Integer.MAX_VALUE;
   private int pageIdForUAIP = Integer.MAX_VALUE;
   private int hashCode = Integer.MAX_VALUE;
-  private Map<Integer,Long> clickWithStamp = new LinkedHashMap<>();
+  private Map<Integer, Long> clickWithStamp = new LinkedHashMap<>();
+
   // private Map<Integer,Long> rdtClickWithStamp = new LinkedHashMap<>();
   public UbiSession() {
     //        this.distinctClickIdSet = new HashSet<Integer>();

@@ -7,10 +7,12 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.datasketches.hll.HllSketch;
 import org.apache.datasketches.hll.TgtHllType;
 
 @Data
+@Slf4j
 public class AgentIpAttribute implements Attribute<SessionCore>, Serializable {
 
   public static final Set<Integer> REF_211 = new HashSet<>(
@@ -66,6 +68,16 @@ public class AgentIpAttribute implements Attribute<SessionCore>, Serializable {
   private Boolean isAllAgentHoper = true;
   private int totalCntForSec1 = 0;
 
+
+  //for new agent+Ip bot sync with clav_session
+  //private int sessionCntForAgentIp5 = 0;
+  //private byte[] guidSetForAgentIp5;
+  private int isAgentIp5Bot = 0;
+  private int sessionCntForAgentIp8 = 0;
+  private int newGuidCntForAgentIp8 = 0;
+  private int isAgentIp8Bot = 0;
+
+
   // for newbot
   private boolean hasNewBot = false;
 
@@ -74,10 +86,34 @@ public class AgentIpAttribute implements Attribute<SessionCore>, Serializable {
 
   @Override
   public void feed(SessionCore sessionCore, int botFlag) {
-    if(this.timestamp<sessionCore.getAbsStartTimestamp()){
-      this.timestamp=sessionCore.getAbsStartTimestamp();
+    if (this.timestamp < sessionCore.getAbsStartTimestamp()) {
+      this.timestamp = sessionCore.getAbsStartTimestamp();
     }
     switch (botFlag) {
+
+      //      case 20: {
+      //        sessionCntForAgentIp5 += 1;
+      //        HllSketch guidSet;
+      //        if (guidSetForAgentIp5 == null) {
+      //          guidSet = new HllSketch(12, TgtHllType.HLL_8);
+      //        } else {
+      //          guidSet = HllSketch.heapify(guidSetForAgentIp5);
+      //        }
+      //        long[] guidList = {sessionCore.getGuid().getGuid1(),
+      //            sessionCore.getGuid().getGuid2()};
+      //        guidSet.update(guidList);
+      //        guidSetForAgentIp5 = guidSet.toCompactByteArray();
+      //        break;
+      //      }
+
+      case 21: {
+        sessionCntForAgentIp8 += 1;
+        if (SessionCoreHelper.isNewGuid(sessionCore)) {
+          newGuidCntForAgentIp8 += 1;
+        }
+        break;
+      }
+
       case 211: {
         if (!hasNewBot && REF_211.contains(sessionCore.getBotFlag())) {
           hasNewBot = true;
@@ -204,10 +240,46 @@ public class AgentIpAttribute implements Attribute<SessionCore>, Serializable {
 
 
   public void merge(AgentIpAttribute agentIpAttribute, int botFlag) {
-     if(this.timestamp<agentIpAttribute.getTimestamp()){
-       this.timestamp=agentIpAttribute.getTimestamp();
-     }
+    if (this.timestamp < agentIpAttribute.getTimestamp()) {
+      this.timestamp = agentIpAttribute.getTimestamp();
+    }
     switch (botFlag) {
+      //      case 20: {
+      //        sessionCntForAgentIp5 += agentIpAttribute.getSessionCntForAgentIp5();
+      //        Union guidSet;
+      //        if (guidSetForAgentIp5 == null) {
+      //          guidSet = new Union();
+      //        } else {
+      //          guidSet = Union.heapify(guidSetForAgentIp5);
+      //        }
+      //
+      //        if (agentIpAttribute.getGuidSetForAgentIp5() != null) {
+      //          HllSketch guidSet2 = HllSketch.heapify(agentIpAttribute.getGuidSetForAgentIp5());
+      //          guidSet.update(guidSet2);
+      //        }
+      //        guidSetForAgentIp5 = guidSet.toCompactByteArray();
+      //
+      //        if (sessionCntForAgentIp5 > 100
+      //            && guidSet.getEstimate() >= 0.98 * sessionCntForAgentIp5) {
+      //          isAgentIp5Bot = 1;
+      //        } else {
+      //          isAgentIp5Bot = 0;
+      //        }
+      //        break;
+      //      }
+
+      case 21: {
+        sessionCntForAgentIp8 += agentIpAttribute.getSessionCntForAgentIp8();
+        newGuidCntForAgentIp8 += agentIpAttribute.getNewGuidCntForAgentIp8();
+        if (sessionCntForAgentIp8 > 200
+            && newGuidCntForAgentIp8 >= 0.97 * sessionCntForAgentIp8) {
+          isAgentIp8Bot = 1;
+        } else {
+          isAgentIp8Bot = 0;
+        }
+        break;
+      }
+
       case 5: {
         if (scsCountForBot5 < 0) {
           break;

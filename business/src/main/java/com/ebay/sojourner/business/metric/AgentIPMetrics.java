@@ -44,6 +44,7 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
     sessionAccumulator.getUbiSession().setDeviceClass(null);
     sessionAccumulator.getUbiSession().setOsFamily(null);
     sessionAccumulator.getUbiSession().setOsVersion(null);
+    sessionAccumulator.getUbiSession().setIsIPExternal(null);
   }
 
   @Override
@@ -148,13 +149,20 @@ public class AgentIPMetrics implements FieldMetrics<UbiEvent, SessionAccumulator
 
     sessionAccumulator.getUbiSession()
         .setUserAgent(sessionAccumulator.getUbiSession().getUserAgent());
-    sessionAccumulator.getUbiSession().setIp(sessionAccumulator.getUbiSession().getClientIp());
+
+    String clientIp = sessionAccumulator.getUbiSession().getClientIp();
+    sessionAccumulator.getUbiSession().setIp(clientIp);
+    if (StringUtils.isNoneBlank(clientIp) && !(invalidIPPattern.matcher(clientIp).matches())) {
+      sessionAccumulator.getUbiSession().setIsIPExternal(true);
+    }
+
     sessionAccumulator.getUbiSession().setExInternalIp(
         (sessionAccumulator.getUbiSession().getExternalIp() == null) ? (
             sessionAccumulator.getUbiSession().getExternalIp2() == null ? sessionAccumulator
                 .getUbiSession().getInternalIp()
                 : sessionAccumulator.getUbiSession().getExternalIp2())
             : sessionAccumulator.getUbiSession().getExternalIp());
+
   }
 
   public String getExternalIP(UbiEvent event, String remoteIp, String forwardFor) {

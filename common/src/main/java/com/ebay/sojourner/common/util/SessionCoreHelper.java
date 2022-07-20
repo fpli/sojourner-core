@@ -190,4 +190,24 @@ public abstract class SessionCoreHelper {
     return false;
   }
 
+  public static boolean isIPExternal(SessionCore session) {
+    if (session.getFlags() != null) {
+      return BitUtils.isBitSet(session.getFlags(), SessionFlags.IS_IP_EXTERNAL_FLAG_POS);
+    }
+    return false;
+  }
+
+  public static boolean isValidSession(SessionCore session) {
+    if (session.getFlags() != null) {
+      return BitUtils.isBitSet(session.getFlags(), SessionFlags.VALID_SESSSION_FLAG_POS);
+    }
+    return false;
+  }
+
+  public static boolean isValidGuid(SessionCore session) {
+    if (session.getFlags() != null) {
+      return BitUtils.isBitSet(session.getFlags(), SessionFlags.VALID_GUID_FLAG_POS);
+    }
+    return false;
+  }
 }

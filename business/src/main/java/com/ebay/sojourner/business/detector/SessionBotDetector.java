@@ -3,7 +3,6 @@ package com.ebay.sojourner.business.detector;
 import com.ebay.sojourner.business.rule.BotRule1;
 import com.ebay.sojourner.business.rule.BotRule10;
 import com.ebay.sojourner.business.rule.BotRule11;
-import com.ebay.sojourner.business.rule.BotRule12;
 import com.ebay.sojourner.business.rule.BotRule15;
 import com.ebay.sojourner.business.rule.BotRule17;
 import com.ebay.sojourner.business.rule.BotRule203;
@@ -67,7 +66,7 @@ public class SessionBotDetector implements BotDetector<UbiSession> {
     botRules.add(new BotRule15());
     botRules.add(new BotRule9());
     botRules.add(new BotRule10());
-    botRules.add(new BotRule12());
+    //botRules.add(new BotRule12());
     botRules.add(new BotRule203());
     botRules.add(new BotRule204());
     botRules.add(new BotRule205());

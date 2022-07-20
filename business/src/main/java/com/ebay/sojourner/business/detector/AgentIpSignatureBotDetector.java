@@ -1,5 +1,6 @@
 package com.ebay.sojourner.business.detector;
 
+import com.ebay.sojourner.business.rule.BotRule21;
 import com.ebay.sojourner.business.rule.BotRule5;
 import com.ebay.sojourner.business.rule.BotRule8;
 import com.ebay.sojourner.business.rule.BotRuleForNewBot;
@@ -51,6 +52,9 @@ public class AgentIpSignatureBotDetector implements BotDetector<AgentIpAttribute
   public void initBotRules() {
     botRules.add(new BotRule5());
     botRules.add(new BotRule8());
+    //currently we disabled bot rule20 in realtime as there is back pressure issue.
+    //botRules.add(new BotRule20());
+    botRules.add(new BotRule21());
     botRules.add(new BotRuleForNewBot());
   }
 }

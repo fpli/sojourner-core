@@ -26,4 +26,7 @@ public class SessionFlags {
   public static final int YESTERDAY_SESSION = 20;
   public static final int AGENT_STRING_AFTER_BASE64_DIFF = 21;
   public static final int EXINTERNALIP_NONTRIMED_DIFF = 22;
+  public static final int IS_IP_EXTERNAL_FLAG_POS = 23;
+  public static final int VALID_SESSSION_FLAG_POS = 24;
+  public static final int VALID_GUID_FLAG_POS = 25;
 }

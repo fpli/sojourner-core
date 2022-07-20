@@ -100,6 +100,7 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setBuserId(ubiSessionTmp.getBuserId());
     ubiSession.setValidPageCnt(ubiSessionTmp.getValidPageCnt());
     ubiSession.setOpenEmit(isOpen);
+    ubiSession.setIsIPExternal(ubiSessionTmp.getIsIPExternal());
     out.collect(ubiSession);
   }
 

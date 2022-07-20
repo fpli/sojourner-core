@@ -1,5 +1,6 @@
 package com.ebay.sojourner.common.util;
 
+
 public class BotRules {
 
   // Intraday BOT Flag
@@ -13,6 +14,9 @@ public class BotRules {
   public static final int MANY_EVENTS_BOT_FLAG = 15;
   public static final int AKAMAI_BOT_FLAG = 17;
   public static final int AGENT_HOPPING_BOT_FLAG = 18;
+  public static final int AGENT_IP5_BOT_FLAG = 20;
+  public static final int AGENT_IP8_BOT_FLAG = 21;
+
 
 
   // Intraday New BOT Flag

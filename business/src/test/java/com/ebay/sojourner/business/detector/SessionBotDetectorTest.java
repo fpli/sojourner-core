@@ -87,6 +87,6 @@ public class SessionBotDetectorTest {
   public void initBotRules() {
     Set<Rule> botRules = Whitebox
         .getInternalState(sessionBotDetector, "botRules", SessionBotDetector.class);
-    assertThat(botRules.size()).isEqualTo(13);
+    assertThat(botRules.size()).isEqualTo(12);
   }
 }

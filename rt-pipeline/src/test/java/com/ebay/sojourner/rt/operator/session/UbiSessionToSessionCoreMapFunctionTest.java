@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ebay.sojourner.common.model.SessionCore;
 import com.ebay.sojourner.common.model.UbiSession;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +23,9 @@ class UbiSessionToSessionCoreMapFunctionTest {
   @Test
   void map_direct() throws Exception {
     ubiSession.setAbsEventCnt(3);
-    ubiSession.setBotFlag(1);
+    Set<Integer> flagList = new HashSet<>();
+    flagList.add(1);
+    ubiSession.setBotFlagList(flagList);
     ubiSession.setFirstAppId(123);
     ubiSession.setValidPageCnt(1);
     ubiSession.setSessionStartDt(1579505089L);

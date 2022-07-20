@@ -53,6 +53,10 @@ public class RulePriorityUtils {
       return BotRules.SCS_ON_AGENT;
     } else if (botFlags.contains(BotRules.SCS_ON_IP)) {
       return BotRules.SCS_ON_IP;
+    }else if (botFlags.contains(BotRules.AGENT_IP5_BOT_FLAG)) {
+      return BotRules.AGENT_IP5_BOT_FLAG;
+    }else if (botFlags.contains(BotRules.AGENT_IP8_BOT_FLAG)) {
+      return BotRules.AGENT_IP8_BOT_FLAG;
     } else if (botFlags.contains(BotRules.FAST_REGULAR_AGENTIP_EXTEND)) {
       return BotRules.FAST_REGULAR_AGENTIP_EXTEND;
     } else if (botFlags.contains(BotRules.DECLARED_AGENT)) {

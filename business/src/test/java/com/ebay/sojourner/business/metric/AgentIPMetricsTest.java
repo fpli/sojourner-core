@@ -17,6 +17,7 @@ class AgentIPMetricsTest extends BaseMetricsTest {
   @BeforeEach
   public void setup() throws Exception {
     agentIPMetrics = new AgentIPMetrics();
+    agentIPMetrics.init();
     yaml = loadTestCasesYaml("AgentIPMetricsTest.yaml");
   }
 

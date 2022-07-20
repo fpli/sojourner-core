@@ -1,0 +1,13 @@
+- name: case1
+  type: AgentIpAttribute
+  input:
+    AgentIpAttribute:
+      scsCountForBot5: 0
+  expectResult: 0
+
+- name: case2
+  type: AgentIpAttribute
+  input:
+    AgentIpAttribute:
+      scsCountForBot5: 1
+  expectResult: 0
