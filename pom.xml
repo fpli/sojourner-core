@@ -18,7 +18,6 @@
     <module>distributor</module>
     <module>flink-lib</module>
     <module>business</module>
-    <module>sql-dsl</module>
     <module>integration</module>
   </modules>
 

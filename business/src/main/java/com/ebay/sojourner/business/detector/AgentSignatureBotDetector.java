@@ -2,8 +2,8 @@ package com.ebay.sojourner.business.detector;
 
 import com.ebay.sojourner.business.rule.BotRule6;
 import com.ebay.sojourner.business.rule.BotRuleForSuspectAgent;
+import com.ebay.sojourner.business.rule.Rule;
 import com.ebay.sojourner.common.model.AgentAttribute;
-import com.ebay.sojourner.dsl.domain.rule.Rule;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;

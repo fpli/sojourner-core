@@ -2,10 +2,10 @@ package com.ebay.sojourner.business.detector;
 
 import com.ebay.sojourner.business.rule.BotRule206;
 import com.ebay.sojourner.business.rule.BotRule208;
+import com.ebay.sojourner.business.rule.Rule;
 import com.ebay.sojourner.common.model.UbiSession;
 import com.ebay.sojourner.common.util.BotFilter;
 import com.ebay.sojourner.common.util.UbiBotFilter;
-import com.ebay.sojourner.dsl.domain.rule.Rule;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;

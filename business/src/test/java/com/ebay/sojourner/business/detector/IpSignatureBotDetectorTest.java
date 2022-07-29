@@ -2,8 +2,8 @@ package com.ebay.sojourner.business.detector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ebay.sojourner.business.rule.Rule;
 import com.ebay.sojourner.common.model.IpAttribute;
-import com.ebay.sojourner.dsl.domain.rule.Rule;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

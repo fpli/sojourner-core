@@ -1,8 +1,8 @@
 package com.ebay.sojourner.business.detector;
 
 import com.ebay.sojourner.business.rule.BotRule16;
+import com.ebay.sojourner.business.rule.Rule;
 import com.ebay.sojourner.common.model.UbiEvent;
-import com.ebay.sojourner.dsl.domain.rule.Rule;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;

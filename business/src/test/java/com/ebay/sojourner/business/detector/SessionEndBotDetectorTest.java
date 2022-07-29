@@ -5,13 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.ebay.sojourner.business.rule.BotRule12End;
-import com.ebay.sojourner.business.rule.BotRule18;
-import com.ebay.sojourner.business.rule.BotRule206;
-import com.ebay.sojourner.business.rule.BotRule208;
+import com.ebay.sojourner.business.rule.*;
 import com.ebay.sojourner.common.model.UbiSession;
 import com.ebay.sojourner.common.util.UbiBotFilter;
-import com.ebay.sojourner.dsl.domain.rule.Rule;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;

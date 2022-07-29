@@ -1,6 +1,6 @@
 package com.ebay.sojourner.business.rule.icf;
 
-import com.ebay.sojourner.dsl.domain.rule.Rule;
+import com.ebay.sojourner.business.rule.Rule;
 import com.ebay.sojourner.common.util.BitUtils;
 import com.ebay.sojourner.common.util.BotRules;
 
