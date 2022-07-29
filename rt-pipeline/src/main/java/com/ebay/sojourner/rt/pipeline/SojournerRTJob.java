@@ -6,6 +6,7 @@ import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OUT_OF_OR
 import static com.ebay.sojourner.flink.common.DataCenter.LVS;
 import static com.ebay.sojourner.flink.common.DataCenter.RNO;
 import static com.ebay.sojourner.flink.common.DataCenter.SLC;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getStringArray;
@@ -30,7 +31,7 @@ import com.ebay.sojourner.flink.connector.kafka.schema.AvroKafkaSerializationSch
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventDeserializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventKafkaDeserializationSchemaWrapper;
 import com.ebay.sojourner.flink.state.MapStateDesc;
-import com.ebay.sojourner.flink.window.CompositeTrigger.Builder;
+import com.ebay.sojourner.flink.window.CompositeTrigger;
 import com.ebay.sojourner.flink.window.MidnightOpenSessionTrigger;
 import com.ebay.sojourner.flink.window.OnElementEarlyFiringTrigger;
 import com.ebay.sojourner.flink.window.SojEventTimeSessionWindows;
@@ -179,7 +180,7 @@ public class SojournerRTJob {
             .keyBy("guid")
             .window(SojEventTimeSessionWindows.withGapAndMaxDuration(Time.minutes(30),
                 Time.hours(24)))
-            .trigger(Builder.create().trigger(EventTimeTrigger.create())
+            .trigger(CompositeTrigger.Builder.create().trigger(EventTimeTrigger.create())
                 .trigger(MidnightOpenSessionTrigger
                     .of(Time.hours(7))).build())
             .sideOutputLateData(OutputTagConstants.lateEventOutputTag)
@@ -272,8 +273,8 @@ public class SojournerRTJob {
         .union(ipSignatureDataStream);
 
     // attribute signature broadcast
-    BroadcastStream<BotSignature> attributeSignatureBroadcastStream
-        = attributeSignatureDataStream.broadcast(MapStateDesc.attributeSignatureDesc);
+    BroadcastStream<BotSignature> attributeSignatureBroadcastStream =
+        attributeSignatureDataStream.broadcast(MapStateDesc.attributeSignatureDesc);
 
     // transform ubiEvent,ubiSession to same type and union
     DataStream<Either<UbiEvent, UbiSession>> ubiSessionTransDataStream =
@@ -379,7 +380,7 @@ public class SojournerRTJob {
             getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_NON_BOT),
             getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
             getString(Property.PRODUCER_ID),
-            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP)))
+            getBoolean(Property.ALLOW_DROP)))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Nonbot SojEvent")
@@ -391,7 +392,7 @@ public class SojournerRTJob {
             getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_BOT),
             getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
             getString(Property.PRODUCER_ID),
-            FlinkEnvUtils.getBoolean(Property.ALLOW_DROP)))
+            getBoolean(Property.ALLOW_DROP)))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Bot SojEvent")
@@ -483,7 +484,7 @@ public class SojournerRTJob {
         getString(Property.FLINK_APP_SINK_KAFKA_TOPIC_EVENT_LATE),
         getString(Property.FLINK_APP_SINK_KAFKA_SUBJECT_EVENT),
         getString(Property.PRODUCER_ID),
-        FlinkEnvUtils.getBoolean(Property.ALLOW_DROP),
+        getBoolean(Property.ALLOW_DROP),
         getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ",")))
         .setParallelism(getInteger(Property.SESSION_PARALLELISM))
         .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
