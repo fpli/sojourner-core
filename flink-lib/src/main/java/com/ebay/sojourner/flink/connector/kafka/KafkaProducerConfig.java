@@ -1,17 +1,18 @@
 package com.ebay.sojourner.flink.connector.kafka;
 
-import static com.ebay.sojourner.common.util.Property.KAFKA_PRODUCER_BOOTSTRAP_SERVERS;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
-
 import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.google.common.base.Preconditions;
-import java.util.Properties;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.ProducerConfig;
+
+import java.util.Properties;
+
+import static com.ebay.sojourner.common.util.Property.KAFKA_PRODUCER_BOOTSTRAP_SERVERS;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 
 @Data
 public class KafkaProducerConfig {
@@ -59,9 +60,18 @@ public class KafkaProducerConfig {
   }
 
   private static Properties buildKafkaProducerConfig(String brokers) {
-    Preconditions.checkArgument(StringUtils.isNotBlank(brokers));
+    boolean kafkaProducerAuthEnabled = true;
+    try {
+      // override default value if set
+      kafkaProducerAuthEnabled = getBoolean(Property.KAFKA_PRODUCER_AUTH_ENABLED);
+    } catch (Exception e) {
+      // use default value if not set
+    }
+    Properties producerConfig = new Properties();
+    if (kafkaProducerAuthEnabled) {
+      producerConfig.putAll(KafkaCommonConfig.get());
+    }
 
-    Properties producerConfig = KafkaCommonConfig.get();
     producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
     producerConfig.put(ProducerConfig.BATCH_SIZE_CONFIG,
                        getInteger(Property.BATCH_SIZE));

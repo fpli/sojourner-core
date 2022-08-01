@@ -6,6 +6,7 @@ import static com.ebay.sojourner.common.util.Property.KAFKA_CONSUMER_TOPIC;
 import static com.ebay.sojourner.flink.common.DataCenter.LVS;
 import static com.ebay.sojourner.flink.common.DataCenter.RNO;
 import static com.ebay.sojourner.flink.common.DataCenter.SLC;
+import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getListString;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
@@ -80,7 +81,17 @@ public class KafkaConsumerConfig {
 
   private static Properties buildKafkaConsumerConfig(String brokers, String groupId) {
 
-    Properties consumerConfig = KafkaCommonConfig.get();
+    boolean kafkaConsumerAuthEnabled = true;
+    try {
+      // override default value if set
+      kafkaConsumerAuthEnabled = getBoolean(Property.KAFKA_CONSUMER_AUTH_ENABLED);
+    } catch (Exception e) {
+      // use default value if not set
+    }
+    Properties consumerConfig = new Properties();
+    if (kafkaConsumerAuthEnabled) {
+      consumerConfig.putAll(KafkaCommonConfig.get());
+    }
 
     consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
     consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);

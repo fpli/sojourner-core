@@ -123,6 +123,7 @@ public class Property {
   public static final String KAFKA_CONSUMER_TOPIC = "kafka.consumer.topic";
   public static final String KAFKA_CONSUMER_GROUP_ID = "kafka.consumer.group-id";
   public static final String PARTITION_DISCOVERY_INTERVAL_MS = "kafka.consumer.partition-discovery-interval-ms";
+  public static final String KAFKA_CONSUMER_AUTH_ENABLED = "kafka.consumer.auth-enabled";
 
   // kafka producer
   public static final String BATCH_SIZE = "kafka.producer.batch-size";
@@ -136,6 +137,7 @@ public class Property {
   public static final String KAFKA_PRODUCER_BOOTSTRAP_SERVERS = "kafka.producer.bootstrap-servers";
   public static final String PRODUCER_ID = "kafka.producer.producerId";
   public static final String MAX_REQUEST_SIZE = "kafka.producer.max-request-size";
+  public static final String KAFKA_PRODUCER_AUTH_ENABLED = "kafka.producer.auth-enabled";
 
   // rheos
   public static final String RHEOS_KAFKA_REGISTRY_URL = "rheos.registry-url";
