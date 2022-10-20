@@ -14,11 +14,9 @@ flink:
         topic: behavior.pulsarv2.test.default
     dist:
       topic-config:
-        - "dss-gro:behavior.pulsarv2.test.dss-gro"
-        - "dss-ads-pvp-hsa:behavior.pulsarv2.test.ads-pvp-hsa"
-        - "entry-page:behavior.pulsarv2.test.sojsession.entrypage"
-        - "srch-lst:behavior.pulsarv2.test.event.lst-srch"
-        - "expc-native-events:behavior.pulsarv2.test.expc-native-events"
+        - "entry-page:behavior.total.new.sojsession.entrypage"
+        - "expc-native-events:behavior.total.new.expc-native-events"
+        - "expm-native-events:behavior.total.new.expm-native-events"
 
 kafka:
   consumer:
@@ -35,14 +33,14 @@ kafka:
         - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
 
   producer:
-    stream: behavior.pulsarv2.test
+    stream: behavior.total.new
     bootstrap-servers:
       slc:
-        - rhs-kxwvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-kxwvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-kxwvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-kxwvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-kxwvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
 
 rest-client:
   config:

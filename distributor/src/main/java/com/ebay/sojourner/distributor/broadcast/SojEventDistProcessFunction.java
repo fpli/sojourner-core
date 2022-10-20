@@ -1,8 +1,5 @@
 package com.ebay.sojourner.distributor.broadcast;
 
-import static com.ebay.sojourner.common.constant.SojHeaders.DISTRIBUTOR_INGEST_TIMESTAMP;
-import static com.ebay.sojourner.common.constant.SojHeaders.REALTIME_PRODUCER_TIMESTAMP;
-
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
 import com.ebay.sojourner.common.model.RheosHeader;
@@ -17,11 +14,6 @@ import com.ebay.sojourner.flink.connector.kafka.AvroKafkaDeserializer;
 import com.ebay.sojourner.flink.connector.kafka.AvroKafkaSerializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaDeserializer;
 import com.ebay.sojourner.flink.connector.kafka.KafkaSerializer;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.state.BroadcastState;
 import org.apache.flink.api.common.state.MapStateDescriptor;
@@ -30,6 +22,15 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.metrics.Counter;
 import org.apache.flink.streaming.api.functions.co.BroadcastProcessFunction;
 import org.apache.flink.util.Collector;
+
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.ebay.sojourner.common.constant.SojHeaders.DISTRIBUTOR_INGEST_TIMESTAMP;
+import static com.ebay.sojourner.common.constant.SojHeaders.REALTIME_PRODUCER_TIMESTAMP;
 
 @Slf4j
 public class SojEventDistProcessFunction extends
@@ -51,6 +52,9 @@ public class SojEventDistProcessFunction extends
   private final boolean debugMode;
   private static final String LARGE_MESSAGE_SIZE_METRIC_NAME = "large-message-size";
   private static final String DROPPED_EVENT_METRIC_NAME = "dropped-event-count";
+  public static final String REMOVE_TAG="experience";
+  public static final String EXPM_KW="expm-native-events";
+  public static final String EXPC_KW="expc-native-events";
 
   public SojEventDistProcessFunction(MapStateDescriptor<Integer, PageIdTopicMapping> descriptor,
       List<String> topicConfigs, long maxMessageBytes, boolean debugMode) {
@@ -152,25 +156,43 @@ public class SojEventDistProcessFunction extends
 
     // distribute events based on simple pageid/topic mapping regardless event is bot or not
     Integer pageId = sojEvent.getPageId();
-    PageIdTopicMapping mapping = broadcastState.get(pageId);
-    if (mapping != null) {
-      for (String topic : mapping.getTopics()) {
+    if(!debugMode) {
+      PageIdTopicMapping mapping = broadcastState.get(pageId);
+      if (mapping != null) {
+        for (String topic : mapping.getTopics()) {
+          sojEventWrapper.setTopic(topic);
+          out.collect(sojEventWrapper);
+        }
+      }
+
+      // distribute events based on complicated filtering logic, also for bot and non-bot
+      Set<String> topics = router.target(sojEvent);
+      for (String topic : topics) {
         sojEventWrapper.setTopic(topic);
+        if (topic.contains(EXPM_KW)||topic.contains(EXPC_KW)) {
+          sojEvent.getApplicationPayload().remove(REMOVE_TAG);
+          byte[] valueTmp = serializer.encodeValue(sojEvent);
+          sojEventWrapper.setPayload(valueTmp);
+        }
         out.collect(sojEventWrapper);
       }
-    }
 
-    // distribute events based on complicated filtering logic, also for bot and non-bot
-    Set<String> topics = router.target(sojEvent);
-    for (String topic : topics) {
-      sojEventWrapper.setTopic(topic);
-      out.collect(sojEventWrapper);
-    }
-
-    // for bot sojevents, distribute all events if all_page(0) is set
-    if (sojEvent.getBot() != 0 && broadcastState.get(ALL_PAGE) != null) {
-      for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
+      // for bot sojevents, distribute all events if all_page(0) is set
+      if (sojEvent.getBot() != 0 && broadcastState.get(ALL_PAGE) != null) {
+        for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
+          sojEventWrapper.setTopic(topic);
+          out.collect(sojEventWrapper);
+        }
+      }
+    }else{
+      Set<String> topics = router.target(sojEvent);
+      for (String topic : topics) {
         sojEventWrapper.setTopic(topic);
+        if (topic.contains(EXPM_KW)||topic.contains(EXPC_KW)) {
+          sojEvent.getApplicationPayload().remove(REMOVE_TAG);
+          byte[] valueTmp = serializer.encodeValue(sojEvent);
+          sojEventWrapper.setPayload(valueTmp);
+        }
         out.collect(sojEventWrapper);
       }
     }
