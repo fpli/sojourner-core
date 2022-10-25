@@ -10,6 +10,17 @@ flink:
       ip: 2
       broadcast: 2
       metrics: 2
+    max-parallelism:
+      default: 2
+      source: 2
+      event: 2
+      session: 2
+      pre-agent-ip: 2
+      agent-ip: 2
+      agent: 2
+      ip: 2
+      broadcast: 2
+      metrics: 2
     data-skew:
       is-filter: false
       guid-list:

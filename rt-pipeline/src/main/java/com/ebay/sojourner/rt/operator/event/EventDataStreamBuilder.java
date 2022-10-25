@@ -20,11 +20,13 @@ public class EventDataStreamBuilder {
             FlinkEnvUtils.getBoolean(Property.TRUNCATE_URL_QUERY_STRING),
             FlinkEnvUtils.getBoolean(Property.DEBUG_MODE)))
         .setParallelism(FlinkEnvUtils.getInteger(Property.EVENT_PARALLELISM))
+        .setMaxParallelism(FlinkEnvUtils.getInteger(Property.EVENT_MAX_PARALLELISM))
         .slotSharingGroup(getSlotGroupForDC(dc))
         .name(String.format("Large Message Filter %s", dc))
         .uid(String.format("large-message-filter-%s", dc))
         .map(new EventMapFunction())
         .setParallelism(FlinkEnvUtils.getInteger(Property.EVENT_PARALLELISM))
+        .setMaxParallelism(FlinkEnvUtils.getInteger(Property.EVENT_MAX_PARALLELISM))
         .slotSharingGroup(getSlotGroupForDC(dc))
         .name(String.format("Event Operator %s", dc))
         .uid(String.format("event-operator-%s", dc));

@@ -215,6 +215,7 @@ public class SojournerRTJob {
 
     ubiSessionDataStream
         .setParallelism(getInteger(Property.SESSION_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.SESSION_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Session Operator")
         .uid("session-operator");
@@ -230,11 +231,13 @@ public class SojournerRTJob {
         ubiSessionDataStream
             .filter(new OpenSessionFilterFunction())
             .setParallelism(getInteger(Property.SESSION_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.SESSION_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
             .name("UbiSession Open Filter") //add opensession filter name
             .uid("ubisession-open-filter") //add opensession filter uid
             .map(new UbiSessionToSessionCoreMapFunction())
             .setParallelism(getInteger(Property.SESSION_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.SESSION_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
             .name("UbiSession To SessionCore")
             .uid("ubisession-to-sessioncore");
@@ -250,6 +253,7 @@ public class SojournerRTJob {
             .window(TumblingEventTimeWindows.of(Time.minutes(5)))
             .aggregate(new AgentIpAttributeAgg(), new AgentIpWindowProcessFunction())
             .setParallelism(getInteger(Property.PRE_AGENT_IP_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.PRE_AGENT_IP_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("Attribute Operator (Agent+IP Pre-Aggregation)")
             .uid("attribute-operator-pre-aggregation");
@@ -263,6 +267,7 @@ public class SojournerRTJob {
             new AgentIpAttributeAggSliding(),
             new AgentIpSignatureWindowProcessFunction())
         .setParallelism(getInteger(Property.AGENT_IP_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.AGENT_IP_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Attribute Operator (Agent+IP)")
         .uid("attribute-operator-agent-ip");
@@ -274,6 +279,7 @@ public class SojournerRTJob {
         .trigger(OnElementEarlyFiringTrigger.create())
         .aggregate(new AgentAttributeAgg(), new AgentWindowProcessFunction())
         .setParallelism(getInteger(Property.AGENT_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.AGENT_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Attribute Operator (Agent)")
         .uid("attribute-operator-agent");
@@ -285,6 +291,7 @@ public class SojournerRTJob {
         .trigger(OnElementEarlyFiringTrigger.create())
         .aggregate(new IpAttributeAgg(), new IpWindowProcessFunction())
         .setParallelism(getInteger(Property.IP_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.IP_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Attribute Operator (IP)")
         .uid("attribute-operator-ip");
@@ -303,6 +310,7 @@ public class SojournerRTJob {
         ubiSessionDataStream
             .map(new DetectableSessionMapFunction())
             .setParallelism(getInteger(Property.SESSION_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.SESSION_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
             .name("Transform UbiSession for Union")
             .uid("transform-ubisession-for-union");
@@ -311,6 +319,7 @@ public class SojournerRTJob {
         ubiEventWithSessionId
             .map(new DetectableEventMapFunction())
             .setParallelism(getInteger(Property.SESSION_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.SESSION_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
             .name("Transform UbiEvent for Union")
             .uid("transform-ubievent-for-union");
@@ -325,6 +334,7 @@ public class SojournerRTJob {
                 new AttributeBroadcastProcessFunctionForDetectable(
                     OutputTagConstants.sessionOutputTag))
             .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.BROADCAST_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("Signature Bot Detector")
             .uid("signature-bot-detector");
@@ -338,6 +348,7 @@ public class SojournerRTJob {
             .process(new UbiEventToSojEventProcessFunction(
                 OutputTagConstants.botEventOutputTag))
             .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.BROADCAST_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("UbiEvent to SojEvent")
             .uid("ubievent-to-sojevent");
@@ -352,6 +363,7 @@ public class SojournerRTJob {
                 new UbiSessionToSojSessionProcessFunction(
                     OutputTagConstants.botSessionOutputTag))
             .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
+            .setMaxParallelism(getInteger(Property.BROADCAST_MAX_PARALLELISM))
             .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
             .name("UbiSession to SojSession")
             .uid("ubisession-to-sojsession");
@@ -425,6 +437,7 @@ public class SojournerRTJob {
         .process(new RTPipelineMetricsCollectorProcessFunction(
             FlinkEnvUtils.getInteger(Property.METRIC_WINDOW_SIZE)))
         .setParallelism(getInteger(Property.METRICS_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.METRICS_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Pipeline Metrics Collector")
         .uid("pipeline-metrics-collector");
@@ -433,6 +446,7 @@ public class SojournerRTJob {
     signatureBotDetectionForEvent
         .process(new EventMetricsCollectorProcessFunction())
         .setParallelism(getInteger(Property.METRICS_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.METRICS_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Event Metrics Collector")
         .uid("event-metrics-collector");
@@ -441,6 +455,7 @@ public class SojournerRTJob {
     agentIpSignatureDataStream
         .process(new AgentIpMetricsCollectorProcessFunction())
         .setParallelism(getInteger(Property.AGENT_IP_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.AGENT_IP_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("AgentIp Metrics Collector")
         .uid("agent-ip-metrics-collector");
@@ -448,6 +463,7 @@ public class SojournerRTJob {
     agentSignatureDataStream
         .process(new AgentMetricsCollectorProcessFunction())
         .setParallelism(getInteger(Property.AGENT_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.AGENT_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Agent Metrics Collector")
         .uid("agent-metrics-id");
@@ -455,6 +471,7 @@ public class SojournerRTJob {
     ipSignatureDataStream
         .process(new IpMetricsCollectorProcessFunction())
         .setParallelism(getInteger(Property.IP_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.IP_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Ip Metrics Collector")
         .uid("ip-metrics-id");
@@ -496,6 +513,7 @@ public class SojournerRTJob {
     DataStream<SojEvent> lateSojEventStream = latedStream
         .map(new UbiEventToSojEventMapFunction())
         .setParallelism(getInteger(Property.SESSION_PARALLELISM))
+        .setMaxParallelism(getInteger(Property.SESSION_MAX_PARALLELISM))
         .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Late UbiEvent to SojEvent")
         .uid("late-ubievent-to-sojevent");

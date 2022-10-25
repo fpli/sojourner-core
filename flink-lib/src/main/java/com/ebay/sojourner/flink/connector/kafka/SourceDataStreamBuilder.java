@@ -18,6 +18,7 @@ public class SourceDataStreamBuilder<T> {
   private String uid;
   private String slotGroup;
   private int parallelism = getInteger(Property.SOURCE_PARALLELISM);
+  private int maxParallelism = getInteger(Property.SOURCE_MAX_PARALLELISM);
   private int outOfOrderlessInMin;
   private String fromTimestamp = getStringOrDefault(Property.FLINK_APP_SOURCE_FROM_TIMESTAMP, "0");
   private int idleSourceTimeout;
@@ -39,6 +40,11 @@ public class SourceDataStreamBuilder<T> {
 
   public SourceDataStreamBuilder<T> parallelism(int parallelism) {
     this.parallelism = parallelism;
+    return this;
+  }
+
+  public SourceDataStreamBuilder<T> maxParallelism(int maxParallelism) {
+    this.maxParallelism = maxParallelism;
     return this;
   }
 
@@ -94,6 +100,7 @@ public class SourceDataStreamBuilder<T> {
     DataStream<T> dataStream = environment
         .addSource(factory.get(schema))
         .setParallelism(parallelism)
+        .setMaxParallelism(maxParallelism)
         .slotSharingGroup(slotGroup)
         .name(operatorName)
         .uid(uid);

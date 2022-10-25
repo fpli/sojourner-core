@@ -12,6 +12,17 @@ flink:
       ip: 150
       broadcast: 510
       metrics: 510
+    max-parallelism:
+      default: 5040
+      source: 1260
+      event: 1260
+      session: 5040
+      pre-agent-ip: 630
+      agent-ip: 630
+      agent: 630
+      ip: 630
+      broadcast: 5040
+      metrics: 5040
     slot-sharing-group:
       source-event-lvs: lvs
       source-event-slc: slc

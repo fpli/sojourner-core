@@ -206,6 +206,19 @@ public class Property {
   public static final String TDQ_NORMALIZER_PARALLELISM = "flink.app.parallelism.tdq-normalizer";
   public static final String METRIICS_COLLECTOR_POST_PARALLELISM = "flink.app.parallelism.metrics-collector-post";
   public static final String METRIICS_COLLECTOR_FINAL_PARALLELISM = "flink.app.parallelism.metrics-collector-final";
+
+  // flink - max parallelism
+  public static final String DEFAULT_MAX_PARALLELISM = "flink.app.max-parallelism.default";
+  public static final String SOURCE_MAX_PARALLELISM = "flink.app.max-parallelism.source";
+  public static final String EVENT_MAX_PARALLELISM = "flink.app.max-parallelism.event";
+  public static final String SESSION_MAX_PARALLELISM = "flink.app.max-parallelism.session";
+  public static final String PRE_AGENT_IP_MAX_PARALLELISM = "flink.app.max-parallelism.pre-agent-ip";
+  public static final String AGENT_IP_MAX_PARALLELISM = "flink.app.max-parallelism.agent-ip";
+  public static final String AGENT_MAX_PARALLELISM = "flink.app.max-parallelism.agent";
+  public static final String IP_MAX_PARALLELISM = "flink.app.max-parallelism.ip";
+  public static final String BROADCAST_MAX_PARALLELISM = "flink.app.max-parallelism.broadcast";
+  public static final String METRICS_MAX_PARALLELISM = "flink.app.max-parallelism.metrics";
+
   // flink slot share group
   public static final String SOURCE_EVENT_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.source-event";
   public static final String SOURCE_EVENT_LVS_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.source-event-lvs";
