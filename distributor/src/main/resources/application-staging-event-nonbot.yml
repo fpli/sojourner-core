@@ -23,6 +23,7 @@ flink:
         - "srch-auto-complete:behavior.pulsar.customized.srch-auto-complete"
         - "srpGist:behavior.pulsar.customized.srpGist"
         - "expm-native-events:behavior.pulsar.customized.expm-native-events"
+        - "scandal-trk:behavior.pulsar.customized.scandal-trk"
 kafka:
   consumer:
     stream: behavior.totalv2

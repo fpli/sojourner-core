@@ -16,7 +16,7 @@ flink:
         topic: behavior.pulsar.sojevent.deadletter
     dist:
       topic-config:
-        - ""
+        - "scandal-trk:behavior.pulsar.customized.scandal-trk.bot"
 
 kafka:
   consumer:

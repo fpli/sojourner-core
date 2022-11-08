@@ -12,7 +12,7 @@ flink:
       operator-name: Bot SojEvent Sink
     dist:
       topic-config:
-        - ""
+        - "scandal-trk:behavior.pulsar.customized.scandal-trk.bot"
 
 kafka:
   consumer:
