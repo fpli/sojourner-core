@@ -4,6 +4,7 @@ flink:
     parallelism:
       source: 180
       sink-kafka: 180
+      filter: 180
     source:
       dc: rno
       operator-name: Bot SojEvent Source
