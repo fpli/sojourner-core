@@ -3,6 +3,7 @@ flink:
     name: Sojourner Bot Event Distributor - Prod - RNO
     parallelism:
       source: 200
+      filter: 150
       sink-kafka: 200
     source:
       dc: rno
