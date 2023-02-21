@@ -15,3 +15,5 @@ spark-warehouse/
 
 application-local.yml
 application-local.yaml
+
+.sojourner-version

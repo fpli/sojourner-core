@@ -40,5 +40,8 @@ public class ApplicationPayloadTags {
   public static final String EACTN = "eactn"; // event action
   public static final String CALLING_PAGE_ID = "cp";
 
+  // complex type tags
   public static final String SRP_GIST = "srpGist";
+
+  public static final String VIEWPORT_TAG = "viewport";
 }

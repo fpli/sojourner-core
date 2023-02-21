@@ -14,6 +14,7 @@ flink:
     dist:
       topic-config:
         - "scandal-trk:behavior.pulsar.customized.scandal-trk.bot"
+        - "viewport:behavior.pulsar.customized.viewport.bot"
 
 kafka:
   consumer:
