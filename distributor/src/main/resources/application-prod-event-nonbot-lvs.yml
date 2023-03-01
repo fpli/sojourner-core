@@ -24,6 +24,7 @@ flink:
         - "expm-native-events:behavior.pulsar.customized.expm-native-events"
         - "scandal-trk:behavior.pulsar.customized.scandal-trk"
         - "viewport:behavior.pulsar.customized.viewport"
+        - "search-complex-tag:behavior.pulsar.customized.search-complex-tag"
 
 kafka:
   consumer:
