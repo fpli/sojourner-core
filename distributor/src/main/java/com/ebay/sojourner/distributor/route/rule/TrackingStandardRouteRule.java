@@ -6,13 +6,14 @@ import com.google.common.collect.Sets;
 
 import java.util.Set;
 
-@Route(key = "search-complex-tag")
-public class SearchComplexTagRouteRule extends AbstractSojEventRouteRule {
+@Route(key = "new-tracking-standard")
+public class TrackingStandardRouteRule extends AbstractSojEventRouteRule {
 
     private static final Set<String> complexTags = Sets.newHashSet(
             "srpGist",
             "cassini",
             "experience",
+            "viewport",
             "interaction",
             "cartopstate"
     );
