@@ -21,7 +21,8 @@ public class UbiSessionWindowProcessFunction
 
   private SessionEndBotDetector sessionEndBotDetector;
 
-  private UbiSession createOutputSession(UbiSession ubiSessionTmp, boolean isOpen) {
+  private void outputSession(UbiSession ubiSessionTmp,
+                             Collector<UbiSession> out, boolean isOpen) {
     UbiSession ubiSession = new UbiSession();
     ubiSession.setGuid(ubiSessionTmp.getGuid());
     ubiSession.setAgentString(ubiSessionTmp.getAgentString());
@@ -100,19 +101,7 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setValidPageCnt(ubiSessionTmp.getValidPageCnt());
     ubiSession.setOpenEmit(isOpen);
     ubiSession.setIsIPExternal(ubiSessionTmp.getIsIPExternal());
-    return ubiSession;
-  }
-
-  public UbiSession createOutputSession(
-          SessionAccumulator sessionAccumulator,
-          boolean isOpen)
-          throws Exception {
-    endSessionEvent(sessionAccumulator);
-    Set<Integer> botFlagList = sessionEndBotDetector
-            .getBotFlagList(sessionAccumulator.getUbiSession());
-    sessionAccumulator.getUbiSession().getBotFlagList().addAll(botFlagList);
-    UbiSession ubiSession = createOutputSession(sessionAccumulator.getUbiSession(), isOpen);
-    return ubiSession;
+    out.collect(ubiSession);
   }
 
   @Override
@@ -123,9 +112,19 @@ public class UbiSessionWindowProcessFunction
       Collector<UbiSession> out)
       throws Exception {
     SessionAccumulator sessionAccumulator = elements.iterator().next();
-    boolean isOpen = context.currentWatermark() < context.window().maxTimestamp();
-    UbiSession ubiSession = createOutputSession(sessionAccumulator, isOpen);
-    out.collect(ubiSession);
+    if (context.currentWatermark() >= context.window().maxTimestamp()) {
+      endSessionEvent(sessionAccumulator);
+      Set<Integer> botFlagList = sessionEndBotDetector
+          .getBotFlagList(sessionAccumulator.getUbiSession());
+      sessionAccumulator.getUbiSession().getBotFlagList().addAll(botFlagList);
+      outputSession(sessionAccumulator.getUbiSession(), out, false);
+    } else {
+      endSessionEvent(sessionAccumulator);
+      Set<Integer> botFlagList = sessionEndBotDetector
+          .getBotFlagList(sessionAccumulator.getUbiSession());
+      sessionAccumulator.getUbiSession().getBotFlagList().addAll(botFlagList);
+      outputSession(sessionAccumulator.getUbiSession(), out, true);
+    }
   }
 
   private void endSessionEvent(SessionAccumulator sessionAccumulator) throws Exception {
