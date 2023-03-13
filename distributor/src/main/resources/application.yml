@@ -6,8 +6,6 @@ flink:
       timeout-ms: 900000
       min-pause-between-ms: 60000
       max-concurrent: 1
-    parallelism:
-      filter: 150
     source:
       from-timestamp: 0
       out-of-orderless-in-min: 0

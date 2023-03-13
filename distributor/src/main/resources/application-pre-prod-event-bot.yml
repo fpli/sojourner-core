@@ -3,8 +3,8 @@ flink:
     name: Sojourner Bot Event Distributor - Pre-Prod
     parallelism:
       source: 180
-      sink-kafka: 180
       filter: 180
+      sink-kafka: 180
     source:
       dc: rno
       operator-name: Bot SojEvent Source
