@@ -320,12 +320,12 @@ public class SojournerRTJob {
 
     // connect ubiEvent,ubiSession DataStream and broadcast Stream
     SingleOutputStreamOperator<UbiEvent> signatureBotDetectionForEvent =
-        detectableDataStream.connect(attributeSignatureBroadcastStream)
+        detectableDataStream.rescale().connect(attributeSignatureBroadcastStream)
             .process(
                 new AttributeBroadcastProcessFunctionForDetectable(
                     OutputTagConstants.sessionOutputTag))
             .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-            .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
             .name("Signature Bot Detector")
             .uid("signature-bot-detector");
 
@@ -338,7 +338,7 @@ public class SojournerRTJob {
             .process(new UbiEventToSojEventProcessFunction(
                 OutputTagConstants.botEventOutputTag))
             .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-            .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
             .name("UbiEvent to SojEvent")
             .uid("ubievent-to-sojevent");
 
@@ -352,7 +352,7 @@ public class SojournerRTJob {
                 new UbiSessionToSojSessionProcessFunction(
                     OutputTagConstants.botSessionOutputTag))
             .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-            .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+            .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
             .name("UbiSession to SojSession")
             .uid("ubisession-to-sojsession");
 
@@ -378,7 +378,7 @@ public class SojournerRTJob {
             getString(Property.PRODUCER_ID),
             getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SESSION, ",")))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Nonbot SojSession")
         .uid("nonbot-sojsession-sink");
 
@@ -391,7 +391,7 @@ public class SojournerRTJob {
             getString(Property.PRODUCER_ID),
             getStringArray(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SESSION, ",")))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Bot SojSession")
         .uid("bot-sojsession-sink");
 
@@ -404,7 +404,7 @@ public class SojournerRTJob {
             getString(Property.PRODUCER_ID),
             getBoolean(Property.ALLOW_DROP)))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Nonbot SojEvent")
         .uid("nonbot-sojevent-sink");
 
@@ -416,7 +416,7 @@ public class SojournerRTJob {
             getString(Property.PRODUCER_ID),
             getBoolean(Property.ALLOW_DROP)))
         .setParallelism(getInteger(Property.BROADCAST_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Bot SojEvent")
         .uid("bot-sojevent-sink");
 
@@ -425,7 +425,7 @@ public class SojournerRTJob {
         .process(new RTPipelineMetricsCollectorProcessFunction(
             FlinkEnvUtils.getInteger(Property.METRIC_WINDOW_SIZE)))
         .setParallelism(getInteger(Property.METRICS_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Pipeline Metrics Collector")
         .uid("pipeline-metrics-collector");
 
@@ -433,7 +433,7 @@ public class SojournerRTJob {
     signatureBotDetectionForEvent
         .process(new EventMetricsCollectorProcessFunction())
         .setParallelism(getInteger(Property.METRICS_PARALLELISM))
-        .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
+        .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Event Metrics Collector")
         .uid("event-metrics-collector");
 
