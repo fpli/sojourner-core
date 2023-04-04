@@ -26,6 +26,7 @@ flink:
         - "expm-native-events:behavior.pulsar.customized.expm-native-events"
         - "scandal-trk:behavior.pulsar.customized.scandal-trk"
         - "viewport:behavior.pulsar.customized.viewport"
+        - "new-tracking-standard:behavior.pulsar.customized.new-tracking-standard"
 kafka:
   consumer:
     stream: behavior.totalv2

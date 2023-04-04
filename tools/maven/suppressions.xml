@@ -17,55 +17,57 @@ under the License.
 -->
 
 <!DOCTYPE suppressions PUBLIC
-  "-//Puppy Crawl//DTD Suppressions 1.1//EN"
-  "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
-  <suppress checks=".*"
-    files="org[\\/]apache[\\/]flink[\\/]"/>
-  <!--  Auto generated codes by avro-->
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/Session.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/SessionCore.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/EventKey.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/SojEvent.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/SojSession.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/RheosHeader.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/PulsarEvent.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/AgentHash.java"/>
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/common/model/IntermediateSession.java"/>
-  <suppress checks=".*"
-    files="/src/main/java/com/ebay/sojourner/common/model/Guid.java"/>
+    <suppress checks=".*"
+              files="org[\\/]apache[\\/]flink[\\/]"/>
+    <!--  Auto generated codes by avro-->
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/Session.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/SessionCore.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/EventKey.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/SojEvent.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/SojSession.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/RheosHeader.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/PulsarEvent.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/AgentHash.java"/>
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/common/model/IntermediateSession.java"/>
+    <suppress checks=".*"
+              files="/src/main/java/com/ebay/sojourner/common/model/Guid.java"/>
+    <suppress checks=".*"
+              files="/src/main/java/com/ebay/sojourner/common/model/BotSignature.java"/>
 
-  <!--  Below are the legacy code that will disable firstly to pass style checker-->
-  <suppress checks="EmptyCatchBlock"
-    files="src/main/java/com/ebay/sojourner/common/util/PropertyUtils.java"/>
-  <suppress checks="LineLength"
-    files="src/main/java/com/ebay/sojourner/common/util/Property.java"/>
+    <!--  Below are the legacy code that will disable firstly to pass style checker-->
+    <suppress checks="EmptyCatchBlock"
+              files="src/main/java/com/ebay/sojourner/common/util/PropertyUtils.java"/>
+    <suppress checks="LineLength"
+              files="src/main/java/com/ebay/sojourner/common/util/Property.java"/>
 
-  <suppress checks="NewlineAtEndOfFile" files=".java"/>
-  <suppress checks="NewlineAtEndOfFile" files=".properties"/>
+    <suppress checks="NewlineAtEndOfFile" files=".java"/>
+    <suppress checks="NewlineAtEndOfFile" files=".properties"/>
 
-  <!-- Local test job  -->
-  <suppress checks=".*"
-    files="src/main/java/com/ebay/sojourner/rt/pipeline/.*Local.java$"/>
+    <!-- Local test job  -->
+    <suppress checks=".*"
+              files="src/main/java/com/ebay/sojourner/rt/pipeline/.*Local.java$"/>
 
-  <!-- Allow 'main' in Flink Jobs  -->
-  <suppress checks="UncommentedMain"
-    files="src/main/java/com/ebay/sojourner/rt/pipeline/.*.java$"/>
-  <suppress checks="UncommentedMain"
-    files="src/main/java/com/ebay/sojourner/dumper/pipeline/.*.java$"/>
-  <suppress checks="UncommentedMain"
-    files="src/main/java/com/ebay/sojourner/distributor/pipeline/.*.java$"/>
-  <suppress checks="UncommentedMain"
-    files="src/main/java/com/ebay/sojourner/tdq/pipeline/.*.java$"/>
-  <suppress checks="UncommentedMain"
-    files="src/main/java/com/ebay/sojourner/integration/pipeline/.*.java$"/>
+    <!-- Allow 'main' in Flink Jobs  -->
+    <suppress checks="UncommentedMain"
+              files="src/main/java/com/ebay/sojourner/rt/pipeline/.*.java$"/>
+    <suppress checks="UncommentedMain"
+              files="src/main/java/com/ebay/sojourner/dumper/pipeline/.*.java$"/>
+    <suppress checks="UncommentedMain"
+              files="src/main/java/com/ebay/sojourner/distributor/pipeline/.*.java$"/>
+    <suppress checks="UncommentedMain"
+              files="src/main/java/com/ebay/sojourner/tdq/pipeline/.*.java$"/>
+    <suppress checks="UncommentedMain"
+              files="src/main/java/com/ebay/sojourner/integration/pipeline/.*.java$"/>
 </suppressions>
