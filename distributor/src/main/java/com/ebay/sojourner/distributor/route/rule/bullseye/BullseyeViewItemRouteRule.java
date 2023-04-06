@@ -10,7 +10,7 @@ import java.util.Set;
 public class BullseyeViewItemRouteRule extends AbstractSojEventRouteRule {
 
   private final Set<Integer> BULLSEYE_VIEW_ITEM_PAGE_IDS = Sets.newHashSet(
-      2047675, 2047935, 2056116, 2349624, 5408, 2501496, 2322090, 2376289,3418065);
+      2047675, 2047935, 2056116, 2349624, 5408, 2501496, 2322090, 2376289, 3418065, 4429486);
   // mapping to jetstream 202,103,305
   private final Set<Integer> BOT_WHITELIST = Sets.newHashSet(7, 11, 12);
   private final Set<String> GUID_WHITELIST

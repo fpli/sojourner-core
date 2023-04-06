@@ -13,7 +13,7 @@ flink:
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
     message-filter:
-      max-message-bytes: 262144
+      max-message-bytes: 819200
     debug-mode: false
     metric:
       window-size: 70000
