@@ -1,0 +1,64 @@
+flink:
+  app:
+    name: pre-prod totalv3lvs test consumer job
+    parallelism:
+      source: 400
+    operator-name:
+      source: Totalv3 Consumer
+      sink: Discarding Sink
+    uid:
+      source: totalv3-consumer
+      sink: discarding-sink
+    source:
+      dc: lvs
+      from-timestamp: 0
+      out-of-orderless-in-min: 0
+    checkpoint:
+      data-dir: /opt/flink/sojourner/dumper/checkpoint
+      interval-ms: 300000
+      timeout-ms: 900000
+      min-pause-between-ms: 120000
+      max-concurrent: 1
+
+kafka:
+  consumer:
+    topic:
+      - behavior.totalv3.sojevent-nonbot-rno
+      - behavior.totalv3.sojevent-bot-rno
+      - behavior.totalv3.sojevent-nonbot-lvs
+      - behavior.totalv3.sojevent-bot-lvs
+    group-id: totalv3-test-consumer
+    stream: behavior.totalv3
+    bootstrap-servers:
+      rno:
+        - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+      lvs:
+        - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+    max-poll-records: 3000
+    # 16MB, default value is 50MB
+    fetch-max-bytes: 16777216
+    # 128KB, default value is 64KB
+    receive-buffer: 131072
+    fetch-max-wait-ms: 100
+    # 4MB, default value is 1MB
+    max-partitions-fetch-bytes: 4194304
+    auto-offset-reset: latest
+    # 60s, default is disabled
+    partition-discovery-interval-ms: 60000
+
+rheos:
+  registry-url: https://rheos-services.stratus.ebay.com
+  client:
+    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    iaf:
+      secret: c4bb6fca-7ac5-46dd-b218-a49cb6307dbc
+      env: production

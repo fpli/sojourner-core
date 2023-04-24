@@ -1,6 +1,6 @@
 flink:
   app:
-    name: pre-prod totalv3 test consumer job
+    name: pre-prod totalv3rno test consumer job
     parallelism:
       source: 400
     operator-name:
@@ -25,6 +25,8 @@ kafka:
     topic:
       - behavior.totalv3.sojevent-nonbot-rno
       - behavior.totalv3.sojevent-bot-rno
+      - behavior.totalv3.sojevent-nonbot-lvs
+      - behavior.totalv3.sojevent-bot-lvs
     group-id: totalv3-test-consumer
     stream: behavior.totalv3
     bootstrap-servers:
