@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Pre-Prod Non-Bot Event Distributor - Totalv3-rno -> Pulsar-rno
+    name: Pre-Prod Non-Bot Event Distributor - Totalv3-rno -> Pulsar-slc
     parallelism:
       source: 200
       filter: 200
@@ -9,7 +9,7 @@ flink:
       dc: rno
       operator-name: Non-bot SojEvent Source
     sink:
-      dc: lvs
+      dc: slc
       operator-name: Non-bot SojEvent Sink
       kafka:
         topic: behavior.pulsar.sojevent.deadletter
