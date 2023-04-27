@@ -20,7 +20,7 @@ flink:
 kafka:
   consumer:
     stream: behavior.totalv3
-    group-id: sojourner-distributor-pre-prod-totalv3
+    group-id: sojourner-distributor-pre-prod-totalv3lvs-pulsarslc
     topic:
       - behavior.totalv3.sojevent-nonbot-rno
       - behavior.totalv3.sojevent-nonbot-lvs
