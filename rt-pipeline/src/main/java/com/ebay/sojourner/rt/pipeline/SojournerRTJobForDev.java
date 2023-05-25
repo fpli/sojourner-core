@@ -11,6 +11,7 @@ public class SojournerRTJobForDev extends SojournerRTJobForQA {
 
   protected StreamExecutionEnvironment prepareStreamExecutionEnvironment(String[] args) {
     StreamExecutionEnvironment env = FlinkEnvUtils.prepareLocal(args);
+//    env.disableOperatorChaining();
     return env;
   }
 }
