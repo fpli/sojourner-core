@@ -75,31 +75,12 @@ import org.apache.flink.types.Either;
 public class SojournerRTJob {
 
   public static void main(String[] args) throws Exception {
-    new SojournerRTJob().run(args);
-  }
-
-  public void run(String[] args) throws Exception {
 
     // 0.0 Prepare execution environment
     // 0.1 UBI configuration
     // 0.2 Flink configuration
-    StreamExecutionEnvironment executionEnvironment = prepareStreamExecutionEnvironment(args);
+    final StreamExecutionEnvironment executionEnvironment = FlinkEnvUtils.prepare(args);
 
-    DataStream<UbiEvent> ubiEventDataStream = generateEventDataStream(executionEnvironment);
-
-    doSessionizationAndBotDetection(ubiEventDataStream);
-
-    // Submit this job
-    FlinkEnvUtils.execute(executionEnvironment, getString(Property.FLINK_APP_NAME));
-  }
-
-  protected StreamExecutionEnvironment prepareStreamExecutionEnvironment(String[] args) {
-    StreamExecutionEnvironment env = FlinkEnvUtils.prepare(args);
-    return env;
-  }
-
-  protected DataStream<UbiEvent> generateEventDataStream(
-          StreamExecutionEnvironment executionEnvironment) {
     // 1. Rheos Consumer
     // 1.1 Consume RawEvent from Rheos PathFinder topic
     // 1.2 Assign timestamps and emit watermarks.
@@ -187,10 +168,7 @@ public class SojournerRTJob {
     DataStream<UbiEvent> ubiEventDataStream = ubiEventDataStreamForLVS
         .union(ubiEventDataStreamForSLC)
         .union(ubiEventDataStreamForRNO);
-    return ubiEventDataStream;
-  }
 
-  protected void doSessionizationAndBotDetection(DataStream<UbiEvent> ubiEventDataStream) {
     // refine windowsoperator
     // 3. Session Operator
     // 3.1 Session window
@@ -512,5 +490,8 @@ public class SojournerRTJob {
         .slotSharingGroup(getString(Property.SESSION_SLOT_SHARE_GROUP))
         .name("Late SojEvent")
         .uid("late-sojevent-sink");
+
+    // Submit this job
+    FlinkEnvUtils.execute(executionEnvironment, getString(Property.FLINK_APP_NAME));
   }
 }
