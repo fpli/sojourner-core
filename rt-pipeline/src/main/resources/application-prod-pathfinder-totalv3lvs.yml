@@ -18,9 +18,6 @@ flink:
             ip: behavior.totalv3.signature.ip-lvs
 
 kafka:
-  consumer:
-    group-id: sojourner-pathfinder-realtime-test
-
   producer:
     stream: behavior.totalv3
     bootstrap-servers:
