@@ -1,0 +1,83 @@
+flink:
+  app:
+    name: Sojourner Simple Distributor - PROD
+    parallelism:
+      source: 400
+      sink-kafka: 100
+    source:
+      dc: lvs
+      operator-name: SojEvent Source
+    sink:
+      operator-name: SojEvent Sink
+      kafka:
+        topic: behavior.raw.sojevent.default
+        message-key:
+          event: guid,pageId
+    filter:
+      topic-config:
+        - "bullseye-id-link-sign-in:behavior.raw.bullseye.bullseye_idlink_signin"
+        - "bullseye-view-item:behavior.raw.bullseye.bullseye_viewitem"
+        - "bullseye-interests:behavior.raw.bullseye.interests"
+        - "bullseye-guest-checkout:behavior.raw.bullseye.guest_checkout"
+        - "bullseye-shopping-cart:behavior.raw.bullseye.bullseye_shoppingcart"
+        - "bullseye-ad-type:behavior.raw.bullseye.adtype"
+        - "bullseye-search:behavior.raw.bullseye.bullseye_search"
+    distribution:
+      hash-key:
+        - guid
+        - colo
+      dc:
+        - rno
+        - lvs
+        - slc
+
+kafka:
+  consumer:
+    stream: behavior.totalv3
+    group-id: sojourner-simple-distributor-prod
+    topic:
+      - behavior.totalv3.sojevent-bot-rno
+      - behavior.totalv3.sojevent-bot-lvs
+      - behavior.totalv3.sojevent-nonbot-lvs
+      - behavior.totalv3.sojevent-nonbot-rno
+    bootstrap-servers:
+      rno:
+        - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+      lvs:
+        - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+  producer:
+    stream: behavior.raw
+    bootstrap-servers:
+      rno:
+        - rhs-afrvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-afrvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-afrvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-afrvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-afrvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+      slc:
+        - rhs-mfrvkiaa-kfk-slc-1.rheos-streaming-prod.svc.23.tess.io:9092
+        - rhs-mfrvkiaa-kfk-slc-2.rheos-streaming-prod.svc.23.tess.io:9092
+        - rhs-mfrvkiaa-kfk-slc-3.rheos-streaming-prod.svc.23.tess.io:9092
+        - rhs-mfrvkiaa-kfk-slc-4.rheos-streaming-prod.svc.23.tess.io:9092
+        - rhs-mfrvkiaa-kfk-slc-5.rheos-streaming-prod.svc.23.tess.io:9092
+      lvs:
+        - rhs-gfrvkiaa-kfk-lvs-1.rheos-streaming-prod.svc.27.tess.io:9092
+        - rhs-gfrvkiaa-kfk-lvs-2.rheos-streaming-prod.svc.27.tess.io:9092
+        - rhs-gfrvkiaa-kfk-lvs-3.rheos-streaming-prod.svc.27.tess.io:9092
+        - rhs-gfrvkiaa-kfk-lvs-4.rheos-streaming-prod.svc.27.tess.io:9092
+        - rhs-gfrvkiaa-kfk-lvs-5.rheos-streaming-prod.svc.27.tess.io:9092
+
+rheos:
+  client:
+    id: "urn:ebay-marketplace-consumerid:8128d1ab-1825-4457-af33-aea7e6bfb0dc"
+    iaf:
+      secret: 1568ea67-5921-4cca-89c4-64c0a89a5257

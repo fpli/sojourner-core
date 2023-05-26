@@ -1,0 +1,42 @@
+flink:
+  app:
+    name: Sojourner Bot Event Distributor - Prod - LVS
+    parallelism:
+      source: 200
+      filter: 200
+      sink-kafka: 200
+    source:
+      dc: lvs
+      operator-name: Bot SojEvent Source
+    sink:
+      dc: slc
+      operator-name: Bot SojEvent Sink
+    dist:
+      topic-config:
+        - "scandal-trk:behavior.pulsar.customized.scandal-trk.bot"
+        - "viewport:behavior.pulsar.customized.viewport.bot"
+
+kafka:
+  consumer:
+    stream: behavior.totalv3
+    group-id: sojourner-distributor-prod-lvs
+    topic:
+      - behavior.totalv3.sojevent-bot-rno
+      - behavior.totalv3.sojevent-bot-lvs
+    bootstrap-servers:
+      rno:
+        - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+      lvs:
+        - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+rest-client:
+  config:
+    profile: prod-bot
