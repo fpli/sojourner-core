@@ -1,0 +1,38 @@
+flink:
+  app:
+    name: Sojourner Realtime Pipeline - totalv3rno
+    sink:
+      dc: rno
+      kafka:
+        topic:
+          session:
+            bot: behavior.totalv3.sojsession-bot-rno
+            non-bot: behavior.totalv3.sojsession-nonbot-rno
+          event:
+            bot: behavior.totalv3.sojevent-bot-rno
+            non-bot: behavior.totalv3.sojevent-nonbot-rno
+            late: behavior.totalv3.sojevent-late-rno
+          signature:
+            agent-ip: behavior.totalv3.signature.agent-ip-rno
+            agent: behavior.totalv3.signature.agent-rno
+            ip: behavior.totalv3.signature.ip-rno
+
+kafka:
+  consumer:
+    group-id: sojourner-pathfinder-realtime-test
+
+  producer:
+    stream: behavior.totalv3
+    bootstrap-servers:
+      rno:
+        - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+      lvs:
+        - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
