@@ -138,12 +138,14 @@ public class Property {
   public static final String PRODUCER_ID = "kafka.producer.producerId";
   public static final String MAX_REQUEST_SIZE = "kafka.producer.max-request-size";
   public static final String KAFKA_PRODUCER_AUTH_ENABLED = "kafka.producer.auth-enabled";
-
+  public static final String RHEOS_HA_PRODUCER_PROBE_INTERVAL_MIN= "kafka.producer.probe-interval-min";
   // rheos
   public static final String RHEOS_KAFKA_REGISTRY_URL = "rheos.registry-url";
+  public static final String RHEOS_HA_SERVICE_URL = "rheos.ha-service-url";
   public static final String RHEOS_CLIENT_ID = "rheos.client.id";
   public static final String RHEOS_CLIENT_IAF_SECRET = "rheos.client.iaf.secret";
   public static final String RHEOS_CLIENT_IAF_ENV = "rheos.client.iaf.env";
+
 
   // flink - app name
   public static final String FLINK_APP_NAME = "flink.app.name";

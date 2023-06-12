@@ -21,6 +21,16 @@
       <groupId>com.ebay.sojourner</groupId>
       <artifactId>sojourner-common</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-client</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Apache Flink dependencies -->
@@ -101,6 +111,14 @@
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-test-utils_${scala.binary.version}</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.ebay.rheos</groupId>
+      <artifactId>flink-connector-kafka-ha</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
     </dependency>
   </dependencies>
 

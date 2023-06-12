@@ -91,6 +91,8 @@ public class KafkaProducerConfig {
                        getString(Property.COMPRESSION_TYPE));
     producerConfig.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG,
                        getInteger(Property.MAX_REQUEST_SIZE));
+    // need to confirm if one flink job only runs with one type of consumer/producer (Common or HA)
+    producerConfig.put("sasl.login.class", "io.ebay.rheos.kafka.security.RheosLogin");
 
     return producerConfig;
   }
