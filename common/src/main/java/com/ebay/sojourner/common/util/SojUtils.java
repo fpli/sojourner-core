@@ -18,7 +18,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -136,6 +139,12 @@ public class SojUtils {
                 && StringUtils.isNotBlank(sojEvent.getApplicationPayload().get("ciid"))
                 && !sojEvent.getApplicationPayload().get("ciid").equals("null")) {
             sojEvent.setCiid(sojEvent.getApplicationPayload().get("ciid"));
+        }
+        if(sojEvent.getApplicationPayload()!=null) {
+            sojEvent.getApplicationPayload().put("botFlags",
+                    CollectionUtils.isNotEmpty(ubiEvent.getBotFlags()) ?
+                            String.join(Constants.FILTER_NAME_DELIMITER, ubiEvent.getBotFlags().stream()
+                                    .filter(a -> a<220).map(a -> a.toString()).collect(Collectors.toSet())) : "");
         }
         sojEvent.setCguid(ubiEvent.getCguid());
       Map<String, ByteBuffer> sojHeader = new HashMap<>();
