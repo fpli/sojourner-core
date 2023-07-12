@@ -12,6 +12,7 @@ public class ScandalTrkRouteRule extends AbstractSojEventRouteRule {
   public boolean match(SojEvent sojEvent) {
     return PAGE_ID.equals(sojEvent.getPageId())
         || (sojEvent.getApplicationPayload() != null
-            && sojEvent.getApplicationPayload().containsKey("scandal_trk"));
+            && (sojEvent.getApplicationPayload().containsKey("scandal_trk")
+                || sojEvent.getApplicationPayload().containsKey("scandal_imp")));
   }
 }
