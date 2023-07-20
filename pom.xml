@@ -26,34 +26,41 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <scala.binary.version>2.11</scala.binary.version>
-    <maven.version>3.6.3</maven.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <commons.lang3.version>3.4</commons.lang3.version>
+
+    <!--  Common  -->
     <lombok.version>1.18.10</lombok.version>
+    <guava.version>28.1-jre</guava.version>
+    <commons.lang3.version>3.4</commons.lang3.version>
+    <!--  Logging  -->
     <slf4j.version>1.7.25</slf4j.version>
-    <log4j.version>1.2.17</log4j.version>
     <logback.version>1.2.3</logback.version>
+    <!--  Http Client  -->
+    <okhttp3.version>4.9.0</okhttp3.version>
+    <!--  Serialization  -->
     <avro.version>1.8.2</avro.version>
-    <!--<flink.version>1.10.0</flink.version>-->
+    <jackson.version>2.9.8</jackson.version>
+
+    <!--  Flink  -->
     <flink.version>1.11.0</flink.version>
+    <hadoop.version>3.3.3</hadoop.version>
     <rheos.client.version>2.0.14</rheos.client.version>
     <rheos.job.uploader.plugin.version>1.0.1-SNAPSHOT</rheos.job.uploader.plugin.version>
-    <calcite.version>1.22.0</calcite.version>
-    <http.core.version>4.4.13</http.core.version>
+    <curator.version>4.2.0</curator.version>
+    <zookeeper.version>3.4.14</zookeeper.version>
+
+    <!--  Tests  -->
     <junit-jupiter.version>5.6.2</junit-jupiter.version>
     <mockito.version>3.5.10</mockito.version>
     <powermock.version>2.0.7</powermock.version>
     <assertj.version>3.17.2</assertj.version>
-    <hadoop.version>2.7.3</hadoop.version>
-    <jackson.version>2.9.8</jackson.version>
-    <guava.version>28.1-jre</guava.version>
-    <okhttp3.version>4.9.0</okhttp3.version>
-    <curator.version>4.2.0</curator.version>
-    <zookeeper.version>3.4.14</zookeeper.version>
+
+    <!-- Maven plugins   -->
     <jacoco.plugin.version>0.8.5</jacoco.plugin.version>
     <compiler.plugin.version>3.8.1</compiler.plugin.version>
     <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
+
     <sonar.coverage.exclusions>
       src/main/java/com/ebay/sojourner/rt/pipeline/*.java,
       src/main/java/com/ebay/sojourner/rt/metric/*.java,
@@ -74,21 +81,55 @@
         <version>1.2.0-incubating</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>${commons.lang3.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpcore</artifactId>
-        <version>${http.core.version}</version>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons.lang3.version}</version>
+      </dependency>
+      <!-- joda time: to be removed -->
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.10.5</version>
+      </dependency>
+      <!--  Common:end  -->
+
+      <!--  Logging  -->
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>log4j-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+
+      <!--  Http Client  -->
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp3.version}</version>
+      </dependency>
+
+      <!--  Serialization  -->
+      <!--  avro  -->
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro</artifactId>
@@ -110,30 +151,8 @@
         <artifactId>jackson-dataformat-yaml</artifactId>
         <version>${jackson.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${guava.version}</version>
-      </dependency>
 
-      <!--  Logging    -->
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-core</artifactId>
-        <version>${logback.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>${logback.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>log4j-over-slf4j</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-
-      <!--  Hadoop HDFS   -->
+      <!--  Hadoop HDFS  -->
       <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-common</artifactId>
@@ -141,20 +160,8 @@
         <scope>provided</scope>
         <exclusions>
           <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
+            <artifactId>httpclient</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.apache.avro</groupId>
@@ -165,24 +172,20 @@
             <artifactId>zookeeper</artifactId>
           </exclusion>
           <exclusion>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
           </exclusion>
           <exclusion>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils-core</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
           </exclusion>
           <exclusion>
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-core</artifactId>
+            <artifactId>*</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>*</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -193,79 +196,21 @@
         <scope>provided</scope>
         <exclusions>
           <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <artifactId>*</artifactId>
           </exclusion>
           <exclusion>
             <groupId>io.netty</groupId>
-            <artifactId>netty</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <artifactId>*</artifactId>
           </exclusion>
           <exclusion>
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-core</artifactId>
+            <artifactId>*</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-client</artifactId>
-        <version>${hadoop.version}</version>
-        <scope>provided</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>commons-collections</groupId>
-        <artifactId>commons-collections</artifactId>
-        <version>3.2.2</version>
-      </dependency>
-      <!-- Flink artifacts-->
-      <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-core</artifactId>
-        <version>${flink.version}</version>
-        <scope>provided</scope>
-      </dependency>
+
+      <!--  Flink  -->
       <dependency>
         <groupId>org.apache.flink</groupId>
         <artifactId>flink-java</artifactId>
@@ -300,7 +245,7 @@
       </dependency>
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-connector-filesystem_2.11</artifactId>
+        <artifactId>flink-connector-filesystem_${scala.binary.version}</artifactId>
         <version>${flink.version}</version>
         <scope>provided</scope>
       </dependency>
@@ -317,7 +262,7 @@
       <!--   parquet   -->
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-parquet_2.11</artifactId>
+        <artifactId>flink-parquet_${scala.binary.version}</artifactId>
         <version>${flink.version}</version>
       </dependency>
       <dependency>
@@ -325,7 +270,9 @@
         <artifactId>parquet-avro</artifactId>
         <version>1.10.1</version>
       </dependency>
-      <!--   Rheos   -->
+      <!--  Flink:end  -->
+
+      <!--  Rheos  -->
       <dependency>
         <groupId>io.ebay.rheos</groupId>
         <artifactId>rheos-client_JDK-1.8</artifactId>
@@ -354,22 +301,21 @@
         <artifactId>snappy-java</artifactId>
         <version>1.1.1.3</version>
       </dependency>
-
+      <!--  Rheos HA Kafka producer  -->
       <dependency>
-        <groupId>org.apache.calcite</groupId>
-        <artifactId>calcite-core</artifactId>
-        <version>${calcite.version}</version>
+        <groupId>io.ebay.rheos</groupId>
+        <artifactId>flink-connector-kafka-ha</artifactId>
+        <version>1.13.5</version>
       </dependency>
-
-      <!--   Http Client   -->
       <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${okhttp3.version}</version>
+        <groupId>jakarta.ws.rs</groupId>
+        <artifactId>jakarta.ws.rs-api</artifactId>
+        <version>2.1.6</version>
       </dependency>
+      <!--  Rheos:end  -->
 
-      <!-- ZooKeeper -->
-      <!-- The Curator Client - replacement for the ZooKeeper class in the ZK distribution.   -->
+      <!--  ZooKeeper  -->
+      <!--  The Curator Client - replacement for the ZooKeeper class in the ZK distribution.  -->
       <dependency>
         <groupId>org.apache.curator</groupId>
         <artifactId>curator-client</artifactId>
@@ -408,7 +354,7 @@
         </exclusions>
       </dependency>
 
-      <!-- Test Dependencies -->
+      <!--  Test Dependencies  -->
       <!--  Mockito  -->
       <dependency>
         <groupId>org.mockito</groupId>
@@ -481,36 +427,18 @@
         <version>0.9.3</version>
         <scope>test</scope>
       </dependency>
-
-      <!-- joda time -->
-      <dependency>
-        <groupId>joda-time</groupId>
-        <artifactId>joda-time</artifactId>
-        <version>2.10.5</version>
-      </dependency>
-      <!-- Rheos HA Kafka producer -->
-      <dependency>
-        <groupId>io.ebay.rheos</groupId>
-        <artifactId>flink-connector-kafka-ha</artifactId>
-        <version>1.13.5</version>
-      </dependency>
-      <dependency>
-        <groupId>jakarta.ws.rs</groupId>
-        <artifactId>jakarta.ws.rs-api</artifactId>
-        <version>2.1.6</version>
-        <scope>compile</scope>
-      </dependency>
+      <!--  Test Dependencies:end  -->
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
 
     <!-- Test Dependencies for all submodules -->
@@ -631,17 +559,13 @@
     <profile>
       <id>Flink-IDEA</id>
       <activation>
+        <activeByDefault>true</activeByDefault>
         <property>
           <name>idea.version</name>
         </property>
       </activation>
 
       <dependencies>
-        <dependency>
-          <groupId>org.apache.flink</groupId>
-          <artifactId>flink-core</artifactId>
-          <scope>compile</scope>
-        </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-java</artifactId>
@@ -669,7 +593,6 @@
         </dependency>
       </dependencies>
     </profile>
-
     <profile>
       <id>sonar</id>
       <activation>
