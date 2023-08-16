@@ -262,6 +262,20 @@ public class SojUtils {
         sojSession.setIsOpen(ubiSession.isOpenEmit());
         sojSession.setPageId(ubiSession.getPageId());
         sojSession.setSojEventCnt(ubiSession.getAbsEventCnt());
+        Map<String, String> debugMap = new HashMap<>();
+        debugMap.put("validPageCntForIos", Integer.toString(ubiSession.getValidPageCntForIos()));
+        debugMap.put("lndgPageIdForIos", Integer.toString(ubiSession.getLndgPageIdForIos()));
+        debugMap.put("exitPageIdForIos", Integer.toString(ubiSession.getExitPageIdForIos()));
+        debugMap.put("isExistForegroundEvent", Integer.toString(ubiSession.getIsExistForegroundEvent()));
+        debugMap.put("isExistBackgroundEvent", Integer.toString(ubiSession.getIsExistBackgroundEvent()));
+        debugMap.put("validPageCnt", Integer.toString(ubiSession.getValidPageCnt()));
+        debugMap.put("lndgPageId", Integer.toString(ubiSession.getLndgPageId()));
+        debugMap.put("endPageId", Integer.toString(ubiSession.getEndPageId()));
+        debugMap.put("idfa", ubiSession.getIdfa());
+        debugMap.put("firstIosHpTimestamp", Long.toString(ubiSession.getFirstIosHpTimestamp()));
+        debugMap.put("firstIosFgLaunchTimestamp", Long.toString(ubiSession.getFirstIosFgLaunchTimestamp()));
+        debugMap.put("firstCollectionExpTimestamp", Long.toString(ubiSession.getFirstCollectionExpTimestamp()));
+        sojSession.setDebug(debugMap);
         return sojSession;
     }
 

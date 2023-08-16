@@ -9,6 +9,7 @@ import com.ebay.sojourner.common.util.SojEventTimeUtil;
 import com.ebay.sojourner.common.util.UBIConfig;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * SUM ( CASE WHEN e.partial_valid_page = 0 THEN 0 WHEN PG.FRAME_BASED_PAGE_YN_ID = 1 THEN 0 WHEN
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ValidPageMetrics implements FieldMetrics<UbiEvent, SessionAccumulator> {
 
+  public static final Logger LOGGER = Logger.getLogger(ValidPageMetrics.class);
   private Set<Integer> invalidPageIds;
 
   @Override

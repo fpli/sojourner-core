@@ -152,6 +152,21 @@ public class UbiSession implements Serializable, Cloneable {
   private int hashCode = Integer.MAX_VALUE;
   private Map<Integer, Long> clickWithStamp = new LinkedHashMap<>();
 
+  // for native: ios
+  private int validPageCntForIos;
+  private int lndgPageIdForIos;
+  private int exitPageIdForIos;
+  private long startTimestampForValidPageIos = Long.MAX_VALUE;
+  private long endTimestampForValidPageIos = Long.MIN_VALUE;
+  private String idfa;
+  private long firstIosFgLaunchTimestamp = Long.MAX_VALUE;
+  private long firstIosHpTimestamp = Long.MAX_VALUE;
+  private long firstCollectionExpTimestamp = Long.MAX_VALUE;
+
+  // for native ground event flag: to flag whether there is a foreground event and background event
+  private int isExistForegroundEvent = 0;
+  private int isExistBackgroundEvent = 0;
+
   // private Map<Integer,Long> rdtClickWithStamp = new LinkedHashMap<>();
   public UbiSession() {
     //        this.distinctClickIdSet = new HashSet<Integer>();
@@ -196,6 +211,23 @@ public class UbiSession implements Serializable, Cloneable {
     this.botFlagList.addAll(ubiSession.getBotFlagList());
     this.userIdSet.addAll(ubiSession.getUserIdSet());
     this.distinctClickIdSet.addAll(ubiSession.getDistinctClickIdSet());
+    this.validPageCntForIos += ubiSession.getValidPageCntForIos();
+    this.isExistForegroundEvent &= ubiSession.getIsExistForegroundEvent();
+    this.isExistBackgroundEvent &= ubiSession.getIsExistBackgroundEvent();
+    if (this.firstIosFgLaunchTimestamp > ubiSession.getFirstIosFgLaunchTimestamp()) {
+      this.setFirstIosFgLaunchTimestamp(ubiSession.getFirstIosFgLaunchTimestamp());
+    }
+    if (this.firstIosHpTimestamp > ubiSession.getFirstIosHpTimestamp()) {
+      this.setFirstIosHpTimestamp(ubiSession.getFirstIosHpTimestamp());
+    }
+    if (this.firstCollectionExpTimestamp > ubiSession.getFirstCollectionExpTimestamp()) {
+      this.setFirstCollectionExpTimestamp(ubiSession.getFirstCollectionExpTimestamp());
+    }
+    if ((this.idfa == null || this.idfa.length() == 0)
+          && ubiSession.getIdfa() != null
+          && ubiSession.getIdfa().length() > 0) {
+      this.setIdfa(ubiSession.getIdfa());
+    }
     if (!this.isReturningVisitor && ubiSession.isReturningVisitor()) {
       this.isReturningVisitor = ubiSession.isReturningVisitor();
     }

@@ -652,6 +652,21 @@
         "boolean"
       ],
       "doc": "to identify open or end"
+    },
+    {
+      "name": "debug",
+      "type": [
+        "null",
+        {
+          "type": "map",
+          "values": [
+            "null",
+            "string"
+          ]
+        }
+      ],
+      "doc": "debug reserved column to record any debug info",
+      "default": null
     }
   ]
 }

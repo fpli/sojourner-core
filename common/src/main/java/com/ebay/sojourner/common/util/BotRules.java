@@ -28,6 +28,7 @@ public class BotRules {
   public static final int DIRECT_ACCESS_BOTFLAG = 208;
   public static final int HIGH_DENSITY_VIEWS = 215;
   public static final int MANY_VALID_PAGE = 212;
+  public static final int IOS_HP_BOT = 1001;
   // EOD BOT Flag
   public static final int SCS_ON_AGENTIP = 5;
   public static final int SCS_ON_AGENT = 6;

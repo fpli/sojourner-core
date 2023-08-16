@@ -97,11 +97,18 @@ public class SessionMetrics extends RecordMetrics<UbiEvent, SessionAccumulator> 
     addFieldMetrics(new TimestampMetrics());
     addFieldMetrics(new IsRVMetrics());
 
-    // metrics for new bot rules
+    // metrics for bot provider
     addFieldMetrics(new BotProviderMetrics());
 
 
     // Put bot flag
     //        addFieldMetrics(new BotFlagMetrics());
+
+    // Metrics used by iOS_HP_bot rule detection
+    addFieldMetrics(new FirstIosHpMetrics());
+    addFieldMetrics(new GroundEventMetrics());
+    addFieldMetrics(new IdfaMetrics());
+    addFieldMetrics(new ValidPageIosMetrics());
+
   }
 }

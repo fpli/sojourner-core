@@ -100,6 +100,16 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setValidPageCnt(ubiSessionTmp.getValidPageCnt());
     ubiSession.setOpenEmit(isOpen);
     ubiSession.setIsIPExternal(ubiSessionTmp.getIsIPExternal());
+    ubiSession.setValidPageCntForIos(ubiSessionTmp.getValidPageCntForIos());
+    ubiSession.setLndgPageIdForIos(ubiSessionTmp.getLndgPageIdForIos());
+    ubiSession.setExitPageIdForIos(ubiSessionTmp.getExitPageIdForIos());
+    ubiSession.setIsExistForegroundEvent(ubiSessionTmp.getIsExistForegroundEvent());
+    ubiSession.setIsExistBackgroundEvent(ubiSessionTmp.getIsExistBackgroundEvent());
+    ubiSession.setIdfa(ubiSessionTmp.getIdfa());
+    ubiSession.setFirstIosHpTimestamp(ubiSessionTmp.getFirstIosHpTimestamp());
+    ubiSession.setFirstIosFgLaunchTimestamp(ubiSessionTmp.getFirstIosFgLaunchTimestamp());
+    ubiSession.setFirstCollectionExpTimestamp(ubiSessionTmp.getFirstCollectionExpTimestamp());
+
     return ubiSession;
   }
 
