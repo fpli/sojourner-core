@@ -59,6 +59,6 @@ public class SessionEndBotDetectorTest {
   public void initBotRules() {
     Set<Rule> botRules = Whitebox
         .getInternalState(sessionEndBotDetector, "botRules", SessionEndBotDetector.class);
-    assertThat(botRules.size()).isEqualTo(2);
+    assertThat(botRules.size()).isEqualTo(3);
   }
 }
