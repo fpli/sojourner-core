@@ -5,30 +5,26 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.RheosHeader;
 import com.ebay.sojourner.common.util.CalTimeOfDay;
 import com.ebay.sojourner.common.util.Constants;
-import com.ebay.sojourner.common.util.PropertyUtils;
-import com.ebay.sojourner.common.util.SOJNVL;
-import com.ebay.sojourner.common.util.SOJURLDecodeEscape;
-import com.ebay.sojourner.common.util.SojTimestamp;
+import com.ebay.sojourner.common.util.SojTimestampParser;
 import com.ebay.sojourner.flink.connector.kafka.RheosEventSerdeFactory;
 import io.ebay.rheos.schema.event.RheosEvent;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.util.Utf8;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.metrics.Counter;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class RawEventDeserializationSchema implements DeserializationSchema<RawEvent> {
@@ -141,7 +137,7 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     parseClientData(clientData, genericClientData);
     RawEvent rawEvent = new RawEvent(rheosHeader, sojAMap, sojKMap, sojCMap, clientData,
         ingestTime, null, messageSize, null);
-    parseEventTimestamp(rawEvent);
+    SojTimestampParser.parseEventTimestamp(rawEvent);
     return rawEvent;
   }
 
@@ -447,105 +443,106 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
     return calTimeOfDay.toString();
 
   }
-
-  private void parseEventTimestamp(RawEvent rawEvent) {
-    StringBuilder buffer = new StringBuilder();
-    Long abEventTimestamp;
-    Long eventTimestamp;
-    Long interval;
-    String mtstsString;
-    String pageId = null;
-    Map<String, String> map = new HashMap<>();
-    map.putAll(rawEvent.getSojA());
-    map.putAll(rawEvent.getSojK());
-    map.putAll(rawEvent.getSojC());
-    String applicationPayload = null;
-    String mARecString = PropertyUtils.mapToString(rawEvent.getSojA());
-    String mKRecString = PropertyUtils.mapToString(rawEvent.getSojK());
-    String mCRecString = PropertyUtils.mapToString(rawEvent.getSojC());
-    if (mARecString != null) {
-      applicationPayload = mARecString;
-    }
-    if ((applicationPayload != null) && (mKRecString != null)) {
-      applicationPayload = applicationPayload + "&" + mKRecString;
-    }
-
-    // else set C record
-    if (applicationPayload == null) {
-      applicationPayload = mCRecString;
-    }
-    Long origEventTimeStamp = rawEvent.getRheosHeader().getEventCreateTimestamp();
-    abEventTimestamp = SojTimestamp.getSojTimestamp(origEventTimeStamp);
-
-    // for cal2.0 abeventtimestamp format change(from soj timestamp to EPOCH timestamp)
-    String tstamp = rawEvent.getClientData().getTStamp();
-    if (tstamp != null) {
-      try {
-        abEventTimestamp = Long.valueOf(rawEvent.getClientData().getTStamp());
-        abEventTimestamp = SojTimestamp.getSojTimestamp(abEventTimestamp);
-      } catch (NumberFormatException e) {
-        abEventTimestamp = SojTimestamp.getSojTimestamp(origEventTimeStamp);
-      }
-    }
-
-    if (StringUtils.isNotBlank(map.get(Constants.P_TAG))) {
-      pageId = map.get(Constants.P_TAG);
-    }
-
-    if (pageId != null && !pageId.equals("5660")) {
-      if (!StringUtils.isBlank(applicationPayload)) {
-        // get mtsts from payload
-        mtstsString =
-            SOJURLDecodeEscape.decodeEscapes(
-                SOJNVL.getTagValue(applicationPayload, Constants.TAG_MTSTS), '%');
-
-        // compare ab_event_timestamp and mtsts
-        if (!StringUtils.isBlank(mtstsString) && mtstsString.trim().length() >= 21) {
-          buffer
-              .append(mtstsString, 0, 10)
-              .append(" ")
-              .append(mtstsString, 11, 19)
-              .append(".")
-              .append(mtstsString.substring(20));
-          mtstsString = buffer.toString();
-          buffer.setLength(0);
-          try {
-            if (mtstsString.endsWith("Z") || mtstsString.contains("T")) {
-              mtstsString = mtstsString.replaceAll("T", " ")
-                  .replaceAll("Z", "");
-              eventTimestamp =
-                  SojTimestamp.getSojTimestamp(formaterUtc.parseDateTime(mtstsString).getMillis());
-            } else {
-              eventTimestamp = SojTimestamp
-                  .getSojTimestamp(formater.parseDateTime(mtstsString).getMillis());
-            }
-            interval = getMicroSecondInterval(eventTimestamp, abEventTimestamp);
-            if (interval > Constants.UPPERLIMITMICRO || interval < Constants.LOWERLIMITMICRO) {
-              eventTimestamp = abEventTimestamp;
-            }
-          } catch (Exception e) {
-            log.error("Invalid mtsts: " + mtstsString);
-            eventTimestamp = abEventTimestamp;
-          }
-        } else {
-          eventTimestamp = abEventTimestamp;
-        }
-      } else {
-        eventTimestamp = abEventTimestamp;
-      }
-    } else {
-      eventTimestamp = abEventTimestamp;
-    }
-    rawEvent.setEventTimestamp(eventTimestamp);
-  }
+  // move the logic to SojTimestampParser utils
+  //  private void parseEventTimestamp(RawEvent rawEvent) {
+  //    StringBuilder buffer = new StringBuilder();
+  //    Long abEventTimestamp;
+  //    Long eventTimestamp;
+  //    Long interval;
+  //    String mtstsString;
+  //    String pageId = null;
+  //    Map<String, String> map = new HashMap<>();
+  //    map.putAll(rawEvent.getSojA());
+  //    map.putAll(rawEvent.getSojK());
+  //    map.putAll(rawEvent.getSojC());
+  //    String applicationPayload = null;
+  //    String mARecString = PropertyUtils.mapToString(rawEvent.getSojA());
+  //    String mKRecString = PropertyUtils.mapToString(rawEvent.getSojK());
+  //    String mCRecString = PropertyUtils.mapToString(rawEvent.getSojC());
+  //    if (mARecString != null) {
+  //      applicationPayload = mARecString;
+  //    }
+  //    if ((applicationPayload != null) && (mKRecString != null)) {
+  //      applicationPayload = applicationPayload + "&" + mKRecString;
+  //    }
+  //
+  //    // else set C record
+  //    if (applicationPayload == null) {
+  //      applicationPayload = mCRecString;
+  //    }
+  //    Long origEventTimeStamp = rawEvent.getRheosHeader().getEventCreateTimestamp();
+  //    abEventTimestamp = SojTimestamp.getSojTimestamp(origEventTimeStamp);
+  //
+  //    // for cal2.0 abeventtimestamp format change(from soj timestamp to EPOCH timestamp)
+  //    String tstamp = rawEvent.getClientData().getTStamp();
+  //    if (tstamp != null) {
+  //      try {
+  //        abEventTimestamp = Long.valueOf(rawEvent.getClientData().getTStamp());
+  //        abEventTimestamp = SojTimestamp.getSojTimestamp(abEventTimestamp);
+  //      } catch (NumberFormatException e) {
+  //        abEventTimestamp = SojTimestamp.getSojTimestamp(origEventTimeStamp);
+  //      }
+  //    }
+  //
+  //    if (StringUtils.isNotBlank(map.get(Constants.P_TAG))) {
+  //      pageId = map.get(Constants.P_TAG);
+  //    }
+  //
+  //    if (pageId != null && !pageId.equals("5660")) {
+  //      if (!StringUtils.isBlank(applicationPayload)) {
+  //        // get mtsts from payload
+  //        mtstsString =
+  //            SOJURLDecodeEscape.decodeEscapes(
+  //                SOJNVL.getTagValue(applicationPayload, Constants.TAG_MTSTS), '%');
+  //
+  //        // compare ab_event_timestamp and mtsts
+  //        if (!StringUtils.isBlank(mtstsString) && mtstsString.trim().length() >= 21) {
+  //          buffer
+  //              .append(mtstsString, 0, 10)
+  //              .append(" ")
+  //              .append(mtstsString, 11, 19)
+  //              .append(".")
+  //              .append(mtstsString.substring(20));
+  //          mtstsString = buffer.toString();
+  //          buffer.setLength(0);
+  //          try {
+  //            if (mtstsString.endsWith("Z") || mtstsString.contains("T")) {
+  //              mtstsString = mtstsString.replaceAll("T", " ")
+  //                  .replaceAll("Z", "");
+  //              eventTimestamp =
+  //                  SojTimestamp.getSojTimestamp(formaterUtc.parseDateTime(mtstsString).getMillis());
+  //            } else {
+  //              eventTimestamp = SojTimestamp
+  //                  .getSojTimestamp(formater.parseDateTime(mtstsString).getMillis());
+  //            }
+  //            interval = getMicroSecondInterval(eventTimestamp, abEventTimestamp);
+  //            if (interval > Constants.UPPERLIMITMICRO || interval < Constants.LOWERLIMITMICRO) {
+  //              eventTimestamp = abEventTimestamp;
+  //            }
+  //          } catch (Exception e) {
+  //            log.error("Invalid mtsts: " + mtstsString);
+  //            eventTimestamp = abEventTimestamp;
+  //          }
+  //        } else {
+  //          eventTimestamp = abEventTimestamp;
+  //        }
+  //      } else {
+  //        eventTimestamp = abEventTimestamp;
+  //      }
+  //    } else {
+  //      eventTimestamp = abEventTimestamp;
+  //    }
+  //    rawEvent.setEventTimestamp(eventTimestamp);
+  //  }
 
   // ignore second during comparing
-  private Long getMicroSecondInterval(Long microts1, Long microts2) throws ParseException {
-    Long v1, v2;
-    v1 = dateMinsFormatter.parseDateTime(dateMinsFormatter.print(microts1 / 1000)).getMillis();
-    v2 = dateMinsFormatter.parseDateTime(dateMinsFormatter.print(microts2 / 1000)).getMillis();
-    return (v1 - v2) * 1000;
-  }
+  //  private Long getMicroSecondInterval(Long microts1, Long microts2) throws ParseException
+  //  {
+  //    Long v1, v2;
+  //    v1 = dateMinsFormatter.parseDateTime(dateMinsFormatter.print(microts1 / 1000)).getMillis();
+  //    v2 = dateMinsFormatter.parseDateTime(dateMinsFormatter.print(microts2 / 1000)).getMillis();
+  //    return (v1 - v2) * 1000;
+  //  }
 
   @Override
   public boolean isEndOfStream(RawEvent nextElement) {
