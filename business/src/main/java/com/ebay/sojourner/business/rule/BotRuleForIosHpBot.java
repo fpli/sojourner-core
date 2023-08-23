@@ -2,10 +2,10 @@ package com.ebay.sojourner.business.rule;
 
 import com.ebay.sojourner.common.model.UbiSession;
 import com.ebay.sojourner.common.util.BotRules;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class BotRuleForIosHpBot extends AbstractBotRule<UbiSession> {
   private static final List<Integer> IOS_APP_IDS = Arrays.asList(1462, 2878);
