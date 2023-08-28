@@ -45,7 +45,7 @@
     <!--  Flink  -->
     <flink.version>1.11.0</flink.version>
     <hadoop.version>3.3.3</hadoop.version>
-    <rheos.client.version>2.0.13</rheos.client.version>
+    <rheos.client.version>2.0.14.1</rheos.client.version>
     <rheos.job.uploader.plugin.version>1.0.1-SNAPSHOT</rheos.job.uploader.plugin.version>
     <curator.version>4.2.0</curator.version>
     <zookeeper.version>3.4.14</zookeeper.version>
