@@ -47,7 +47,7 @@
       <artifactId>flink-metrics-dropwizard</artifactId>
     </dependency>
 
-    <!-- Add connector dependencies here. They must be in the default scope (compile). -->
+    <!--  flink kafka connector  -->
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-connector-kafka_${scala.binary.version}</artifactId>
@@ -60,33 +60,16 @@
     <!-- flink hadoop connector -->
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-filesystem_2.11</artifactId>
-    </dependency>
-
-    <!-- rheos jdk dependencies-->
-    <dependency>
-      <groupId>io.ebay.rheos</groupId>
-      <artifactId>rheos-client_JDK-1.8</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.kafka</groupId>
-          <artifactId>kafka-clients</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>flink-connector-filesystem_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-parquet_2.11</artifactId>
+      <artifactId>flink-parquet_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.parquet</groupId>
       <artifactId>parquet-avro</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-
     <!-- hadoop dependency -->
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -97,10 +80,10 @@
       <artifactId>hadoop-hdfs</artifactId>
     </dependency>
 
+    <!-- rheos dependencies-->
     <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-test-utils_${scala.binary.version}</artifactId>
-      <scope>test</scope>
+      <groupId>io.ebay.rheos</groupId>
+      <artifactId>rheos-client_JDK-1.8</artifactId>
     </dependency>
     <dependency>
       <groupId>io.ebay.rheos</groupId>
@@ -109,6 +92,13 @@
     <dependency>
       <groupId>jakarta.ws.rs</groupId>
       <artifactId>jakarta.ws.rs-api</artifactId>
+    </dependency>
+
+    <!--  flink test framework  -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-test-utils_${scala.binary.version}</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

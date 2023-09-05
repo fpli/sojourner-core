@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import static com.ebay.sojourner.common.util.UBIConfig.getString;
 import static com.ebay.sojourner.common.util.UBIConfig.getUBIProperty;
 
+
+//FIXME: lookup should be component independent, remove it from common
 @Slf4j
 public class LkpManager {
 

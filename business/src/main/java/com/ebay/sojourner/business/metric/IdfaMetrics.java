@@ -6,7 +6,7 @@ import com.ebay.sojourner.common.model.UbiSession;
 import com.ebay.sojourner.common.util.SOJNVL;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * To extract valid idfa tag from event application_payload for session
