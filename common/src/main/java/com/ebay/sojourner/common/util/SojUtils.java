@@ -275,7 +275,7 @@ public class SojUtils {
         debugMap.put("firstIosHpTimestamp", Long.toString(ubiSession.getFirstIosHpTimestamp()));
         debugMap.put("firstIosFgLaunchTimestamp", Long.toString(ubiSession.getFirstIosFgLaunchTimestamp()));
         debugMap.put("firstCollectionExpTimestamp", Long.toString(ubiSession.getFirstCollectionExpTimestamp()));
-        sojSession.setDebug(debugMap);
+        // sojSession.setDebug(debugMap);
         return sojSession;
     }
 
