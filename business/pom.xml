@@ -8,7 +8,7 @@
     <artifactId>sojourner-parent</artifactId>
     <groupId>com.ebay.sojourner</groupId>
     <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-    <version>1.13.3-SNAPSHOT</version>
+    <version>1.13.4-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
