@@ -6,9 +6,12 @@ import org.apache.flink.core.fs.Path;
 import org.apache.flink.formats.parquet.ParquetBuilder;
 import org.apache.flink.formats.parquet.ParquetWriterFactory;
 import org.apache.flink.streaming.api.functions.sink.filesystem.BucketAssigner;
+import org.apache.flink.streaming.api.functions.sink.filesystem.OutputFileConfig;
 import org.apache.flink.streaming.api.functions.sink.filesystem.StreamingFileSink;
 import org.apache.parquet.avro.AvroParquetWriter;
 import org.apache.parquet.hadoop.metadata.CompressionCodecName;
+
+import java.util.UUID;
 
 public class HdfsConnectorFactory {
 
@@ -24,9 +27,14 @@ public class HdfsConnectorFactory {
             .withCompressionCodec(CompressionCodecName.SNAPPY)
             .build();
 
+      OutputFileConfig outputFileConfig = OutputFileConfig.builder()
+          .withPartPrefix("part-" + UUID.randomUUID())
+          .build();
+
     return StreamingFileSink.forBulkFormat(new Path(sinkPath),
         new ParquetWriterFactory<>(builder))
         .withBucketAssigner(bucketAssigner)
+        .withOutputFileConfig(outputFileConfig)
         .build();
   }
 }
