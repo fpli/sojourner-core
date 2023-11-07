@@ -110,5 +110,7 @@ public class SessionMetrics extends RecordMetrics<UbiEvent, SessionAccumulator> 
     addFieldMetrics(new IdfaMetrics());
     addFieldMetrics(new ValidPageIosMetrics());
 
+    addFieldMetrics(new GpcMetrics());
+
   }
 }

@@ -652,6 +652,14 @@
         "boolean"
       ],
       "doc": "to identify open or end"
+    },
+    {
+      "name": "gpc",
+      "type": [
+        "null",
+        "int"
+      ],
+      "doc": "global privacy control flag"
     }
   ]
 }

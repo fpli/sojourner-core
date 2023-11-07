@@ -109,6 +109,7 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setFirstIosHpTimestamp(ubiSessionTmp.getFirstIosHpTimestamp());
     ubiSession.setFirstIosFgLaunchTimestamp(ubiSessionTmp.getFirstIosFgLaunchTimestamp());
     ubiSession.setFirstCollectionExpTimestamp(ubiSessionTmp.getFirstCollectionExpTimestamp());
+    ubiSession.setGpc(ubiSessionTmp.getGpc());
 
     return ubiSession;
   }
