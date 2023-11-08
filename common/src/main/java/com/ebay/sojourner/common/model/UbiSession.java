@@ -167,6 +167,8 @@ public class UbiSession implements Serializable, Cloneable {
   private int isExistForegroundEvent = 0;
   private int isExistBackgroundEvent = 0;
 
+  private int gpc;
+
   // private Map<Integer,Long> rdtClickWithStamp = new LinkedHashMap<>();
   public UbiSession() {
     //        this.distinctClickIdSet = new HashSet<Integer>();
