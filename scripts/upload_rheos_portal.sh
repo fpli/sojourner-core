@@ -10,8 +10,9 @@ MODULE=$1
 working_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd ${working_dir}/..
 
-API_KEY=9ce5764c30224ce59bb5eb4c95afaf02
-API_SECRET=K2h42hFcxWpNV33EgTluY7oekgrBmTl26u6HMWrTVnQgzaj6Vld4QGFUAiN8RUsz
+# _soj_svc
+API_KEY=7fd45773637548469d728aceef7169eb
+API_SECRET=0cYSzwXkFzOOweW3hLj3IETrAmVUT8ZOyf7C782fLxaZUxGo6lu7cVkSOi6pl5hD
 
 if [[ -e "${MODULE}/pom.xml" ]]; then
   pushd ${MODULE}
