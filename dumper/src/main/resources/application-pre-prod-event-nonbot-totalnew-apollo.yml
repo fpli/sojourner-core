@@ -3,7 +3,7 @@ kafka:
     stream: behavior.total.new
     topic:
       - behavior.total.new.sojevent.nonbot
-    group-id: sojourner-total-new-dumper
+    group-id: sojourner-dumper-apollo-pre-prod
     bootstrap-servers:
       rno:
         - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
