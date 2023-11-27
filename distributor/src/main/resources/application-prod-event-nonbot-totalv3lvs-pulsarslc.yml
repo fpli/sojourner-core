@@ -46,3 +46,7 @@ kafka:
         - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
         - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
         - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+rest-client:
+  config:
+    profile: prod-pulsar-slc

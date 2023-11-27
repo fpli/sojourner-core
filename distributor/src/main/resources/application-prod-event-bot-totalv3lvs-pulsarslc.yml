@@ -39,4 +39,4 @@ kafka:
 
 rest-client:
   config:
-    profile: prod-bot
+    profile: prod-bot-pulsar-slc
