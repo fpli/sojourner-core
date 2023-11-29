@@ -63,7 +63,7 @@ flink:
             ip: behavior.totalv2.signature.ip-rno
         subject:
           event: behavior.sojourner.sojevent.schema
-          session: behavior.pulsarv2.sojsession.schema
+          session: behavior.sojourner.sojsession.schema
         message-key:
           session: guid
           event: guid
