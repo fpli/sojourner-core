@@ -52,9 +52,9 @@ public class SojEventDistProcessFunction extends
   private final boolean debugMode;
   private static final String LARGE_MESSAGE_SIZE_METRIC_NAME = "large-message-size";
   private static final String DROPPED_EVENT_METRIC_NAME = "dropped-event-count";
-  public static final String REMOVE_TAG="experience";
-  public static final String EXPM_KW="expm-native-events";
-  public static final String EXPC_KW="expc-native-events";
+  public static final String REMOVE_TAG = "experience";
+  public static final String EXPM_KW = "expm-native-events";
+  public static final String EXPC_KW = "expc-native-events";
 
   public SojEventDistProcessFunction(MapStateDescriptor<Integer, PageIdTopicMapping> descriptor,
       List<String> topicConfigs, long maxMessageBytes, boolean debugMode) {
@@ -156,43 +156,30 @@ public class SojEventDistProcessFunction extends
 
     // distribute events based on simple pageid/topic mapping regardless event is bot or not
     Integer pageId = sojEvent.getPageId();
-    if(!debugMode) {
-      PageIdTopicMapping mapping = broadcastState.get(pageId);
-      if (mapping != null) {
-        for (String topic : mapping.getTopics()) {
-          sojEventWrapper.setTopic(topic);
-          out.collect(sojEventWrapper);
-        }
-      }
-
-      // distribute events based on complicated filtering logic, also for bot and non-bot
-      Set<String> topics = router.target(sojEvent);
-      for (String topic : topics) {
+    PageIdTopicMapping mapping = broadcastState.get(pageId);
+    if (mapping != null) {
+      for (String topic : mapping.getTopics()) {
         sojEventWrapper.setTopic(topic);
-        if (topic.contains(EXPM_KW)||topic.contains(EXPC_KW)) {
-          sojEvent.getApplicationPayload().remove(REMOVE_TAG);
-          byte[] valueTmp = serializer.encodeValue(sojEvent);
-          sojEventWrapper.setPayload(valueTmp);
-        }
         out.collect(sojEventWrapper);
       }
+    }
 
-      // for bot sojevents, distribute all events if all_page(0) is set
-      if (sojEvent.getBot() != 0 && broadcastState.get(ALL_PAGE) != null) {
-        for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
-          sojEventWrapper.setTopic(topic);
-          out.collect(sojEventWrapper);
-        }
+    // distribute events based on complicated filtering logic, also for bot and non-bot
+    Set<String> topics = router.target(sojEvent);
+    for (String topic : topics) {
+      sojEventWrapper.setTopic(topic);
+      if (topic.contains(EXPM_KW) || topic.contains(EXPC_KW)) {
+        sojEvent.getApplicationPayload().remove(REMOVE_TAG);
+        byte[] valueTmp = serializer.encodeValue(sojEvent);
+        sojEventWrapper.setPayload(valueTmp);
       }
-    }else{
-      Set<String> topics = router.target(sojEvent);
-      for (String topic : topics) {
+      out.collect(sojEventWrapper);
+    }
+
+    // for bot sojevents, distribute all events if all_page(0) is set
+    if (sojEvent.getBot() != 0 && broadcastState.get(ALL_PAGE) != null) {
+      for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
         sojEventWrapper.setTopic(topic);
-        if (topic.contains(EXPM_KW)||topic.contains(EXPC_KW)) {
-          sojEvent.getApplicationPayload().remove(REMOVE_TAG);
-          byte[] valueTmp = serializer.encodeValue(sojEvent);
-          sojEventWrapper.setPayload(valueTmp);
-        }
         out.collect(sojEventWrapper);
       }
     }
