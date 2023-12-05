@@ -14,14 +14,9 @@ flink:
     dist:
       topic-config:
         - "dss-gro:behavior.pulsar.customized.dss-gro"
-        - "dss-ads-pvp-hsa:behavior.pulsar.customized.ads-pvp-hsa"
-        - "srch-lst:behavior.pulsar.event.lst-srch"
-        - "entry-page:behavior.pulsar.sojsession.entrypage"
         - "mt-mobile-mc3ur:behavior.pulsar.customized.mc3ur"
-        - "expc-native-events:behavior.pulsar.customized.expc-native-events"
         - "srch-auto-complete:behavior.pulsar.customized.srch-auto-complete"
         - "srpGist:behavior.pulsar.customized.srpGist"
-        - "expm-native-events:behavior.pulsar.customized.expm-native-events"
         - "scandal-trk:behavior.pulsar.customized.scandal-trk"
         - "viewport:behavior.pulsar.customized.viewport"
         - "new-tracking-standard:behavior.pulsar.customized.new-tracking-standard"
