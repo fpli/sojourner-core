@@ -1,22 +1,22 @@
 flink:
   app:
-    name: Sojourner Non-Bot Session Distributor - Prod - totalv3.lvs -> pulsar.slc
+    name: Sojourner Non-Bot Session Distributor - Prod - totalv3.lvs -> totalnew.rno
     parallelism:
       source: 50
       sink-kafka: 50
     source:
       dc: lvs
-      operator-name: Non-bot SojSession Source
+      operator-name: Non-Bot SojSession Source
     sink:
-      dc: slc
-      operator-name: Non-bot SojSession Sink
+      dc: rno
+      operator-name: Non-Bot SojSession Sink
       kafka:
-        topic: behavior.pulsar.sojsession.sessionend
+        topic: behavior.total.new.sojsession.nonbot.test
 
 kafka:
   consumer:
     stream: behavior.totalv3
-    group-id: sojourner-distributor-prod-lvs
+    group-id: sojourner-distributor-pre-prod-session
     topic:
       - behavior.totalv3.sojsession-nonbot-rno
       - behavior.totalv3.sojsession-nonbot-lvs
@@ -46,3 +46,13 @@ kafka:
     auto-offset-reset: latest
     # 60s, default is disabled
     partition-discovery-interval-ms: 60000
+
+  producer:
+    stream: behavior.total.new
+    bootstrap-servers:
+      rno:
+        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092

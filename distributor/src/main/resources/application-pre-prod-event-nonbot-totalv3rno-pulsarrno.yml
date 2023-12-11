@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Pre-Prod Non-Bot Event Distributor - Totalv3-rno -> Pulsar-rno
+    name: Pre-Prod Non-Bot Event Distributor - totalv3.rno -> pulsar.rno
     parallelism:
       source: 200
       filter: 200

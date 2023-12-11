@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Non-Bot Session Distributor - Prod - RNO
+    name: Sojourner Non-Bot Session Distributor - Prod - totalv3.rno -> pulsar.rno
     parallelism:
       source: 50
       sink-kafka: 50
@@ -33,3 +33,16 @@ kafka:
         - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
         - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
         - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+    # 10000, default is 500
+    max-poll-records: 10000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 512KB, default value is 64KB
+    receive-buffer: 524288
+    # 100ms, default value is 500ms
+    fetch-max-wait-ms: 100
+    # 8MB, default value is 1MB
+    max-partitions-fetch-bytes: 8388608
+    auto-offset-reset: latest
+    # 60s, default is disabled
+    partition-discovery-interval-ms: 60000
