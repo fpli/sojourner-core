@@ -1,0 +1,52 @@
+flink:
+  app:
+    name: Sojourner QA Bot Event HDFS Load Pipeline
+    parallelism:
+      source: 1
+      sink:
+        hdfs: 1
+    operator-name:
+      source: Sojourner Total QA Bot Event Source
+      pass-through: QA Byte To Bot Event
+      assgin-watermark: QA Bot Event Watermark Assign
+      extract-watermark: QA Bot Event Timestamp Extract
+      sink:
+        event: Sojourner Total QA Bot Event Sink
+        watermark: Sojourner Total QA Bot Event Watermark Sink
+    uid:
+      source: sojourner-total-qa-bot-event-source
+      pass-through: qa-byte-to-bot-event
+      assgin-watermark: qa-bot-event-watermak-assign
+      extract-watermark: qa-bot-event-timestamp-extract
+      sink:
+        event: sojourner-total-qa-bot-event-sink
+        watermark: sojourner-total-qa-bot-event-watermark-sink
+    metric:
+      watermark-process-progress: sojourner-ubd-bot-event-watermark-delay-time
+    source:
+      dc: slc
+    sink:
+      hdfs:
+        path: hdfs://zeus/user/o_ubi/soj/ubd/events/type=bot/
+        watermark-path: hdfs://zeus/user/o_ubi/soj/ubd/watermark/events/type=bot/
+
+kafka:
+  consumer:
+    topic:
+      - behavior.totalv2.sojevent-bot
+    group-id: sojourner-dumper-zeus-event
+    bootstrap-servers:
+      slc:
+        - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+        - rhs-vgnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
+
+rheos:
+  registry-url: https://rheos-services.qa.ebay.com
+  client:
+    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    iaf:
+      secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
+      env: staging

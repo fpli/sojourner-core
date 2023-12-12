@@ -16,7 +16,7 @@ public class SourceDataStreamBuilder<T> {
   private DataCenter dc;
   private String operatorName;
   private String uid;
-  private String slotGroup;
+  private String slotGroup = "default";
   private int parallelism = getInteger(Property.SOURCE_PARALLELISM);
   private int outOfOrderlessInMin;
   private String fromTimestamp = getStringOrDefault(Property.FLINK_APP_SOURCE_FROM_TIMESTAMP, "0");

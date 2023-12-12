@@ -6,7 +6,7 @@
   <groupId>com.ebay.sojourner</groupId>
   <artifactId>sojourner-parent</artifactId>
   <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-  <version>1.13.7-SNAPSHOT</version>
+  <version>1.14.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Sojourner - Parent</name>
@@ -25,28 +25,32 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <scala.binary.version>2.11</scala.binary.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
 
     <!--  Common  -->
-    <lombok.version>1.18.10</lombok.version>
-    <guava.version>28.1-jre</guava.version>
-    <commons.lang3.version>3.4</commons.lang3.version>
+    <lombok.version>1.18.28</lombok.version>
+    <guava.version>32.1.1-jre</guava.version>
+    <commons.lang3.version>3.12.0</commons.lang3.version>
+
     <!--  Logging  -->
-    <slf4j.version>1.7.25</slf4j.version>
-    <logback.version>1.2.3</logback.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <logback.version>1.2.12</logback.version>
+
     <!--  Http Client  -->
     <okhttp3.version>4.9.0</okhttp3.version>
+
     <!--  Serialization  -->
-    <avro.version>1.8.2</avro.version>
-    <jackson.version>2.9.8</jackson.version>
+    <avro.version>1.11.1</avro.version>
+    <jackson.version>2.12.2</jackson.version>
 
     <!--  Flink  -->
-    <flink.version>1.11.0</flink.version>
+    <flink.version>1.17.0</flink.version>
     <hadoop.version>3.3.3</hadoop.version>
+    <kafka.clients.version>2.5.1</kafka.clients.version>
+    <parquet-avro.version>1.12.3</parquet-avro.version>
     <rheos.client.version>2.0.16</rheos.client.version>
     <rheos.job.uploader.plugin.version>1.0.1-SNAPSHOT</rheos.job.uploader.plugin.version>
+
+    <!--  Zookeeper  -->
     <curator.version>4.2.0</curator.version>
     <zookeeper.version>3.4.14</zookeeper.version>
 
@@ -56,10 +60,11 @@
     <powermock.version>2.0.7</powermock.version>
     <assertj.version>3.17.2</assertj.version>
 
-    <!-- Maven plugins   -->
+    <!--  Maven plugins  -->
     <jacoco.plugin.version>0.8.5</jacoco.plugin.version>
-    <compiler.plugin.version>3.8.1</compiler.plugin.version>
-    <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
+    <compiler.plugin.version>3.11.0</compiler.plugin.version>
+    <surefire.plugin.version>3.1.2</surefire.plugin.version>
+    <shade.plugin.version>3.5.0</shade.plugin.version>
 
     <sonar.coverage.exclusions>
       src/main/java/com/ebay/sojourner/rt/pipeline/*.java,
@@ -120,6 +125,7 @@
         <artifactId>log4j-over-slf4j</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
+      <!--  Logging:end  -->
 
       <!--  Http Client  -->
       <dependency>
@@ -136,11 +142,6 @@
         <version>${avro.version}</version>
       </dependency>
       <!-- jackson -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
@@ -213,41 +214,28 @@
       <!--  Flink  -->
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-java</artifactId>
+        <artifactId>flink-streaming-java</artifactId>
         <version>${flink.version}</version>
         <type>jar</type>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
-        <version>${flink.version}</version>
-        <type>jar</type>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
+        <artifactId>flink-statebackend-rocksdb</artifactId>
         <version>${flink.version}</version>
         <scope>provided</scope>
       </dependency>
       <!-- runtime-web is needed to start Web UI from IDE -->
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-runtime-web_${scala.binary.version}</artifactId>
+        <artifactId>flink-runtime-web</artifactId>
         <version>${flink.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-connector-kafka_${scala.binary.version}</artifactId>
+        <artifactId>flink-connector-kafka</artifactId>
         <version>${flink.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-connector-filesystem_${scala.binary.version}</artifactId>
-        <version>${flink.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.flink</groupId>
@@ -262,13 +250,13 @@
       <!--   parquet   -->
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-parquet_${scala.binary.version}</artifactId>
+        <artifactId>flink-parquet</artifactId>
         <version>${flink.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.parquet</groupId>
         <artifactId>parquet-avro</artifactId>
-        <version>1.10.1</version>
+        <version>1.12.3</version>
       </dependency>
       <!--  Flink:end  -->
 
@@ -417,14 +405,8 @@
       <!--  Flink Test Frameworks  -->
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-test-utils_${scala.binary.version}</artifactId>
+        <artifactId>flink-test-utils</artifactId>
         <version>${flink.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.flinkspector</groupId>
-        <artifactId>flinkspector-datastream_2.11</artifactId>
-        <version>0.9.3</version>
         <scope>test</scope>
       </dependency>
       <!--  Test Dependencies:end  -->
@@ -490,24 +472,6 @@
 
   <repositories>
     <repository>
-      <id>ebaycentral-release</id>
-      <url>http://ebaycentral.corp.ebay.com/content/repositories/releases/</url>
-    </repository>
-    <repository>
-      <id>ebaycentral-snapshots</id>
-      <url>http://ebaycentral.corp.ebay.com/content/repositories/snapshots/</url>
-    </repository>
-    <repository>
-      <id>raptor-thirdparty</id>
-      <url>https://ebaycentral.corp.ebay.com/content/repositories/thirdparty</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
       <id>apache.snapshots</id>
       <name>Apache Development Snapshot Repository</name>
       <url>https://repository.apache.org/content/repositories/snapshots/</url>
@@ -543,10 +507,6 @@
 
   <pluginRepositories>
     <pluginRepository>
-      <id>ebaycentral-corp-snapshots</id>
-      <url>http://ebaycentral.corp.ebay.com/content/repositories/snapshots/</url>
-    </pluginRepository>
-    <pluginRepository>
       <id>sonatype</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </pluginRepository>
@@ -568,17 +528,12 @@
       <dependencies>
         <dependency>
           <groupId>org.apache.flink</groupId>
-          <artifactId>flink-java</artifactId>
+          <artifactId>flink-streaming-java</artifactId>
           <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
-          <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.flink</groupId>
-          <artifactId>flink-runtime-web_${scala.binary.version}</artifactId>
+          <artifactId>flink-runtime-web</artifactId>
           <scope>compile</scope>
         </dependency>
         <dependency>
@@ -588,7 +543,7 @@
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
-          <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
+          <artifactId>flink-statebackend-rocksdb</artifactId>
           <scope>compile</scope>
         </dependency>
         <dependency>
@@ -655,7 +610,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>${shade.plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

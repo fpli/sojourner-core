@@ -22,12 +22,6 @@ kafka:
     topic:
       - behavior.totalv2.sojsession-nonbot
     bootstrap-servers:
-      lvs:
-        - rhs-rurvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
       slc:
         - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
         - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
@@ -48,12 +42,6 @@ kafka:
   producer:
     stream: behavior.pulsar
     bootstrap-servers:
-      lvs:
-        - rhs-nbrvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-nbrvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-nbrvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-nbrvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-nbrvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
       slc:
         - rhs-rbrvkiaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
         - rhs-rbrvkiaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092

@@ -1,7 +1,7 @@
 flink:
   app:
     checkpoint:
-      data-dir: /opt/flink/sojourner/integration/checkpoint
+      data-dir: /tmp/flink/sojourner-integration/checkpoint
       interval-ms: 300000
       timeout-ms: 900000
       min-pause-between-ms: 120000

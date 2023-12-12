@@ -105,7 +105,7 @@ public class FlinkEnvUtils {
     conf.setMaxConcurrentCheckpoints(getInteger(CHECKPOINT_MAX_CONCURRENT));
 
     // state config
-    env.setStateBackend(StateBackendFactory.getStateBackend(StateBackendFactory.FS));
+    env.setStateBackend(StateBackendFactory.getStateBackend(StateBackendFactory.HASHMAP));
 
     return env;
   }
