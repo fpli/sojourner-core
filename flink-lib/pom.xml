@@ -49,6 +49,10 @@
       <artifactId>flink-connector-kafka</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-avro</artifactId>
     </dependency>
@@ -62,6 +66,7 @@
       <groupId>org.apache.parquet</groupId>
       <artifactId>parquet-avro</artifactId>
     </dependency>
+
     <!-- hadoop dependency -->
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -90,7 +95,7 @@
       <artifactId>jakarta.ws.rs-api</artifactId>
     </dependency>
 
-    <!--  flink test framework  -->
+    <!--  Test Dependencies  -->
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-test-utils</artifactId>
