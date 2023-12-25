@@ -1,5 +1,6 @@
 package com.ebay.sojourner.common.util;
 
+@Deprecated
 public class Property {
 
   // --------------------- UBI Property File -------------------------------------

@@ -9,6 +9,7 @@ import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.common.DataCenter;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
+@Deprecated
 public class EventDataStreamBuilder {
 
   public static DataStream<UbiEvent> build(DataStream<RawEvent> sourceDataStream, DataCenter dc) {

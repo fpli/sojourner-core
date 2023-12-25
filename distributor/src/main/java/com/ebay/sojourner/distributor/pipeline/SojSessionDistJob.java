@@ -1,69 +1,91 @@
 package com.ebay.sojourner.distributor.pipeline;
 
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_NAME;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_DC;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_KAFKA_TOPIC;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_OP_NAME;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_DC;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OP_NAME;
-import static com.ebay.sojourner.common.util.Property.SINK_KAFKA_PARALLELISM;
-import static com.ebay.sojourner.common.util.Property.SOURCE_PARALLELISM;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_PARALLELISM_SINK;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_PARALLELISM_SOURCE;
+import static org.apache.flink.api.common.eventtime.WatermarkStrategy.noWatermarks;
 
 import com.ebay.sojourner.common.model.RawSojSessionWrapper;
 import com.ebay.sojourner.distributor.function.SessionEnhanceMapFunction;
-import com.ebay.sojourner.distributor.schema.RawSojSessionDeserializationSchema;
-import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperSerializationSchema;
-import com.ebay.sojourner.flink.common.DataCenter;
-import com.ebay.sojourner.flink.common.FlinkEnvUtils;
-import com.ebay.sojourner.flink.connector.kafka.FlinkKafkaProducerFactory;
-import com.ebay.sojourner.flink.connector.kafka.KafkaProducerConfig;
-import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
-import org.apache.flink.streaming.api.datastream.DataStream;
+import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperDeserializationSchema;
+import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperKeySerializerSchema;
+import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperValueSerializerSchema;
+import com.ebay.sojourner.flink.common.FlinkEnv;
+import org.apache.flink.connector.base.DeliveryGuarantee;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
+import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class SojSessionDistJob {
 
   public static void main(String[] args) throws Exception {
 
-    final StreamExecutionEnvironment executionEnvironment = FlinkEnvUtils.prepare(args);
+    FlinkEnv flinkEnv = new FlinkEnv(args);
+    StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
-    final String DATA_SOURCE_OP_NAME = getString(FLINK_APP_SOURCE_OP_NAME);
-    final String DATA_SOURCE_UID = "sojsession-dist-source";
-    final String SINK_OP_NAME = getString(FLINK_APP_SINK_OP_NAME);
-    final String SINK_UID = "sojsession-dist-sink";
-    final String SESSION_ENHANCE_NAME = "SojSession Enhance";
-    final String SESSION_ENHANCE_UID = "sojsession-enhance";
+    // operator uid
+    final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";
+    final String UID_MAP_ENHANCE = "enhance-map";
+    final String UID_KAFKA_DATA_SINK = "kafka-data-sink";
 
-    SourceDataStreamBuilder<RawSojSessionWrapper> dataStreamBuilder =
-        new SourceDataStreamBuilder<>(executionEnvironment);
+    // operator name
+    final String NAME_KAFKA_DATA_SOURCE = "Kafka: behavior.totalv3 - SojSession";
+    final String NAME_MAP_ENHANCE = "SojSession Enhancement";
+    final String NAME_KAFKA_DATA_SINK = "Kafka: behavior.pulsar - SojSession";
 
-    DataStream<RawSojSessionWrapper> rawSojSessionWrapperDataStream = dataStreamBuilder
-        .dc(DataCenter.of(getString(FLINK_APP_SOURCE_DC)))
-        .parallelism(getInteger(SOURCE_PARALLELISM))
-        .operatorName(DATA_SOURCE_OP_NAME)
-        .uid(DATA_SOURCE_UID)
-        .build(new RawSojSessionDeserializationSchema());
+    // config
+    final String DIST_TOPIC = flinkEnv.getString("flink.app.dist.topic");
 
-    DataStream<RawSojSessionWrapper> sessionEnhanceDataStream = rawSojSessionWrapperDataStream
-        .map(new SessionEnhanceMapFunction())
-        .setParallelism(getInteger(SOURCE_PARALLELISM))
-        .name(SESSION_ENHANCE_NAME)
-        .uid(SESSION_ENHANCE_UID);
+    // kafka data source
+    KafkaSource<RawSojSessionWrapper> kafkaSource =
+        KafkaSource.<RawSojSessionWrapper>builder()
+                   .setBootstrapServers(flinkEnv.getKafkaSourceBrokers())
+                   .setGroupId(flinkEnv.getKafkaSourceGroupId())
+                   .setTopics(flinkEnv.getKafkaSourceTopics())
+                   .setProperties(flinkEnv.getKafkaConsumerProps())
+                   .setStartingOffsets(flinkEnv.getKafkaSourceStartingOffsets())
+                   //TODO: use new api
+                   .setDeserializer(KafkaRecordDeserializationSchema.of(
+                       new RawSojSessionWrapperDeserializationSchema()
+                   ))
+                   .build();
+
+    SingleOutputStreamOperator<RawSojSessionWrapper> sourceDataStream =
+        executionEnvironment.fromSource(kafkaSource, noWatermarks(), NAME_KAFKA_DATA_SOURCE)
+                            .uid(UID_KAFKA_DATA_SOURCE)
+                            .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SOURCE));
+
+    SingleOutputStreamOperator<RawSojSessionWrapper> mappedDataStream =
+        sourceDataStream.map(new SessionEnhanceMapFunction())
+                        .name(NAME_MAP_ENHANCE)
+                        .uid(UID_MAP_ENHANCE)
+                        .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SOURCE));
 
     // sink to kafka
-    KafkaProducerConfig config = KafkaProducerConfig.ofDC(getString(FLINK_APP_SINK_DC));
-    FlinkKafkaProducerFactory producerFactory = new FlinkKafkaProducerFactory(config);
-    sessionEnhanceDataStream
-        .addSink(producerFactory.get(FlinkEnvUtils.getString(FLINK_APP_SINK_KAFKA_TOPIC),
-            new RawSojSessionWrapperSerializationSchema(
-                FlinkEnvUtils.getString(FLINK_APP_SINK_KAFKA_TOPIC))))
-        .setParallelism(getInteger(SINK_KAFKA_PARALLELISM))
-        .name(SINK_OP_NAME)
-        .uid(SINK_UID);
+    KafkaSink<RawSojSessionWrapper> kafkaSink =
+        KafkaSink.<RawSojSessionWrapper>builder()
+                 .setBootstrapServers(flinkEnv.getKafkaSinkBrokers())
+                 .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
+                 .setRecordSerializer(
+                     KafkaRecordSerializationSchema.<RawSojSessionWrapper>builder()
+                                                   .setTopic(DIST_TOPIC)
+                                                   .setKeySerializationSchema(
+                                                       new RawSojSessionWrapperKeySerializerSchema())
+                                                   .setValueSerializationSchema(
+                                                       new RawSojSessionWrapperValueSerializerSchema())
+                                                   .build()
+                 )
+                 .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
+                 .build();
+
+    mappedDataStream.sinkTo(kafkaSink)
+                    .name(NAME_KAFKA_DATA_SINK)
+                    .uid(UID_KAFKA_DATA_SINK)
+                    .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SINK));
 
     // Submit this job
-    FlinkEnvUtils.execute(executionEnvironment, getString(FLINK_APP_NAME));
+    flinkEnv.execute(executionEnvironment);
   }
 }

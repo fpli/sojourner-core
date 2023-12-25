@@ -5,6 +5,7 @@ import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import java.util.Properties;
 import org.apache.kafka.common.config.SaslConfigs;
 
+@Deprecated
 public class KafkaCommonConfig {
 
   private KafkaCommonConfig() {

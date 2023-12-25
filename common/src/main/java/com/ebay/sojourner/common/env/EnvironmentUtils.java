@@ -45,6 +45,10 @@ public class EnvironmentUtils {
     PROP_SOURCES.add(argsSource);
   }
 
+  public static void sourceArgProps(Properties properties) {
+    fromProperties(properties);
+  }
+
   public static String get(String key) {
     Preconditions.checkNotNull(key);
     for (AbstractEnvironment propSource : PROP_SOURCES) {
@@ -52,7 +56,35 @@ public class EnvironmentUtils {
         return propSource.getProperty(key);
       }
     }
-    throw new IllegalStateException("Cannot find property " + key);
+    throw new ConfigNotFoundException("Cannot find property " + key);
+  }
+
+  public static String getString(String key) {
+    return get(key);
+  }
+
+  public static String getOrNull(String key) {
+    return getStringOrNull(key);
+  }
+
+  public static String getStringOrNull(String key) {
+    return getStringOrDefault(key, null);
+  }
+
+  public static String getStringOrDefault(String key, String defaultValue) {
+    String result;
+
+    try {
+      result = get(key);
+    } catch (ConfigNotFoundException e) {
+      return defaultValue;
+    }
+
+    if (result == null) {
+      return defaultValue;
+    }
+
+    return result;
   }
 
   public static String[] getStringArray(String key, String delimiter) {
@@ -61,22 +93,33 @@ public class EnvironmentUtils {
     return s.split(delimiter);
   }
 
+  public static String[] getStringArray(String key) {
+    return getStringArray(key, ",");
+  }
+
   public static List<String> getStringList(String key, String delimiter) {
     String[] stringArray = getStringArray(key, delimiter);
     return Lists.newArrayList(stringArray);
   }
 
-  public static String getStringOrDefault(String key, String defaultValue) {
-    for (AbstractEnvironment propSource : PROP_SOURCES) {
-      if (propSource.contains(key)) {
-        return propSource.getProperty(key);
-      }
-    }
-    return defaultValue;
+  public static List<String> getStringList(String key) {
+    return getStringList(key, ",");
   }
+
 
   public static Boolean getBoolean(String key) {
     String booleanVal = get(key);
+    return Boolean.valueOf(booleanVal);
+  }
+
+  public static Boolean getBooleanOrDefault(String key, boolean defaultValue) {
+    String booleanVal;
+    try {
+      booleanVal = get(key);
+    } catch (ConfigNotFoundException e) {
+      return defaultValue;
+    }
+
     return Boolean.valueOf(booleanVal);
   }
 
@@ -85,12 +128,50 @@ public class EnvironmentUtils {
     return Integer.valueOf(intVal);
   }
 
-  public static <T> T get(String key, Class<T> clazz) {
+  public static Integer getIntegerOrDefault(String key, Integer defaultValue) {
+    Integer result;
+
+    try {
+      result = getInteger(key);
+    } catch (ConfigNotFoundException e) {
+      return defaultValue;
+    }
+
+    return result;
+  }
+
+  public static Long getLong(String key) {
+    String longVal = get(key);
+    return Long.valueOf(longVal);
+  }
+
+  public static Long getLongOrDefault(String key, Long defaultValue) {
+    Long result;
+
+    try {
+      result = getLong(key);
+    } catch (ConfigNotFoundException e) {
+      return defaultValue;
+    }
+
+    return result;
+  }
+
+  public static <T> T getForClass(String key, Class<T> clazz) {
     for (AbstractEnvironment propSource : PROP_SOURCES) {
       if (propSource.contains(key)) {
         return propSource.getProperty(key, clazz);
       }
     }
-    throw new IllegalStateException("Cannot find property " + key);
+    throw new ConfigNotFoundException("Cannot find property " + key);
+  }
+
+  public static boolean isSet(String key) {
+    for (AbstractEnvironment propSource : PROP_SOURCES) {
+      if (propSource.contains(key)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

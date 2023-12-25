@@ -13,6 +13,7 @@ import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class RawSojEventWrapperSerializationSchema
     implements KafkaSerializationSchema<RawSojEventWrapper> {
 
@@ -26,6 +27,6 @@ public class RawSojEventWrapperSerializationSchema
 
     return new ProducerRecord<>(element.getTopic(), null,
                                 element.getKey(),
-                                element.getPayload(), headers);
+                                element.getValue(), headers);
   }
 }

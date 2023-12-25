@@ -3,7 +3,6 @@ package com.ebay.sojourner.distributor.pipeline;
 import com.ebay.sojourner.common.model.CustomTopicConfig;
 import com.ebay.sojourner.common.model.PageIdTopicMapping;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;
-import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.distributor.broadcast.SojEventDistProcessFunction;
 import com.ebay.sojourner.distributor.function.CustomTopicConfigSourceFunction;
 import com.ebay.sojourner.distributor.function.DistPipelineMetricsCollectorProcessFunction;
@@ -13,7 +12,7 @@ import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.connector.kafka.FlinkKafkaProducerFactory;
 import com.ebay.sojourner.flink.connector.kafka.KafkaProducerConfig;
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
-import com.ebay.sojourner.flink.connector.kafka.schema.RawSojEventWrapperValueSerializerSchema;
+import com.ebay.sojourner.distributor.schema.RawSojEventWrapperValueSerializerSchema;
 import com.ebay.sojourner.flink.connector.kafka.selector.RawSojEventWrapperSelector;
 import org.apache.flink.api.common.state.ListStateDescriptor;
 import org.apache.flink.api.common.state.MapStateDescriptor;
@@ -80,16 +79,14 @@ public class SojEventHADistJob {
                         .process(new SojEventDistProcessFunction(
                                 stateDescriptor,
                                 null,
-                                getLong(MAX_MESSAGE_BYTES),
-                                getBoolean(DEBUG_MODE)))
+                                getLong(MAX_MESSAGE_BYTES)))
                         .name(DIST_OP_NAME)
                         .uid(DIST_UID)
                         .setParallelism(getInteger(FILTER_PARALLELISM));
 
         // distributor latency monitoring
         sojEventDistStream
-                .process(new DistPipelineMetricsCollectorProcessFunction(
-                        FlinkEnvUtils.getInteger(Property.METRIC_WINDOW_SIZE)))
+                .process(new DistPipelineMetricsCollectorProcessFunction())
                 .setParallelism(getInteger(FILTER_PARALLELISM))
                 .name("Pipeline Metrics Collector")
                 .uid("pipeline-metrics-collector");

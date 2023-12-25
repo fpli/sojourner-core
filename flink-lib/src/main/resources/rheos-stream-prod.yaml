@@ -1,0 +1,90 @@
+-
+  stream: behavior.pathfinder
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    lvs:
+      - rhs-swsvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-swsvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-swsvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-swsvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-swsvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+    rno:
+      - rhs-glrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-glrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-glrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-glrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-glrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+    slc:
+      - rhs-mwsvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mwsvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mwsvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mwsvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mwsvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+-
+  stream: behavior.total.new
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    rno:
+      - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
+      - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
+      - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
+      - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
+      - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+
+-
+  stream: behavior.totalv3
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    rno:
+      - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+    lvs:
+      - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+-
+  stream: behavior.pulsar
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    rno:
+      - rhs-okrvkiaa-kfk-rno-1.rheos-streaming-prod.svc.25.tess.io:9092
+      - rhs-okrvkiaa-kfk-rno-2.rheos-streaming-prod.svc.25.tess.io:9092
+      - rhs-okrvkiaa-kfk-rno-3.rheos-streaming-prod.svc.25.tess.io:9092
+      - rhs-okrvkiaa-kfk-rno-4.rheos-streaming-prod.svc.25.tess.io:9092
+      - rhs-okrvkiaa-kfk-rno-5.rheos-streaming-prod.svc.25.tess.io:9092
+    slc:
+      - rhs-qisvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
+      - rhs-qisvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
+      - rhs-qisvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
+      - rhs-qisvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
+      - rhs-qisvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+
+-
+  stream: behavior.raw
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    rno:
+      - rhs-afrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-afrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-afrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-afrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-afrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+    lvs:
+      - rhs-gfrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-gfrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-gfrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-gfrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-gfrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+    slc:
+      - rhs-mfrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mfrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mfrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mfrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mfrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092

@@ -1,94 +1,20 @@
 flink:
   app:
     checkpoint:
-      data-dir: /opt/flink/sojourner/distributor/checkpoint
+      data-dir: /tmp/flink/checkpoints/sojourner-distributor/
       interval-ms: 300000
-      timeout-ms: 900000
-      min-pause-between-ms: 60000
-      max-concurrent: 1
-    source:
-      from-timestamp: 0
-      out-of-orderless-in-min: 0
-    sink:
-      kafka:
-        topic: behavior.pulsar.sojevent.deadletter
-    message-filter:
-      max-message-bytes: 819200
-    debug-mode: false
-    metric:
-      window-size: 70000
-
-kafka:
-  consumer:
-    stream: behavior.totalv3
-    bootstrap-servers:
-      rno:
-        - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-      lvs:
-        - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-
-    max-poll-records: 3000
-    # 16MB, default value is 50MB
-    fetch-max-bytes: 16777216
-    # 128KB, default value is 64KB
-    receive-buffer: 131072
-    fetch-max-wait-ms: 100
-    # 4MB, default value is 1MB
-    max-partitions-fetch-bytes: 4194304
-    auto-offset-reset: latest
-    # 60s, default is disabled
-    partition-discovery-interval-ms: 60000
-
-  producer:
-    stream: behavior.pulsar
-    bootstrap-servers:
-      rno:
-        - rhs-okrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-okrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-okrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-okrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-okrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-      slc:
-        - rhs-qisvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-qisvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-qisvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-qisvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-qisvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-
-    # 512KB
-    batch-size: 524288
-    acks: 1
-    linger-ms: 200
-    # 30s
-    request-timeout-ms: 30000
-    retries: 30
-    # 256MB
-    buffer-memory: 268435456
-    compression-type: lz4
-    # 3min
-    delivery-timeout-ms: 180000
-    # 1000000 byte / 1MB
-    max-request-size: 1000000
+      timeout-ms: 600000
 
 rheos:
   registry-url: https://rheos-services.stratus.ebay.com
   client:
-    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    auth-type: IAF
     iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
       secret: c4bb6fca-7ac5-46dd-b218-a49cb6307dbc
       env: production
 
 rest-client:
   base-url: https://sojsvc.vip.ebay.com
-  username: soj-flink-app
   config:
-    pull-interval: 30000
     profile: prod

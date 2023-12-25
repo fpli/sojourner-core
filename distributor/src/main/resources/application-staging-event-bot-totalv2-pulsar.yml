@@ -1,83 +1,40 @@
 flink:
   app:
-    name: Sojourner Bot Event Distributor - Staging
+    name: Sojourner Distributor Staging - Bot Event
     parallelism:
       source: 4
-      filter: 4
-      sink-kafka: 4
-    checkpoint:
-      data-dir: /tmp/flink/sojourner/distributor/checkpoint
+      sink: 1
     source:
-      dc: slc
-      operator-name: Bot SojEvent Source
-    sink:
-      dc: slc
-      operator-name: Bot SojEvent Sink
       kafka:
-        topic: behavior.pulsar.sojevent.deadletter
+        group-id: sojourner-distributor-staging-event
+        env: stage
+        stream: behavior.totalv2
+        dc: slc
+        topic:
+          - behavior.totalv2.sojevent-bot
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: stage
+        stream: behavior.pulsar
+        dc: slc
+    filter:
+      large-message:
+        max-bytes: 819200
     dist:
       topic-config:
         - ""
 
-kafka:
-  consumer:
-    stream: behavior.totalv2
-    group-id: sojourner-distributor-staging
-    topic:
-      - behavior.totalv2.sojevent-bot
-    bootstrap-servers:
-      slc:
-        - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
-
-    max-poll-records: 500
-    # 50MB, default value is 50MB
-    fetch-max-bytes: 52428800
-    # 128KB, default value is 64KB
-    receive-buffer: 131072
-    fetch-max-wait-ms: 100
-    # 1MB, default value is 1MB
-    max-partitions-fetch-bytes: 1048576
-    auto-offset-reset: latest
-
-  producer:
-    stream: behavior.pulsar
-    bootstrap-servers:
-      slc:
-        - rhs-rbrvkiaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-rbrvkiaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-rbrvkiaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-rbrvkiaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-rbrvkiaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
-
-    # 16KB
-    batch-size: 16384
-    acks: 1
-    linger-ms: 10
-    # 30s
-    request-timeout-ms: 30000
-    retries: 30
-    # 32MB
-    buffer-memory: 33554432
-    compression-type: lz4
-    # 2min
-    delivery-timeout-ms: 120000
-
 rheos:
   registry-url: https://rheos-services.qa.ebay.com
   client:
-    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    auth-type: IAF
     iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
       secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
       env: staging
 
 rest-client:
   base-url: https://sojsvc.vip.qa.ebay.com
-#  base-url: http://localhost:8080
-  username: soj-flink-app
   config:
-    pull-interval: 15000
     profile: staging-bot

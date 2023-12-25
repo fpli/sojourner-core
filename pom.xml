@@ -6,7 +6,7 @@
   <groupId>com.ebay.sojourner</groupId>
   <artifactId>sojourner-parent</artifactId>
   <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-  <version>1.14.0-SNAPSHOT</version>
+  <version>1.14.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Sojourner - Parent</name>
@@ -33,7 +33,7 @@
 
     <!--  Logging  -->
     <slf4j.version>1.7.36</slf4j.version>
-    <logback.version>1.2.12</logback.version>
+    <log4j2.version>2.20.0</log4j2.version>
 
     <!--  Http Client  -->
     <okhttp3.version>4.9.0</okhttp3.version>
@@ -42,17 +42,12 @@
     <avro.version>1.11.1</avro.version>
     <jackson.version>2.12.2</jackson.version>
 
-    <!--  Flink  -->
+    <!--  Flink & Hadoop  -->
     <flink.version>1.17.0</flink.version>
     <hadoop.version>3.3.3</hadoop.version>
-    <kafka.clients.version>2.5.1</kafka.clients.version>
     <parquet-avro.version>1.12.3</parquet-avro.version>
     <rheos.client.version>2.0.16</rheos.client.version>
     <rheos.job.uploader.plugin.version>1.0.1-SNAPSHOT</rheos.job.uploader.plugin.version>
-
-    <!--  Zookeeper  -->
-    <curator.version>4.2.0</curator.version>
-    <zookeeper.version>3.4.14</zookeeper.version>
 
     <!--  Tests  -->
     <junit-jupiter.version>5.6.2</junit-jupiter.version>
@@ -109,18 +104,19 @@
 
       <!--  Logging  -->
       <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>${logback.version}</version>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>${log4j2.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
+      <!--  bridge  -->
       <dependency>
         <groupId>org.slf4j</groupId>
-        <artifactId>log4j-over-slf4j</artifactId>
+        <artifactId>jcl-over-slf4j</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
       <!--  Logging:end  -->
@@ -186,6 +182,10 @@
             <groupId>org.slf4j</groupId>
             <artifactId>*</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -197,6 +197,10 @@
           <exclusion>
             <groupId>org.slf4j</groupId>
             <artifactId>*</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
           </exclusion>
           <exclusion>
             <groupId>io.netty</groupId>
@@ -241,18 +245,6 @@
         <groupId>org.apache.flink</groupId>
         <artifactId>flink-connector-kafka</artifactId>
         <version>${flink.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <!--  kafka clients  -->
-      <dependency>
-        <groupId>org.apache.kafka</groupId>
-        <artifactId>kafka-clients</artifactId>
-        <version>${kafka.clients.version}</version>
       </dependency>
       <!--  parquet  -->
       <dependency>
@@ -281,6 +273,10 @@
         <exclusions>
           <exclusion>
             <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
           </exclusion>
           <exclusion>
@@ -290,10 +286,6 @@
           <exclusion>
             <groupId>org.xerial.snappy</groupId>
             <artifactId>snappy-java</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -314,46 +306,6 @@
         <version>2.1.6</version>
       </dependency>
       <!--  Rheos:end  -->
-
-      <!--  ZooKeeper  -->
-      <!--  The Curator Client - replacement for the ZooKeeper class in the ZK distribution.  -->
-      <dependency>
-        <groupId>org.apache.curator</groupId>
-        <artifactId>curator-client</artifactId>
-        <version>${curator.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.curator</groupId>
-        <artifactId>curator-recipes</artifactId>
-        <version>${curator.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.zookeeper</groupId>
-        <artifactId>zookeeper</artifactId>
-        <version>${zookeeper.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
 
       <!--  Test Dependencies  -->
       <!--  Mockito  -->

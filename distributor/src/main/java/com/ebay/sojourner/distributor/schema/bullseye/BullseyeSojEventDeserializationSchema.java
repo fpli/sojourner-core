@@ -1,4 +1,4 @@
-package com.ebay.sojourner.distributor.schema;
+package com.ebay.sojourner.distributor.schema.bullseye;
 
 import com.ebay.sojourner.common.constant.KafkaMessageHeaders;
 import com.ebay.sojourner.common.model.SojEvent;

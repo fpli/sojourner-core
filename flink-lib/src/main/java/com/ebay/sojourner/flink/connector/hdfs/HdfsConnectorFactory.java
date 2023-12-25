@@ -13,6 +13,7 @@ import org.apache.parquet.hadoop.metadata.CompressionCodecName;
 
 import java.util.UUID;
 
+@Deprecated
 public class HdfsConnectorFactory {
 
   private HdfsConnectorFactory() {

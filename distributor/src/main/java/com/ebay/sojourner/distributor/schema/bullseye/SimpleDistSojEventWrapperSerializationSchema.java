@@ -1,4 +1,4 @@
-package com.ebay.sojourner.distributor.schema;
+package com.ebay.sojourner.distributor.schema.bullseye;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

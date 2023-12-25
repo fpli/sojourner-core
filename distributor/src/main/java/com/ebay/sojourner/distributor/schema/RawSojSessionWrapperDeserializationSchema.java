@@ -5,7 +5,7 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-public class RawSojSessionDeserializationSchema implements
+public class RawSojSessionWrapperDeserializationSchema implements
     KafkaDeserializationSchema<RawSojSessionWrapper> {
 
   @Override
@@ -15,7 +15,6 @@ public class RawSojSessionDeserializationSchema implements
 
   @Override
   public RawSojSessionWrapper deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
-
     return new RawSojSessionWrapper(record.key(), record.value());
   }
 
