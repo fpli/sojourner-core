@@ -1,12 +1,12 @@
 flink:
   app:
-    name: Sojourner Distributor Staging - Session
+    name: Sojourner Dumper Zeus Staging - Non-Bot Session
     parallelism:
-      source: 2
-      sink: 2
+      source: 1
+      sink: 1
     source:
       kafka:
-        group-id: sojourner-distributor-session-staging
+        group-id: sojourner-dumper-zeus-session-staging
         env: stage
         stream: behavior.totalv2
         dc: slc
@@ -14,13 +14,11 @@ flink:
           - behavior.totalv2.sojsession-nonbot
         from-timestamp: latest
     sink:
-      kafka:
-        env: stage
-        stream: behavior.pulsar
-        dc: slc
-    dist:
-      topic: behavior.pulsar.sojsession.sessionend
-
+      hdfs:
+        base-path: hdfs://zeus/user/o_ubi/soj/ubd/sessions/
+        watermark-path: hdfs://zeus/user/o_ubi/soj/ubd/watermark/sessions/type=nonbot/
+    metric:
+      watermark-delay: sojourner-ubd-nonbot-session-watermark-delay-time
 
 rheos:
   registry-url: https://rheos-services.qa.ebay.com

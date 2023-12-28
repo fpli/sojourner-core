@@ -10,6 +10,7 @@ import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class RheosKafkaSerializationSchema<T extends SpecificRecord> implements
     KafkaSerializationSchema<T> {
 

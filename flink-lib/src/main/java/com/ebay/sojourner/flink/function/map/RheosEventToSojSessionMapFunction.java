@@ -1,4 +1,4 @@
-package com.ebay.sojourner.integration.function;
+package com.ebay.sojourner.flink.function.map;
 
 import com.ebay.sojourner.common.model.SojSession;
 import io.ebay.rheos.kafka.client.StreamConnectorConfig;
@@ -15,33 +15,30 @@ import org.apache.flink.configuration.Configuration;
 @Slf4j
 public class RheosEventToSojSessionMapFunction extends RichMapFunction<RheosEvent, SojSession> {
 
-  private final String registryUrl;
+  private final String rheosRegistryUrl;
   private transient SchemaRegistryAwareAvroDeserializerHelper<SojSession> deserializerHelper;
   private transient GenericRecordDomainDataDecoder genericRecordDomainDataDecoder;
 
-  public RheosEventToSojSessionMapFunction(String registryUrl) {
-    this.registryUrl = registryUrl;
+  public RheosEventToSojSessionMapFunction(String rheosRegistryUrl) {
+    this.rheosRegistryUrl = rheosRegistryUrl;
   }
 
   @Override
   public void open(Configuration parameters) throws Exception {
-    super.open(parameters);
     Map<String, Object> config = new HashMap<>();
-    config.put(StreamConnectorConfig.RHEOS_SERVICES_URLS, this.registryUrl);
+    config.put(StreamConnectorConfig.RHEOS_SERVICES_URLS, this.rheosRegistryUrl);
     this.deserializerHelper = new SchemaRegistryAwareAvroDeserializerHelper<>(config, SojSession.class);
     this.genericRecordDomainDataDecoder = new GenericRecordDomainDataDecoder(config);
   }
 
   @Override
   public SojSession map(RheosEvent rheosEvent) throws Exception {
-    // test if genericRecordDomainDataDecoder is working
+    // covert RheosEvent to avro GenericRecord
     GenericRecord genericRecord = genericRecordDomainDataDecoder.decode(rheosEvent);
 
     // test if SchemaRegistryAwareAvroDeserializerHelper is working
     int schemaId = rheosEvent.getSchemaId();
     SojSession sojSession = deserializerHelper.deserializeData(schemaId, rheosEvent.toBytes());
-
-    log.info("schemaId: {}, SojSession: {}", rheosEvent.getSchemaId(), sojSession);
 
     return null;
   }

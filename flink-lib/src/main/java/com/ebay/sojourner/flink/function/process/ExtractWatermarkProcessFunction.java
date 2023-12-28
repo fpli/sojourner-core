@@ -1,4 +1,4 @@
-package com.ebay.sojourner.flink.function;
+package com.ebay.sojourner.flink.function.process;
 
 import com.ebay.sojourner.common.model.SojWatermark;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,18 +22,17 @@ public class ExtractWatermarkProcessFunction<T> extends ProcessFunction<T, SojWa
     super.open(parameters);
     atomicInteger = new AtomicInteger(0);
     getRuntimeContext().getMetricGroup()
-        .gauge(metricName, () -> watermarkDelayTime);
+                       .gauge(metricName, () -> watermarkDelayTime);
     subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
   }
 
   @Override
-  public void processElement(T value, Context ctx, Collector<SojWatermark> out)
-      throws Exception {
+  public void processElement(T value, Context ctx, Collector<SojWatermark> out) throws Exception {
 
     watermarkDelayTime = System.currentTimeMillis() - ctx.timestamp();
     int andIncrement = atomicInteger.getAndIncrement();
     if (andIncrement % 1000 == 0) {
-      out.collect(new SojWatermark(ctx.timestamp(),subtaskIndex));
+      out.collect(new SojWatermark(ctx.timestamp(), subtaskIndex));
     }
   }
 }

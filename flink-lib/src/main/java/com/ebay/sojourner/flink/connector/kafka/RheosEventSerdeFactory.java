@@ -8,6 +8,7 @@ import io.ebay.rheos.schema.avro.RheosEventDeserializer;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class RheosEventSerdeFactory {
 
   private static final String RHEOS_SERVICES_URL = FlinkEnvUtils

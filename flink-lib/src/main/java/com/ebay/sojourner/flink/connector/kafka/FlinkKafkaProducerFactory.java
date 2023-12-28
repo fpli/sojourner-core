@@ -19,6 +19,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 
 import java.util.Properties;
 
+@Deprecated
 public class FlinkKafkaProducerFactory {
 
     private final KafkaProducerConfig config;

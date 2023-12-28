@@ -8,6 +8,7 @@ import org.apache.flink.contrib.streaming.state.PredefinedOptions;
 import org.apache.flink.runtime.state.StateBackend;
 import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 
+@Deprecated
 @Slf4j
 public class StateBackendFactory {
 

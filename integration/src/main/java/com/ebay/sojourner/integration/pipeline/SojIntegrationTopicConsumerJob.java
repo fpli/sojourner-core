@@ -12,7 +12,7 @@ import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.RheosEventDeserializationSchema;
-import com.ebay.sojourner.integration.function.RheosEventToSojEventMapFunction;
+import com.ebay.sojourner.flink.function.map.RheosEventToSojEventMapFunction;
 import io.ebay.rheos.schema.event.RheosEvent;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

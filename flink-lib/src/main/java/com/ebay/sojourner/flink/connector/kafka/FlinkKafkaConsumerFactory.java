@@ -5,6 +5,7 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 
+@Deprecated
 public class FlinkKafkaConsumerFactory {
 
   private final FlinkKafkaSourceConfigWrapper configWrapper;

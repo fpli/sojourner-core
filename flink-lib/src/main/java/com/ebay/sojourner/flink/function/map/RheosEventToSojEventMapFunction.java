@@ -1,4 +1,4 @@
-package com.ebay.sojourner.integration.function;
+package com.ebay.sojourner.flink.function.map;
 
 import com.ebay.sojourner.common.model.SojEvent;
 import io.ebay.rheos.kafka.client.StreamConnectorConfig;

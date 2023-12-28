@@ -12,6 +12,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.RecordBatchTooLargeException;
 import org.apache.kafka.common.errors.RecordTooLargeException;
 
+@Deprecated
 @Slf4j
 public class SojFlinkKafkaProducer<T> extends FlinkKafkaProducer<T> {
 

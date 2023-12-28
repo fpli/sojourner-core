@@ -1,48 +1,17 @@
 flink:
   app:
     checkpoint:
-      data-dir: /opt/flink/sojourner/dumper/checkpoint
+      data-dir: /tmp/flink/checkpoints/sojourner-dumper/
       interval-ms: 300000
       timeout-ms: 900000
-      min-pause-between-ms: 120000
-      max-concurrent: 1
     source:
-      from-timestamp: 0
-      out-of-orderless-in-min: 0
-
-kafka:
-  consumer:
-    stream: behavior.totalv2
-    bootstrap-servers:
-      lvs:
-        - rhs-ravvkiaa-kfk-lvs-1.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-2.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-3.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-4.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-5.rheos-streaming-prod.svc.38.tess.io:9092
-      rno:
-        - rhs-fxuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.37.tess.io:9092
-
-    max-poll-records: 3000
-    # 16MB, default value is 50MB
-    fetch-max-bytes: 16777216
-    # 128KB, default value is 64KB
-    receive-buffer: 131072
-    fetch-max-wait-ms: 100
-    # 4MB, default value is 1MB
-    max-partitions-fetch-bytes: 4194304
-    auto-offset-reset: latest
-    # 60s, default is disabled
-    partition-discovery-interval-ms: 60000
+      from-timestamp: latest
 
 rheos:
   registry-url: https://rheos-services.stratus.ebay.com
   client:
-    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    auth-type: IAF
     iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
       secret: c4bb6fca-7ac5-46dd-b218-a49cb6307dbc
       env: production

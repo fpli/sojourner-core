@@ -6,7 +6,7 @@
   <groupId>com.ebay.sojourner</groupId>
   <artifactId>sojourner-parent</artifactId>
   <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-  <version>1.14.0.0-SNAPSHOT</version>
+  <version>1.14.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Sojourner - Parent</name>
@@ -150,10 +150,18 @@
       <!--  Hadoop  -->
       <dependency>
         <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-common</artifactId>
+        <artifactId>hadoop-client</artifactId>
         <version>${hadoop.version}</version>
         <scope>provided</scope>
         <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
           <exclusion>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -163,48 +171,12 @@
             <artifactId>avro</artifactId>
           </exclusion>
           <exclusion>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
           </exclusion>
           <exclusion>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-hdfs</artifactId>
-        <version>${hadoop.version}</version>
-        <scope>provided</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>io.netty</groupId>
-            <artifactId>*</artifactId>
           </exclusion>
           <exclusion>
             <groupId>com.sun.jersey</groupId>
@@ -240,6 +212,12 @@
         <version>${flink.version}</version>
       </dependency>
       <!--  Flink Connectors  -->
+      <!--  files  -->
+      <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-connector-files</artifactId>
+        <version>${flink.version}</version>
+      </dependency>
       <!--  kafka  -->
       <dependency>
         <groupId>org.apache.flink</groupId>
@@ -509,12 +487,7 @@
         </dependency>
         <dependency>
           <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-common</artifactId>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-hdfs</artifactId>
+          <artifactId>hadoop-client</artifactId>
           <scope>compile</scope>
         </dependency>
       </dependencies>
@@ -590,6 +563,7 @@
         </plugin>
 
         <!--  Checkstyle plugin  -->
+        <!--  TODO: upgrade me  -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -636,7 +610,9 @@
           </executions>
           <configuration>
             <generateGitPropertiesFile>true</generateGitPropertiesFile>
-            <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+            <generateGitPropertiesFilename>
+              ${project.build.outputDirectory}/git.properties
+            </generateGitPropertiesFilename>
             <commitIdGenerationMode>full</commitIdGenerationMode>
           </configuration>
         </plugin>

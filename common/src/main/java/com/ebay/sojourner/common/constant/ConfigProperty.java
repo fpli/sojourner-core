@@ -7,6 +7,12 @@ public class ConfigProperty {
   public static final String FLINK_APP_NAME = "flink.app.name";
   public static final String FLINK_APP_DEBUG_MODE = "flink.app.debug-mode";
 
+  // flink - parallelism
+  public static final String FLINK_APP_PARALLELISM_DEFAULT = "flink.app.parallelism.default";
+  public static final String FLINK_APP_PARALLELISM_SOURCE = "flink.app.parallelism.source";
+  public static final String FLINK_APP_PARALLELISM_PROCESS = "flink.app.parallelism.process";
+  public static final String FLINK_APP_PARALLELISM_SINK = "flink.app.parallelism.sink";
+
   // flink - checkpoint
   public static final String FLINK_APP_CHECKPOINT_MODE = "flink.app.checkpoint.mode";
   public static final String FLINK_APP_CHECKPOINT_INCREMENTAL = "flink.app.checkpoint.incremental";
@@ -17,11 +23,11 @@ public class ConfigProperty {
   public static final String FLINK_APP_CHECKPOINT_MAX_CONCURRENT = "flink.app.checkpoint.max-concurrent";
   public static final String FLINK_APP_CHECKPOINT_TOLERATE_FAILURE_COUNT = "flink.app.checkpoint.tolerate-failure-count";
 
-  // flink - watermark
+  // flink - watermark & window
   public static final String FLINK_APP_WATERMARK_MAX_OUT_OF_ORDERNESS_IN_MIN = "flink.app.watermark.max-out-of-orderness-in-min";
   public static final String FLINK_APP_WATERMARK_IDLE_SOURCE_TIMEOUT_IN_MIN = "flink.app.watermark.idle-source-timeout-in-min";
 
-  // flink - source
+  // flink - source - kafka
   public static final String FLINK_APP_SOURCE_KAFKA_ENV = "flink.app.source.kafka.env";
   public static final String FLINK_APP_SOURCE_KAFKA_STREAM = "flink.app.source.kafka.stream";
   public static final String FLINK_APP_SOURCE_KAFKA_DC = "flink.app.source.kafka.dc";
@@ -29,23 +35,14 @@ public class ConfigProperty {
   public static final String FLINK_APP_SOURCE_KAFKA_GROUP_ID = "flink.app.source.kafka.group-id";
   public static final String FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP = "flink.app.source.kafka.from-timestamp";
 
-  // flink - sink kafka
-  public static final String FLINK_APP_SINK_KAFKA_DEFAULT_TOPIC = "flink.app.sink.kafka.default-topic";
+  // flink - sink - kafka
   public static final String FLINK_APP_SINK_KAFKA_ENV = "flink.app.sink.kafka.env";
   public static final String FLINK_APP_SINK_KAFKA_STREAM = "flink.app.sink.kafka.stream";
   public static final String FLINK_APP_SINK_KAFKA_DC = "flink.app.sink.kafka.dc";
 
-  // flink - sink hdfs
-  public static final String FLINK_APP_SINK_HDFS_PATH = "flink.app.sink.hdfs.path";
-
-  // flink - sink pronto
-  public static final String FLINK_APP_SINK_PRONTO_INDEX = "flink.app.sink.pronto.index";
-  public static final String FLINK_APP_SINK_PRONTO_INDEX_PREFIX = "flink.app.sink.pronto.index-prefix";
-
-  // flink - parallelism
-  public static final String FLINK_APP_PARALLELISM_DEFAULT = "flink.app.parallelism.default";
-  public static final String FLINK_APP_PARALLELISM_SOURCE = "flink.app.parallelism.source";
-  public static final String FLINK_APP_PARALLELISM_SINK = "flink.app.parallelism.sink";
+  // flink - sink - hdfs
+  public static final String FLINK_APP_SINK_HDFS_CLUSTER = "flink.app.sink.hdfs.cluster";
+  public static final String FLINK_APP_SINK_HDFS_BASE_PATH = "flink.app.sink.hdfs.base-path";
 
   // ----------------------- kafka property -----------------------
   // kafka consumer
@@ -82,12 +79,5 @@ public class ConfigProperty {
   public static final String REST_CLIENT_BASE_URL = "rest-client.base-url";
   public static final String REST_CLIENT_CONFIG_PROFILE = "rest-client.config.profile";
   public static final String REST_CLIENT_CONFIG_PULL_INTERVAL = "rest-client.config.pull-interval";
-
-  // pronto
-  public static final String PRONTO_SCHEME = "pronto.scheme";
-  public static final String PRONTO_HOST = "pronto.host";
-  public static final String PRONTO_PORT = "pronto.port";
-  public static final String PRONTO_USERNAME = "pronto.username";
-  public static final String PRONTO_PASSWORD = "pronto.password";
 
 }

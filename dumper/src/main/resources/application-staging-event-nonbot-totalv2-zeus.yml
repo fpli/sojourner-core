@@ -1,47 +1,15 @@
 flink:
   app:
-    name: Sojourner QA Non Bot Event HDFS Load Pipeline
+    name: Sojourner Dumper Staging - Non Bot Event - Zeus
     parallelism:
       source: 1
-      sink:
-        hdfs: 1
-    operator-name:
-      source: Sojourner Total QA Nonbot Event Source
-      pass-through: QA Byte To Nonbot Event
-      assgin-watermark: QA Nonbot Event Watermark Assign
-      extract-watermark: QA Nonbot Event Timestamp Extract
-      sink:
-        event: Sojourner Total QA Nonbot Event Sink
-        watermark: Sojourner Total QA Nonbot Event Watermark Sink
-    uid:
-      source: sojourner-total-qa-nonbot-event-source
-      pass-through: qa-byte-to-nonbot-event
-      assgin-watermark: qa-nonbot-event-watermak-assign
-      extract-watermark: qa-nonbot-event-timestamp-extract
-      sink:
-        event: sojourner-total-qa-nonbot-event-sink
-        watermark: sojourner-total-qa-nonbot-event-watermark-sink
-    metric:
-      watermark-process-progress: sojourner-ubd-nonbot-event-watermark-delay-time
+      sink: 1
     source:
       dc: slc
     sink:
       hdfs:
         path: hdfs://zeus/user/o_ubi/soj/ubd/events/type=nonbot/
         watermark-path: hdfs://zeus/user/o_ubi/soj/ubd/watermark/events/type=nonbot/
-
-kafka:
-  consumer:
-    topic:
-      - behavior.totalv2.sojevent-nonbot
-    group-id: sojourner-dumper-zeus-event
-    bootstrap-servers:
-      slc:
-        - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
 
 rheos:
   registry-url: https://rheos-services.qa.ebay.com
