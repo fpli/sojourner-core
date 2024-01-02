@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor Staging - Event Bot
+    name: Sojourner Distributor Staging - Bot Event
     parallelism:
       source: 4
       sink: 1
@@ -23,7 +23,8 @@ flink:
         max-bytes: 819200
     dist:
       topic-config:
-        - ""
+        - "scandal-trk:behavior.pulsar.customized.scandal-trk.bot"
+        - "viewport:behavior.pulsar.customized.viewport.bot"
 
 rheos:
   registry-url: https://rheos-services.qa.ebay.com

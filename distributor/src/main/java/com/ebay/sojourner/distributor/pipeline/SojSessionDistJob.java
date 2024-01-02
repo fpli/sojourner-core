@@ -31,7 +31,7 @@ public class SojSessionDistJob {
     final String UID_KAFKA_DATA_SINK = "kafka-data-sink";
 
     // operator name
-    final String NAME_KAFKA_DATA_SOURCE = "Kafka: behavior.totalv3 - SojSession";
+    final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojSession", flinkEnv.getSourceKafkaStreamName());
     final String NAME_MAP_ENHANCE = "SojSession Enhancement";
     final String NAME_KAFKA_DATA_SINK = "Kafka: behavior.pulsar - SojSession";
 
@@ -41,12 +41,11 @@ public class SojSessionDistJob {
     // kafka data source
     KafkaSource<RawSojSessionWrapper> kafkaSource =
         KafkaSource.<RawSojSessionWrapper>builder()
-                   .setBootstrapServers(flinkEnv.getKafkaSourceBrokers())
-                   .setGroupId(flinkEnv.getKafkaSourceGroupId())
-                   .setTopics(flinkEnv.getKafkaSourceTopics())
+                   .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
+                   .setGroupId(flinkEnv.getSourceKafkaGroupId())
+                   .setTopics(flinkEnv.getSourceKafkaTopics())
                    .setProperties(flinkEnv.getKafkaConsumerProps())
-                   .setStartingOffsets(flinkEnv.getKafkaSourceStartingOffsets())
-                   //TODO: use new api
+                   .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                    .setDeserializer(KafkaRecordDeserializationSchema.of(
                        new RawSojSessionWrapperDeserializationSchema()
                    ))
@@ -66,7 +65,7 @@ public class SojSessionDistJob {
     // sink to kafka
     KafkaSink<RawSojSessionWrapper> kafkaSink =
         KafkaSink.<RawSojSessionWrapper>builder()
-                 .setBootstrapServers(flinkEnv.getKafkaSinkBrokers())
+                 .setBootstrapServers(flinkEnv.getSinkKafkaBrokers())
                  .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
                  .setRecordSerializer(
                      KafkaRecordSerializationSchema.<RawSojSessionWrapper>builder()

@@ -204,6 +204,7 @@ public class FlinkEnv {
     this.execute(env, jobName);
   }
 
+  // env
   public String getString(String key) {
     String value = EnvironmentUtils.get(key);
     CONFIG.put(key, value);
@@ -288,6 +289,7 @@ public class FlinkEnv {
   }
 
 
+  // kafka client configs
   public Properties getKafkaConsumerProps() {
     String env = this.getString(FLINK_APP_SOURCE_KAFKA_ENV);
     String stream = this.getString(FLINK_APP_SOURCE_KAFKA_STREAM);
@@ -304,7 +306,7 @@ public class FlinkEnv {
 
     Properties props = new Properties();
 
-    // only setup for SASL_PLAINTEXT streams, SSL streams are not implemented
+    // // only support SASL_PLAINTEXT streams, others are not supported at this moment
     if (protocol.equals(SecurityProtocol.SASL_PLAINTEXT)) {
       String authType = this.getString(RHEOS_CLIENT_AUTH_TYPE);
       props.put(SASL_LOGIN_CLASS, RheosLogin.class);
@@ -372,21 +374,20 @@ public class FlinkEnv {
   public Properties getKafkaProducerProps() {
     String env = this.getString(FLINK_APP_SINK_KAFKA_ENV);
     String stream = this.getString(FLINK_APP_SINK_KAFKA_STREAM);
-    String dc = this.getString(FLINK_APP_SINK_KAFKA_DC);
 
-    return this.getKafkaProducerProps(env, stream, DataCenter.of(dc));
+    return this.getKafkaProducerProps(env, stream);
   }
 
-  public Properties getKafkaProducerProps(String env, String stream, DataCenter dc) {
-    Properties props = new Properties();
+  public Properties getKafkaProducerProps(String env, String stream) {
+    Preconditions.checkNotNull(env);
+    Preconditions.checkNotNull(stream);
 
-    String brokers = RheosStreamsConfig.getBrokersAsString(env, stream, dc);
-    CONFIG.put("rheos.kafka." + stream + "." + dc + ".brokers", brokers);
+    Properties props = new Properties();
 
     SecurityProtocol protocol = RheosStreamsConfig.getAuthProtocol(env, stream);
     CONFIG.put("rheos.kafka." + stream + ".security-protocol", protocol.toString());
 
-    // only setup for SASL_PLAINTEXT streams, SSL streams are not implemented
+    // only support SASL_PLAINTEXT streams, others are not supported at this moment
     if (protocol.equals(SecurityProtocol.SASL_PLAINTEXT)) {
       String authType = this.getString(RHEOS_CLIENT_AUTH_TYPE);
       props.put(SASL_LOGIN_CLASS, RheosLogin.class);
@@ -457,6 +458,30 @@ public class FlinkEnv {
 
   }
 
+  public OffsetsInitializer getSourceKafkaStartingOffsets() {
+    if (EnvironmentUtils.isSet(FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP)) {
+      String fromTimestamp = getString(FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP);
+
+      if (fromTimestamp.equalsIgnoreCase("0") || fromTimestamp.equalsIgnoreCase("latest")) {
+        return OffsetsInitializer.latest();
+      } else if (fromTimestamp.equalsIgnoreCase("earliest")) {
+        return OffsetsInitializer.earliest();
+      } else {
+        return OffsetsInitializer.timestamp(Long.parseLong(fromTimestamp));
+      }
+    }
+
+    return OffsetsInitializer.latest();
+  }
+
+  public String getSourceKafkaGroupId() {
+    return getString(FLINK_APP_SOURCE_KAFKA_GROUP_ID);
+  }
+
+  public List<String> getSourceKafkaTopics() {
+    return getList(FLINK_APP_SOURCE_KAFKA_TOPIC);
+  }
+
   private String getSaslJaasConfig(String authType) {
     switch (authType.toUpperCase()) {
       case "IAF":
@@ -485,7 +510,12 @@ public class FlinkEnv {
     }
   }
 
-  public String getKafkaSourceBrokers() {
+  // kafka env
+  public String getSourceKafkaStreamName() {
+    return this.getString(FLINK_APP_SOURCE_KAFKA_STREAM);
+  }
+
+  public String getSourceKafkaBrokers() {
     String env = this.getString(FLINK_APP_SOURCE_KAFKA_ENV);
     String stream = this.getString(FLINK_APP_SOURCE_KAFKA_STREAM);
     String dc = this.getString(FLINK_APP_SOURCE_KAFKA_DC);
@@ -493,15 +523,15 @@ public class FlinkEnv {
     return getKafkaBrokers(env, stream, dc);
   }
 
-  public String getKafkaSinkBrokers() {
+  public String getSinkKafkaStreamName() {
+    return this.getString(FLINK_APP_SINK_KAFKA_STREAM);
+  }
+
+  public String getSinkKafkaBrokers() {
     String env = this.getString(FLINK_APP_SINK_KAFKA_ENV);
     String stream = this.getString(FLINK_APP_SINK_KAFKA_STREAM);
     String dc = this.getString(FLINK_APP_SINK_KAFKA_DC);
 
-    return getKafkaBrokers(env, stream, dc);
-  }
-
-  public String getKafkaSinkBrokers(String env, String stream, String dc) {
     return getKafkaBrokers(env, stream, dc);
   }
 
@@ -514,30 +544,6 @@ public class FlinkEnv {
     CONFIG.put("rheos.kafka." + stream + "." + dc + ".brokers", brokers);
 
     return brokers;
-  }
-
-  public OffsetsInitializer getKafkaSourceStartingOffsets() {
-    if (EnvironmentUtils.isSet(FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP)) {
-      String fromTimestamp = getString(FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP);
-
-      if (fromTimestamp.equalsIgnoreCase("0") || fromTimestamp.equalsIgnoreCase("latest")) {
-        return OffsetsInitializer.latest();
-      } else if (fromTimestamp.equalsIgnoreCase("earliest")) {
-        return OffsetsInitializer.earliest();
-      } else {
-        return OffsetsInitializer.timestamp(Long.parseLong(fromTimestamp));
-      }
-    }
-
-    return OffsetsInitializer.latest();
-  }
-
-  public String getKafkaSourceGroupId() {
-    return getString(FLINK_APP_SOURCE_KAFKA_GROUP_ID);
-  }
-
-  public List<String> getKafkaSourceTopics() {
-    return getList(FLINK_APP_SOURCE_KAFKA_TOPIC);
   }
 
 }

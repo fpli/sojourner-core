@@ -46,11 +46,11 @@ public class SojournerSessionDumperJob {
     // kafka data source
     KafkaSource<SojSession> kafkaSource =
         KafkaSource.<SojSession>builder()
-                   .setBootstrapServers(flinkEnv.getKafkaSourceBrokers())
-                   .setGroupId(flinkEnv.getKafkaSourceGroupId())
-                   .setTopics(flinkEnv.getKafkaSourceTopics())
+                   .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
+                   .setGroupId(flinkEnv.getSourceKafkaGroupId())
+                   .setTopics(flinkEnv.getSourceKafkaTopics())
                    .setProperties(flinkEnv.getKafkaConsumerProps())
-                   .setStartingOffsets(flinkEnv.getKafkaSourceStartingOffsets())
+                   .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                    .setDeserializer(new SojSessionDeserialization())
                    .build();
 

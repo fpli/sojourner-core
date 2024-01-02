@@ -66,12 +66,11 @@ public class SojEventSimpleDistJob {
     // kafka data source
     KafkaSource<SojEvent> kafkaSource =
         KafkaSource.<SojEvent>builder()
-                   .setBootstrapServers(flinkEnv.getKafkaSourceBrokers())
-                   .setGroupId(flinkEnv.getKafkaSourceGroupId())
-                   .setTopics(flinkEnv.getKafkaSourceTopics())
+                   .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
+                   .setGroupId(flinkEnv.getSourceKafkaGroupId())
+                   .setTopics(flinkEnv.getSourceKafkaTopics())
                    .setProperties(flinkEnv.getKafkaConsumerProps())
-                   .setStartingOffsets(flinkEnv.getKafkaSourceStartingOffsets())
-                   //TODO: use new api
+                   .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                    .setDeserializer(KafkaRecordDeserializationSchema.of(
                        new BullseyeSojEventDeserializationSchema()
                    ))
@@ -113,7 +112,7 @@ public class SojEventSimpleDistJob {
     if (DIST_DC_LIST.contains("rno")) {
       KafkaSink<SimpleDistSojEventWrapper> rnoKafkaSink =
           KafkaSink.<SimpleDistSojEventWrapper>builder()
-                   .setBootstrapServers(flinkEnv.getKafkaSinkBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "rno"))
+                   .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "rno"))
                    .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
                    .setRecordSerializer(
                        KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
@@ -139,7 +138,7 @@ public class SojEventSimpleDistJob {
     if (DIST_DC_LIST.contains("lvs")) {
       KafkaSink<SimpleDistSojEventWrapper> lvsKafkaSink =
           KafkaSink.<SimpleDistSojEventWrapper>builder()
-                   .setBootstrapServers(flinkEnv.getKafkaSinkBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "lvs"))
+                   .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "lvs"))
                    .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
                    .setRecordSerializer(
                        KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
@@ -153,7 +152,7 @@ public class SojEventSimpleDistJob {
                    .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                    .build();
 
-      sojEventDistStream.getSideOutput(OutputTagConstants.rnoDistOutputTag)
+      sojEventDistStream.getSideOutput(OutputTagConstants.lvsDistOutputTag)
                         .sinkTo(lvsKafkaSink)
                         .name(NAME_KAFKA_DATA_SINK_LVS)
                         .uid(UID_KAFKA_DATA_SINK_LVS)
@@ -165,7 +164,7 @@ public class SojEventSimpleDistJob {
     if (DIST_DC_LIST.contains("slc")) {
       KafkaSink<SimpleDistSojEventWrapper> slcKafkaSink =
           KafkaSink.<SimpleDistSojEventWrapper>builder()
-                   .setBootstrapServers(flinkEnv.getKafkaSinkBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "slc"))
+                   .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "slc"))
                    .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
                    .setRecordSerializer(
                        KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
@@ -179,7 +178,7 @@ public class SojEventSimpleDistJob {
                    .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                    .build();
 
-      sojEventDistStream.getSideOutput(OutputTagConstants.rnoDistOutputTag)
+      sojEventDistStream.getSideOutput(OutputTagConstants.slcDistOutputTag)
                         .sinkTo(slcKafkaSink)
                         .name(NAME_KAFKA_DATA_SINK_SLC)
                         .uid(UID_KAFKA_DATA_SINK_SLC)

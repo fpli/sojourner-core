@@ -2,7 +2,7 @@ flink:
   app:
     name: Sojourner Simple Distributor Staging
     parallelism:
-      source: 4
+      source: 2
       sink: 1
     source:
       kafka:

@@ -47,10 +47,10 @@ public class SojEventDistJob {
     final String UID_PIPELINE_METRIC = "pipeline-metrics-collector";
 
     // operator name
-    final String NAME_KAFKA_DATA_SOURCE = "Kafka: behavior.totalv3 - SojEvent";
+    final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojEvent", flinkEnv.getSourceKafkaStreamName());
     final String NAME_CONFIG_SOURCE = "PageId Topic Mapping Configs Source";
     final String NAME_DIST = "SojEvent Filter and Distribution";
-    final String NAME_KAFKA_DATA_SINK = "Kafka: behavior.pulsar - SojEvent";
+    final String NAME_KAFKA_DATA_SINK = String.format("Kafka: %s - SojEvent", flinkEnv.getSinkKafkaStreamName());
     final String NAME_PIPELINE_METRIC = "Pipeline Metrics Collector";
 
     // state
@@ -64,12 +64,11 @@ public class SojEventDistJob {
     // kafka data source
     KafkaSource<RawSojEventWrapper> kafkaSource =
         KafkaSource.<RawSojEventWrapper>builder()
-                   .setBootstrapServers(flinkEnv.getKafkaSourceBrokers())
-                   .setGroupId(flinkEnv.getKafkaSourceGroupId())
-                   .setTopics(flinkEnv.getKafkaSourceTopics())
+                   .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
+                   .setGroupId(flinkEnv.getSourceKafkaGroupId())
+                   .setTopics(flinkEnv.getSourceKafkaTopics())
                    .setProperties(flinkEnv.getKafkaConsumerProps())
-                   .setStartingOffsets(flinkEnv.getKafkaSourceStartingOffsets())
-                   //TODO: use new api
+                   .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                    .setDeserializer(KafkaRecordDeserializationSchema.of(
                        new RawSojEventWrapperDeserializationSchema()
                    ))
@@ -119,7 +118,7 @@ public class SojEventDistJob {
     // sink to kafka
     KafkaSink<RawSojEventWrapper> kafkaSink =
         KafkaSink.<RawSojEventWrapper>builder()
-                 .setBootstrapServers(flinkEnv.getKafkaSinkBrokers())
+                 .setBootstrapServers(flinkEnv.getSinkKafkaBrokers())
                  .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
                  .setRecordSerializer(
                      KafkaRecordSerializationSchema.<RawSojEventWrapper>builder()
