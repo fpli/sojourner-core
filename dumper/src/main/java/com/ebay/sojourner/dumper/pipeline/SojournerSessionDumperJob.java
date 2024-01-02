@@ -26,7 +26,7 @@ public class SojournerSessionDumperJob {
   public static void main(String[] args) throws Exception {
 
     FlinkEnv flinkEnv = new FlinkEnv(args);
-    StreamExecutionEnvironment executionEnvironment = flinkEnv.local(10, 9999);
+    StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
     // operator uid
     final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";

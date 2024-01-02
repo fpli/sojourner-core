@@ -6,11 +6,9 @@ import com.ebay.sojourner.common.util.Base64Ebay;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class RvParser implements FieldParser<RawEvent, UbiEvent> {
 
-  private static final Logger log = Logger.getLogger(RvParser.class);
   private static final String CFLGS = "cflgs";
 
   private static int isBitSet(byte[] decodedBuckets, int position) {

@@ -3,12 +3,12 @@ package com.ebay.sojourner.business.util;
 import com.ebay.sojourner.common.model.RawEvent;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
+@Slf4j
 public class LoadRawEventAndExpect {
 
-  private static final Logger logger = Logger.getLogger(LoadRawEventAndExpect.class);
   private static RawEvent rawEvent = null;
   private static Object expectResult = null;
 
@@ -16,11 +16,11 @@ public class LoadRawEventAndExpect {
       Map<String, Object> map, String parser, String caseItem) {
 
     if (StringUtils.isBlank(parser) & StringUtils.isBlank(caseItem)) {
-      logger.error("the parser or caseItem is blank!!!");
+      log.error("the parser or caseItem is blank!!!");
     }
 
     if (map.isEmpty()) {
-      logger.error("the map is empty!!!");
+      log.error("the map is empty!!!");
     }
 
     HashMap<RawEvent, Object> hashMap = new HashMap<>();

@@ -1,11 +1,10 @@
 package com.ebay.sojourner.common.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
+@Slf4j
 public class ValueExtractor {
-
-  private static final Logger log = Logger.getLogger(ValueExtractor.class);
 
   public static String extract(String value, String key) {
     String result = null;

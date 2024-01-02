@@ -8,13 +8,12 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class IframeParserTest {
-
-  private static final Logger logger = Logger.getLogger(IframeParserTest.class);
 
   private static UbiEvent ubiEvent = null;
   private static String parser = null;
@@ -43,7 +42,7 @@ public class IframeParserTest {
             VaildateResult.validateString(entry.getValue(), String.valueOf(ubiEvent.isIframe())));
       }
     } catch (Exception e) {
-      logger.error("iframe test fail!!!");
+      log.error("iframe test fail!!!");
     }
   }
 
@@ -62,7 +61,7 @@ public class IframeParserTest {
             VaildateResult.validateString(entry.getValue(), String.valueOf(ubiEvent.isIframe())));
       }
     } catch (Exception e) {
-      logger.error("iframe test fail!!!");
+      log.error("iframe test fail!!!");
     }
   }
 }

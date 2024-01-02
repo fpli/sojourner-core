@@ -8,13 +8,12 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class ServerParserTest {
-
-  private static final Logger logger = Logger.getLogger(ServerParserTest.class);
 
   private static UbiEvent ubiEvent = null;
   private static String parser = null;
@@ -43,7 +42,7 @@ public class ServerParserTest {
             VaildateResult.validateString(entry.getValue(), ubiEvent.getWebServer()));
       }
     } catch (Exception e) {
-      logger.error("server test fail!!!");
+      log.error("server test fail!!!");
     }
   }
 }

@@ -8,13 +8,12 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class RefererParserTest {
-
-  private static final Logger logger = Logger.getLogger(RefererParserTest.class);
 
   private static UbiEvent ubiEvent = null;
   private static String parser = null;
@@ -42,7 +41,7 @@ public class RefererParserTest {
         System.out.println(VaildateResult.validateString(entry.getValue(), ubiEvent.getReferrer()));
       }
     } catch (Exception e) {
-      logger.error("referer test fail!!!");
+      log.error("referer test fail!!!");
     }
   }
 }

@@ -1,36 +1,28 @@
 package com.ebay.sojourner.distributor.pipeline;
 
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_NAME;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SINK_KAFKA_TOPIC;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_DC;
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_OP_NAME;
-import static com.ebay.sojourner.common.util.Property.SINK_KAFKA_PARALLELISM;
-import static com.ebay.sojourner.common.util.Property.SOURCE_PARALLELISM;
-import static com.ebay.sojourner.common.util.Property.MAX_MESSAGE_BYTES;
-import static com.ebay.sojourner.common.util.Property.DEBUG_MODE;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getList;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getLong;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getStringList;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_PARALLELISM_SINK;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_PARALLELISM_SOURCE;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_ENV;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_STREAM;
+import static org.apache.flink.api.common.eventtime.WatermarkStrategy.noWatermarks;
 
 import com.ebay.sojourner.common.model.SimpleDistSojEventWrapper;
 import com.ebay.sojourner.common.model.SojEvent;
-import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.distributor.function.AddTagMapFunction;
 import com.ebay.sojourner.distributor.function.CFlagFilterFunction;
 import com.ebay.sojourner.distributor.function.SimpleDistSojEventWrapperProcessFunction;
-import com.ebay.sojourner.distributor.function.SinkDataStreamBuilder;
 import com.ebay.sojourner.distributor.function.SojEventDistByColoProcessFunction;
 import com.ebay.sojourner.distributor.schema.bullseye.BullseyeSojEventDeserializationSchema;
-import com.ebay.sojourner.distributor.schema.bullseye.SimpleDistSojEventWrapperSerializationSchema;
-import com.ebay.sojourner.flink.common.DataCenter;
-import com.ebay.sojourner.flink.common.FlinkEnvUtils;
+import com.ebay.sojourner.distributor.schema.bullseye.SimpleDistSojEventWrapperKeySerializerSchema;
+import com.ebay.sojourner.distributor.schema.bullseye.SimpleDistSojEventWrapperValueSerializerSchema;
+import com.ebay.sojourner.flink.common.FlinkEnv;
 import com.ebay.sojourner.flink.common.OutputTagConstants;
-import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import java.util.List;
-import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.connector.base.DeliveryGuarantee;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
+import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -38,117 +30,165 @@ public class SojEventSimpleDistJob {
 
   public static void main(String[] args) throws Exception {
 
-    final StreamExecutionEnvironment executionEnvironment = FlinkEnvUtils.prepare(args);
+    FlinkEnv flinkEnv = new FlinkEnv(args);
+    StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
-    final String DATA_SOURCE_OP_NAME = getString(FLINK_APP_SOURCE_OP_NAME);
-    final String DATA_SOURCE_UID = "sojevent-dist-source";
-    final String FILTER_CFLAG_OP_NAME = "Filter Out Cflag SojEvent";
-    final String FILTER_CFLAG_UID = "filter-out-cflag-sojevent";
-    final String ADD_TAG_OP_NAME = "Add Tag";
-    final String ADD_TAG_OP_UID = "add-tag";
-    final String MAP_RAWSOJEVENTWRAPPER_OP_NAME = "SojEvent To SimpleDistSojEventWrapper";
-    final String MAP_RAWSOJEVENTWRAPPER_OP_UID = "sojevent-to-simpledistsojeventwrapper";
-    final String DIST_OP_NAME = "SimpleDistSojEventWrapper Distribution";
-    final String DIST_UID = "SimpleDistSojEventWrapper-distribution";
-    final String SINK_RNO_OP_NAME = "SojEvent Dist Sink RNO";
-    final String SINK_RNO_UID = "sojevent-dist-sink-rno";
-    final String SINK_SLC_OP_NAME = "SojEvent Dist Sink SLC";
-    final String SINK_SLC_UID = "sojevent-dist-sink-slc";
-    final String SINK_LVS_OP_NAME = "SojEvent Dist Sink LVS";
-    final String SINK_LVS_UID = "sojevent-dist-sink-lvs";
-    final String FLINK_APP_FILTER_TOPIC_CONFIG_KEY = "flink.app.filter.topic-config";
+    // operator uid
+    final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";
+    final String UID_FILTER_CFLAG = "filter-cflg";
+    final String UID_MAP_ADD_TAG = "map-add-tag";
+    final String UID_MAP_RAWSOJEVENTWRAPPER = "sojevent-to-simpledistsojeventwrapper";
+    final String UID_DIST = "dist";
+    final String UID_KAFKA_DATA_SINK_RNO = "kafka-data-sink-rno";
+    final String UID_KAFKA_DATA_SINK_LVS = "kafka-data-sink-lvs";
+    final String UID_KAFKA_DATA_SINK_SLC = "kafka-data-sink-slc";
 
-    SourceDataStreamBuilder<SojEvent> dataStreamBuilder =
-        new SourceDataStreamBuilder<>(executionEnvironment);
+    // operator name
+    final String NAME_KAFKA_DATA_SOURCE = "Kafka: SojEvent";
+    final String NAME_FILTER_CFLAG = "Filter SojEvent by cflag";
+    final String NAME_MAP_ADD_TAG = "Add legacy tag to payload";
+    final String NAME_MAP_RAWSOJEVENTWRAPPER = "SojEvent To SimpleDistSojEventWrapper";
+    final String NAME_DIST = "SojEvent Distribution";
+    final String NAME_KAFKA_DATA_SINK_RNO = "Kafka: Behavior.raw RNO";
+    final String NAME_KAFKA_DATA_SINK_LVS = "Kafka: Behavior.raw LVS";
+    final String NAME_KAFKA_DATA_SINK_SLC = "Kafka: Behavior.raw SLC";
 
-    DataStream<SojEvent> sojEventSourceDataStream = dataStreamBuilder
-        .dc(DataCenter.of(getString(FLINK_APP_SOURCE_DC)))
-        .parallelism(getInteger(SOURCE_PARALLELISM))
-        .operatorName(DATA_SOURCE_OP_NAME)
-        .uid(DATA_SOURCE_UID)
-        .build(new BullseyeSojEventDeserializationSchema());
+    // config
+    final Long LARGE_MESSAGE_MAX_BYTES = flinkEnv.getLong("flink.app.filter.large-message.max-bytes");
+    final List<String> DIST_KEY_LIST = flinkEnv.getStringList("flink.app.dist.key-list", ",");
+    final List<String> DIST_TOPIC_CONFIG_LIST = flinkEnv.getList("flink.app.dist.topic-config");
+    final List<String> DIST_HASH_KEY = flinkEnv.getList("flink.app.dist.hash-key");
+    final List<String> DIST_DC_LIST = flinkEnv.getList("flink.app.dist.dc");
 
-    DataStream<SojEvent> sojEventFilteredDataStream = sojEventSourceDataStream
-        .filter(new CFlagFilterFunction())
-        .name(FILTER_CFLAG_OP_NAME)
-        .uid(FILTER_CFLAG_UID)
-        .setParallelism(getInteger(SOURCE_PARALLELISM));
+    final String SINK_KAFKA_ENV = flinkEnv.getString(FLINK_APP_SINK_KAFKA_ENV);
+    final String SINK_KAFKA_STREAM = flinkEnv.getString(FLINK_APP_SINK_KAFKA_STREAM);
 
-    DataStream<SojEvent> sojEventDataStream = sojEventFilteredDataStream
-        .map(new AddTagMapFunction())
-        .name(ADD_TAG_OP_NAME)
-        .uid(ADD_TAG_OP_UID)
-        .setParallelism(getInteger(SOURCE_PARALLELISM));
+    // kafka data source
+    KafkaSource<SojEvent> kafkaSource =
+        KafkaSource.<SojEvent>builder()
+                   .setBootstrapServers(flinkEnv.getKafkaSourceBrokers())
+                   .setGroupId(flinkEnv.getKafkaSourceGroupId())
+                   .setTopics(flinkEnv.getKafkaSourceTopics())
+                   .setProperties(flinkEnv.getKafkaConsumerProps())
+                   .setStartingOffsets(flinkEnv.getKafkaSourceStartingOffsets())
+                   //TODO: use new api
+                   .setDeserializer(KafkaRecordDeserializationSchema.of(
+                       new BullseyeSojEventDeserializationSchema()
+                   ))
+                   .build();
 
-    DataStream<SimpleDistSojEventWrapper> enrichedSimpleDistSojEventWrapperDataStream =
-        sojEventDataStream
-            .process(new SimpleDistSojEventWrapperProcessFunction(
-                getStringList(Property.FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT, ","),
-                getList(FLINK_APP_FILTER_TOPIC_CONFIG_KEY),
-                getLong(MAX_MESSAGE_BYTES),
-                getBoolean(DEBUG_MODE)))
-            .name(MAP_RAWSOJEVENTWRAPPER_OP_NAME)
-            .uid(MAP_RAWSOJEVENTWRAPPER_OP_UID)
-            .setParallelism(getInteger(SOURCE_PARALLELISM));
+    SingleOutputStreamOperator<SojEvent> sourceDataStream =
+        executionEnvironment.fromSource(kafkaSource, noWatermarks(), NAME_KAFKA_DATA_SOURCE)
+                            .uid(UID_KAFKA_DATA_SOURCE)
+                            .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SOURCE));
+
+    SingleOutputStreamOperator<SojEvent> enrichedSojEventStream =
+        sourceDataStream.filter(new CFlagFilterFunction())
+                        .name(NAME_FILTER_CFLAG)
+                        .uid(UID_FILTER_CFLAG)
+                        .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SOURCE))
+                        .map(new AddTagMapFunction())
+                        .name(NAME_MAP_ADD_TAG)
+                        .uid(UID_MAP_ADD_TAG)
+                        .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SOURCE));
+
+    SingleOutputStreamOperator<SimpleDistSojEventWrapper> simpleDistSojEventWrapperStream =
+        enrichedSojEventStream.process(new SimpleDistSojEventWrapperProcessFunction(
+                                  DIST_KEY_LIST,
+                                  DIST_TOPIC_CONFIG_LIST,
+                                  LARGE_MESSAGE_MAX_BYTES))
+                              .name(NAME_MAP_RAWSOJEVENTWRAPPER)
+                              .uid(UID_MAP_RAWSOJEVENTWRAPPER)
+                              .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SOURCE));
 
     SingleOutputStreamOperator<SimpleDistSojEventWrapper> sojEventDistStream =
-        enrichedSimpleDistSojEventWrapperDataStream
-            .process(
-                new SojEventDistByColoProcessFunction(
-                    getList(Property.DIST_HASH_KEY),
-                    getList(Property.DIST_DC)))
-            .name(DIST_OP_NAME)
-            .uid(DIST_UID)
-            .setParallelism(getInteger(SOURCE_PARALLELISM));
+        simpleDistSojEventWrapperStream.process(new SojEventDistByColoProcessFunction(
+                                           DIST_HASH_KEY,
+                                           DIST_DC_LIST))
+                                       .name(NAME_DIST)
+                                       .uid(UID_DIST)
+                                       .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SOURCE));
 
-    // get side data stream for different dc
-    DataStream<SimpleDistSojEventWrapper> rnoSojEventDistStream = sojEventDistStream
-        .getSideOutput(OutputTagConstants.rnoDistOutputTag);
-    DataStream<SimpleDistSojEventWrapper> lvsSojEventDistStream = sojEventDistStream
-        .getSideOutput(OutputTagConstants.lvsDistOutputTag);
-    DataStream<SimpleDistSojEventWrapper> slcSojEventDistStream = sojEventDistStream
-        .getSideOutput(OutputTagConstants.slcDistOutputTag);
+    // sink to rno behavior.raw
+    if (DIST_DC_LIST.contains("rno")) {
+      KafkaSink<SimpleDistSojEventWrapper> rnoKafkaSink =
+          KafkaSink.<SimpleDistSojEventWrapper>builder()
+                   .setBootstrapServers(flinkEnv.getKafkaSinkBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "rno"))
+                   .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
+                   .setRecordSerializer(
+                       KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
+                                                     .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
+                                                     .setKeySerializationSchema(
+                                                         new SimpleDistSojEventWrapperKeySerializerSchema())
+                                                     .setValueSerializationSchema(
+                                                         new SimpleDistSojEventWrapperValueSerializerSchema())
+                                                     .build()
+                   )
+                   .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
+                   .build();
 
-    // sink to kafka
-    SinkDataStreamBuilder<SimpleDistSojEventWrapper> sinkDataStreamBuilder
-        = new SinkDataStreamBuilder<>();
-    List<String> dcList = getList(Property.DIST_DC);
+      sojEventDistStream.getSideOutput(OutputTagConstants.rnoDistOutputTag)
+                        .sinkTo(rnoKafkaSink)
+                        .name(NAME_KAFKA_DATA_SINK_RNO)
+                        .uid(UID_KAFKA_DATA_SINK_RNO)
+                        .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SINK));
 
-    if (dcList.contains("rno")) {
-      sinkDataStreamBuilder
-          .stream(rnoSojEventDistStream)
-          .topic(getString(FLINK_APP_SINK_KAFKA_TOPIC))
-          .dc(DataCenter.RNO)
-          .parallelism(getInteger(SINK_KAFKA_PARALLELISM))
-          .operatorName(SINK_RNO_OP_NAME)
-          .uid(SINK_RNO_UID)
-          .build(new SimpleDistSojEventWrapperSerializationSchema());
     }
 
-    if (dcList.contains("lvs")) {
-      sinkDataStreamBuilder
-          .stream(lvsSojEventDistStream)
-          .topic(getString(FLINK_APP_SINK_KAFKA_TOPIC))
-          .dc(DataCenter.LVS)
-          .parallelism(getInteger(SINK_KAFKA_PARALLELISM))
-          .operatorName(SINK_LVS_OP_NAME)
-          .uid(SINK_LVS_UID)
-          .build(new SimpleDistSojEventWrapperSerializationSchema());
+    // sink to lvs behavior.raw
+    if (DIST_DC_LIST.contains("lvs")) {
+      KafkaSink<SimpleDistSojEventWrapper> lvsKafkaSink =
+          KafkaSink.<SimpleDistSojEventWrapper>builder()
+                   .setBootstrapServers(flinkEnv.getKafkaSinkBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "lvs"))
+                   .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
+                   .setRecordSerializer(
+                       KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
+                                                     .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
+                                                     .setKeySerializationSchema(
+                                                         new SimpleDistSojEventWrapperKeySerializerSchema())
+                                                     .setValueSerializationSchema(
+                                                         new SimpleDistSojEventWrapperValueSerializerSchema())
+                                                     .build()
+                   )
+                   .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
+                   .build();
+
+      sojEventDistStream.getSideOutput(OutputTagConstants.rnoDistOutputTag)
+                        .sinkTo(lvsKafkaSink)
+                        .name(NAME_KAFKA_DATA_SINK_LVS)
+                        .uid(UID_KAFKA_DATA_SINK_LVS)
+                        .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SINK));
+
     }
 
-    if (dcList.contains("slc")) {
-      sinkDataStreamBuilder
-          .stream(slcSojEventDistStream)
-          .topic(getString(FLINK_APP_SINK_KAFKA_TOPIC))
-          .dc(DataCenter.SLC)
-          .parallelism(getInteger(SINK_KAFKA_PARALLELISM))
-          .operatorName(SINK_SLC_OP_NAME)
-          .uid(SINK_SLC_UID)
-          .build(new SimpleDistSojEventWrapperSerializationSchema());
+    // sink to slc behavior.raw
+    if (DIST_DC_LIST.contains("slc")) {
+      KafkaSink<SimpleDistSojEventWrapper> slcKafkaSink =
+          KafkaSink.<SimpleDistSojEventWrapper>builder()
+                   .setBootstrapServers(flinkEnv.getKafkaSinkBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, "slc"))
+                   .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
+                   .setRecordSerializer(
+                       KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
+                                                     .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
+                                                     .setKeySerializationSchema(
+                                                         new SimpleDistSojEventWrapperKeySerializerSchema())
+                                                     .setValueSerializationSchema(
+                                                         new SimpleDistSojEventWrapperValueSerializerSchema())
+                                                     .build()
+                   )
+                   .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
+                   .build();
+
+      sojEventDistStream.getSideOutput(OutputTagConstants.rnoDistOutputTag)
+                        .sinkTo(slcKafkaSink)
+                        .name(NAME_KAFKA_DATA_SINK_SLC)
+                        .uid(UID_KAFKA_DATA_SINK_SLC)
+                        .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SINK));
+
     }
 
     // Submit this job
-    FlinkEnvUtils.execute(executionEnvironment, getString(FLINK_APP_NAME));
+    flinkEnv.execute(executionEnvironment);
   }
 
 }

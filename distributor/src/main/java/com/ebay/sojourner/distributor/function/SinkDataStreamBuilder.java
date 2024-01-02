@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
 
+@Deprecated
 public class SinkDataStreamBuilder<T> {
 
   private DataStream<T> dataStream;

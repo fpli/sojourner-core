@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
+@Slf4j
 public class FileLoader {
-
-  private static final Logger log = Logger.getLogger(FileLoader.class);
 
   public static String loadContent(String absoluteFilePath, String alternativeResource) {
     String content = null;

@@ -501,6 +501,10 @@ public class FlinkEnv {
     return getKafkaBrokers(env, stream, dc);
   }
 
+  public String getKafkaSinkBrokers(String env, String stream, String dc) {
+    return getKafkaBrokers(env, stream, dc);
+  }
+
   public String getKafkaBrokers(String env, String stream, String dc) {
     Preconditions.checkNotNull(env);
     Preconditions.checkNotNull(stream);

@@ -7,11 +7,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AppIdCategory {
-
-  public static final Logger log = Logger.getLogger(AppIdCategory.class);
 
   public static final Set<Long> MOBILE_APP = new HashSet<Long>();
   public static final Set<Long> DESKTOP_APP = new HashSet<Long>();

@@ -8,6 +8,7 @@ import com.ebay.sojourner.flink.connector.kafka.KafkaDeserializer;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.flink.api.common.serialization.DeserializationSchema.InitializationContext;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -26,16 +27,19 @@ public class BullseyeSojEventDeserializationSchema
       5408, 2501496, 2322090, 2376289, 3418065, 4429486);
 
   @Override
+  public void open(InitializationContext context) throws Exception {
+    log.info("Initialize KafkaDeserializer for SojEvent.");
+    KafkaDeserializationSchema.super.open(context);
+    deserializer = new AvroKafkaDeserializer<>(SojEvent.class);
+  }
+
+  @Override
   public boolean isEndOfStream(SojEvent nextElement) {
     return false;
   }
 
   @Override
   public SojEvent deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
-    if (deserializer == null) {
-      deserializer = new AvroKafkaDeserializer<>(SojEvent.class);
-    }
-
     Headers headers = record.headers();
     Integer pageId = KafkaHeaderUtils.getInt(KafkaMessageHeaders.PAGE_ID, headers);
     // only keep the necessary pageids

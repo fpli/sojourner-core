@@ -9,11 +9,9 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class SqrParser implements FieldParser<RawEvent, UbiEvent> {
 
-  private static final Logger log = Logger.getLogger(SqrParser.class);
   private static final String S_QR_TAG = "sQr";
 
   public void parse(RawEvent rawEvent, UbiEvent ubiEvent) {

@@ -1,0 +1,49 @@
+flink:
+  app:
+    name: Sojourner Simple Distributor Staging
+    parallelism:
+      source: 4
+      sink: 1
+    source:
+      kafka:
+        group-id: sojourner-simple-distributor-staging
+        env: stage
+        stream: behavior.totalv2
+        dc: slc
+        topic:
+          - behavior.totalv2.sojevent-nonbot
+          - behavior.totalv2.sojevent-bot
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: stage
+        stream: behavior.raw
+    filter:
+      large-message:
+        max-bytes: 819200
+    dist:
+      key-list: guid,pageId
+      hash-key:
+        - guid
+        - colo
+      dc:
+        - lvs
+      topic-config:
+        - "bullseye-id-link-sign-in:behavior.raw.bullseye.bullseye_idlink_signin"
+        - "bullseye-view-item:behavior.raw.bullseye.bullseye_viewitem"
+        - "bullseye-interests:behavior.raw.bullseye.interests"
+        - "bullseye-guest-checkout:behavior.raw.bullseye.guest_checkout"
+        - "bullseye-shopping-cart:behavior.raw.bullseye.bullseye_shoppingcart"
+        - "bullseye-ad-type:behavior.raw.bullseye.adtype"
+        - "bullseye-search:behavior.raw.bullseye.bullseye_search"
+
+rheos:
+  registry-url: https://rheos-services.qa.ebay.com
+  client:
+    auth-type: IAF
+    iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+      secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
+      env: staging
+
+

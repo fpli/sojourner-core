@@ -9,13 +9,12 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class TimeStampParserTest {
-
-  private static final Logger logger = Logger.getLogger(TimeStampParserTest.class);
 
   private static UbiEvent ubiEvent = null;
   private static String parser = null;
@@ -45,7 +44,7 @@ public class TimeStampParserTest {
                 entry.getValue(), TypeTransUtil.LongToString(ubiEvent.getEventTimestamp())));
       }
     } catch (Exception e) {
-      logger.error("timestamp test fail!!!");
+      log.error("timestamp test fail!!!");
     }
   }
 
@@ -65,7 +64,7 @@ public class TimeStampParserTest {
                 entry.getValue(), TypeTransUtil.LongToString(ubiEvent.getEventTimestamp())));
       }
     } catch (Exception e) {
-      logger.error("timestamp test fail!!!");
+      log.error("timestamp test fail!!!");
     }
   }
 
@@ -85,7 +84,7 @@ public class TimeStampParserTest {
                 entry.getValue(), TypeTransUtil.LongToString(ubiEvent.getEventTimestamp())));
       }
     } catch (Exception e) {
-      logger.error("timestamp test fail!!!");
+      log.error("timestamp test fail!!!");
     }
   }
 }
