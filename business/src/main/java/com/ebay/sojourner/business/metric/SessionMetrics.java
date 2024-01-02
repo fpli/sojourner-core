@@ -112,5 +112,8 @@ public class SessionMetrics extends RecordMetrics<UbiEvent, SessionAccumulator> 
 
     addFieldMetrics(new GpcMetrics());
 
+    // Add buyer_id extract metrics
+    addFieldMetrics(new BuyerIdMetrics());
+
   }
 }

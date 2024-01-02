@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Realtime Pipeline - totalnew
+    name: Sojourner Realtime Pipeline Preprod - totalnew
     sink:
       dc: rno
       kafka:
@@ -16,17 +16,20 @@ flink:
             agent-ip: behavior.total.new.signature.agentIp
             agent: behavior.total.new.signature.agent
             ip: behavior.total.new.signature.ip
+          metrics: behavior.total.new.session.metrics
+        subject:
+          metrics: behavior.total.new.session.metrics.schema
 
 kafka:
   consumer:
-    group-id: sojourner-pathfinder-realtime-test
+    group-id: sojourner-pathfinder-realtime-preprod-totalnew-test
 
   producer:
     stream: behavior.total.new
     bootstrap-servers:
       rno:
-        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092

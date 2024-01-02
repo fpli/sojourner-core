@@ -17,6 +17,7 @@ flink:
       source-event-slc: slc
       source-event-rno: rno
       session: session
+      metrics: metrics
       cross-session: cross-session
     operator-name:
       source:
@@ -61,12 +62,15 @@ flink:
             agent-ip: behavior.totalv2.signature.agent-ip-rno
             agent: behavior.totalv2.signature.agent-rno
             ip: behavior.totalv2.signature.ip-rno
+          metrics: behavior.totalv2.session.metrics-rno
         subject:
           event: behavior.sojourner.sojevent.schema
           session: behavior.sojourner.sojsession.schema
+          metrics: behavior.sojourner.session.metrics.schema
         message-key:
           session: guid
           event: guid
+          metrics: guid
           signature:
             ip: ip
             agent: userAgent

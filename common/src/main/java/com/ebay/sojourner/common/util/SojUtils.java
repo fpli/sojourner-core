@@ -1,33 +1,39 @@
 package com.ebay.sojourner.common.util;
 
-import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.S_QR_TAG;
-import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_CREATE_TIMESTAMP;
-import static com.ebay.sojourner.common.constant.SojHeaders.EP;
-import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_PRODUCER_TIMESTAMP;
-import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_SENT_TIMESTAMP;
-
 import com.ebay.sojourner.common.model.RawEvent;
+import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.model.UbiEvent;
 import com.ebay.sojourner.common.model.UbiSession;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.ebay.sojourner.common.constant.ApplicationPayloadTags.S_QR_TAG;
+import static com.ebay.sojourner.common.constant.SojHeaders.EP;
+import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_CREATE_TIMESTAMP;
+import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_PRODUCER_TIMESTAMP;
+import static com.ebay.sojourner.common.constant.SojHeaders.PATHFINDER_SENT_TIMESTAMP;
+
 @Slf4j
 public class SojUtils {
     private static final String SPLIT_DEL = "\\|";
+    @Getter
+    private static final List<Integer> intermediateBotFlagList = Arrays.asList(220, 221, 222, 223);
 
     public static boolean isRover3084Click(UbiEvent event) {
         if (event.getPageId() == -1) {
@@ -262,22 +268,49 @@ public class SojUtils {
         sojSession.setIsOpen(ubiSession.isOpenEmit());
         sojSession.setPageId(ubiSession.getPageId());
         sojSession.setSojEventCnt(ubiSession.getAbsEventCnt());
-        Map<String, String> debugMap = new HashMap<>();
-        debugMap.put("validPageCntForIos", Integer.toString(ubiSession.getValidPageCntForIos()));
-        debugMap.put("lndgPageIdForIos", Integer.toString(ubiSession.getLndgPageIdForIos()));
-        debugMap.put("exitPageIdForIos", Integer.toString(ubiSession.getExitPageIdForIos()));
-        debugMap.put("isExistForegroundEvent", Integer.toString(ubiSession.getIsExistForegroundEvent()));
-        debugMap.put("isExistBackgroundEvent", Integer.toString(ubiSession.getIsExistBackgroundEvent()));
-        debugMap.put("validPageCnt", Integer.toString(ubiSession.getValidPageCnt()));
-        debugMap.put("lndgPageId", Integer.toString(ubiSession.getLndgPageId()));
-        debugMap.put("endPageId", Integer.toString(ubiSession.getEndPageId()));
-        debugMap.put("idfa", ubiSession.getIdfa());
-        debugMap.put("firstIosHpTimestamp", Long.toString(ubiSession.getFirstIosHpTimestamp()));
-        debugMap.put("firstIosFgLaunchTimestamp", Long.toString(ubiSession.getFirstIosFgLaunchTimestamp()));
-        debugMap.put("firstCollectionExpTimestamp", Long.toString(ubiSession.getFirstCollectionExpTimestamp()));
-        // sojSession.setDebug(debugMap);
         sojSession.setGpc(ubiSession.getGpc());
         return sojSession;
+    }
+
+    public static SessionMetrics extractSessionMetricsFromUbiSession(UbiSession ubiSession) {
+        SessionMetrics sessionMetrics = new SessionMetrics();
+        sessionMetrics.setGuid(ubiSession.getGuid());
+        sessionMetrics.setSessionId(ubiSession.getSessionId());
+        sessionMetrics.setSessionSkey(ubiSession.getSessionSkey());
+        sessionMetrics.setSojDataDt(ubiSession.getSojDataDt());
+        sessionMetrics.setAbsEndTimestamp(ubiSession.getAbsEndTimestamp());
+        sessionMetrics.setSessionEndDt(ubiSession.getSessionEndDt());
+        // change sojtimestamp to unixtimestamp
+        sessionMetrics.setAbsStartTimestamp(SojTimestamp.getUnixTimestamp(ubiSession.getAbsStartTimestamp()));
+        sessionMetrics.setSessionStartDt(SojTimestamp.getUnixTimestamp(ubiSession.getSessionStartDt()));
+        // Remove any flags that are present in the intermediateBotFlagList
+        sessionMetrics.setBotFlagList(
+            ubiSession.getBotFlagList().stream()
+                .filter(flag -> !SojUtils.getIntermediateBotFlagList().contains(flag))
+                .collect(Collectors.toList()));
+        sessionMetrics.setIsOpen(ubiSession.isOpenEmit());
+        Map<String, String> metricDim = createMetricsMap(ubiSession);
+        sessionMetrics.setMetrics(metricDim);
+        return sessionMetrics;
+    }
+
+    public static Map<String, String> createMetricsMap(UbiSession ubiSession) {
+        Map<String, String> metricsMap = new HashMap<>();
+        metricsMap.put("validPageCnt", Integer.toString(ubiSession.getValidPageCnt()));
+        metricsMap.put("lndgPageId", Integer.toString(ubiSession.getLndgPageId()));
+        metricsMap.put("endPageId", Integer.toString(ubiSession.getEndPageId()));
+        metricsMap.put("homepageCnt", String.valueOf(ubiSession.getHomepageCnt()));
+        metricsMap.put("signinPageCnt", String.valueOf(ubiSession.getSigninPageCnt()));
+        if (StringUtils.isNotEmpty(ubiSession.getIdfa())) {
+            metricsMap.put("idfa", ubiSession.getIdfa());
+        }
+        if (StringUtils.isNotEmpty(ubiSession.getBuyerId())) {
+            metricsMap.put("buyerId", ubiSession.getBuyerId());
+        }
+        if (StringUtils.isNotEmpty(ubiSession.getFirstUserId())) {
+            metricsMap.put("firstUserId", ubiSession.getFirstUserId());
+        }
+        return metricsMap;
     }
 
     public static long getTagMissingCnt(RawEvent rawEvent, String tagName) {

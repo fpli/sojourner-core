@@ -1,5 +1,6 @@
 package com.ebay.sojourner.flink.common;
 
+import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.model.PageCntMetrics;
 import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.SimpleDistSojEventWrapper;
@@ -43,6 +44,13 @@ public class OutputTagConstants {
   public static OutputTag<SojSession> openSessionOutputTag =
       new OutputTag<>("open-session-output-tag", TypeInformation.of(SojSession.class));
 
+  public static OutputTag<SessionMetrics> sessionMetricsOutputTag =
+          new OutputTag<>("session-metrics-output-tag", TypeInformation.of(SessionMetrics.class));
+  public static OutputTag<SessionMetrics> crossDaySessionMetricsOutputTag =
+          new OutputTag<>("cross-day-session-metrics-output-tag", TypeInformation.of(SessionMetrics.class));
+
+  public static OutputTag<SessionMetrics> openSessionMetricsOutputTag =
+          new OutputTag<>("open-session-metrics-output-tag", TypeInformation.of(SessionMetrics.class));
   public static final OutputTag<TagMissingCntMetrics> TAG_MISSING_CNT_METRICS_OUTPUT_TAG =
       new OutputTag<>("tagMissingCntMetrics",
           TypeInformation.of(TagMissingCntMetrics.class));

@@ -1,0 +1,140 @@
+{
+  "type": "record",
+  "name": "SessionMetrics",
+  "namespace": "com.ebay.sojourner.common.model",
+  "fields": [
+    {
+      "name": "rheosHeader",
+      "type": {
+        "type": "record",
+        "name": "RheosHeader",
+        "fields": [
+          {
+            "name": "eventCreateTimestamp",
+            "type": "long"
+          },
+          {
+            "name": "eventSentTimestamp",
+            "type": "long"
+          },
+          {
+            "name": "schemaId",
+            "type": "int"
+          },
+          {
+            "name": "eventId",
+            "type": [
+              "null",
+              {
+                "type": "string",
+                "avro.java.string": "String"
+              }
+            ]
+          },
+          {
+            "name": "producerId",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            }
+          }
+        ]
+      },
+      "doc": "Rheos header"
+    },
+    {
+      "name": "guid",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession guid"
+    },
+    {
+      "name": "sessionSkey",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from ubisession sessionSkey"
+    },
+    {
+      "name": "sessionId",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession sessionId"
+    },
+    {
+      "name": "sojDataDt",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from ubisession sojDataDt"
+    },
+    {
+      "name": "sessionStartDt",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from ubisession sessionStartDt"
+    },
+    {
+      "name": "sessionEndDt",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from ubisession sessionEndDt"
+    },
+    {
+      "name": "absStartTimestamp",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from ubisession absStartTimestamp"
+    },
+    {
+      "name": "absEndTimestamp",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from ubisession absEndTimestamp"
+    },
+    {
+      "name": "botFlagList",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": "int"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "isOpen",
+      "type": [
+        "null",
+        "boolean"
+      ],
+      "doc": "to identify open or end"
+    },
+    {
+      "name": "metrics",
+      "type": [
+        "null",
+        {
+          "type": "map",
+          "values": ["string", "null"]
+        }
+      ],
+      "doc": "Session metrics data map"
+    }
+  ]
+}

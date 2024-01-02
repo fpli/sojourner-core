@@ -16,6 +16,7 @@ flink:
             agent-ip: behavior.totalv3.signature.agent-ip-lvs
             agent: behavior.totalv3.signature.agent-lvs
             ip: behavior.totalv3.signature.ip-lvs
+          metrics: behavior.totalv3.session.metrics-lvs
 
 kafka:
   producer:

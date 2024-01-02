@@ -4,6 +4,7 @@ import com.ebay.sojourner.common.model.BotSignature;
 import com.ebay.sojourner.common.model.JetStreamOutputEvent;
 import com.ebay.sojourner.common.model.JetStreamOutputSession;
 import com.ebay.sojourner.common.model.RawEvent;
+import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.util.SojTimestamp;
@@ -28,7 +29,6 @@ public class TimestampFieldExtractor {
         log.warn("parse sessionstartdt failed: ", e);
         return System.currentTimeMillis();
       }
-
     } else if (t instanceof SojEvent) {
       SojEvent sojEvent = (SojEvent) t;
       return sojEvent.getEventTimestamp();
@@ -42,6 +42,17 @@ public class TimestampFieldExtractor {
     } else if (t instanceof BotSignature) {
       BotSignature botSignature = (BotSignature) t;
       return botSignature.getExpirationTime();
+    } else if (t instanceof SessionMetrics) {
+      SessionMetrics sessionMetrics = (SessionMetrics) t;
+      try {
+        return SojTimestamp.getSojTimestampToUnixTimestamp(sessionMetrics.getAbsEndTimestamp());
+      } catch (Exception e) {
+        log.warn(
+                "failed session record: " + sessionMetrics.toString() + "; guid: "
+                  + sessionMetrics.getGuid() + "; sessionskey: " + sessionMetrics.getSessionSkey());
+        log.warn("parse session-metrics startdt failed: ", e);
+        return System.currentTimeMillis();
+      }
     } else {
       throw new IllegalStateException("Cannot extract timestamp filed for generate watermark");
     }
