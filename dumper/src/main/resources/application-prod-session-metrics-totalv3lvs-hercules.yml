@@ -57,9 +57,10 @@ flink:
     sink:
       hdfs:
         path:
-          open: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=open
-          same-day: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=sameday
-          cross-day: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=crossday
+          metrics:
+            open: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=open
+            same-day: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=sameday
+            cross-day: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=crossday
         watermark-path: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/ubi_session_metrics_watermark_lkp
 
 
