@@ -63,7 +63,7 @@
       <artifactId>okhttp</artifactId>
     </dependency>
 
-    <!-- hadoop dependency -->
+    <!-- TODO: below dependencies should be removed -->
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-client</artifactId>
@@ -74,7 +74,7 @@
       <artifactId>joda-time</artifactId>
     </dependency>
 
-    <!--  This needs to be moved to Business module  -->
+    <!-- TODO: this needs to be moved to Business module  -->
     <dependency>
       <groupId>com.ebay.platform.dds</groupId>
       <artifactId>dds-api</artifactId>

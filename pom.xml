@@ -40,7 +40,7 @@
 
     <!--  Serialization  -->
     <avro.version>1.11.1</avro.version>
-    <jackson.version>2.12.2</jackson.version>
+    <jackson.version>2.16.1</jackson.version>
 
     <!--  Flink & Hadoop  -->
     <flink.version>1.17.1</flink.version>
@@ -455,46 +455,6 @@
   </pluginRepositories>
 
   <profiles>
-    <!-- This profile helps to make things run out of the box in IntelliJ -->
-    <!-- Its adds Flink's core classes to the runtime class path. -->
-    <!-- Otherwise they are missing in IntelliJ, because the dependency is 'provided' -->
-<!--    <profile>-->
-<!--      <id>Flink-IDEA</id>-->
-<!--      <activation>-->
-<!--        <activeByDefault>true</activeByDefault>-->
-<!--        <property>-->
-<!--          <name>idea.version</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-
-<!--      <dependencies>-->
-<!--        <dependency>-->
-<!--          <groupId>org.apache.flink</groupId>-->
-<!--          <artifactId>flink-streaming-java</artifactId>-->
-<!--          <scope>compile</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--          <groupId>org.apache.flink</groupId>-->
-<!--          <artifactId>flink-runtime-web</artifactId>-->
-<!--          <scope>compile</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--          <groupId>org.apache.avro</groupId>-->
-<!--          <artifactId>avro</artifactId>-->
-<!--          <scope>compile</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--          <groupId>org.apache.flink</groupId>-->
-<!--          <artifactId>flink-statebackend-rocksdb</artifactId>-->
-<!--          <scope>compile</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--          <groupId>org.apache.hadoop</groupId>-->
-<!--          <artifactId>hadoop-client</artifactId>-->
-<!--          <scope>compile</scope>-->
-<!--        </dependency>-->
-<!--      </dependencies>-->
-<!--    </profile>-->
     <profile>
       <id>sonar</id>
       <activation>
@@ -519,17 +479,6 @@
       </properties>
     </profile>
   </profiles>
-
-  <distributionManagement>
-    <repository>
-      <id>ebay-data-releases</id>
-      <url>http://nxrepository.corp.ebay.com/nexus/content/repositories/ebay.data.releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>ebay-data-snapshots</id>
-      <url>http://nxrepository.corp.ebay.com/nexus/content/repositories/ebay.data.snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <build>
     <pluginManagement>
