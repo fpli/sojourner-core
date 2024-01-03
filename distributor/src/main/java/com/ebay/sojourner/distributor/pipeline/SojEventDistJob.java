@@ -132,8 +132,7 @@ public class SojEventDistJob {
                  .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                  .build();
 
-    sojEventDistStream.shuffle()
-                      .sinkTo(kafkaSink)
+    sojEventDistStream.sinkTo(kafkaSink)
                       .name(NAME_KAFKA_DATA_SINK)
                       .uid(UID_KAFKA_DATA_SINK)
                       .setParallelism(flinkEnv.getInteger(FLINK_APP_PARALLELISM_SINK));

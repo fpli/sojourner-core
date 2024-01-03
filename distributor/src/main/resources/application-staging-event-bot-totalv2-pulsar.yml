@@ -3,7 +3,7 @@ flink:
     name: Sojourner Distributor Staging - Bot Event
     parallelism:
       source: 4
-      sink: 1
+      sink: 4
     source:
       kafka:
         group-id: sojourner-distributor-event-staging
