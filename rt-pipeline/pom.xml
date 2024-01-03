@@ -15,6 +15,11 @@
   <artifactId>sojourner-rt-pipeline</artifactId>
   <packaging>jar</packaging>
 
+  <properties>
+    <flink.scope>provided</flink.scope>
+    <hadoop.scope>provided</hadoop.scope>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.ebay.sojourner</groupId>

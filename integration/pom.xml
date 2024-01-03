@@ -12,12 +12,14 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <name>Sojourner - Integration</name>
   <artifactId>sojourner-integration</artifactId>
   <packaging>jar</packaging>
-  <name>Sojourner - Integration</name>
 
   <properties>
     <sonar.skip>true</sonar.skip>
+    <flink.scope>provided</flink.scope>
+    <hadoop.scope>provided</hadoop.scope>
   </properties>
 
   <dependencies>

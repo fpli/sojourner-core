@@ -12,9 +12,14 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <name>Sojourner - Distributor</name>
   <artifactId>sojourner-distributor</artifactId>
   <packaging>jar</packaging>
-  <name>Sojourner - Distributor</name>
+
+  <properties>
+    <flink.scope>provided</flink.scope>
+    <hadoop.scope>provided</hadoop.scope>
+  </properties>
 
   <dependencies>
     <dependency>

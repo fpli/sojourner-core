@@ -43,7 +43,7 @@
     <jackson.version>2.12.2</jackson.version>
 
     <!--  Flink & Hadoop  -->
-    <flink.version>1.17.0</flink.version>
+    <flink.version>1.17.1</flink.version>
     <hadoop.version>3.3.3</hadoop.version>
     <parquet-avro.version>1.12.3</parquet-avro.version>
     <rheos.client.version>2.0.16</rheos.client.version>
@@ -59,7 +59,11 @@
     <jacoco.plugin.version>0.8.5</jacoco.plugin.version>
     <compiler.plugin.version>3.11.0</compiler.plugin.version>
     <surefire.plugin.version>3.1.2</surefire.plugin.version>
-    <shade.plugin.version>3.5.0</shade.plugin.version>
+    <shade.plugin.version>3.1.1</shade.plugin.version>
+
+    <!--  Scope  -->
+    <flink.scope>compile</flink.scope>
+    <hadoop.scope>compile</hadoop.scope>
 
     <sonar.coverage.exclusions>
       src/main/java/com/ebay/sojourner/rt/pipeline/*.java,
@@ -152,7 +156,7 @@
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-client</artifactId>
         <version>${hadoop.version}</version>
-        <scope>provided</scope>
+        <scope>${hadoop.scope}</scope>
         <exclusions>
           <exclusion>
             <groupId>org.slf4j</groupId>
@@ -188,23 +192,22 @@
       <!--  Flink  -->
       <dependency>
         <groupId>org.apache.flink</groupId>
-        <artifactId>flink-streaming-java</artifactId>
+        <artifactId>flink-clients</artifactId>
         <version>${flink.version}</version>
-        <type>jar</type>
-        <scope>provided</scope>
+        <scope>${flink.scope}</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.flink</groupId>
         <artifactId>flink-statebackend-rocksdb</artifactId>
         <version>${flink.version}</version>
-        <scope>provided</scope>
+        <scope>${flink.scope}</scope>
       </dependency>
       <!-- runtime-web is needed to start Web UI from IDE -->
       <dependency>
         <groupId>org.apache.flink</groupId>
         <artifactId>flink-runtime-web</artifactId>
         <version>${flink.version}</version>
-        <scope>provided</scope>
+        <scope>${flink.scope}</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.flink</groupId>
@@ -455,43 +458,43 @@
     <!-- This profile helps to make things run out of the box in IntelliJ -->
     <!-- Its adds Flink's core classes to the runtime class path. -->
     <!-- Otherwise they are missing in IntelliJ, because the dependency is 'provided' -->
-    <profile>
-      <id>Flink-IDEA</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-        <property>
-          <name>idea.version</name>
-        </property>
-      </activation>
+<!--    <profile>-->
+<!--      <id>Flink-IDEA</id>-->
+<!--      <activation>-->
+<!--        <activeByDefault>true</activeByDefault>-->
+<!--        <property>-->
+<!--          <name>idea.version</name>-->
+<!--        </property>-->
+<!--      </activation>-->
 
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.flink</groupId>
-          <artifactId>flink-streaming-java</artifactId>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.flink</groupId>
-          <artifactId>flink-runtime-web</artifactId>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.avro</groupId>
-          <artifactId>avro</artifactId>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.flink</groupId>
-          <artifactId>flink-statebackend-rocksdb</artifactId>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-client</artifactId>
-          <scope>compile</scope>
-        </dependency>
-      </dependencies>
-    </profile>
+<!--      <dependencies>-->
+<!--        <dependency>-->
+<!--          <groupId>org.apache.flink</groupId>-->
+<!--          <artifactId>flink-streaming-java</artifactId>-->
+<!--          <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>org.apache.flink</groupId>-->
+<!--          <artifactId>flink-runtime-web</artifactId>-->
+<!--          <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>org.apache.avro</groupId>-->
+<!--          <artifactId>avro</artifactId>-->
+<!--          <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>org.apache.flink</groupId>-->
+<!--          <artifactId>flink-statebackend-rocksdb</artifactId>-->
+<!--          <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>org.apache.hadoop</groupId>-->
+<!--          <artifactId>hadoop-client</artifactId>-->
+<!--          <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--      </dependencies>-->
+<!--    </profile>-->
     <profile>
       <id>sonar</id>
       <activation>
