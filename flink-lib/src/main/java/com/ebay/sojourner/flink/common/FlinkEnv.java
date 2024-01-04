@@ -8,6 +8,8 @@ import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKP
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_TIMEOUT_MS;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_TOLERATE_FAILURE_COUNT;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_NAME;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_PARALLELISM_SINK;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_PARALLELISM_SOURCE;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_DC;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_ENV;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_STREAM;
@@ -288,6 +290,14 @@ public class FlinkEnv {
     return EnvironmentUtils.getStringList(key, delimiter);
   }
 
+  // env shortcuts
+  public Integer getSourceParallelism() {
+    return this.getInteger(FLINK_APP_PARALLELISM_SOURCE);
+  }
+
+  public Integer getSinkParallelism() {
+    return this.getInteger(FLINK_APP_PARALLELISM_SINK);
+  }
 
   // kafka client configs
   public Properties getKafkaConsumerProps() {

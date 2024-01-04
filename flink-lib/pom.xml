@@ -8,7 +8,7 @@
     <artifactId>sojourner-parent</artifactId>
     <groupId>com.ebay.sojourner</groupId>
     <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-    <version>1.14.0.2-SNAPSHOT</version>
+    <version>1.14.0.3-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -80,14 +80,6 @@
     <dependency>
       <groupId>org.xerial.snappy</groupId>
       <artifactId>snappy-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.ebay.rheos</groupId>
-      <artifactId>flink-connector-kafka-ha</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.ws.rs</groupId>
-      <artifactId>jakarta.ws.rs-api</artifactId>
     </dependency>
 
     <!--  Test Dependencies  -->

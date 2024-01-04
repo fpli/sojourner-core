@@ -6,7 +6,7 @@
     <groupId>com.ebay.sojourner</groupId>
     <artifactId>sojourner-parent</artifactId>
     <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-    <version>1.14.0.2-SNAPSHOT</version>
+    <version>1.14.0.3-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -28,14 +28,15 @@
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>jersey-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>jersey-core</artifactId>
+          <groupId>com.ebay.platform.dds</groupId>
+          <artifactId>dds-api</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <!-- rheos ha kafka connector -->
+    <dependency>
+      <groupId>io.ebay.rheos</groupId>
+      <artifactId>flink-connector-kafka-ha</artifactId>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>

@@ -6,7 +6,7 @@
     <groupId>com.ebay.sojourner</groupId>
     <artifactId>sojourner-parent</artifactId>
     <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-    <version>1.14.0.2-SNAPSHOT</version>
+    <version>1.14.0.3-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -26,17 +26,6 @@
       <groupId>com.ebay.sojourner</groupId>
       <artifactId>sojourner-flink-lib</artifactId>
       <version>${project.version}</version>
-      <!--  temporally exlude flink 1.13 libs  -->
-      <exclusions>
-        <exclusion>
-          <groupId>io.ebay.rheos</groupId>
-          <artifactId>flink-connector-kafka-ha</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.ws.rs</groupId>
-          <artifactId>jakarta.ws.rs-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.ebay.sojourner</groupId>

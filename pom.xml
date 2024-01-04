@@ -6,7 +6,7 @@
   <groupId>com.ebay.sojourner</groupId>
   <artifactId>sojourner-parent</artifactId>
   <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-  <version>1.14.0.2-SNAPSHOT</version>
+  <version>1.14.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Sojourner - Parent</name>
@@ -40,13 +40,14 @@
 
     <!--  Serialization  -->
     <avro.version>1.11.1</avro.version>
-    <jackson.version>2.16.1</jackson.version>
+    <jackson.version>2.12.2</jackson.version>
 
     <!--  Flink & Hadoop  -->
     <flink.version>1.17.1</flink.version>
     <hadoop.version>3.3.3</hadoop.version>
     <parquet-avro.version>1.12.3</parquet-avro.version>
     <rheos.client.version>2.0.16</rheos.client.version>
+    <rheos.flink-connector-kafka-ha.version>1.13.5</rheos.flink-connector-kafka-ha.version>
     <rheos.job.uploader.plugin.version>1.0.1-SNAPSHOT</rheos.job.uploader.plugin.version>
 
     <!--  Tests  -->
@@ -279,12 +280,7 @@
       <dependency>
         <groupId>io.ebay.rheos</groupId>
         <artifactId>flink-connector-kafka-ha</artifactId>
-        <version>1.13.5</version>
-      </dependency>
-      <dependency>
-        <groupId>jakarta.ws.rs</groupId>
-        <artifactId>jakarta.ws.rs-api</artifactId>
-        <version>2.1.6</version>
+        <version>${rheos.flink-connector-kafka-ha.version}</version>
       </dependency>
       <!--  Rheos:end  -->
 
