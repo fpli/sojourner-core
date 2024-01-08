@@ -61,6 +61,7 @@
     <compiler.plugin.version>3.11.0</compiler.plugin.version>
     <surefire.plugin.version>3.1.2</surefire.plugin.version>
     <shade.plugin.version>3.1.1</shade.plugin.version>
+    <checkstyle.plugin.version>3.3.1</checkstyle.plugin.version>
 
     <!--  Scope  -->
     <flink.scope>compile</flink.scope>
@@ -494,16 +495,8 @@
           <artifactId>maven-shade-plugin</artifactId>
           <version>${shade.plugin.version}</version>
         </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.1.0</version>
-          <configuration>
-            <tarLongFileMode>posix</tarLongFileMode>
-          </configuration>
-        </plugin>
 
-        <!--job-uploader-maven-plugin-->
+        <!-- rheos job-uploader-maven-plugin -->
         <plugin>
           <groupId>io.ebay.rheos.streaming</groupId>
           <artifactId>job-uploader-maven-plugin</artifactId>
@@ -511,18 +504,17 @@
         </plugin>
 
         <!--  Checkstyle plugin  -->
-        <!--  TODO: upgrade me  -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.1.1</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.puppycrawl.tools</groupId>
-              <artifactId>checkstyle</artifactId>
-              <version>8.12</version>
-            </dependency>
-          </dependencies>
+          <version>${checkstyle.plugin.version}</version>
+          <configuration>
+            <configLocation>/tools/maven/checkstyle.xml</configLocation>
+            <suppressionsLocation>/tools/maven/suppressions.xml</suppressionsLocation>
+            <includeTestSourceDirectory>false</includeTestSourceDirectory>
+            <logViolationsToConsole>true</logViolationsToConsole>
+            <failOnViolation>true</failOnViolation>
+          </configuration>
           <executions>
             <execution>
               <id>validate</id>
@@ -532,13 +524,6 @@
               </goals>
             </execution>
           </executions>
-          <configuration>
-            <suppressionsLocation>/tools/maven/suppressions.xml</suppressionsLocation>
-            <includeTestSourceDirectory>false</includeTestSourceDirectory>
-            <configLocation>/tools/maven/checkstyle.xml</configLocation>
-            <logViolationsToConsole>true</logViolationsToConsole>
-            <failOnViolation>true</failOnViolation>
-          </configuration>
         </plugin>
 
         <!-- Build info related plugins  -->

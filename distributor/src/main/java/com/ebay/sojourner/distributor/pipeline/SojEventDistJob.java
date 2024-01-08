@@ -46,7 +46,8 @@ public class SojEventDistJob {
         final String UID_PIPELINE_METRIC = "pipeline-metrics-collector";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojEvent", flinkEnv.getSourceKafkaStreamName());
+        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojEvent",
+                                                            flinkEnv.getSourceKafkaStreamName());
         final String NAME_CONFIG_SOURCE = "PageId Topic Mapping Configs Source";
         final String NAME_DIST = "SojEvent Filter and Distribution";
         final String NAME_KAFKA_DATA_SINK = String.format("Kafka: %s - SojEvent", flinkEnv.getSinkKafkaStreamName());

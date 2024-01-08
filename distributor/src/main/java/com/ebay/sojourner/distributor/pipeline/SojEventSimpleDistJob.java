@@ -94,16 +94,16 @@ public class SojEventSimpleDistJob {
                                 .setParallelism(flinkEnv.getSourceParallelism());
 
         SingleOutputStreamOperator<SimpleDistSojEventWrapper> simpleDistSojEventWrapperStream =
-                enrichedSojEventStream.process(new SimpleDistSojEventWrapperProcessFunction(
-                                              DIST_KEY_LIST,
-                                              DIST_TOPIC_CONFIG_LIST,
-                                              LARGE_MESSAGE_MAX_BYTES))
+                enrichedSojEventStream.process(new SimpleDistSojEventWrapperProcessFunction(DIST_KEY_LIST,
+                                                                                            DIST_TOPIC_CONFIG_LIST,
+                                                                                            LARGE_MESSAGE_MAX_BYTES))
                                       .name(NAME_MAP_RAWSOJEVENTWRAPPER)
                                       .uid(UID_MAP_RAWSOJEVENTWRAPPER)
                                       .setParallelism(flinkEnv.getSourceParallelism());
 
         SingleOutputStreamOperator<SimpleDistSojEventWrapper> sojEventDistStream =
-                simpleDistSojEventWrapperStream.process(new SojEventDistByColoProcessFunction(DIST_HASH_KEY, DIST_DC_LIST))
+                simpleDistSojEventWrapperStream.process(new SojEventDistByColoProcessFunction(DIST_HASH_KEY,
+                                                                                              DIST_DC_LIST))
                                                .name(NAME_DIST)
                                                .uid(UID_DIST)
                                                .setParallelism(flinkEnv.getSourceParallelism());
@@ -112,17 +112,18 @@ public class SojEventSimpleDistJob {
         if (DIST_DC_LIST.contains(RNO.toString())) {
             KafkaSink<SimpleDistSojEventWrapper> rnoKafkaSink =
                     KafkaSink.<SimpleDistSojEventWrapper>builder()
-                             .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, RNO.toString()))
+                             .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV,
+                                                                           SINK_KAFKA_STREAM,
+                                                                           RNO.toString()))
                              .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
-                             .setRecordSerializer(
-                                     KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
-                                                                   .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
-                                                                   .setKeySerializationSchema(
-                                                                           new SimpleDistSojEventWrapperKeySerializerSchema())
-                                                                   .setValueSerializationSchema(
-                                                                           new SimpleDistSojEventWrapperValueSerializerSchema())
-                                                                   .build()
-                             )
+                             .setRecordSerializer(KafkaRecordSerializationSchema
+                                                          .<SimpleDistSojEventWrapper>builder()
+                                                          .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
+                                                          .setKeySerializationSchema(
+                                                                  new SimpleDistSojEventWrapperKeySerializerSchema())
+                                                          .setValueSerializationSchema(
+                                                                  new SimpleDistSojEventWrapperValueSerializerSchema())
+                                                          .build())
                              .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                              .build();
 
@@ -138,17 +139,18 @@ public class SojEventSimpleDistJob {
         if (DIST_DC_LIST.contains(LVS.toString())) {
             KafkaSink<SimpleDistSojEventWrapper> lvsKafkaSink =
                     KafkaSink.<SimpleDistSojEventWrapper>builder()
-                             .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, LVS.toString()))
+                             .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV,
+                                                                           SINK_KAFKA_STREAM,
+                                                                           LVS.toString()))
                              .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
-                             .setRecordSerializer(
-                                     KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
-                                                                   .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
-                                                                   .setKeySerializationSchema(
-                                                                           new SimpleDistSojEventWrapperKeySerializerSchema())
-                                                                   .setValueSerializationSchema(
-                                                                           new SimpleDistSojEventWrapperValueSerializerSchema())
-                                                                   .build()
-                             )
+                             .setRecordSerializer(KafkaRecordSerializationSchema
+                                                          .<SimpleDistSojEventWrapper>builder()
+                                                          .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
+                                                          .setKeySerializationSchema(
+                                                                  new SimpleDistSojEventWrapperKeySerializerSchema())
+                                                          .setValueSerializationSchema(
+                                                                  new SimpleDistSojEventWrapperValueSerializerSchema())
+                                                          .build())
                              .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                              .build();
 
@@ -164,17 +166,18 @@ public class SojEventSimpleDistJob {
         if (DIST_DC_LIST.contains(SLC.toString())) {
             KafkaSink<SimpleDistSojEventWrapper> slcKafkaSink =
                     KafkaSink.<SimpleDistSojEventWrapper>builder()
-                             .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV, SINK_KAFKA_STREAM, SLC.toString()))
+                             .setBootstrapServers(flinkEnv.getKafkaBrokers(SINK_KAFKA_ENV,
+                                                                           SINK_KAFKA_STREAM,
+                                                                           SLC.toString()))
                              .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
-                             .setRecordSerializer(
-                                     KafkaRecordSerializationSchema.<SimpleDistSojEventWrapper>builder()
-                                                                   .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
-                                                                   .setKeySerializationSchema(
-                                                                           new SimpleDistSojEventWrapperKeySerializerSchema())
-                                                                   .setValueSerializationSchema(
-                                                                           new SimpleDistSojEventWrapperValueSerializerSchema())
-                                                                   .build()
-                             )
+                             .setRecordSerializer(KafkaRecordSerializationSchema
+                                                          .<SimpleDistSojEventWrapper>builder()
+                                                          .setTopicSelector(SimpleDistSojEventWrapper::getTopic)
+                                                          .setKeySerializationSchema(
+                                                                  new SimpleDistSojEventWrapperKeySerializerSchema())
+                                                          .setValueSerializationSchema(
+                                                                  new SimpleDistSojEventWrapperValueSerializerSchema())
+                                                          .build())
                              .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                              .build();
 

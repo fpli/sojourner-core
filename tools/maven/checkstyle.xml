@@ -55,6 +55,12 @@
 
   <module name="NewlineAtEndOfFile"/>
 
+  <module name="LineLength">
+    <property name="fileExtensions" value="java" />
+    <property name="max" value="120"/>
+    <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+  </module>
+
   <module name="TreeWalker">
     <!--
     If you wish to turn off checking for a section of code, you can put a comment in the source
@@ -118,12 +124,6 @@
         value="Method type name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="GenericWhitespace"/>
-
-    <module name="LineLength">
-      <property name="max" value="120"/>
-      <property name="ignorePattern"
-        value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
-    </module>
 
     <!-- TODO: disabled - indentation is currently inconsistent -->
     <!--

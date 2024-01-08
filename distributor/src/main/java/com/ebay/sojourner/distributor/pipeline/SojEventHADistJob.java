@@ -85,9 +85,10 @@ public class SojEventHADistJob {
                 new ListStateDescriptor<>(STATE_CUSTOM_TOPIC_CONFIG, CustomTopicConfig.class);
 
         DataStream<PageIdTopicMapping> configSourceStream =
-                executionEnvironment.addSource(new CustomTopicConfigSourceFunction(flinkEnv.getString(REST_CLIENT_BASE_URL),
-                                                                                   flinkEnv.getString(REST_CLIENT_CONFIG_PROFILE),
-                                                                                   customTopicConfigListStateDescriptor))
+                executionEnvironment.addSource(new CustomTopicConfigSourceFunction(
+                                            flinkEnv.getString(REST_CLIENT_BASE_URL),
+                                            flinkEnv.getString(REST_CLIENT_CONFIG_PROFILE),
+                                            customTopicConfigListStateDescriptor))
                                     .name(NAME_CONFIG_SOURCE)
                                     .uid(UID_CONFIG_SOURCE)
                                     .setParallelism(1);

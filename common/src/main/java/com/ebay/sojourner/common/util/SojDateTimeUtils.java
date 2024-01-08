@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 // TODO: add UT for me
 public class SojDateTimeUtils {
 
-  public static ZoneId eBayServerZoneId() {
+  public static ZoneId ebayServerZoneId() {
     return ZoneId.of("GMT-7");
   }
 
@@ -38,16 +38,16 @@ public class SojDateTimeUtils {
   }
 
   public static String toDateString(long epochMilli) {
-    return toDateString(epochMilli, eBayServerZoneId(), null);
+    return toDateString(epochMilli, ebayServerZoneId(), null);
   }
 
   public static String toDateString(long epochMilli, DateTimeFormatter formatter) {
-    return toDateString(epochMilli, eBayServerZoneId(), formatter);
+    return toDateString(epochMilli, ebayServerZoneId(), formatter);
   }
 
   public static String toHrString(long epochMilli) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
-    return toDateString(epochMilli, eBayServerZoneId(), formatter);
+    return toDateString(epochMilli, ebayServerZoneId(), formatter);
   }
 
 }

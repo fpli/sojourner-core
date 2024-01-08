@@ -29,7 +29,8 @@ public class SojSessionDistJob {
         final String UID_KAFKA_DATA_SINK = "kafka-data-sink";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojSession", flinkEnv.getSourceKafkaStreamName());
+        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojSession",
+                                                            flinkEnv.getSourceKafkaStreamName());
         final String NAME_MAP_ENHANCE = "SojSession Enhancement";
         final String NAME_KAFKA_DATA_SINK = "Kafka: behavior.pulsar - SojSession";
 
@@ -72,8 +73,7 @@ public class SojSessionDistJob {
                                                                        new RawSojSessionWrapperKeySerializerSchema())
                                                                .setValueSerializationSchema(
                                                                        new RawSojSessionWrapperValueSerializerSchema())
-                                                               .build()
-                         )
+                                                               .build())
                          .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                          .build();
 
