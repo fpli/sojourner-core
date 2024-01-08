@@ -1,62 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>sojourner-parent</artifactId>
-    <groupId>com.ebay.sojourner</groupId>
-    <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-    <version>1.14.0.3-SNAPSHOT</version>
-    <relativePath>..</relativePath>
-  </parent>
+    <parent>
+        <artifactId>sojourner-parent</artifactId>
+        <groupId>com.ebay.sojourner</groupId>
+        <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
+        <version>1.14.0.3-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
 
-  <name>Sojourner - Business</name>
-  <artifactId>sojourner-business</artifactId>
-  <packaging>jar</packaging>
+    <name>Sojourner - Business</name>
+    <artifactId>sojourner-business</artifactId>
+    <packaging>jar</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.ebay.sojourner</groupId>
-      <artifactId>sojourner-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-client</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.ebay.sojourner</groupId>
+            <artifactId>sojourner-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- TODO: hadoop dependency should be removed from business -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <rule>
-                  <element>BUNDLE</element>
-                  <limits>
-                    <limit>
-                      <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.8</minimum>
-                    </limit>
-                  </limits>
-                </rule>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.8</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -1,93 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>sojourner-parent</artifactId>
-    <groupId>com.ebay.sojourner</groupId>
-    <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
-    <version>1.14.0.3-SNAPSHOT</version>
-    <relativePath>..</relativePath>
-  </parent>
+    <parent>
+        <artifactId>sojourner-parent</artifactId>
+        <groupId>com.ebay.sojourner</groupId>
+        <!-- DO NOT change version manually, this is managed by change_pom_version.sh script -->
+        <version>1.14.0.3-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
 
-  <name>Sojourner - Flink Lib</name>
-  <artifactId>sojourner-flink-lib</artifactId>
-  <packaging>jar</packaging>
+    <name>Sojourner - Flink Lib</name>
+    <artifactId>sojourner-flink-lib</artifactId>
+    <packaging>jar</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.ebay.sojourner</groupId>
-      <artifactId>sojourner-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.ebay.sojourner</groupId>
+            <artifactId>sojourner-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <!-- Flink -->
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-clients</artifactId>
-    </dependency>
-    <!-- runtime-web dependency is need to start web UI from IDE -->
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-runtime-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-statebackend-rocksdb</artifactId>
-    </dependency>
+        <!-- Flink -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-runtime-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-statebackend-rocksdb</artifactId>
+        </dependency>
 
-    <!-- flink metrics -->
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-metrics-dropwizard</artifactId>
-    </dependency>
-    <!--  flink kafka connector  -->
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-kafka</artifactId>
-    </dependency>
-    <!-- flink files connector -->
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-files</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-parquet</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-avro</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.parquet</groupId>
-      <artifactId>parquet-avro</artifactId>
-    </dependency>
+        <!-- flink metrics -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-metrics-dropwizard</artifactId>
+        </dependency>
+        <!--  flink kafka connector  -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-kafka</artifactId>
+        </dependency>
+        <!-- flink files connector -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-files</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-parquet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-avro</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.parquet</groupId>
+            <artifactId>parquet-avro</artifactId>
+        </dependency>
 
-    <!-- hadoop dependency -->
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-client</artifactId>
-    </dependency>
+        <!-- hadoop dependency -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+        </dependency>
 
-    <!-- rheos dependencies-->
-    <dependency>
-      <groupId>io.ebay.rheos</groupId>
-      <artifactId>rheos-client_JDK-1.8</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.xerial.snappy</groupId>
-      <artifactId>snappy-java</artifactId>
-    </dependency>
+        <!-- rheos dependencies-->
+        <dependency>
+            <groupId>io.ebay.rheos</groupId>
+            <artifactId>rheos-client_JDK-1.8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial.snappy</groupId>
+            <artifactId>snappy-java</artifactId>
+        </dependency>
 
-    <!--  Test Dependencies  -->
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-test-utils</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+        <!--  Test Dependencies  -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-test-utils</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>
