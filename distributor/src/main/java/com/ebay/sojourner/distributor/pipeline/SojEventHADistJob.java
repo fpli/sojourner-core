@@ -84,13 +84,13 @@ public class SojEventHADistJob {
         ListStateDescriptor<CustomTopicConfig> customTopicConfigListStateDescriptor =
                 new ListStateDescriptor<>(STATE_CUSTOM_TOPIC_CONFIG, CustomTopicConfig.class);
 
-        DataStream<PageIdTopicMapping> configSourceStream = executionEnvironment
-                .addSource(new CustomTopicConfigSourceFunction(flinkEnv.getString(REST_CLIENT_BASE_URL),
-                                                               flinkEnv.getString(REST_CLIENT_CONFIG_PROFILE),
-                                                               customTopicConfigListStateDescriptor))
-                .name(NAME_CONFIG_SOURCE)
-                .uid(UID_CONFIG_SOURCE)
-                .setParallelism(1);
+        DataStream<PageIdTopicMapping> configSourceStream =
+                executionEnvironment.addSource(new CustomTopicConfigSourceFunction(flinkEnv.getString(REST_CLIENT_BASE_URL),
+                                                                                   flinkEnv.getString(REST_CLIENT_CONFIG_PROFILE),
+                                                                                   customTopicConfigListStateDescriptor))
+                                    .name(NAME_CONFIG_SOURCE)
+                                    .uid(UID_CONFIG_SOURCE)
+                                    .setParallelism(1);
 
         MapStateDescriptor<Integer, PageIdTopicMapping> stateDescriptor = new MapStateDescriptor<>(
                 STATE_PAGE_ID_TOPIC_MAPPING,
@@ -102,10 +102,9 @@ public class SojEventHADistJob {
         // regular sojevents based on pageid
         SingleOutputStreamOperator<RawSojEventWrapper> sojEventDistStream =
                 sourceDataStream.connect(broadcastStream)
-                                .process(new SojEventDistProcessFunction(
-                                        stateDescriptor,
-                                        null,
-                                        LARGE_MESSAGE_MAX_BYTES))
+                                .process(new SojEventDistProcessFunction(stateDescriptor,
+                                                                         null,
+                                                                         LARGE_MESSAGE_MAX_BYTES))
                                 .name(NAME_DIST)
                                 .uid(UID_DIST)
                                 .setParallelism(flinkEnv.getSourceParallelism());

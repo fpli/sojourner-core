@@ -1,0 +1,22 @@
+flink:
+  app:
+    name: Sojourner Dumper Apollo Pre-Prod - Session
+    parallelism:
+      source: 100
+      sink: 100
+    source:
+      kafka:
+        group-id: sojourner-dumper-apollo-session-pre-prod
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+        topic:
+          - behavior.total.new.sojsession.nonbot
+          - behavior.total.new.sojsession.bot
+        from-timestamp: latest
+    sink:
+      hdfs:
+        base-path: hdfs://apollo-router/sys/soj/ubd/sessions/
+        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/sessions/
+    metric:
+      watermark-delay: sojourner-session-watermark-delay-time

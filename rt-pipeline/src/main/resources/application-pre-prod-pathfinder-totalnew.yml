@@ -25,8 +25,8 @@ kafka:
     stream: behavior.total.new
     bootstrap-servers:
       rno:
-        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+        - rhs-pbuvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-pbuvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092

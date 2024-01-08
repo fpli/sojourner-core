@@ -16,6 +16,8 @@
   <packaging>jar</packaging>
 
   <properties>
+    <!-- FIXME: avro should be 1.11.1 to align with flink 1.17  -->
+    <avro.version>1.8.2</avro.version>
     <flink.scope>provided</flink.scope>
     <hadoop.scope>provided</hadoop.scope>
   </properties>
