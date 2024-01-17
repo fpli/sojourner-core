@@ -1,116 +1,45 @@
 flink:
   app:
-    name: Sojourner Realtime Pipeline - QA
+    name: Sojourner Realtime Pipeline - Staging
     parallelism:
-      default: 2
       source: 2
-      event: 2
       session: 2
-      pre-agent-ip: 2
       agent-ip: 2
-      agent: 2
-      ip: 2
-      broadcast: 2
-      metrics: 2
-    metric:
-      window-size: 10
-    data-skew:
-      is-filter: false
-      guid-list:
-        - abc
-        - def
-        - ghi
-    source:
-      from-timestamp: 0
+      sink: 2
+    watermark:
       out-of-orderless-in-min: 3
-      dc: slc
-    sink:
-      dc: slc
+    source:
       kafka:
+        group-id: sojourner-realtime-staging
+        env: stage
+        stream: behavior.pathfinder
+        dc: slc
         topic:
-          session:
-            bot: behavior.totalv2.sojsession-bot
-            non-bot: behavior.totalv2.sojsession-nonbot
+          - behavior.pathfinder.events.total
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: stage
+        stream: behavior.totalv2
+        dc: slc
+        topic:
           event:
             bot: behavior.totalv2.sojevent-bot
             non-bot: behavior.totalv2.sojevent-nonbot
-            late: behavior.totalv2.sojevent-late
-          signature:
-            agent-ip: behavior.totalv2.signature.agent-ip
-            agent: behavior.totalv2.signature.agent
-            ip: behavior.totalv2.signature.ip
-
-kafka:
-  consumer:
-    group-id: sojourner-pathfinder-realtime
-    stream: behavior.pathfinder
-    bootstrap-servers:
-      lvs:
-        - rhs-vvrvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-vvrvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-vvrvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-vvrvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-vvrvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
-      slc:
-        - rhs-jhnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-jhnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-jhnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-jhnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-jhnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
-
-    max-poll-records: 500
-    # 50MB, default value is 50MB
-    fetch-max-bytes: 52428800
-    # 128KB, default value is 64KB
-    receive-buffer: 131072
-    fetch-max-wait-ms: 100
-    # 1MB, default value is 1MB
-    max-partitions-fetch-bytes: 1048576
-    auto-offset-reset: latest
-
-
-  producer:
-    stream: behavior.totalv2
-    bootstrap-servers:
-      lvs:
-        - rhs-rurvkiaa-kfk-lvs-1.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-2.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-3.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-4.rheos-streaming-qa.svc.32.tess.io:9092
-        - rhs-rurvkiaa-kfk-lvs-5.rheos-streaming-qa.svc.32.tess.io:9092
-      slc:
-        - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
-        - rhs-vgnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
-
-    # 16KB
-    batch-size: 16384
-    acks: 1
-    linger-ms: 10
-    # 30s
-    request-timeout-ms: 30000
-    retries: 30
-    # 32MB
-    buffer-memory: 33554432
-    compression-type: lz4
-    # 2min
-    delivery-timeout-ms: 120000
+          session:
+            bot: behavior.totalv2.sojsession-bot
+            non-bot: behavior.totalv2.sojsession-nonbot
+        subject:
+          event: behavior.sojourner.sojevent.schema
+          session: behavior.sojourner.sojsession.schema
 
 rheos:
   registry-url: https://rheos-services.qa.ebay.com
   client:
-    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    auth-type: IAF
     iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
       secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
       env: staging
-
-zookeeper:
-  enable: false
-  server: rhs-tdtvkiaa-fzk-lvs-1.rheos-streaming-qa.svc.32.tess.io:2181,rhs-tdtvkiaa-fzk-lvs-2.rheos-streaming-qa.svc.32.tess.io:2181,rhs-tdtvkiaa-fzk-lvs-3.rheos-streaming-qa.svc.32.tess.io:2181,rhs-tdtvkiaa-fzk-lvs-4.rheos-streaming-qa.svc.32.tess.io:2181,rhs-tdtvkiaa-fzk-lvs-5.rheos-streaming-qa.svc.32.tess.io:2181
-
-rest-client:
-  base-url: https://sojsvc.vip.qa.ebay.com
 
 ua-parser-env: dev

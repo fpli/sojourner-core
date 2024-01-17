@@ -1,172 +1,22 @@
 flink:
   app:
-    name: Sojourner Realtime Pipeline - totalv2rno
-    parallelism:
-      default: 150
-      source: 200
-      event: 200
-      session: 1000
-      pre-agent-ip: 150
-      agent-ip: 150
-      agent: 150
-      ip: 150
-      broadcast: 510
-      metrics: 510
-    slot-sharing-group:
-      source-event-lvs: lvs
-      source-event-slc: slc
-      source-event-rno: rno
-      session: session
-      cross-session: cross-session
-    operator-name:
-      source:
-        rno: Pathfinder RNO Source
-        lvs: Pathfinder LVS Source
-        slc: Pathfinder SLC Source
-    metric:
-      window-size: 70000
-    uid:
-      source:
-        rno: pathfinder-rno-source
-        lvs: pathfinder-lvs-source
-        slc: pathfinder-slc-source
-    data-skew:
-      is-filter: true
-      guid-set:
-        - 17a61c8c16d0a9c509d4c64cffffff61
-      pageid-set: []
     checkpoint:
-      data-dir: /opt/flink/sojourner/rt/checkpoint
-      interval-ms: 300000
+      data-dir: /tmp/flink/checkpoints/sojourner-realtime/
+      # 10 mins
+      interval-ms: 600000
+      # 15 mins
       timeout-ms: 900000
-      min-pause-between-ms: 120000
-      max-concurrent: 1
-    hot-deploy: false
-    source:
-      from-timestamp: 0
-      out-of-orderless-in-min: 3
-      idle-source-timeout-in-min: 10
-    sink:
-      dc: rno
-      kafka:
-        topic:
-          session:
-            bot: behavior.totalv2.sojsession-bot-rno
-            non-bot: behavior.totalv2.sojsession-nonbot-rno
-          event:
-            bot: behavior.totalv2.sojevent-bot-rno
-            non-bot: behavior.totalv2.sojevent-nonbot-rno
-            late: behavior.totalv2.sojevent-late-rno
-          signature:
-            agent-ip: behavior.totalv2.signature.agent-ip-rno
-            agent: behavior.totalv2.signature.agent-rno
-            ip: behavior.totalv2.signature.ip-rno
-        subject:
-          event: behavior.sojourner.sojevent.schema
-          session: behavior.sojourner.sojsession.schema
-        message-key:
-          session: guid
-          event: guid
-          signature:
-            ip: ip
-            agent: userAgent
-            agent-ip: userAgent
-        allow-drop: true
-    message-filter:
-      max-message-bytes: 819200
-      sub-url-query-string-length: 4096
-      truncate-url-query-string: true
-    debug-mode: false
-
-kafka:
-  consumer:
-    stream: behavior.pathfinder
-    topic:
-      - behavior.pathfinder.events.total
-    group-id: sojourner-pathfinder-realtime
-    bootstrap-servers:
-      rno:
-        - rhs-glrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-glrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-glrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-glrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-glrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-      slc:
-        - rhs-mwsvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-mwsvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-mwsvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-mwsvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-mwsvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-      lvs:
-        - rhs-swsvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-swsvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-swsvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-swsvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-swsvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-
-    max-poll-records: 5000
-    # 50MB, default value is 50MB
-    fetch-max-bytes: 52428800
-    # 8MB, default value is 64KB
-    receive-buffer: 8388608
-    fetch-max-wait-ms: 100
-    # 10MB, default value is 1MB
-    max-partitions-fetch-bytes: 10485760
-    auto-offset-reset: latest
-    # 60s, default is disabled
-    partition-discovery-interval-ms: 60000
-
-  producer:
-    stream: behavior.totalv2
-    producerId: sojourner
-    bootstrap-servers:
-      rno:
-        - rhs-fxuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.37.tess.io:9092
-      lvs:
-        - rhs-ravvkiaa-kfk-lvs-1.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-2.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-3.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-4.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-5.rheos-streaming-prod.svc.38.tess.io:9092
-
-    batch-size: 524288
-    acks: 1
-    linger-ms: 50
-    # 30s
-    request-timeout-ms: 30000
-    retries: 30
-    buffer-memory: 268435456
-    compression-type: lz4
-    # 3min
-    delivery-timeout-ms: 180000
-    # 1000000 byte
-    max-request-size: 1000000
 
 rheos:
   registry-url: https://rheos-services.stratus.ebay.com
   client:
-    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    auth-type: IAF
     iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
       secret: c4bb6fca-7ac5-46dd-b218-a49cb6307dbc
       env: production
 
-zookeeper:
-  enable: false
-  sessionTimeoutMs: 15000
-  connectionTimeoutMs: 5000
-  maxRetries: 3
-  baseSleepTimeMs: 1000
-  namespace: sojourner
-
-rest-client:
-  base-url: https://sojsvc.vip.ebay.com
-  username: soj-flink-app
-
 ua-parser-env: prod
+
 agent-whitelist:
   - GingerClient/0.11.2-RELEASE
-

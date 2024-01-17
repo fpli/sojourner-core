@@ -533,6 +533,13 @@ public class FlinkEnv {
     return getKafkaBrokers(env, stream, dc);
   }
 
+  public String getSourceKafkaBrokersOfDC(DataCenter dc) {
+    String env = this.getString(FLINK_APP_SOURCE_KAFKA_ENV);
+    String stream = this.getString(FLINK_APP_SOURCE_KAFKA_STREAM);
+
+    return getKafkaBrokers(env, stream, dc.toString());
+  }
+
   public String getSinkKafkaStreamName() {
     return this.getString(FLINK_APP_SINK_KAFKA_STREAM);
   }

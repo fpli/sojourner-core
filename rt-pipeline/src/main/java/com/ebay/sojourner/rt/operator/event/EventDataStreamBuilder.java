@@ -18,8 +18,7 @@ public class EventDataStreamBuilder {
         .flatMap(new LargeMessageHandler(
             FlinkEnvUtils.getLong(Property.MAX_MESSAGE_BYTES),
             FlinkEnvUtils.getInteger(Property.SUB_URL_QUERY_STRING_LENGTH),
-            FlinkEnvUtils.getBoolean(Property.TRUNCATE_URL_QUERY_STRING),
-            FlinkEnvUtils.getBoolean(Property.DEBUG_MODE)))
+            FlinkEnvUtils.getBoolean(Property.TRUNCATE_URL_QUERY_STRING)))
         .setParallelism(FlinkEnvUtils.getInteger(Property.EVENT_PARALLELISM))
         .slotSharingGroup(getSlotGroupForDC(dc))
         .name(String.format("Large Message Filter %s", dc))

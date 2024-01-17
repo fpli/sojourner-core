@@ -15,7 +15,6 @@ public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent>
   private final long maxMessageBytes;
   private final int subUrlQueryStringBytes;
   private final boolean truncateUrlQueryString;
-  private final boolean debugMode;
   private Counter largeMessageCounter;
   private Counter largeMessageSizeCounter;
   private Counter largeUrlQueryStringBeforeSubSizeCounter;
@@ -32,11 +31,10 @@ public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent>
   private static final String URL_QUERY_STRING_SUB_METRIC_NAME = "url-query-string-sub-event-count";
 
   public LargeMessageHandler(long maxMessageBytes, int subUrlQueryStringBytes,
-      boolean truncateUrlQueryString, boolean debugMode) {
+      boolean truncateUrlQueryString) {
     this.maxMessageBytes = maxMessageBytes;
     this.subUrlQueryStringBytes = subUrlQueryStringBytes;
     this.truncateUrlQueryString = truncateUrlQueryString;
-    this.debugMode = debugMode;
   }
 
   @Override
@@ -85,8 +83,8 @@ public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent>
 
     String urlQueryString = rawEvent.getClientData().getUrlQueryString();
     if (rawEvent.getMessageSize() >= maxMessageBytes) {
-      if (debugMode) {
-        log.info(String.format("large message size is %s, message payload is %s",
+      if (log.isDebugEnabled()) {
+        log.debug(String.format("large message size is %s, message payload is %s",
             rawEvent.getMessageSize(), rawEvent.toString()));
       }
       largeMessageCounter.inc();
@@ -98,8 +96,8 @@ public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent>
       } else if (urlQueryString != null
           && rawEvent.getMessageSize() - urlQueryString.length()
           > maxMessageBytes - subUrlQueryStringBytes) {
-        if (debugMode) {
-          log.info(String.format("urlQueryString size is %s, urlQueryString is %s",
+        if (log.isDebugEnabled()) {
+          log.debug(String.format("urlQueryString size is %s, urlQueryString is %s",
               urlQueryString.length(), urlQueryString));
         }
         log.info(
@@ -107,8 +105,8 @@ public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent>
         droppedEventCounter.inc();
         return;
       } else if (urlQueryString != null) {
-        if (debugMode) {
-          log.info(String.format("before sub urlQueryString size is %s, urlQueryString is %s",
+        if (log.isDebugEnabled()) {
+          log.debug(String.format("before sub urlQueryString size is %s, urlQueryString is %s",
               urlQueryString.length(), urlQueryString));
         }
         urlQueryStringSubStringedEventCounter.inc();
@@ -116,8 +114,8 @@ public class LargeMessageHandler extends RichFlatMapFunction<RawEvent, RawEvent>
             .inc(rawEvent.getClientData().getUrlQueryString().length());
         String finalUrlQueryString = truncateUrlQueryString(urlQueryString);
         rawEvent.getClientData().setUrlQueryString(finalUrlQueryString);
-        if (debugMode) {
-          log.info(String.format("after sub urlQueryString size is %s, urlQueryString is %s",
+        if (log.isDebugEnabled()) {
+          log.debug(String.format("after sub urlQueryString size is %s, urlQueryString is %s",
               finalUrlQueryString.length(), finalUrlQueryString));
         }
         largeUrlQueryStringAfterSubSizeCounter
