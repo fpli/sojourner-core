@@ -173,8 +173,8 @@ public class FlinkEnv {
   }
 
   public StreamExecutionEnvironment local(int slots) {
-    // default flink web ui port set to 9090
-    return this.local(slots, 9090);
+    // default flink web ui port set to 9999
+    return this.local(slots, 9999);
   }
 
   public StreamExecutionEnvironment local(int slots, int webUiPort) {

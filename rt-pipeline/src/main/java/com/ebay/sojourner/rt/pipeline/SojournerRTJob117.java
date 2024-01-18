@@ -12,9 +12,10 @@ import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnv;
 import com.ebay.sojourner.flink.common.OutputTagConstants;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventDeserializationSchema;
+import com.ebay.sojourner.flink.connector.kafka.schema.RawEventKafkaDeserializationSchemaWrapper;
+import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojEventKafkaRecordSerializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojSessionKeySerializerSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojSessionValueSerializerSchema;
-import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojEventKafkaRecordSerializationSchema;
 import com.ebay.sojourner.flink.state.MapStateDesc;
 import com.ebay.sojourner.flink.watermark.RawEventTimestampAssigner;
 import com.ebay.sojourner.flink.window.CompositeTrigger;
@@ -46,6 +47,7 @@ import com.ebay.sojourner.rt.operator.session.UbiSessionAgg;
 import com.ebay.sojourner.rt.operator.session.UbiSessionToSessionCoreMapFunction;
 import com.ebay.sojourner.rt.operator.session.UbiSessionToSojSessionProcessFunction;
 import com.ebay.sojourner.rt.operator.session.UbiSessionWindowProcessFunction;
+import com.google.common.collect.Sets;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.base.DeliveryGuarantee;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
@@ -61,7 +63,6 @@ import org.apache.flink.streaming.api.transformations.OneInputTransformation;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.triggers.EventTimeTrigger;
-import org.apache.flink.streaming.connectors.kafka.internals.KafkaDeserializationSchemaWrapper;
 import org.apache.flink.streaming.runtime.operators.windowing.WindowOperatorHelper;
 import org.apache.flink.types.Either;
 
@@ -102,18 +103,20 @@ public class SojournerRTJob117 {
 
         final int sessionParallelism = flinkEnv.getInteger("flink.app.parallelism.session");
         final int broadcastParallelism = flinkEnv.getInteger("flink.app.parallelism.broadcast");
-        ;
-        final int metricParallelism = flinkEnv.getInteger("flink.app.parallelism.metric");
-        ;
         final int agentIpParallelism = flinkEnv.getInteger("flink.app.parallelism.agent-ip");
-        ;
 
         final String sourceRNOSlotGroup = "source-rno";
         final String sourceLVSSlotGroup = "source-lvs";
         final String sourceSLCSlotGroup = "source-slc";
         final String sessionSlotGroup = "session";
         final String crossSessionSlotGroup = "cross-session";
-        final String RHEOS_REGISTRY_URL_VALUE = flinkEnv.getString(RHEOS_REGISTRY_URL);
+
+        final String botSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
+        final String nonbotSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
+        final String botEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
+        final String nonbotEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
+
+        final int metricWindow = 70000;
 
         // 2. Source & Filter & Event
         // 2.1 Consumes RawEvent from Pathfinder topic
@@ -177,7 +180,7 @@ public class SojournerRTJob117 {
         SingleOutputStreamOperator<UbiEvent> slcEventStream =
                 executionEnvironment.fromSource(slcPathfinderKafkaSource, watermarkStrategy, NAME_KAFKA_DATA_SOURCE_SLC)
                                     .uid(UID_KAFKA_DATA_SOURCE_SLC)
-                                    .slotSharingGroup(sourceLVSSlotGroup)
+                                    .slotSharingGroup(sourceSLCSlotGroup)
                                     .setParallelism(flinkEnv.getSourceParallelism())
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
@@ -185,12 +188,12 @@ public class SojournerRTJob117 {
                                             TRUNCATE_URL_QUERY_STRING))
                                     .name("Large Message Filter - SLC")
                                     .uid("large-message-filter-slc")
-                                    .slotSharingGroup(sourceLVSSlotGroup)
+                                    .slotSharingGroup(sourceSLCSlotGroup)
                                     .setParallelism(flinkEnv.getSourceParallelism())
                                     .map(new EventMapFunction())
                                     .name("Event Operator - SLC")
                                     .uid("event-operator-slc")
-                                    .slotSharingGroup(sourceLVSSlotGroup)
+                                    .slotSharingGroup(sourceSLCSlotGroup)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
         // union ubiEvent from SLC/RNO/LVS
@@ -204,7 +207,7 @@ public class SojournerRTJob117 {
         // 3.3 Session Level bot detection (via bot rule & signature)
         // 3.4 Event level bot detection (via session flag)
         SingleOutputStreamOperator<UbiSession> ubiSessionDataStream =
-                ubiEventDataStream.keyBy(UbiEvent::getGuid)
+                ubiEventDataStream.keyBy("guid")
                                   .window(SojEventTimeSessionWindows.withGapAndMaxDuration(minutes(30), hours(24)))
                                   .trigger(CompositeTrigger.Builder.create()
                                                                    .trigger(EventTimeTrigger.create())
@@ -359,12 +362,6 @@ public class SojournerRTJob117 {
         // 5.3 Events (with session ID & bot flags)
         // 5.4 Events late
 
-        final String botSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
-        final String nonbotSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.nonbot");
-        final String botEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
-        final String nonbotEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.nonbot");
-
-
         // kafka sinks
         KafkaSink<SojSession> sojSessionKafkaSink = getKafkaSinkForSojSession(flinkEnv, nonbotSessionTopic);
         KafkaSink<SojSession> botSojSessionKafkaSink = getKafkaSinkForSojSession(flinkEnv, botSessionTopic);
@@ -398,8 +395,6 @@ public class SojournerRTJob117 {
                          .uid("bot-sojevent-sink")
                          .slotSharingGroup(sessionSlotGroup)
                          .setParallelism(broadcastParallelism);
-
-        final int metricWindow = 70000;
 
         // metrics collector for end to end
         signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction(metricWindow))
@@ -448,7 +443,8 @@ public class SojournerRTJob117 {
                           .setProperties(flinkEnv.getKafkaConsumerProps())
                           .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                           .setDeserializer(KafkaRecordDeserializationSchema.of(
-                                  new KafkaDeserializationSchemaWrapper<>(
+                                  new RawEventKafkaDeserializationSchemaWrapper(
+                                          Sets.newHashSet(),
                                           new RawEventDeserializationSchema(REGISTRY_URL)
                                   )
                           ))

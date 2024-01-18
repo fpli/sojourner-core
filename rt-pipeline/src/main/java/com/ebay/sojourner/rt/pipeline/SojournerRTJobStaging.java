@@ -78,7 +78,7 @@ public class SojournerRTJobStaging {
     public static void main(String[] args) throws Exception {
         // 1. Prepare Flink environment
         FlinkEnv flinkEnv = new FlinkEnv(args);
-        StreamExecutionEnvironment executionEnvironment = flinkEnv.local(10, 9999);
+        StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
         // operator uid
         final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";
@@ -94,14 +94,18 @@ public class SojournerRTJobStaging {
                 flinkEnv.getBoolean("flink.app.filter.large-message.truncate-url-query-string");
 
         final int sessionParallelism = flinkEnv.getInteger("flink.app.parallelism.session");
-        final int broadcastParallelism = 2;
-        final int metricParallelism = 2;
-        final int agentIpParallelism = 2;
+        final int broadcastParallelism = flinkEnv.getInteger("flink.app.parallelism.broadcast");
+        final int agentIpParallelism = flinkEnv.getInteger("flink.app.parallelism.agent-ip");
 
         final String sourceSlotGroup = "source";
         final String sessionSlotGroup = "session";
         final String crossSessionSlotGroup = "cross-session";
         final String RHEOS_REGISTRY_URL_VALUE = flinkEnv.getString(RHEOS_REGISTRY_URL);
+
+        final String botSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
+        final String nonbotSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
+        final String botEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
+        final String nonbotEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
 
         // 2. Source & Filter & Event
         // 2.1 Consumes RawEvent from Pathfinder topic
@@ -162,7 +166,7 @@ public class SojournerRTJobStaging {
         // 3.3 Session Level bot detection (via bot rule & signature)
         // 3.4 Event level bot detection (via session flag)
         SingleOutputStreamOperator<UbiSession> ubiSessionDataStream =
-                ubiEventStream.keyBy(UbiEvent::getGuid)
+                ubiEventStream.keyBy("guid")
                               .window(SojEventTimeSessionWindows.withGapAndMaxDuration(minutes(30), hours(24)))
                               .trigger(CompositeTrigger.Builder.create()
                                                                .trigger(EventTimeTrigger.create())
@@ -316,12 +320,6 @@ public class SojournerRTJobStaging {
         // 5.2 Sessions (ended)
         // 5.3 Events (with session ID & bot flags)
         // 5.4 Events late
-
-        final String botSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
-        final String nonbotSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
-        final String botEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
-        final String nonbotEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
-
 
         // kafka sinks
         KafkaSink<SojSession> sojSessionKafkaSink = getKafkaSinkForSojSession(flinkEnv, nonbotSessionTopic);

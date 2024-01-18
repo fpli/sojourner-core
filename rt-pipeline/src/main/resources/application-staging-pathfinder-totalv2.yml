@@ -2,12 +2,11 @@ flink:
   app:
     name: Sojourner Realtime Pipeline - Staging
     parallelism:
-      source: 2
-      session: 2
+      source: 4
+      session: 4
+      broadcast: 2
       agent-ip: 2
       sink: 2
-    watermark:
-      out-of-orderless-in-min: 3
     source:
       kafka:
         group-id: sojourner-realtime-staging
@@ -24,14 +23,11 @@ flink:
         dc: slc
         topic:
           event:
-            bot: behavior.totalv2.sojevent-bot
-            non-bot: behavior.totalv2.sojevent-nonbot
+            bot: behavior.totalv2.sojevent-nonbot.test
+            non-bot: behavior.totalv2.sojevent-nonbot.test
           session:
-            bot: behavior.totalv2.sojsession-bot
-            non-bot: behavior.totalv2.sojsession-nonbot
-        subject:
-          event: behavior.sojourner.sojevent.schema
-          session: behavior.sojourner.sojsession.schema
+            bot: behavior.totalv2.sojsession-nonbot.test
+            non-bot: behavior.totalv2.sojsession-nonbot.test
 
 rheos:
   registry-url: https://rheos-services.qa.ebay.com
