@@ -22,7 +22,7 @@ import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventDeserializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventKafkaDeserializationSchemaWrapper;
 import com.ebay.sojourner.flink.function.SessionMetricsTimestampTransMapFunction;
-import com.ebay.sojourner.flink.function.SojSessionTimestampTransMapFunction;
+import com.ebay.sojourner.flink.function.map.SojSessionTimestampTransMapFunction;
 import com.ebay.sojourner.flink.state.MapStateDesc;
 import com.ebay.sojourner.flink.window.CompositeTrigger;
 import com.ebay.sojourner.flink.window.MidnightOpenSessionTrigger;

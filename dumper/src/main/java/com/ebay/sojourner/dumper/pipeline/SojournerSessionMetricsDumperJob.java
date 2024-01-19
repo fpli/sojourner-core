@@ -13,9 +13,9 @@ import com.ebay.sojourner.flink.connector.kafka.SojSerializableTimestampAssigner
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.PassThroughDeserializationSchema;
 import com.ebay.sojourner.flink.function.BinaryToSessionMetricsMapFunction;
-import com.ebay.sojourner.flink.function.ExtractWatermarkProcessFunction;
 import com.ebay.sojourner.flink.function.SessionMetricsTimestampTransMapFunction;
 import com.ebay.sojourner.flink.function.SplitMetricsProcessFunction;
+import com.ebay.sojourner.flink.function.process.ExtractWatermarkProcessFunction;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
