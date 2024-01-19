@@ -87,7 +87,7 @@ public class SojEventKafkaRecordSerializationSchema implements KafkaRecordSerial
             value = out.toByteArray();
             out.close();
         } catch (Exception e) {
-            throw new SerializationException("Error when serializing SojEvent", e);
+            throw new SerializationException("Error when serializing SojEvent.", e);
         }
 
         return new ProducerRecord<>(topic, null, key, value, headers);

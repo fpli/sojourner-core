@@ -66,7 +66,7 @@ public class SojSessionValueSerializerSchema implements SerializationSchema<SojS
             out.close();
             return serializedValue;
         } catch (Exception e) {
-            throw new SerializationException("Error when serializing SojSession", e);
+            throw new SerializationException("Error when serializing SojSession.", e);
         }
     }
 }
