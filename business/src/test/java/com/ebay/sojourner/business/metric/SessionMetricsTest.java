@@ -10,6 +10,6 @@ class SessionMetricsTest {
   @Test
   void test_getInstance() {
     sessionMetrics = SessionMetrics.getInstance();
-    Assertions.assertThat(sessionMetrics.fieldMetrics.size()).isEqualTo(54);
+    Assertions.assertThat(sessionMetrics.fieldMetrics.size()).isEqualTo(55);
   }
 }

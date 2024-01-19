@@ -1,10 +1,14 @@
 package com.ebay.sojourner.common.model;
 
 import com.ebay.sojourner.common.util.IntermediateMetrics;
-import java.io.Serializable;
-import java.util.*;
-
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Data
 public class UbiSession implements Serializable, Cloneable {
@@ -21,6 +25,7 @@ public class UbiSession implements Serializable, Cloneable {
   private int version;
   private String firstUserId; // userid in jetstream
   private String buserId;
+  private String buyerId; // buyerId in event payload
   private long siteFlags;
   private int attrFlags;
   private int botFlags;

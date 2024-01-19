@@ -1,0 +1,66 @@
+kafka:
+  consumer:
+    stream: behavior.totalv3
+    topic:
+      - behavior.totalv3.session.metrics-lvs
+      - behavior.totalv3.session.metrics-rno
+    group-id: sojourner-total-dumper-rno
+    bootstrap-servers:
+      rno:
+        - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+      lvs:
+        - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+flink:
+  app:
+    name: Sojourner RNO Session Metrics HDFS Load Pipeline
+    parallelism:
+      source: 50
+      sink:
+        hdfs: 50
+    operator-name:
+      source: Sojourner Total Session Metrics Source
+      pass-through: RNO Byte To Session Metrics
+      assgin-watermark: RNO Session Metrics Watermark Assign
+      extract-watermark: RNO Session Metrics Timestamp Extract
+      metrics-split: RNO Session Metrics Split
+      sink:
+        metrics:
+          open: Sojourner Total RNO Open Session Metrics Sink
+          same-day: Sojourner Total RNO Same Day Session Metrics Sink
+          cross-day: Sojourner Total RNO Cross Day Session Metrics Sink
+        watermark: Sojourner Total RNO Session Metrics Watermark Sink
+    uid:
+      source: sojourner-total-rno-session-metrics-source
+      pass-through: rno-byte-to-session-metrics
+      assgin-watermark: rno-session-metrics-watermak-assign
+      extract-watermark: rno-session-metrics-timestamp-extract
+      metrics-split: rno-session-metrics-split
+      sink:
+        metrics:
+          open: sojourner-total-rno-open-session-metrics-sink
+          same-day: sojourner-total-rno-same-day-session-metrics-sink
+          cross-day: sojourner-total-rno-cross-day-session-metrics-sink
+        watermark: sojourner-total-rno-session-metrics-watermark-sink
+    metric:
+      watermark-process-progress: sojourner-ubd-session-metrics-watermark-delay-time
+    source:
+      dc: lvs
+    sink:
+      hdfs:
+        path:
+          metrics:
+            open: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=open
+            same-day: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=sameday
+            cross-day: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=crossday
+        watermark-path: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/ubi_session_metrics_watermark_lkp
+
+

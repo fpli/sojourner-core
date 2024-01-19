@@ -110,6 +110,7 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setFirstIosFgLaunchTimestamp(ubiSessionTmp.getFirstIosFgLaunchTimestamp());
     ubiSession.setFirstCollectionExpTimestamp(ubiSessionTmp.getFirstCollectionExpTimestamp());
     ubiSession.setGpc(ubiSessionTmp.getGpc());
+    ubiSession.setBuyerId(ubiSessionTmp.getBuyerId());
 
     return ubiSession;
   }

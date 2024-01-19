@@ -170,6 +170,7 @@ public class Property {
   public static final String FLINK_APP_SINK_KAFKA_TOPIC = "flink.app.sink.kafka.topic";
   public static final String FLINK_APP_SINK_KAFKA_TOPIC_SESSION_BOT = "flink.app.sink.kafka.topic.session.bot";
   public static final String FLINK_APP_SINK_KAFKA_TOPIC_SESSION_NON_BOT = "flink.app.sink.kafka.topic.session.non-bot";
+  public static final String FLINK_APP_SINK_KAFKA_TOPIC_SESSION_METRICS = "flink.app.sink.kafka.topic.metrics";
   public static final String FLINK_APP_SINK_KAFKA_TOPIC_EVENT_BOT = "flink.app.sink.kafka.topic.event.bot";
   public static final String FLINK_APP_SINK_KAFKA_TOPIC_EVENT_NON_BOT = "flink.app.sink.kafka.topic.event.non-bot";
   public static final String FLINK_APP_SINK_KAFKA_TOPIC_EVENT_LATE = "flink.app.sink.kafka.topic.event.late";
@@ -178,8 +179,10 @@ public class Property {
   public static final String FLINK_APP_SINK_KAFKA_TOPIC_SIGNATURE_IP = "flink.app.sink.kafka.topic.signature.ip";
   public static final String FLINK_APP_SINK_KAFKA_SUBJECT_EVENT = "flink.app.sink.kafka.subject.event";
   public static final String FLINK_APP_SINK_KAFKA_SUBJECT_SESSION = "flink.app.sink.kafka.subject.session";
+  public static final String FLINK_APP_SINK_KAFKA_SUBJECT_METRICS = "flink.app.sink.kafka.subject.metrics";
   public static final String FLINK_APP_SINK_KAFKA_MESSAGE_KEY_EVENT = "flink.app.sink.kafka.message-key.event";
   public static final String FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SESSION = "flink.app.sink.kafka.message-key.session";
+  public static final String FLINK_APP_SINK_KAFKA_MESSAGE_KEY_METRICS = "flink.app.sink.kafka.message-key.metrics";
   public static final String FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_AGENT_IP = "flink.app.sink.kafka.message-key.signature.agent-ip";
   public static final String FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_AGENT = "flink.app.sink.kafka.message-key.signature.agent";
   public static final String FLINK_APP_SINK_KAFKA_MESSAGE_KEY_SIGNATURE_IP = "flink.app.sink.kafka.message-key.signature.ip";
@@ -216,6 +219,7 @@ public class Property {
   public static final String SOURCE_EVENT_RNO_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.source-event-rno";
   public static final String SESSION_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.session";
   public static final String CROSS_SESSION_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.cross-session";
+  public static final String METRICS_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.metrics";
   public static final String TDQ_NORMALIZER_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.tdq-normalizer";
   public static final String METRICS_COLLECTOR_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.metrics-collector";
   public static final String METRICS_COLLECTOR_POST_SLOT_SHARE_GROUP = "flink.app.slot-sharing-group.metrics-collector-post";
@@ -266,6 +270,8 @@ public class Property {
   public static final String TIMESTAMP_EXTRACT_UID = "flink.app.uid.extract-watermark";
   public static final String SESSION_SPLIT_OPERATOR_NAME = "flink.app.operator-name.session-split";
   public static final String SESSION_SPLIT_UID = "flink.app.uid.session-split";
+  public static final String SESSION_METRICS_SPLIT_OPERATOR_NAME = "flink.app.operator-name.metrics-split";
+  public static final String SESSION_METRICS_SPLIT_UID = "flink.app.uid.metrics-split";
   public static final String ASSIGN_WATERMARK_OPERATOR_NAME = "flink.app.operator-name.assgin-watermark";
   public static final String ASSIGN_WATERMARK_UID = "flink.app.uid.assgin-watermark";
   public static final String SINK_OPERATOR_NAME_EVENT = "flink.app.operator-name.sink.event";
@@ -278,6 +284,12 @@ public class Property {
   public static final String SINK_UID_SESSION_SAME_DAY = "flink.app.uid.sink.session.same-day";
   public static final String SINK_OPERATOR_NAME_SESSION_CROSS_DAY = "flink.app.operator-name.sink.session.cross-day";
   public static final String SINK_UID_SESSION_CROSS_DAY = "flink.app.uid.sink.session.cross-day";
+  public static final String SINK_OPERATOR_NAME_SESSION_METRICS_OPEN = "flink.app.operator-name.sink.metrics.open";
+  public static final String SINK_UID_SESSION_METRICS_OPEN = "flink.app.uid.sink.metrics.open";
+  public static final String SINK_OPERATOR_NAME_SESSION_METRICS_SAME_DAY = "flink.app.operator-name.sink.metrics.same-day";
+  public static final String SINK_UID_SESSION_METRICS_SAME_DAY = "flink.app.uid.sink.metrics.same-day";
+  public static final String SINK_OPERATOR_NAME_SESSION_METRICS_CROSS_DAY = "flink.app.operator-name.sink.metrics.cross-day";
+  public static final String SINK_UID_SESSION_METRICS_CROSS_DAY = "flink.app.uid.sink.metrics.cross-day";
   public static final String SINK_OPERATOR_NAME = "flink.app.operator-name.sink";
   public static final String SINK_UID = "flink.app.uid.sink";
 
@@ -286,8 +298,17 @@ public class Property {
   public static final String FLINK_APP_SINK_HDFS_SAME_DAY_SESSION_PATH = "flink.app.sink.hdfs.path.same-day";
   public static final String FLINK_APP_SINK_HDFS_CROSS_DAY_SESSION_PATH = "flink.app.sink.hdfs.path.cross-day";
   public static final String FLINK_APP_SINK_HDFS_OPEN_SESSION_PATH = "flink.app.sink.hdfs.path.open";
+  public static final String FLINK_APP_SINK_HDFS_SAME_DAY_SESSION_METRICS_PATH = "flink.app.sink.hdfs.path.metrics.same-day";
+  public static final String FLINK_APP_SINK_HDFS_CROSS_DAY_SESSION_METRICS_PATH = "flink.app.sink.hdfs.path.metrics.cross-day";
+  public static final String FLINK_APP_SINK_HDFS_OPEN_SESSION_METRICS_PATH = "flink.app.sink.hdfs.path.metrics.open";
   public static final String FLINK_APP_SINK_HDFS_CLASS = "flink.app.sink.hdfs.class-name";
   public static final String FLINK_APP_SINK_HDFS_WATERMARK_PATH = "flink.app.sink.hdfs.watermark-path";
+  public static final String FLINK_APP_SINK_HDFS_SESSION_NONBOT_PATH = "flink.app.sink.hdfs.session.non-bot";
+  public static final String FLINK_APP_SINK_HDFS_SESSION_BOT_PATH = "flink.app.sink.hdfs.session.bot";
+  public static final String FLINK_APP_SINK_HDFS_METRICS_NONBOT_PATH = "flink.app.sink.hdfs.metrics.non-bot";
+  public static final String FLINK_APP_SINK_HDFS_METRICS_BOT_PATH = "flink.app.sink.hdfs.metrics.bot";
+  public static final String FLINK_APP_SINK_HDFS_EVENT_NONBOT_PATH = "flink.app.sink.hdfs.event.non-bot";
+  public static final String FLINK_APP_SINK_HDFS_EVENT_BOT_PATH = "flink.app.sink.hdfs.event.bot";
 
   // data skew
   public static final String IS_FILTER = "flink.app.data-skew.is-filter";

@@ -1,0 +1,17 @@
+flink:
+  app:
+    name: Sojourner Realtime Pipeline PREPROD - SINK TO HDFS Apollo
+    parallelism:
+      sink:
+        hdfs: 510
+    sink:
+      hdfs:
+        session:
+          non-bot: hdfs://apollo-router/sys/soj/ubd/sessions/category=all/type=nonbot
+          bot: hdfs://apollo-router/sys/soj/ubd/sessions/category=all/type=bot
+        metrics:
+          non-bot: hdfs://apollo-router/sys/soj/ubd/metrics/category=all/type=nonbot
+          bot: hdfs://apollo-router/sys/soj/ubd/metrics/category=all/type=bot
+kafka:
+  consumer:
+    group-id: sojourner-pathfinder-realtime-hdfs-test
