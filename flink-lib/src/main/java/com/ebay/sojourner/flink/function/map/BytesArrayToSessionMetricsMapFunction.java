@@ -1,6 +1,6 @@
 package com.ebay.sojourner.flink.function.map;
 
-import com.ebay.sojourner.common.model.SojSession;
+import com.ebay.sojourner.common.model.SessionMetrics;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.Decoder;
@@ -13,23 +13,23 @@ import org.apache.kafka.common.errors.SerializationException;
 import java.io.IOException;
 
 @Slf4j
-public class BytesArrayToSojSessionMapFunction extends RichMapFunction<byte[], SojSession> {
+public class BytesArrayToSessionMetricsMapFunction extends RichMapFunction<byte[], SessionMetrics> {
 
-    private transient DatumReader<SojSession> reader;
+    private transient DatumReader<SessionMetrics> reader;
 
     @Override
     public void open(Configuration parameters) throws Exception {
-        log.info("Initialize SojSession DatumReader.");
-        reader = new SpecificDatumReader<>(SojSession.class);
+        log.info("Initialize SessionMetrics DatumReader.");
+        reader = new SpecificDatumReader<>(SessionMetrics.class);
     }
 
     @Override
-    public SojSession map(byte[] data) throws Exception {
+    public SessionMetrics map(byte[] data) throws Exception {
         try {
             Decoder decoder = DecoderFactory.get().binaryDecoder(data, null);
             return reader.read(null, decoder);
         } catch (IOException e) {
-            throw new SerializationException("Error when deserializing SojSession.", e);
+            throw new SerializationException("Error when deserializing SessionMetrics.", e);
         }
     }
 }

@@ -2,7 +2,9 @@ flink:
   app:
     checkpoint:
       data-dir: /tmp/flink/checkpoints/sojourner-dumper/
+      # 5 mins
       interval-ms: 300000
+      # 15 mins
       timeout-ms: 900000
     source:
       from-timestamp: latest

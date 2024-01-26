@@ -6,13 +6,13 @@ import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 
 public class SojSessionTimestampAssigner implements SerializableTimestampAssigner<SojSession> {
 
-  @Override
-  public long extractTimestamp(SojSession element, long recordTimestamp) {
-    Long absEndTimestamp = element.getAbsEndTimestamp();
-    if (absEndTimestamp != null) {
-      return SojDateTimeUtils.toEpochMilli(absEndTimestamp);
-    } else {
-      return System.currentTimeMillis();
+    @Override
+    public long extractTimestamp(SojSession element, long recordTimestamp) {
+        Long absEndTimestamp = element.getAbsEndTimestamp();
+        if (absEndTimestamp != null) {
+            return SojDateTimeUtils.toEpochMilli(absEndTimestamp);
+        } else {
+            return System.currentTimeMillis();
+        }
     }
-  }
 }

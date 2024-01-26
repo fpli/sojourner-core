@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+@Deprecated
 public class SessionMetricsDateTimeBucketAssigner implements BucketAssigner<SessionMetrics, String> {
 
   private static final long serialVersionUID = 1L;

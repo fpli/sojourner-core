@@ -19,6 +19,7 @@ flink:
         subject:
           event: behavior.sojourner.sojevent.schema
           session: behavior.sojourner.sojsession.schema
+          session-metrics: behavior.sojourner.session.metrics.schema
 
 kafka:
   consumer:
@@ -34,7 +35,6 @@ kafka:
     auto-offset-reset: earliest
 
   producer:
-    acks: 1
     # 1MB, default value is 16KB
     batch-size: 1048576
     # 50ms, default value is 0

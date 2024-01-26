@@ -26,3 +26,4 @@ flink:
           session:
             bot: behavior.total.new.sojsession.bot
             non-bot: behavior.total.new.sojsession.nonbot
+          session-metrics: behavior.total.new.session.metrics

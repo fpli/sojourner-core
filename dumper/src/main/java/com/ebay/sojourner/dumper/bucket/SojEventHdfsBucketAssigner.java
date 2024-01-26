@@ -10,35 +10,35 @@ import org.apache.flink.streaming.api.functions.sink.filesystem.bucketassigners.
 @Slf4j
 public class SojEventHdfsBucketAssigner implements BucketAssigner<SojEvent, String> {
 
-  @Override
-  public String getBucketId(SojEvent sojEvent, Context context) {
-    StringBuilder sb = new StringBuilder();
+    @Override
+    public String getBucketId(SojEvent sojEvent, Context context) {
+        StringBuilder sb = new StringBuilder();
 
-    // for event type: bot and nonbot
-    if (sojEvent.getBot() != 0) {
-      sb.append("/type=bot");
-    } else {
-      sb.append("/type=nonbot");
+        // for event type: bot and nonbot
+        if (sojEvent.getBot() != 0) {
+            sb.append("/type=bot");
+        } else {
+            sb.append("/type=nonbot");
+        }
+
+        long epochMilli = SojDateTimeUtils.toEpochMilli(sojEvent.getEventTimestamp());
+
+        String dtStr = SojDateTimeUtils.toDateString(epochMilli);
+        String hrStr = SojDateTimeUtils.toHrString(epochMilli);
+
+        // for dt and hr
+        sb.append("/dt=")
+          .append(dtStr);
+
+        sb.append("/hr=")
+          .append(hrStr);
+
+        return sb.toString();
     }
 
-    long epochMilli = SojDateTimeUtils.toEpochMilli(sojEvent.getEventTimestamp());
-
-    String dtStr = SojDateTimeUtils.toDateString(epochMilli);
-    String hrStr = SojDateTimeUtils.toHrString(epochMilli);
-
-    // for dt and hr
-    sb.append("/dt=")
-      .append(dtStr);
-
-    sb.append("/hr=")
-      .append(hrStr);
-
-    return sb.toString();
-  }
-
-  @Override
-  public SimpleVersionedSerializer<String> getSerializer() {
-    return SimpleVersionedStringSerializer.INSTANCE;
-  }
+    @Override
+    public SimpleVersionedSerializer<String> getSerializer() {
+        return SimpleVersionedStringSerializer.INSTANCE;
+    }
 
 }

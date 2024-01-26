@@ -12,9 +12,9 @@ import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
 import com.ebay.sojourner.flink.connector.kafka.SojSerializableTimestampAssigner;
 import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
 import com.ebay.sojourner.flink.connector.kafka.schema.PassThroughDeserializationSchema;
-import com.ebay.sojourner.flink.function.BinaryToSessionMetricsMapFunction;
-import com.ebay.sojourner.flink.function.SessionMetricsTimestampTransMapFunction;
+import com.ebay.sojourner.flink.function.map.SessionMetricsTimestampTransMapFunction;
 import com.ebay.sojourner.flink.function.SplitMetricsProcessFunction;
+import com.ebay.sojourner.flink.function.map.BytesArrayToSessionMetricsMapFunction;
 import com.ebay.sojourner.flink.function.process.ExtractWatermarkProcessFunction;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -48,7 +48,7 @@ public class SojournerSessionMetricsDumperJob {
 
     // byte to sessionMetrics
     DataStream<SessionMetrics> sessionMetricsDataStream = rescaledByteMetricsDataStream
-        .map(new BinaryToSessionMetricsMapFunction())
+        .map(new BytesArrayToSessionMetricsMapFunction())
         .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
         .name(getString(Property.PASS_THROUGH_OPERATOR_NAME))
         .uid(getString(Property.PASS_THROUGH_UID));

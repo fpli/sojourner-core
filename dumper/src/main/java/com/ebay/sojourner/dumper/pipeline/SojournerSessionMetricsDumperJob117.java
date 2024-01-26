@@ -1,26 +1,25 @@
 package com.ebay.sojourner.dumper.pipeline;
 
-import com.ebay.sojourner.common.model.SojEvent;
+import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.model.SojWatermark;
-import com.ebay.sojourner.dumper.bucket.SojEventHdfsBucketAssigner;
+import com.ebay.sojourner.dumper.bucket.SessionMetricsHdfsBucketAssigner;
 import com.ebay.sojourner.flink.common.FlinkEnv;
 import com.ebay.sojourner.flink.connector.hdfs.ParquetAvroWritersWithCompression;
 import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
-import com.ebay.sojourner.flink.connector.kafka.schema.deserialize.SojEventDeserialization;
-import com.ebay.sojourner.flink.function.map.SojEventTimestampTransMapFunction;
+import com.ebay.sojourner.flink.connector.kafka.schema.deserialize.SessionMetricsDeserialization;
+import com.ebay.sojourner.flink.function.map.SessionMetricsTimestampTransMapFunction;
 import com.ebay.sojourner.flink.function.process.ExtractWatermarkProcessFunction;
-import com.ebay.sojourner.flink.watermark.SojEventTimestampAssigner;
+import com.ebay.sojourner.flink.watermark.SessionMetricsTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.file.sink.FileSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.core.fs.Path;
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_HDFS_BASE_PATH;
 
-public class SojournerEventDumperJob {
+public class SojournerSessionMetricsDumperJob117 {
 
     public static void main(String[] args) throws Exception {
 
@@ -33,9 +32,8 @@ public class SojournerEventDumperJob {
         final String UID_UNIX_TS_TO_SOJ_TS = "unix-timestamp-to-soj-timestamp";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojEvent",
-                                                            flinkEnv.getSourceKafkaStreamName());
-        final String NAME_HDFS_DATA_SINK = "HDFS: SojEvent";
+        final String NAME_KAFKA_DATA_SOURCE = "Kafka: SessionMetrics";
+        final String NAME_HDFS_DATA_SINK = "HDFS: SessionMetrics";
         final String NAME_UNIX_TS_TO_SOJ_TS = "Unix Timestamp To Soj Timestamp";
 
         // config
@@ -43,39 +41,41 @@ public class SojournerEventDumperJob {
         final String WATERMARK_PATH = flinkEnv.getString("flink.app.sink.hdfs.watermark-path");
         final String WATERMARK_DELAY_METRIC = flinkEnv.getString("flink.app.metric.watermark-delay");
 
+
         // kafka data source
-        KafkaSource<SojEvent> kafkaSource =
-                KafkaSource.<SojEvent>builder()
+        KafkaSource<SessionMetrics> kafkaSource =
+                KafkaSource.<SessionMetrics>builder()
                            .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
                            .setGroupId(flinkEnv.getSourceKafkaGroupId())
                            .setTopics(flinkEnv.getSourceKafkaTopics())
                            .setProperties(flinkEnv.getKafkaConsumerProps())
                            .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
-                           .setDeserializer(new SojEventDeserialization())
+                           .setDeserializer(new SessionMetricsDeserialization())
                            .build();
 
         // watermark
-        WatermarkStrategy<SojEvent> watermarkStrategy =
-                WatermarkStrategy.<SojEvent>forMonotonousTimestamps()
-                                 .withTimestampAssigner(new SojEventTimestampAssigner());
+        WatermarkStrategy<SessionMetrics> watermarkStrategy =
+                WatermarkStrategy.<SessionMetrics>forMonotonousTimestamps()
+                                 .withTimestampAssigner(new SessionMetricsTimestampAssigner());
 
-        SingleOutputStreamOperator<SojEvent> sourceStream =
+        SingleOutputStreamOperator<SessionMetrics> sourceDataStream =
                 executionEnvironment.fromSource(kafkaSource, watermarkStrategy, NAME_KAFKA_DATA_SOURCE)
                                     .uid(UID_KAFKA_DATA_SOURCE)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
-        DataStream<SojEvent> sojEventStream =
-                sourceStream.map(new SojEventTimestampTransMapFunction())
-                            .name(NAME_UNIX_TS_TO_SOJ_TS)
-                            .uid(UID_UNIX_TS_TO_SOJ_TS)
-                            .setParallelism(flinkEnv.getSourceParallelism());
+        // unix timestamp to sojourner timestamp
+        SingleOutputStreamOperator<SessionMetrics> sessionMetricsStream =
+                sourceDataStream.map(new SessionMetricsTimestampTransMapFunction())
+                                .name(NAME_UNIX_TS_TO_SOJ_TS)
+                                .uid(UID_UNIX_TS_TO_SOJ_TS)
+                                .setParallelism(flinkEnv.getSourceParallelism());
 
         // extract timestamp
-        DataStream<SojWatermark> sojWatermarkStream =
-                sojEventStream.process(new ExtractWatermarkProcessFunction<>(WATERMARK_DELAY_METRIC))
-                              .name("Extract SojWatermark")
-                              .uid("extract-watermark")
-                              .setParallelism(flinkEnv.getSinkParallelism());
+        SingleOutputStreamOperator<SojWatermark> sojWatermarkStream =
+                sessionMetricsStream.process(new ExtractWatermarkProcessFunction<>(WATERMARK_DELAY_METRIC))
+                                    .name("Extract SojWatermark")
+                                    .uid("extract-watermark")
+                                    .setParallelism(flinkEnv.getSourceParallelism());
 
         // sink for SojWatermark
         final FileSink<SojWatermark> sojWatermarkSink =
@@ -90,18 +90,18 @@ public class SojournerEventDumperJob {
                           .uid("watermark-sink")
                           .setParallelism(flinkEnv.getSinkParallelism());
 
-        // sink for SojEvent
-        final FileSink<SojEvent> sojEventSink =
+        // sink for SessionMetrics
+        final FileSink<SessionMetrics> sessionMetricsSink =
                 FileSink.forBulkFormat(new Path(BASE_PATH),
-                                       ParquetAvroWritersWithCompression.forSpecificRecord(SojEvent.class))
-                        .withBucketAssigner(new SojEventHdfsBucketAssigner())
+                                       ParquetAvroWritersWithCompression.forSpecificRecord(SessionMetrics.class))
+                        .withBucketAssigner(new SessionMetricsHdfsBucketAssigner())
                         .build();
 
-        // sink SojEvent to hdfs
-        sojEventStream.sinkTo(sojEventSink)
-                      .name(NAME_HDFS_DATA_SINK)
-                      .uid(UID_HDFS_DATA_SINK)
-                      .setParallelism(flinkEnv.getSinkParallelism());
+        // sink SessionMetrics to hdfs
+        sessionMetricsStream.sinkTo(sessionMetricsSink)
+                            .name(NAME_HDFS_DATA_SINK)
+                            .uid(UID_HDFS_DATA_SINK)
+                            .setParallelism(flinkEnv.getSinkParallelism());
 
         // submit job
         flinkEnv.execute(executionEnvironment);

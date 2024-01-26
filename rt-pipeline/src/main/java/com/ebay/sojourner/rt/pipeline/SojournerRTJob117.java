@@ -4,6 +4,7 @@ import com.ebay.sojourner.common.model.AgentIpAttribute;
 import com.ebay.sojourner.common.model.BotSignature;
 import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.SessionCore;
+import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.model.UbiEvent;
@@ -13,6 +14,8 @@ import com.ebay.sojourner.flink.common.FlinkEnv;
 import com.ebay.sojourner.flink.common.OutputTagConstants;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventDeserializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventKafkaDeserializationSchemaWrapper;
+import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SessionMetricsKeySerializerSchema;
+import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SessionMetricsValueSerializerSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojEventKafkaRecordSerializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojSessionKeySerializerSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojSessionValueSerializerSchema;
@@ -42,11 +45,13 @@ import com.ebay.sojourner.rt.operator.event.LargeMessageHandler;
 import com.ebay.sojourner.rt.operator.event.OpenSessionFilterFunction;
 import com.ebay.sojourner.rt.operator.event.UbiEventMapWithStateFunction;
 import com.ebay.sojourner.rt.operator.event.UbiEventToSojEventProcessFunction;
+import com.ebay.sojourner.rt.operator.metrics.UbiSessionToSessionMetricsProcessFunction;
 import com.ebay.sojourner.rt.operator.session.DetectableSessionMapFunction;
 import com.ebay.sojourner.rt.operator.session.UbiSessionAgg;
 import com.ebay.sojourner.rt.operator.session.UbiSessionToSessionCoreMapFunction;
 import com.ebay.sojourner.rt.operator.session.UbiSessionToSojSessionProcessFunction;
 import com.ebay.sojourner.rt.operator.session.UbiSessionWindowProcessFunction;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.base.DeliveryGuarantee;
@@ -67,6 +72,7 @@ import org.apache.flink.streaming.runtime.operators.windowing.WindowOperatorHelp
 import org.apache.flink.types.Either;
 
 import java.time.Duration;
+import java.util.Properties;
 
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_IDLE_SOURCE_TIMEOUT_IN_MIN;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_MAX_OUT_OF_ORDERNESS_IN_MIN;
@@ -111,10 +117,20 @@ public class SojournerRTJob117 {
         final String sessionSlotGroup = "session";
         final String crossSessionSlotGroup = "cross-session";
 
-        final String botSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
-        final String nonbotSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
+        final String registryUrl = flinkEnv.getString(RHEOS_REGISTRY_URL);
+
         final String botEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
         final String nonbotEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
+        final String botSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
+        final String nonbotSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
+        final String sessionMetricsTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session-metrics");
+
+        final String sojeventSubject = flinkEnv.getString("flink.app.sink.kafka.subject.event");
+        final String sojsessionSubject = flinkEnv.getString("flink.app.sink.kafka.subject.session");
+        final String sessionMetricsSubject = flinkEnv.getString("flink.app.sink.kafka.subject.session-metrics");
+
+        final String sinkKafkaBrokers = flinkEnv.getSinkKafkaBrokers();
+        final Properties kafkaProducerProps = flinkEnv.getKafkaProducerProps();
 
         final int metricWindow = 70000;
 
@@ -356,6 +372,14 @@ public class SojournerRTJob117 {
         DataStream<SojSession> botSojSessionStream =
                 sojSessionStream.getSideOutput(OutputTagConstants.botSessionOutputTag);
 
+        // extract sessionMetrics from ubiSession
+        SingleOutputStreamOperator<SessionMetrics> sessionMetricsStream =
+                signatureBotDetectionForSession.process(new UbiSessionToSessionMetricsProcessFunction())
+                                               .name("UbiSession to SessionMetrics")
+                                               .uid("ubisession-to-session-metrics")
+                                               .slotSharingGroup(sessionSlotGroup)
+                                               .setParallelism(broadcastParallelism);
+
         // 5. Load data to file system for batch processing
         // 5.1 IP Signature
         // 5.2 Sessions (ended)
@@ -363,10 +387,21 @@ public class SojournerRTJob117 {
         // 5.4 Events late
 
         // kafka sinks
-        KafkaSink<SojSession> sojSessionKafkaSink = getKafkaSinkForSojSession(flinkEnv, nonbotSessionTopic);
-        KafkaSink<SojSession> botSojSessionKafkaSink = getKafkaSinkForSojSession(flinkEnv, botSessionTopic);
-        KafkaSink<SojEvent> sojEventKafkaSink = getKafkaSinkForSojEvent(flinkEnv, nonbotEventTopic);
-        KafkaSink<SojEvent> botSojEventKafkaSink = getKafkaSinkForSojEvent(flinkEnv, botEventTopic);
+        KafkaSink<SojSession> sojSessionKafkaSink = getKafkaSinkForSojSession(sinkKafkaBrokers, kafkaProducerProps,
+                                                                              registryUrl, nonbotSessionTopic,
+                                                                              sojsessionSubject);
+
+        KafkaSink<SojSession> botSojSessionKafkaSink = getKafkaSinkForSojSession(sinkKafkaBrokers, kafkaProducerProps,
+                                                                                 registryUrl, botSessionTopic,
+                                                                                 sojsessionSubject);
+
+        KafkaSink<SojEvent> sojEventKafkaSink = getKafkaSinkForSojEvent(sinkKafkaBrokers, kafkaProducerProps,
+                                                                        registryUrl, nonbotEventTopic,
+                                                                        sojeventSubject);
+
+        KafkaSink<SojEvent> botSojEventKafkaSink = getKafkaSinkForSojEvent(sinkKafkaBrokers, kafkaProducerProps,
+                                                                           registryUrl, botEventTopic,
+                                                                           sojeventSubject);
 
 
         // kafka sink for bot and nonbot sojsession
@@ -395,6 +430,14 @@ public class SojournerRTJob117 {
                          .uid("bot-sojevent-sink")
                          .slotSharingGroup(sessionSlotGroup)
                          .setParallelism(broadcastParallelism);
+
+        // kafka sink for SessionMetrics
+        sessionMetricsStream.sinkTo(getKafkaSinkForSessionMetrics(sinkKafkaBrokers, kafkaProducerProps, registryUrl,
+                                                                  sessionMetricsTopic, sessionMetricsSubject))
+                            .name("Session Metrics Sink Kafka")
+                            .uid("bot-metrics-sink-kafka")
+                            .slotSharingGroup(sessionSlotGroup)
+                            .setParallelism(broadcastParallelism);
 
         // metrics collector for end to end
         signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction(metricWindow))
@@ -451,40 +494,73 @@ public class SojournerRTJob117 {
                           .build();
     }
 
-    private static KafkaSink<SojSession> getKafkaSinkForSojSession(FlinkEnv flinkEnv, String topic) {
-        final String registryUrl = flinkEnv.getString(RHEOS_REGISTRY_URL);
-        final String subjectName = flinkEnv.getString("flink.app.sink.kafka.subject.session");
+    private static KafkaSink<SojEvent> getKafkaSinkForSojEvent(String brokers, Properties producerConfigs,
+                                                               String schemaRegistryUrl, String topic,
+                                                               String subjectName) {
+        Preconditions.checkNotNull(brokers);
+        Preconditions.checkNotNull(producerConfigs);
+        Preconditions.checkNotNull(schemaRegistryUrl);
+        Preconditions.checkNotNull(topic);
+        Preconditions.checkNotNull(subjectName);
 
+        // kafka sink
+        return KafkaSink.<SojEvent>builder()
+                        .setBootstrapServers(brokers)
+                        .setKafkaProducerConfig(producerConfigs)
+                        .setRecordSerializer(new SojEventKafkaRecordSerializationSchema(schemaRegistryUrl,
+                                                                                        subjectName, topic))
+                        .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
+                        .build();
+    }
+
+    private static KafkaSink<SojSession> getKafkaSinkForSojSession(String brokers, Properties producerConfigs,
+                                                                   String schemaRegistryUrl, String topic,
+                                                                   String subjectName) {
+        Preconditions.checkNotNull(brokers);
+        Preconditions.checkNotNull(producerConfigs);
+        Preconditions.checkNotNull(schemaRegistryUrl);
+        Preconditions.checkNotNull(topic);
+        Preconditions.checkNotNull(subjectName);
 
         // sink to kafka
         return KafkaSink.<SojSession>builder()
-                        .setBootstrapServers(flinkEnv.getSinkKafkaBrokers())
-                        .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
+                        .setBootstrapServers(brokers)
+                        .setKafkaProducerConfig(producerConfigs)
                         .setRecordSerializer(
                                 KafkaRecordSerializationSchema
                                         .<SojSession>builder()
                                         .setTopic(topic)
                                         .setKeySerializationSchema(new SojSessionKeySerializerSchema())
                                         .setValueSerializationSchema(new SojSessionValueSerializerSchema(
-                                                registryUrl, subjectName
-                                        ))
+                                                schemaRegistryUrl, subjectName))
                                         .build()
                         )
                         .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                         .build();
     }
 
-    private static KafkaSink<SojEvent> getKafkaSinkForSojEvent(FlinkEnv flinkEnv, String topic) {
-        final String registryUrl = flinkEnv.getString(RHEOS_REGISTRY_URL);
-        final String subjectName = flinkEnv.getString("flink.app.sink.kafka.subject.event");
+    private static KafkaSink<SessionMetrics> getKafkaSinkForSessionMetrics(String brokers, Properties producerConfigs,
+                                                                           String schemaRegistryUrl, String topic,
+                                                                           String subjectName) {
+        Preconditions.checkNotNull(brokers);
+        Preconditions.checkNotNull(producerConfigs);
+        Preconditions.checkNotNull(schemaRegistryUrl);
+        Preconditions.checkNotNull(topic);
+        Preconditions.checkNotNull(subjectName);
 
-        // kafka sink
-        return KafkaSink.<SojEvent>builder()
-                        .setBootstrapServers(flinkEnv.getSinkKafkaBrokers())
-                        .setKafkaProducerConfig(flinkEnv.getKafkaProducerProps())
-                        .setRecordSerializer(new SojEventKafkaRecordSerializationSchema(
-                                registryUrl, subjectName, topic
-                        ))
+        // sink to kafka
+        return KafkaSink.<SessionMetrics>builder()
+                        .setBootstrapServers(brokers)
+                        .setKafkaProducerConfig(producerConfigs)
+                        .setRecordSerializer(
+                                KafkaRecordSerializationSchema
+                                        .<SessionMetrics>builder()
+                                        .setTopic(topic)
+                                        .setKeySerializationSchema(new SessionMetricsKeySerializerSchema())
+                                        .setValueSerializationSchema(new SessionMetricsValueSerializerSchema(
+                                                schemaRegistryUrl, subjectName))
+                                        .build()
+                        )
                         .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                         .build();
     }
