@@ -9,11 +9,13 @@ import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.model.UbiEvent;
 import com.ebay.sojourner.common.model.UbiSession;
+import com.ebay.sojourner.common.util.Constants;
 import com.ebay.sojourner.flink.common.DataCenter;
 import com.ebay.sojourner.flink.common.FlinkEnv;
 import com.ebay.sojourner.flink.common.OutputTagConstants;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventDeserializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventKafkaDeserializationSchemaWrapper;
+import com.ebay.sojourner.flink.connector.kafka.schema.serialize.BotSignatureKafkaRecordSerializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SessionMetricsKeySerializerSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SessionMetricsValueSerializerSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojEventKafkaRecordSerializationSchema;
@@ -28,7 +30,6 @@ import com.ebay.sojourner.flink.window.SojEventTimeSessionWindows;
 import com.ebay.sojourner.rt.broadcast.AttributeBroadcastProcessFunctionForDetectable;
 import com.ebay.sojourner.rt.metric.AgentIpMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.metric.AgentMetricsCollectorProcessFunction;
-import com.ebay.sojourner.rt.metric.EventMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.metric.IpMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.metric.RTPipelineMetricsCollectorProcessFunction;
 import com.ebay.sojourner.rt.operator.attribute.AgentAttributeAgg;
@@ -44,6 +45,7 @@ import com.ebay.sojourner.rt.operator.event.EventMapFunction;
 import com.ebay.sojourner.rt.operator.event.LargeMessageHandler;
 import com.ebay.sojourner.rt.operator.event.OpenSessionFilterFunction;
 import com.ebay.sojourner.rt.operator.event.UbiEventMapWithStateFunction;
+import com.ebay.sojourner.rt.operator.event.UbiEventToSojEventMapFunction;
 import com.ebay.sojourner.rt.operator.event.UbiEventToSojEventProcessFunction;
 import com.ebay.sojourner.rt.operator.metrics.UbiSessionToSessionMetricsProcessFunction;
 import com.ebay.sojourner.rt.operator.session.DetectableSessionMapFunction;
@@ -119,12 +121,21 @@ public class SojournerRTJob117 {
 
         final String registryUrl = flinkEnv.getString(RHEOS_REGISTRY_URL);
 
+        // event topics
         final String botEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
         final String nonbotEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
+        final String lateEventTopic = flinkEnv.getString("flink.app.sink.kafka.topic.event.late");
+        // session topics
         final String botSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
         final String nonbotSessionTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
-        final String sessionMetricsTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session-metrics");
+        final String sessionMetricsTopic = flinkEnv.getString("flink.app.sink.kafka.topic.session.metrics");
+        // bot signature topics
+        final String agentIpSignatureTopic =
+                flinkEnv.getString("flink.app.sink.kafka.topic.bot-signature.agent-ip");
+        final String agentSignatureTopic = flinkEnv.getString("flink.app.sink.kafka.topic.bot-signature.agent");
+        final String ipSignatureTopic = flinkEnv.getString("flink.app.sink.kafka.topic.bot-signature.ip");
 
+        // schema subject names
         final String sojeventSubject = flinkEnv.getString("flink.app.sink.kafka.subject.event");
         final String sojsessionSubject = flinkEnv.getString("flink.app.sink.kafka.subject.session");
         final String sessionMetricsSubject = flinkEnv.getString("flink.app.sink.kafka.subject.session-metrics");
@@ -446,13 +457,6 @@ public class SojournerRTJob117 {
                                      .slotSharingGroup(sessionSlotGroup)
                                      .setParallelism(broadcastParallelism);
 
-        // metrics collector for event rules hit
-        signatureBotDetectionForEvent.process(new EventMetricsCollectorProcessFunction())
-                                     .name("Event Metrics Collector")
-                                     .uid("event-metrics-collector")
-                                     .slotSharingGroup(sessionSlotGroup)
-                                     .setParallelism(broadcastParallelism);
-
         // metrics collector for signature generation or expiration
         agentIpSignatureDataStream.process(new AgentIpMetricsCollectorProcessFunction())
                                   .name("AgentIp Metrics Collector")
@@ -471,6 +475,47 @@ public class SojournerRTJob117 {
                              .uid("ip-metrics-id")
                              .slotSharingGroup(crossSessionSlotGroup)
                              .setParallelism(agentIpParallelism);
+
+        // signature sink
+        agentIpSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(sinkKafkaBrokers, kafkaProducerProps,
+                                                                      registryUrl, agentIpSignatureTopic,
+                                                                      sojeventSubject, "userAgent"))
+                                  .name(String.format("%s Signature", Constants.AGENTIP))
+                                  .uid(String.format("signature-%s-sink", Constants.AGENTIP))
+                                  .slotSharingGroup(crossSessionSlotGroup)
+                                  .setParallelism(agentIpParallelism);
+
+        agentSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(sinkKafkaBrokers, kafkaProducerProps,
+                                                                    registryUrl, agentSignatureTopic,
+                                                                    sojeventSubject, "userAgent"))
+                                .name(String.format("%s Signature", Constants.AGENT))
+                                .uid(String.format("signature-%s-sink", Constants.AGENT))
+                                .slotSharingGroup(crossSessionSlotGroup)
+                                .setParallelism(agentIpParallelism);
+
+        ipSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(sinkKafkaBrokers, kafkaProducerProps,
+                                                                 registryUrl, ipSignatureTopic,
+                                                                 sojeventSubject, "ip"))
+                             .name(String.format("%s Signature", Constants.IP))
+                             .uid(String.format("signature-%s-sink", Constants.IP))
+                             .slotSharingGroup(crossSessionSlotGroup)
+                             .setParallelism(agentIpParallelism);
+
+        // kafka sink for late event
+        DataStream<SojEvent> lateSojEventStream =
+                lateEventStream.map(new UbiEventToSojEventMapFunction())
+                               .name("Late UbiEvent to SojEvent")
+                               .uid("late-ubievent-to-sojevent")
+                               .slotSharingGroup(sessionSlotGroup)
+                               .setParallelism(sessionParallelism);
+
+        lateSojEventStream.sinkTo(getKafkaSinkForSojEvent(sinkKafkaBrokers, kafkaProducerProps,
+                                                          registryUrl, lateEventTopic,
+                                                          sojeventSubject))
+                          .name("Late SojEvent")
+                          .uid("late-sojevent-sink")
+                          .slotSharingGroup(sessionSlotGroup)
+                          .setParallelism(sessionParallelism);
 
         // Submit this job
         flinkEnv.execute(executionEnvironment);
@@ -561,6 +606,25 @@ public class SojournerRTJob117 {
                                                 schemaRegistryUrl, subjectName))
                                         .build()
                         )
+                        .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
+                        .build();
+    }
+
+    private static KafkaSink<BotSignature> getKafkaSinkForBotSignature(String brokers, Properties producerConfigs,
+                                                                       String schemaRegistryUrl, String topic,
+                                                                       String subjectName, String keyField) {
+        Preconditions.checkNotNull(brokers);
+        Preconditions.checkNotNull(producerConfigs);
+        Preconditions.checkNotNull(schemaRegistryUrl);
+        Preconditions.checkNotNull(topic);
+        Preconditions.checkNotNull(subjectName);
+
+        // sink to kafka
+        return KafkaSink.<BotSignature>builder()
+                        .setBootstrapServers(brokers)
+                        .setKafkaProducerConfig(producerConfigs)
+                        .setRecordSerializer(new BotSignatureKafkaRecordSerializationSchema(
+                                schemaRegistryUrl, subjectName, topic, keyField))
                         .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                         .build();
     }

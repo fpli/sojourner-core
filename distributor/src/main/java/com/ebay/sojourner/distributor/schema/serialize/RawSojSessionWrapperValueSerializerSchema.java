@@ -1,4 +1,4 @@
-package com.ebay.sojourner.distributor.schema;
+package com.ebay.sojourner.distributor.schema.serialize;
 
 
 import com.ebay.sojourner.common.model.RawSojSessionWrapper;

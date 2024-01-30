@@ -2,9 +2,9 @@ package com.ebay.sojourner.distributor.pipeline;
 
 import com.ebay.sojourner.common.model.RawSojSessionWrapper;
 import com.ebay.sojourner.distributor.function.SessionEnhanceMapFunction;
-import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperDeserializationSchema;
-import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperKeySerializerSchema;
-import com.ebay.sojourner.distributor.schema.RawSojSessionWrapperValueSerializerSchema;
+import com.ebay.sojourner.distributor.schema.deserialize.RawSojSessionWrapperDeserializationSchema;
+import com.ebay.sojourner.distributor.schema.serialize.RawSojSessionWrapperKeySerializerSchema;
+import com.ebay.sojourner.distributor.schema.serialize.RawSojSessionWrapperValueSerializerSchema;
 import com.ebay.sojourner.flink.common.FlinkEnv;
 import org.apache.flink.connector.base.DeliveryGuarantee;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;

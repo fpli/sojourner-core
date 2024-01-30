@@ -1,4 +1,4 @@
-package com.ebay.sojourner.distributor.schema;
+package com.ebay.sojourner.distributor.schema.deserialize;
 
 import com.ebay.sojourner.common.constant.SojHeaders;
 import com.ebay.sojourner.common.model.RawSojEventWrapper;

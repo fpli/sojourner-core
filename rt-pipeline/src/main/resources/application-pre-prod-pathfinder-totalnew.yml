@@ -23,7 +23,12 @@ flink:
           event:
             bot: behavior.total.new.sojevent.bot
             non-bot: behavior.total.new.sojevent.nonbot
+            late: behavior.total.new.sojevent-late
           session:
             bot: behavior.total.new.sojsession.bot
             non-bot: behavior.total.new.sojsession.nonbot
-          session-metrics: behavior.total.new.session.metrics
+            metrics: behavior.total.new.session.metrics
+          bot-signature:
+            agent-ip: behavior.totalv3.signature.agent-ip-rno
+            agent: behavior.totalv3.signature.agent-rno
+            ip: behavior.totalv3.signature.ip-rno

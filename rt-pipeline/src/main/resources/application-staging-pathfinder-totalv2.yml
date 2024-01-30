@@ -23,11 +23,17 @@ flink:
         dc: slc
         topic:
           event:
-            bot: behavior.totalv2.sojevent-nonbot.test
-            non-bot: behavior.totalv2.sojevent-nonbot.test
+            bot: behavior.totalv2.sojevent-bot
+            non-bot: behavior.totalv2.sojevent-nonbot
+            late: behavior.totalv2.sojevent-late
           session:
-            bot: behavior.totalv2.sojsession-nonbot.test
-            non-bot: behavior.totalv2.sojsession-nonbot.test
+            bot: behavior.totalv2.sojsession-bot
+            non-bot: behavior.totalv2.sojsession-nonbot
+            metrics: behavior.totalv2.session-metrics
+          bot-signature:
+            agent-ip: behavior.totalv2.signature.agent-ip
+            agent: behavior.totalv2.signature.agent
+            ip: behavior.totalv2.signature.ip
 
 rheos:
   registry-url: https://rheos-services.qa.ebay.com
