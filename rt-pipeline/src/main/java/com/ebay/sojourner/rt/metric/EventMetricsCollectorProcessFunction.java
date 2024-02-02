@@ -13,6 +13,7 @@ import org.apache.flink.metrics.Counter;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 
+@Deprecated
 public class EventMetricsCollectorProcessFunction extends ProcessFunction<UbiEvent, UbiEvent> {
 
   private Set<Long> dynamicRuleIdOldSet = new CopyOnWriteArraySet<>();

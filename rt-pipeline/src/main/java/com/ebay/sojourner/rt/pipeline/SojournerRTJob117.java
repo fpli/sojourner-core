@@ -478,24 +478,21 @@ public class SojournerRTJob117 {
 
         // signature sink
         agentIpSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(sinkKafkaBrokers, kafkaProducerProps,
-                                                                      registryUrl, agentIpSignatureTopic,
-                                                                      sojeventSubject, "userAgent"))
+                                                                      agentIpSignatureTopic, "userAgent"))
                                   .name(String.format("%s Signature", Constants.AGENTIP))
                                   .uid(String.format("signature-%s-sink", Constants.AGENTIP))
                                   .slotSharingGroup(crossSessionSlotGroup)
                                   .setParallelism(agentIpParallelism);
 
         agentSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(sinkKafkaBrokers, kafkaProducerProps,
-                                                                    registryUrl, agentSignatureTopic,
-                                                                    sojeventSubject, "userAgent"))
+                                                                    agentSignatureTopic, "userAgent"))
                                 .name(String.format("%s Signature", Constants.AGENT))
                                 .uid(String.format("signature-%s-sink", Constants.AGENT))
                                 .slotSharingGroup(crossSessionSlotGroup)
                                 .setParallelism(agentIpParallelism);
 
         ipSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(sinkKafkaBrokers, kafkaProducerProps,
-                                                                 registryUrl, ipSignatureTopic,
-                                                                 sojeventSubject, "ip"))
+                                                                 ipSignatureTopic, "ip"))
                              .name(String.format("%s Signature", Constants.IP))
                              .uid(String.format("signature-%s-sink", Constants.IP))
                              .slotSharingGroup(crossSessionSlotGroup)
@@ -611,20 +608,16 @@ public class SojournerRTJob117 {
     }
 
     private static KafkaSink<BotSignature> getKafkaSinkForBotSignature(String brokers, Properties producerConfigs,
-                                                                       String schemaRegistryUrl, String topic,
-                                                                       String subjectName, String keyField) {
+                                                                       String topic, String keyField) {
         Preconditions.checkNotNull(brokers);
         Preconditions.checkNotNull(producerConfigs);
-        Preconditions.checkNotNull(schemaRegistryUrl);
         Preconditions.checkNotNull(topic);
-        Preconditions.checkNotNull(subjectName);
 
         // sink to kafka
         return KafkaSink.<BotSignature>builder()
                         .setBootstrapServers(brokers)
                         .setKafkaProducerConfig(producerConfigs)
-                        .setRecordSerializer(new BotSignatureKafkaRecordSerializationSchema(
-                                schemaRegistryUrl, subjectName, topic, keyField))
+                        .setRecordSerializer(new BotSignatureKafkaRecordSerializationSchema(topic, keyField))
                         .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                         .build();
     }

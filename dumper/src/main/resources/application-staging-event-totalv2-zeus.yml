@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Dumper Zeus Staging - Event
+    name: Sojourner Dumper Zeus Event - Staging
     parallelism:
       source: 8
       sink: 8

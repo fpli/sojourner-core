@@ -13,9 +13,7 @@ public class SessionMetricsTimestampAssigner implements SerializableTimestampAss
         try {
             return SojDateTimeUtils.toEpochMilli(element.getAbsEndTimestamp());
         } catch (Exception e) {
-            log.warn("failed session record: {}; guid: {}; sessionskey: {}",
-                     element.toString(), element.getGuid(), element.getSessionSkey());
-            log.warn("parse session-metrics startdt failed: ", e);
+            log.warn("Parse SessionMetrics absEndTimestamp failed. SessionMetrics record: {}", element, e);
             return System.currentTimeMillis();
         }
     }

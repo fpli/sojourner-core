@@ -1,9 +1,9 @@
 flink:
   app:
-    name: Sojourner Dumper Apollo Pre-Prod - Session
+    name: Sojourner Dumper Apollo Session - Pre-Prod
     parallelism:
-      source: 100
-      sink: 100
+      source: 50
+      sink: 50
     source:
       kafka:
         group-id: sojourner-dumper-apollo-session-pre-prod

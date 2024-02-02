@@ -3,8 +3,8 @@ flink:
     name: Sojourner Realtime Pipeline - Pre-Prod
     parallelism:
       source: 200
-      session: 1200
-      broadcast: 600
+      session: 1024
+      broadcast: 512
       agent-ip: 150
     source:
       kafka:
@@ -29,6 +29,6 @@ flink:
             non-bot: behavior.total.new.sojsession.nonbot
             metrics: behavior.total.new.session.metrics
           bot-signature:
-            agent-ip: behavior.totalv3.signature.agent-ip-rno
-            agent: behavior.totalv3.signature.agent-rno
-            ip: behavior.totalv3.signature.ip-rno
+            agent-ip: behavior.total.new.signature.agentIp
+            agent: behavior.total.new.signature.agent
+            ip: behavior.total.new.signature.ip

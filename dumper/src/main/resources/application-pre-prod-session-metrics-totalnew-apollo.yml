@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Dumper Apollo Pre-Prod - Session Metrics
+    name: Sojourner Dumper Apollo Session Metrics - Pre-Prod
     parallelism:
       source: 50
       sink: 50

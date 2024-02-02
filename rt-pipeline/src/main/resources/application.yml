@@ -16,19 +16,6 @@ flink:
         truncate-url-query-string: true
     sink:
       kafka:
-        topic:
-          event:
-            bot: behavior.totalv3.sojevent-bot-rno
-            non-bot: behavior.totalv3.sojevent-nonbot-rno
-            late: behavior.totalv3.sojevent-late-rno
-          session:
-            bot: behavior.totalv3.sojsession-bot-rno
-            non-bot: behavior.totalv3.sojsession-nonbot-rno
-            metrics: behavior.totalv3.session.metrics-rno
-          bot-signature:
-            agent-ip: behavior.totalv3.signature.agent-ip-rno
-            agent: behavior.totalv3.signature.agent-rno
-            ip: behavior.totalv3.signature.ip-rno
         subject:
           event: behavior.sojourner.sojevent.schema
           session: behavior.sojourner.sojsession.schema

@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Dumper Apollo Pre-Prod - Event
+    name: Sojourner Dumper Apollo Event - Pre-Prod
     parallelism:
       source: 1000
       sink: 1000

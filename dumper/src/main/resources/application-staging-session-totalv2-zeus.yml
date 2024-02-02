@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Dumper Zeus Staging - Session
+    name: Sojourner Dumper Zeus Session - Staging
     parallelism:
       source: 2
       sink: 2
