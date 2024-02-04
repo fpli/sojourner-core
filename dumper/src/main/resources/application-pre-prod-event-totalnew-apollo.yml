@@ -2,8 +2,10 @@ flink:
   app:
     name: Sojourner Dumper Apollo Event - Pre-Prod
     parallelism:
-      source: 1000
-      sink: 1000
+      source:
+        non-bot: 400
+        bot: 600
+      sink: 1200
     source:
       kafka:
         group-id: sojourner-dumper-apollo-event-pre-prod
@@ -11,8 +13,8 @@ flink:
         stream: behavior.total.new
         dc: rno
         topic:
-          - behavior.total.new.sojevent.nonbot
-          - behavior.total.new.sojevent.bot
+          non-bot: behavior.total.new.sojevent.nonbot
+          bot: behavior.total.new.sojevent.bot
         from-timestamp: latest
     sink:
       hdfs:

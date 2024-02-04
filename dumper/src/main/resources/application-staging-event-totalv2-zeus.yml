@@ -2,7 +2,9 @@ flink:
   app:
     name: Sojourner Dumper Zeus Event - Staging
     parallelism:
-      source: 8
+      source:
+        non-bot: 4
+        bot: 4
       sink: 8
     source:
       kafka:
@@ -11,8 +13,8 @@ flink:
         stream: behavior.totalv2
         dc: slc
         topic:
-          - behavior.totalv2.sojevent-nonbot
-          - behavior.totalv2.sojevent-bot
+          non-bot: behavior.totalv2.sojevent-nonbot
+          bot: behavior.totalv2.sojevent-bot
         from-timestamp: latest
     sink:
       hdfs:

@@ -15,7 +15,6 @@ import org.apache.flink.connector.file.sink.FileSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_HDFS_BASE_PATH;
@@ -28,13 +27,16 @@ public class SojournerEventDumperJob {
         StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
         // operator uid
-        final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";
+        final String UID_KAFKA_DATA_SOURCE_NON_BOT = "kafka-data-source-non-bot";
+        final String UID_KAFKA_DATA_SOURCE_BOT = "kafka-data-source-bot";
         final String UID_HDFS_DATA_SINK = "hdfs-data-sink";
         final String UID_UNIX_TS_TO_SOJ_TS = "unix-timestamp-to-soj-timestamp";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojEvent",
-                                                            flinkEnv.getSourceKafkaStreamName());
+        final String NAME_KAFKA_DATA_SOURCE_NON_BOT = String.format("Kafka: SojEvent Non-Bot - %s",
+                                                                    flinkEnv.getSourceKafkaStreamName());
+        final String NAME_KAFKA_DATA_SOURCE_BOT = String.format("Kafka: SojEvent Bot - %s",
+                                                                flinkEnv.getSourceKafkaStreamName());
         final String NAME_HDFS_DATA_SINK = "HDFS: SojEvent";
         final String NAME_UNIX_TS_TO_SOJ_TS = "Unix Timestamp To Soj Timestamp";
 
@@ -43,12 +45,29 @@ public class SojournerEventDumperJob {
         final String WATERMARK_PATH = flinkEnv.getString("flink.app.sink.hdfs.watermark-path");
         final String WATERMARK_DELAY_METRIC = flinkEnv.getString("flink.app.metric.watermark-delay");
 
+        final String NON_BOT_TOPIC = flinkEnv.getString("flink.app.source.kafka.topic.non-bot");
+        final String BOT_TOPIC = flinkEnv.getString("flink.app.source.kafka.topic.bot");
+
+        final Integer SOURCE_BOT_PARALLELISM = flinkEnv.getInteger("flink.app.parallelism.source.bot");
+        final Integer SOURCE_NON_BOT_PARALLELISM = flinkEnv.getInteger("flink.app.parallelism.source.non-bot");
+
+
         // kafka data source
-        KafkaSource<SojEvent> kafkaSource =
+        KafkaSource<SojEvent> kafkaSourceNonBot =
                 KafkaSource.<SojEvent>builder()
                            .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
                            .setGroupId(flinkEnv.getSourceKafkaGroupId())
-                           .setTopics(flinkEnv.getSourceKafkaTopics())
+                           .setTopics(NON_BOT_TOPIC)
+                           .setProperties(flinkEnv.getKafkaConsumerProps())
+                           .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
+                           .setDeserializer(new SojEventDeserialization())
+                           .build();
+
+        KafkaSource<SojEvent> kafkaSourceBot =
+                KafkaSource.<SojEvent>builder()
+                           .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
+                           .setGroupId(flinkEnv.getSourceKafkaGroupId())
+                           .setTopics(BOT_TOPIC)
                            .setProperties(flinkEnv.getKafkaConsumerProps())
                            .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                            .setDeserializer(new SojEventDeserialization())
@@ -59,16 +78,25 @@ public class SojournerEventDumperJob {
                 WatermarkStrategy.<SojEvent>forMonotonousTimestamps()
                                  .withTimestampAssigner(new SojEventTimestampAssigner());
 
-        SingleOutputStreamOperator<SojEvent> sourceStream =
-                executionEnvironment.fromSource(kafkaSource, watermarkStrategy, NAME_KAFKA_DATA_SOURCE)
-                                    .uid(UID_KAFKA_DATA_SOURCE)
-                                    .setParallelism(flinkEnv.getSourceParallelism());
+        DataStream<SojEvent> sourceNonBotStream =
+                executionEnvironment.fromSource(kafkaSourceNonBot, watermarkStrategy, NAME_KAFKA_DATA_SOURCE_NON_BOT)
+                                    .uid(UID_KAFKA_DATA_SOURCE_NON_BOT)
+                                    .setParallelism(SOURCE_NON_BOT_PARALLELISM)
+                                    .rescale();
+
+        DataStream<SojEvent> sourceBotStream =
+                executionEnvironment.fromSource(kafkaSourceBot, watermarkStrategy, NAME_KAFKA_DATA_SOURCE_BOT)
+                                    .uid(UID_KAFKA_DATA_SOURCE_BOT)
+                                    .setParallelism(SOURCE_BOT_PARALLELISM)
+                                    .rescale();
+
+        DataStream<SojEvent> sourceUnionStream = sourceNonBotStream.union(sourceBotStream);
 
         DataStream<SojEvent> sojEventStream =
-                sourceStream.map(new SojEventTimestampTransMapFunction())
-                            .name(NAME_UNIX_TS_TO_SOJ_TS)
-                            .uid(UID_UNIX_TS_TO_SOJ_TS)
-                            .setParallelism(flinkEnv.getSourceParallelism());
+                sourceUnionStream.map(new SojEventTimestampTransMapFunction())
+                                 .name(NAME_UNIX_TS_TO_SOJ_TS)
+                                 .uid(UID_UNIX_TS_TO_SOJ_TS)
+                                 .setParallelism(flinkEnv.getSinkParallelism());
 
         // extract timestamp
         DataStream<SojWatermark> sojWatermarkStream =
