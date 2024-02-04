@@ -41,15 +41,15 @@ public class SojournerEventDumperJob {
         final String NAME_UNIX_TS_TO_SOJ_TS = "Unix Timestamp To Soj Timestamp";
 
         // config
-        final String BASE_PATH = flinkEnv.getString(FLINK_APP_SINK_HDFS_BASE_PATH);
-        final String WATERMARK_PATH = flinkEnv.getString("flink.app.sink.hdfs.watermark-path");
-        final String WATERMARK_DELAY_METRIC = flinkEnv.getString("flink.app.metric.watermark-delay");
+        final String HDFS_BASE_PATH = flinkEnv.getString(FLINK_APP_SINK_HDFS_BASE_PATH);
+        final String HDFS_WATERMARK_PATH = flinkEnv.getString("flink.app.sink.hdfs.watermark-path");
+        final String METRIC_WATERMARK_DELAY = flinkEnv.getString("flink.app.metric.watermark-delay");
 
-        final String NON_BOT_TOPIC = flinkEnv.getString("flink.app.source.kafka.topic.non-bot");
-        final String BOT_TOPIC = flinkEnv.getString("flink.app.source.kafka.topic.bot");
+        final String TOPIC_NON_BOT = flinkEnv.getString("flink.app.source.kafka.topic.non-bot");
+        final String TOPIC_BOT = flinkEnv.getString("flink.app.source.kafka.topic.bot");
 
-        final Integer SOURCE_BOT_PARALLELISM = flinkEnv.getInteger("flink.app.parallelism.source.bot");
-        final Integer SOURCE_NON_BOT_PARALLELISM = flinkEnv.getInteger("flink.app.parallelism.source.non-bot");
+        final Integer PARALLELISM_SOURCE_NON_BOT = flinkEnv.getInteger("flink.app.parallelism.source.non-bot");
+        final Integer PARALLELISM_SOURCE_BOT = flinkEnv.getInteger("flink.app.parallelism.source.bot");
 
 
         // kafka data source
@@ -57,7 +57,7 @@ public class SojournerEventDumperJob {
                 KafkaSource.<SojEvent>builder()
                            .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
                            .setGroupId(flinkEnv.getSourceKafkaGroupId())
-                           .setTopics(NON_BOT_TOPIC)
+                           .setTopics(TOPIC_NON_BOT)
                            .setProperties(flinkEnv.getKafkaConsumerProps())
                            .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                            .setDeserializer(new SojEventDeserialization())
@@ -67,7 +67,7 @@ public class SojournerEventDumperJob {
                 KafkaSource.<SojEvent>builder()
                            .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
                            .setGroupId(flinkEnv.getSourceKafkaGroupId())
-                           .setTopics(BOT_TOPIC)
+                           .setTopics(TOPIC_BOT)
                            .setProperties(flinkEnv.getKafkaConsumerProps())
                            .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
                            .setDeserializer(new SojEventDeserialization())
@@ -81,13 +81,13 @@ public class SojournerEventDumperJob {
         DataStream<SojEvent> sourceNonBotStream =
                 executionEnvironment.fromSource(kafkaSourceNonBot, watermarkStrategy, NAME_KAFKA_DATA_SOURCE_NON_BOT)
                                     .uid(UID_KAFKA_DATA_SOURCE_NON_BOT)
-                                    .setParallelism(SOURCE_NON_BOT_PARALLELISM)
+                                    .setParallelism(PARALLELISM_SOURCE_NON_BOT)
                                     .rescale();
 
         DataStream<SojEvent> sourceBotStream =
                 executionEnvironment.fromSource(kafkaSourceBot, watermarkStrategy, NAME_KAFKA_DATA_SOURCE_BOT)
                                     .uid(UID_KAFKA_DATA_SOURCE_BOT)
-                                    .setParallelism(SOURCE_BOT_PARALLELISM)
+                                    .setParallelism(PARALLELISM_SOURCE_BOT)
                                     .rescale();
 
         DataStream<SojEvent> sourceUnionStream = sourceNonBotStream.union(sourceBotStream);
@@ -100,14 +100,14 @@ public class SojournerEventDumperJob {
 
         // extract timestamp
         DataStream<SojWatermark> sojWatermarkStream =
-                sojEventStream.process(new ExtractWatermarkProcessFunction<>(WATERMARK_DELAY_METRIC))
+                sojEventStream.process(new ExtractWatermarkProcessFunction<>(METRIC_WATERMARK_DELAY))
                               .name("Extract SojWatermark")
                               .uid("extract-watermark")
                               .setParallelism(flinkEnv.getSinkParallelism());
 
         // sink for SojWatermark
         final FileSink<SojWatermark> sojWatermarkSink =
-                FileSink.forBulkFormat(new Path(WATERMARK_PATH),
+                FileSink.forBulkFormat(new Path(HDFS_WATERMARK_PATH),
                                        ParquetAvroWritersWithCompression.forReflectRecord(SojWatermark.class))
                         .withBucketAssigner(new SojCommonDateTimeBucketAssigner<>())
                         .build();
@@ -120,7 +120,7 @@ public class SojournerEventDumperJob {
 
         // sink for SojEvent
         final FileSink<SojEvent> sojEventSink =
-                FileSink.forBulkFormat(new Path(BASE_PATH),
+                FileSink.forBulkFormat(new Path(HDFS_BASE_PATH),
                                        ParquetAvroWritersWithCompression.forSpecificRecord(SojEvent.class))
                         .withBucketAssigner(new SojEventHdfsBucketAssigner())
                         .build();

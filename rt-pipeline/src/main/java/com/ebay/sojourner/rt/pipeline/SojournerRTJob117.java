@@ -417,13 +417,13 @@ public class SojournerRTJob117 {
 
         // kafka sink for bot and nonbot sojsession
         sojSessionStream.sinkTo(sojSessionKafkaSink)
-                        .name("Nonbot SojSession")
+                        .name("Kafka Sink: SojSession Non-Bot")
                         .uid("nonbot-sojsession-sink")
                         .slotSharingGroup(sessionSlotGroup)
                         .setParallelism(broadcastParallelism);
 
         botSojSessionStream.sinkTo(botSojSessionKafkaSink)
-                           .name("Bot SojSession")
+                           .name("Kafka Sink: SojSession Bot")
                            .uid("bot-sojsession-sink")
                            .slotSharingGroup(sessionSlotGroup)
                            .setParallelism(broadcastParallelism);
@@ -431,13 +431,13 @@ public class SojournerRTJob117 {
 
         // kafka sink for bot and nonbot sojevent
         sojEventWithSessionId.sinkTo(sojEventKafkaSink)
-                             .name("Nonbot SojEvent")
+                             .name("Kafka Sink: SojEvent Non-Bot")
                              .uid("nonbot-sojevent-sink")
                              .slotSharingGroup(sessionSlotGroup)
                              .setParallelism(broadcastParallelism);
 
         botSojEventStream.sinkTo(botSojEventKafkaSink)
-                         .name("Bot SojEvent")
+                         .name("Kafka Sink: SojEvent Bot")
                          .uid("bot-sojevent-sink")
                          .slotSharingGroup(sessionSlotGroup)
                          .setParallelism(broadcastParallelism);
@@ -445,7 +445,7 @@ public class SojournerRTJob117 {
         // kafka sink for SessionMetrics
         sessionMetricsStream.sinkTo(getKafkaSinkForSessionMetrics(sinkKafkaBrokers, kafkaProducerProps, registryUrl,
                                                                   sessionMetricsTopic, sessionMetricsSubject))
-                            .name("Session Metrics Sink Kafka")
+                            .name("Kafka Sink: Session Metrics")
                             .uid("bot-metrics-sink-kafka")
                             .slotSharingGroup(sessionSlotGroup)
                             .setParallelism(broadcastParallelism);
@@ -509,7 +509,7 @@ public class SojournerRTJob117 {
         lateSojEventStream.sinkTo(getKafkaSinkForSojEvent(sinkKafkaBrokers, kafkaProducerProps,
                                                           registryUrl, lateEventTopic,
                                                           sojeventSubject))
-                          .name("Late SojEvent")
+                          .name("Kafka Sink: SojEvent Late")
                           .uid("late-sojevent-sink")
                           .slotSharingGroup(sessionSlotGroup)
                           .setParallelism(sessionParallelism);

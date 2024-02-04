@@ -32,14 +32,15 @@ public class SojournerSessionDumperJob {
         final String UID_UNIX_TS_TO_SOJ_TS = "unix-timestamp-to-soj-timestamp";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = "Kafka: SojSession";
+        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: SojSession - %s",
+                                                            flinkEnv.getSourceKafkaStreamName());
         final String NAME_HDFS_DATA_SINK = "HDFS: SojSession";
         final String NAME_UNIX_TS_TO_SOJ_TS = "Unix Timestamp To Soj Timestamp";
 
         // config
-        final String BASE_PATH = flinkEnv.getString(FLINK_APP_SINK_HDFS_BASE_PATH);
-        final String WATERMARK_PATH = flinkEnv.getString("flink.app.sink.hdfs.watermark-path");
-        final String WATERMARK_DELAY_METRIC = flinkEnv.getString("flink.app.metric.watermark-delay");
+        final String HDFS_BASE_PATH = flinkEnv.getString(FLINK_APP_SINK_HDFS_BASE_PATH);
+        final String HDFS_WATERMARK_PATH = flinkEnv.getString("flink.app.sink.hdfs.watermark-path");
+        final String METRIC_WATERMARK_DELAY = flinkEnv.getString("flink.app.metric.watermark-delay");
 
         // kafka data source
         KafkaSource<SojSession> kafkaSource =
@@ -70,14 +71,14 @@ public class SojournerSessionDumperJob {
 
         // extract timestamp
         SingleOutputStreamOperator<SojWatermark> sojWatermarkStream =
-                sojSessionStream.process(new ExtractWatermarkProcessFunction<>(WATERMARK_DELAY_METRIC))
+                sojSessionStream.process(new ExtractWatermarkProcessFunction<>(METRIC_WATERMARK_DELAY))
                                 .name("Extract SojWatermark")
                                 .uid("extract-watermark")
                                 .setParallelism(flinkEnv.getSourceParallelism());
 
         // sink for SojWatermark
         final FileSink<SojWatermark> sojWatermarkSink =
-                FileSink.forBulkFormat(new Path(WATERMARK_PATH),
+                FileSink.forBulkFormat(new Path(HDFS_WATERMARK_PATH),
                                        ParquetAvroWritersWithCompression.forReflectRecord(SojWatermark.class))
                         .withBucketAssigner(new SojCommonDateTimeBucketAssigner<>())
                         .build();
@@ -90,7 +91,7 @@ public class SojournerSessionDumperJob {
 
         // sink for SojSession
         final FileSink<SojSession> sojSessionSink =
-                FileSink.forBulkFormat(new Path(BASE_PATH),
+                FileSink.forBulkFormat(new Path(HDFS_BASE_PATH),
                                        ParquetAvroWritersWithCompression.forSpecificRecord(SojSession.class))
                         .withBucketAssigner(new SojSessionHdfsBucketAssigner())
                         .build();
