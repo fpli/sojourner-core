@@ -39,19 +39,20 @@ public class SojEventDistJob {
         StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
         // operator uid
-        final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";
+        final String UID_KAFKA_SOURCE_EVENT = "kafka-source-event";
         final String UID_CONFIG_SOURCE = "config-source";
         final String UID_DIST = "filter-and-dist";
-        final String UID_KAFKA_DATA_SINK = "kafka-data-sink";
-        final String UID_PIPELINE_METRIC = "pipeline-metrics-collector";
+        final String UID_KAFKA_SINK_EVENT = "kafka-sink-event";
+        final String UID_METRICS_COLLECT = "pipeline-metrics-collector";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojEvent",
-                                                            flinkEnv.getSourceKafkaStreamName());
+        final String NAME_KAFKA_SOURCE_EVENT = String.format("Kafka: SojEvent - %s",
+                                                             flinkEnv.getSourceKafkaStreamName());
         final String NAME_CONFIG_SOURCE = "PageId Topic Mapping Configs Source";
         final String NAME_DIST = "SojEvent Filter and Distribution";
-        final String NAME_KAFKA_DATA_SINK = String.format("Kafka: %s - SojEvent", flinkEnv.getSinkKafkaStreamName());
-        final String NAME_PIPELINE_METRIC = "Pipeline Metrics Collector";
+        final String NAME_KAFKA_SINK_EVENT = String.format("Kafka Sink: SojEvent - %s",
+                                                           flinkEnv.getSinkKafkaStreamName());
+        final String NAME_METRICS_COLLECT = "Pipeline Metrics Collector";
 
         // state
         final String STATE_CUSTOM_TOPIC_CONFIG = "custom-topic-config";
@@ -75,8 +76,8 @@ public class SojEventDistJob {
                            .build();
 
         SingleOutputStreamOperator<RawSojEventWrapper> sourceDataStream =
-                executionEnvironment.fromSource(kafkaSource, noWatermarks(), NAME_KAFKA_DATA_SOURCE)
-                                    .uid(UID_KAFKA_DATA_SOURCE)
+                executionEnvironment.fromSource(kafkaSource, noWatermarks(), NAME_KAFKA_SOURCE_EVENT)
+                                    .uid(UID_KAFKA_SOURCE_EVENT)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
         ListStateDescriptor<CustomTopicConfig> customTopicConfigListStateDescriptor =
@@ -109,8 +110,8 @@ public class SojEventDistJob {
 
         // distributor latency monitoring
         sojEventDistStream.process(new DistPipelineMetricsCollectorProcessFunction())
-                          .name(NAME_PIPELINE_METRIC)
-                          .uid(UID_PIPELINE_METRIC)
+                          .name(NAME_METRICS_COLLECT)
+                          .uid(UID_METRICS_COLLECT)
                           .setParallelism(flinkEnv.getSourceParallelism());
 
         // sink to kafka
@@ -131,8 +132,8 @@ public class SojEventDistJob {
                          .build();
 
         sojEventDistStream.sinkTo(kafkaSink)
-                          .name(NAME_KAFKA_DATA_SINK)
-                          .uid(UID_KAFKA_DATA_SINK)
+                          .name(NAME_KAFKA_SINK_EVENT)
+                          .uid(UID_KAFKA_SINK_EVENT)
                           .setParallelism(flinkEnv.getSinkParallelism());
 
         // Submit this job

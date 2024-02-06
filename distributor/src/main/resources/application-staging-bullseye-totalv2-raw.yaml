@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Simple Distributor Staging
+    name: Sojourner Simple Distributor - Staging
     parallelism:
       source: 2
       sink: 1

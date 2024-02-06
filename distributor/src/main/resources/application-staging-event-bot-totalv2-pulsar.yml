@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor Staging - Bot Event
+    name: Sojourner Distributor Bot Event - Staging
     parallelism:
       source: 4
       sink: 4

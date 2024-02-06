@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor Staging - Non-Bot Event
+    name: Sojourner Distributor Non-Bot Event - Staging
     parallelism:
       source: 4
       sink: 4

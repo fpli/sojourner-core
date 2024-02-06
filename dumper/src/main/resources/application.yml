@@ -9,6 +9,21 @@ flink:
     source:
       from-timestamp: latest
 
+kafka:
+  consumer:
+    # 5000, default is 500
+    max-poll-records: 5000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 1MB, default value is 64KB
+    receive-buffer: 1048576
+    # 100ms, default value is 500ms
+    fetch-max-wait-ms: 100
+    # 10MB, default value is 1MB
+    max-partitions-fetch-bytes: 10485760
+    # when offset cannot be found, read from `latest`
+    auto-offset-reset: latest
+
 rheos:
   registry-url: https://rheos-services.stratus.ebay.com
   client:

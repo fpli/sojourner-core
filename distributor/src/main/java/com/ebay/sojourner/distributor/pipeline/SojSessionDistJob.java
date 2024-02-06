@@ -24,15 +24,16 @@ public class SojSessionDistJob {
         StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
         // operator uid
-        final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";
+        final String UID_KAFKA_SOURCE_SESSION = "kafka-source-session";
         final String UID_MAP_ENHANCE = "enhance-map";
-        final String UID_KAFKA_DATA_SINK = "kafka-data-sink";
+        final String UID_KAFKA_SINK_SESSION = "kafka-sink-session";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: %s - SojSession",
-                                                            flinkEnv.getSourceKafkaStreamName());
+        final String NAME_KAFKA_SOURCE_SESSION = String.format("Kafka: SojSession - %s",
+                                                               flinkEnv.getSourceKafkaStreamName());
         final String NAME_MAP_ENHANCE = "SojSession Enhancement";
-        final String NAME_KAFKA_DATA_SINK = "Kafka: behavior.pulsar - SojSession";
+        final String NAME_KAFKA_SINK_SESSION = String.format("Kafka Sink: SojSession - %s",
+                                                             flinkEnv.getSinkKafkaStreamName());
 
         // config
         final String DIST_TOPIC = flinkEnv.getString("flink.app.dist.topic");
@@ -51,8 +52,8 @@ public class SojSessionDistJob {
                            .build();
 
         SingleOutputStreamOperator<RawSojSessionWrapper> sourceDataStream =
-                executionEnvironment.fromSource(kafkaSource, noWatermarks(), NAME_KAFKA_DATA_SOURCE)
-                                    .uid(UID_KAFKA_DATA_SOURCE)
+                executionEnvironment.fromSource(kafkaSource, noWatermarks(), NAME_KAFKA_SOURCE_SESSION)
+                                    .uid(UID_KAFKA_SOURCE_SESSION)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
         SingleOutputStreamOperator<RawSojSessionWrapper> mappedDataStream =
@@ -78,8 +79,8 @@ public class SojSessionDistJob {
                          .build();
 
         mappedDataStream.sinkTo(kafkaSink)
-                        .name(NAME_KAFKA_DATA_SINK)
-                        .uid(UID_KAFKA_DATA_SINK)
+                        .name(NAME_KAFKA_SINK_SESSION)
+                        .uid(UID_KAFKA_SINK_SESSION)
                         .setParallelism(flinkEnv.getSinkParallelism());
 
         // Submit this job

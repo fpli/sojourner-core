@@ -1,6 +1,6 @@
 flink:
   app:
-    name: Sojourner Distributor Staging - Session
+    name: Sojourner Distributor Non-Bot Session - Staging
     parallelism:
       source: 2
       sink: 2

@@ -1,38 +1,22 @@
 flink:
   app:
-    name: Sojourner Non-Bot Session Distributor - Pre-Prod
+    name: Sojourner Distributor Non-Bot Session - Pre-Prod
     parallelism:
       source: 50
-      sink-kafka: 50
+      sink: 50
     source:
-      dc: rno
-      operator-name: Non-bot SojSession Source
-    sink:
-      dc: rno
-      operator-name: Non-bot SojSession Sink
       kafka:
-        topic: behavior.total.new.sojsession.nonbot.test
-
-kafka:
-  consumer:
-    stream: behavior.total.new
-    group-id: sojourner-distributor-pre-prod-session
-    topic:
-      - behavior.total.new.sojsession.nonbot
-    bootstrap-servers:
-      rno:
-        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
-
-  producer:
-    stream: behavior.total.new
-    bootstrap-servers:
-      rno:
-        - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
-        - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+        group-id: sojourner-distributor-session-pre-prod
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+        topic:
+          - behavior.total.new.sojsession.nonbot
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+    dist:
+      topic: behavior.total.new.sojsession.nonbot.test
