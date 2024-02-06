@@ -27,18 +27,22 @@ public class SojournerEventDumperJob {
         StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
         // operator uid
-        final String UID_KAFKA_DATA_SOURCE_NON_BOT = "kafka-data-source-non-bot";
-        final String UID_KAFKA_DATA_SOURCE_BOT = "kafka-data-source-bot";
-        final String UID_HDFS_DATA_SINK = "hdfs-data-sink";
+        final String UID_KAFKA_SOURCE_EVENT_NON_BOT = "kafka-source-event-non-bot";
+        final String UID_KAFKA_SOURCE_EVENT_BOT = "kafka-source-event-bot";
+        final String UID_HDFS_SINK_EVENT = "hdfs-sink-event";
+        final String UID_HDFS_SINK_WATERMARK = "hdfs-sink-watermark";
         final String UID_UNIX_TS_TO_SOJ_TS = "unix-timestamp-to-soj-timestamp";
+        final String UID_EXTRACT_WATERMARK = "extract-watermark";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE_NON_BOT = String.format("Kafka: SojEvent Non-Bot - %s",
-                                                                    flinkEnv.getSourceKafkaStreamName());
-        final String NAME_KAFKA_DATA_SOURCE_BOT = String.format("Kafka: SojEvent Bot - %s",
-                                                                flinkEnv.getSourceKafkaStreamName());
-        final String NAME_HDFS_DATA_SINK = "HDFS: SojEvent";
+        final String NAME_KAFKA_SOURCE_EVENT_NON_BOT = String.format("Kafka: SojEvent Non-Bot - %s",
+                                                                     flinkEnv.getSourceKafkaStreamName());
+        final String NAME_KAFKA_SOURCE_EVENT_BOT = String.format("Kafka: SojEvent Bot - %s",
+                                                                 flinkEnv.getSourceKafkaStreamName());
+        final String NAME_HDFS_SINK_EVENT = "HDFS Sink: SojEvent";
+        final String NAME_HDFS_SINK_WATERMARK = "HDFS Sink: SojWatermark";
         final String NAME_UNIX_TS_TO_SOJ_TS = "Unix Timestamp To Soj Timestamp";
+        final String NAME_EXTRACT_WATERMARK = "Extract SojWatermark";
 
         // config
         final String HDFS_BASE_PATH = flinkEnv.getString(FLINK_APP_SINK_HDFS_BASE_PATH);
@@ -79,14 +83,14 @@ public class SojournerEventDumperJob {
                                  .withTimestampAssigner(new SojEventTimestampAssigner());
 
         DataStream<SojEvent> sourceNonBotStream =
-                executionEnvironment.fromSource(kafkaSourceNonBot, watermarkStrategy, NAME_KAFKA_DATA_SOURCE_NON_BOT)
-                                    .uid(UID_KAFKA_DATA_SOURCE_NON_BOT)
+                executionEnvironment.fromSource(kafkaSourceNonBot, watermarkStrategy, NAME_KAFKA_SOURCE_EVENT_NON_BOT)
+                                    .uid(UID_KAFKA_SOURCE_EVENT_NON_BOT)
                                     .setParallelism(PARALLELISM_SOURCE_NON_BOT)
                                     .rescale();
 
         DataStream<SojEvent> sourceBotStream =
-                executionEnvironment.fromSource(kafkaSourceBot, watermarkStrategy, NAME_KAFKA_DATA_SOURCE_BOT)
-                                    .uid(UID_KAFKA_DATA_SOURCE_BOT)
+                executionEnvironment.fromSource(kafkaSourceBot, watermarkStrategy, NAME_KAFKA_SOURCE_EVENT_BOT)
+                                    .uid(UID_KAFKA_SOURCE_EVENT_BOT)
                                     .setParallelism(PARALLELISM_SOURCE_BOT)
                                     .rescale();
 
@@ -101,8 +105,8 @@ public class SojournerEventDumperJob {
         // extract timestamp
         DataStream<SojWatermark> sojWatermarkStream =
                 sojEventStream.process(new ExtractWatermarkProcessFunction<>(METRIC_WATERMARK_DELAY))
-                              .name("Extract SojWatermark")
-                              .uid("extract-watermark")
+                              .name(NAME_EXTRACT_WATERMARK)
+                              .uid(UID_EXTRACT_WATERMARK)
                               .setParallelism(flinkEnv.getSinkParallelism());
 
         // sink for SojWatermark
@@ -114,8 +118,8 @@ public class SojournerEventDumperJob {
 
         // sink SojWatermark to hdfs
         sojWatermarkStream.sinkTo(sojWatermarkSink)
-                          .name("Watermark Sink")
-                          .uid("watermark-sink")
+                          .name(NAME_HDFS_SINK_WATERMARK)
+                          .uid(UID_HDFS_SINK_WATERMARK)
                           .setParallelism(flinkEnv.getSinkParallelism());
 
         // sink for SojEvent
@@ -127,8 +131,8 @@ public class SojournerEventDumperJob {
 
         // sink SojEvent to hdfs
         sojEventStream.sinkTo(sojEventSink)
-                      .name(NAME_HDFS_DATA_SINK)
-                      .uid(UID_HDFS_DATA_SINK)
+                      .name(NAME_HDFS_SINK_EVENT)
+                      .uid(UID_HDFS_SINK_EVENT)
                       .setParallelism(flinkEnv.getSinkParallelism());
 
         // submit job

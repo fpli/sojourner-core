@@ -27,15 +27,19 @@ public class SojournerSessionMetricsDumperJob117 {
         StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
         // operator uid
-        final String UID_KAFKA_DATA_SOURCE = "kafka-data-source";
-        final String UID_HDFS_DATA_SINK = "hdfs-data-sink";
+        final String UID_KAFKA_SOURCE_SESSION_METRICS = "kafka-source-session-metrics";
+        final String UID_HDFS_SINK_SESSION_METRICS = "hdfs-sink-session-metrics";
+        final String UID_HDFS_SINK_WATERMARK = "hdfs-sink-watermark";
         final String UID_UNIX_TS_TO_SOJ_TS = "unix-timestamp-to-soj-timestamp";
+        final String UID_EXTRACT_WATERMARK = "extract-watermark";
 
         // operator name
-        final String NAME_KAFKA_DATA_SOURCE = String.format("Kafka: SessionMetrics - %s",
-                                                            flinkEnv.getSourceKafkaStreamName());
-        final String NAME_HDFS_DATA_SINK = "HDFS: SessionMetrics";
+        final String NAME_KAFKA_SOURCE_SESSION_METRICS = String.format("Kafka: SessionMetrics - %s",
+                                                                       flinkEnv.getSourceKafkaStreamName());
+        final String NAME_HDFS_SINK_SESSION_METRICS = "HDFS Sink: SessionMetrics";
+        final String NAME_HDFS_SINK_WATERMARK = "HDFS Sink: SojWatermark";
         final String NAME_UNIX_TS_TO_SOJ_TS = "Unix Timestamp To Soj Timestamp";
+        final String NAME_EXTRACT_WATERMARK = "Extract SojWatermark";
 
         // config
         final String HDFS_BASE_PATH = flinkEnv.getString(FLINK_APP_SINK_HDFS_BASE_PATH);
@@ -60,8 +64,8 @@ public class SojournerSessionMetricsDumperJob117 {
                                  .withTimestampAssigner(new SessionMetricsTimestampAssigner());
 
         SingleOutputStreamOperator<SessionMetrics> sourceDataStream =
-                executionEnvironment.fromSource(kafkaSource, watermarkStrategy, NAME_KAFKA_DATA_SOURCE)
-                                    .uid(UID_KAFKA_DATA_SOURCE)
+                executionEnvironment.fromSource(kafkaSource, watermarkStrategy, NAME_KAFKA_SOURCE_SESSION_METRICS)
+                                    .uid(UID_KAFKA_SOURCE_SESSION_METRICS)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
         // unix timestamp to sojourner timestamp
@@ -74,8 +78,8 @@ public class SojournerSessionMetricsDumperJob117 {
         // extract timestamp
         SingleOutputStreamOperator<SojWatermark> sojWatermarkStream =
                 sessionMetricsStream.process(new ExtractWatermarkProcessFunction<>(METRIC_WATERMARK_DELAY))
-                                    .name("Extract SojWatermark")
-                                    .uid("extract-watermark")
+                                    .name(NAME_EXTRACT_WATERMARK)
+                                    .uid(UID_EXTRACT_WATERMARK)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
         // sink for SojWatermark
@@ -87,8 +91,8 @@ public class SojournerSessionMetricsDumperJob117 {
 
         // sink SojWatermark to hdfs
         sojWatermarkStream.sinkTo(sojWatermarkSink)
-                          .name("Watermark Sink")
-                          .uid("watermark-sink")
+                          .name(NAME_HDFS_SINK_WATERMARK)
+                          .uid(UID_HDFS_SINK_WATERMARK)
                           .setParallelism(flinkEnv.getSinkParallelism());
 
         // sink for SessionMetrics
@@ -100,8 +104,8 @@ public class SojournerSessionMetricsDumperJob117 {
 
         // sink SessionMetrics to hdfs
         sessionMetricsStream.sinkTo(sessionMetricsSink)
-                            .name(NAME_HDFS_DATA_SINK)
-                            .uid(UID_HDFS_DATA_SINK)
+                            .name(NAME_HDFS_SINK_SESSION_METRICS)
+                            .uid(UID_HDFS_SINK_SESSION_METRICS)
                             .setParallelism(flinkEnv.getSinkParallelism());
 
         // submit job
