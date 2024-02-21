@@ -42,4 +42,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>Flink-IDEA</id>
+            <properties>
+                <flink.scope>compile</flink.scope>
+                <hadoop.scope>compile</hadoop.scope>
+            </properties>
+        </profile>
+    </profiles>
 </project>

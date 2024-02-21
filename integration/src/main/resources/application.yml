@@ -1,19 +1,30 @@
 flink:
   app:
     checkpoint:
-      data-dir: /tmp/flink/sojourner-integration/checkpoint
+      data-dir: /tmp/flink/checkpoints/sojourner-integration/
       interval-ms: 300000
-      timeout-ms: 900000
-      min-pause-between-ms: 120000
-      max-concurrent: 1
-    source:
-      from-timestamp: 0
-      out-of-orderless-in-min: 0
+      timeout-ms: 600000
+
+kafka:
+  consumer:
+    # 5000, default is 500
+    max-poll-records: 5000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 1MB, default value is 64KB
+    receive-buffer: 1048576
+    # 100ms, default value is 500ms
+    fetch-max-wait-ms: 100
+    # 10MB, default value is 1MB
+    max-partitions-fetch-bytes: 10485760
+    # when offset cannot be found, read from `latest`
+    auto-offset-reset: latest
 
 rheos:
   registry-url: https://rheos-services.stratus.ebay.com
   client:
-    id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+    auth-type: IAF
     iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
       secret: c4bb6fca-7ac5-46dd-b218-a49cb6307dbc
       env: production

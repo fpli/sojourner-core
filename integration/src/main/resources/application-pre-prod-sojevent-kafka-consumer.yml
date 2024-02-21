@@ -1,0 +1,14 @@
+flink:
+  app:
+    name: Sojourner Integration - SojEvent Kafka Consumer
+    parallelism:
+      source: 40
+    source:
+      kafka:
+        group-id: sojourner-integration
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+        topic:
+          - behavior.total.new.customized.2349624
+        from-timestamp: latest
