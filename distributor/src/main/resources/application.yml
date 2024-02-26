@@ -49,5 +49,3 @@ kafka:
 
 rest-client:
   base-url: https://sojsvc.vip.ebay.com
-  config:
-    profile: prod
