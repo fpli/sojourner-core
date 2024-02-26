@@ -1,66 +1,36 @@
-kafka:
-  consumer:
-    stream: behavior.totalv3
-    topic:
-      - behavior.totalv3.session.metrics-lvs
-      - behavior.totalv3.session.metrics-rno
-    group-id: sojourner-total-dumper-lvs
-    bootstrap-servers:
-      rno:
-        - rhs-lpdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-lpdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-      lvs:
-        - rhs-opdwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-opdwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-
 flink:
   app:
-    name: Sojourner LVS Session Metrics HDFS Load Pipeline
+    name: Sojourner Dumper Hercules Session Metrics - Prod
     parallelism:
       source: 50
-      sink:
-        hdfs: 50
-    operator-name:
-      source: Sojourner Total Session Metrics Source
-      pass-through: LVS Byte To Session Metrics
-      assgin-watermark: LVS Session Metrics Watermark Assign
-      extract-watermark: LVS Session Metrics Timestamp Extract
-      metrics-split: LVS Session Metrics Split
-      sink:
-        metrics:
-          open: Sojourner Total LVS Open Session Metrics Sink
-          same-day: Sojourner Total LVS Same Day Session Metrics Sink
-          cross-day: Sojourner Total RNO Cross Day Session Metrics Sink
-        watermark: Sojourner Total RNO Session Metrics Watermark Sink
-    uid:
-      source: sojourner-total-lvs-session-metrics-source
-      pass-through: lvs-byte-to-session-metrics
-      assgin-watermark: lvs-session-metrics-watermak-assign
-      extract-watermark: lvs-session-metrics-timestamp-extract
-      metrics-split: lvs-session-metrics-split
-      sink:
-        metrics:
-          open: sojourner-total-lvs-open-session-metrics-sink
-          same-day: sojourner-total-lvs-same-day-session-metrics-sink
-          cross-day: sojourner-total-lvs-cross-day-session-metrics-sink
-        watermark: sojourner-total-lvs-session-metrics-watermark-sink
-    metric:
-      watermark-process-progress: sojourner-ubd-session-metrics-watermark-delay-time
+      sink: 50
     source:
-      dc: lvs
+      kafka:
+        group-id: sojourner-dumper-hercules-session-metrics-prod
+        env: prod
+        stream: behavior.totalv3
+        dc: lvs
+        topic:
+          - behavior.totalv3.session.metrics-rno
+        from-timestamp: latest
     sink:
       hdfs:
-        path:
-          metrics:
-            open: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=open
-            same-day: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=sameday
-            cross-day: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/category=crossday
-        watermark-path: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/ubi_session_metrics_watermark_lkp
+        base-path: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_metrics_dump_w/
+        watermark-path: hdfs://hercules/sys/edw/working/ubi/ubi_w/soj/ubi_session_metrics_watermark_lkp/
+    metric:
+      watermark-delay: sojourner-session-metrics-watermark-delay-time
 
-
+kafka:
+  consumer:
+    # 10000, default is 500
+    max-poll-records: 10000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 1MB, default value is 64KB
+    receive-buffer: 1048576
+    # 100ms, default value is 500ms
+    fetch-max-wait-ms: 100
+    # 10MB, default value is 1MB
+    max-partitions-fetch-bytes: 10485760
+    # when offset cannot be found, read from `latest`
+    auto-offset-reset: latest

@@ -284,7 +284,7 @@ public class SojournerRTJob117 {
                                      .aggregate(new AgentIpAttributeAgg(), new AgentIpWindowProcessFunction())
                                      .name("Attribute Operator (Agent+IP Pre-Aggregation)")
                                      .uid("attribute-operator-pre-aggregation")
-                                     .slotSharingGroup("cross-session")
+                                     .slotSharingGroup(crossSessionSlotGroup)
                                      .setParallelism(agentIpParallelism);
 
         DataStream<BotSignature> agentIpSignatureDataStream =
@@ -295,7 +295,7 @@ public class SojournerRTJob117 {
                                                      new AgentIpSignatureWindowProcessFunction())
                                           .name("Attribute Operator (Agent+IP)")
                                           .uid("attribute-operator-agent-ip")
-                                          .slotSharingGroup("cross-session")
+                                          .slotSharingGroup(crossSessionSlotGroup)
                                           .setParallelism(agentIpParallelism);
 
         DataStream<BotSignature> agentSignatureDataStream =
@@ -305,7 +305,7 @@ public class SojournerRTJob117 {
                                           .aggregate(new AgentAttributeAgg(), new AgentWindowProcessFunction())
                                           .name("Attribute Operator (Agent)")
                                           .uid("attribute-operator-agent")
-                                          .slotSharingGroup("cross-session")
+                                          .slotSharingGroup(crossSessionSlotGroup)
                                           .setParallelism(agentIpParallelism);
 
         DataStream<BotSignature> ipSignatureDataStream =
@@ -315,7 +315,7 @@ public class SojournerRTJob117 {
                                           .aggregate(new IpAttributeAgg(), new IpWindowProcessFunction())
                                           .name("Attribute Operator (IP)")
                                           .uid("attribute-operator-ip")
-                                          .slotSharingGroup("cross-session")
+                                          .slotSharingGroup(crossSessionSlotGroup)
                                           .setParallelism(agentIpParallelism);
 
         // union attribute signature for broadcast
