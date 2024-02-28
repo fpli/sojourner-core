@@ -2,8 +2,8 @@ flink:
   app:
     name: Sojourner Distributor Bot Event - Prod
     parallelism:
-      source: 600
-      sink: 600
+      source: 300
+      sink: 300
     source:
       kafka:
         group-id: sojourner-distributor-event-pulsarslc-prod
