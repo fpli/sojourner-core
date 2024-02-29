@@ -18,6 +18,11 @@ if [[ -d "${MODULE}" && -e "${MODULE}/pom.xml" ]]; then
   JAR_FILE_CNT=$(find target -name "*.jar" -not -name "original*" 2>/dev/null | wc -l)
   if [[ $JAR_FILE_CNT -eq 1 ]]; then
 
+    JAR_FILE_NAME=$(find target -name "*.jar" -not -name "original*" -print0)
+    echo "$JAR_FILE_NAME"
+    echo "${ghprbPullId}"
+    echo "${BUILD_NUM}"
+
     # rename jar file with generated build number
     mv "$JAR_FILE_NAME" "${JAR_FILE_NAME//-SNAPSHOT/.pr.${ghprbPullId}.${BUILD_NUM}}"
 
