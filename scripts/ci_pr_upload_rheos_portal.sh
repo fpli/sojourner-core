@@ -19,6 +19,7 @@ if [[ -d "${MODULE}" && -e "${MODULE}/pom.xml" ]]; then
   if [[ $JAR_FILE_CNT -eq 1 ]]; then
 
     JAR_FILE_NAME=$(find target -name "*.jar" -not -name "original*" -print0)
+
     echo "$JAR_FILE_NAME"
     echo "${ghprbPullId}"
     echo "${BUILD_NUMBER}"
@@ -26,14 +27,14 @@ if [[ -d "${MODULE}" && -e "${MODULE}/pom.xml" ]]; then
     # rename jar file with generated build number
     mv "$JAR_FILE_NAME" "${JAR_FILE_NAME//-SNAPSHOT/.pr.${ghprbPullId}.${BUILD_NUMBER}}"
 
-    JAR_NAME=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+    JAR_NAME=$(../mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
     JAR_TAG=$(sed "s/-SNAPSHOT/.pr.${ghprbPullId}.${BUILD_NUMBER}/" <../pomVersion)
 
     echo "${JAR_NAME}"
     echo "${JAR_TAG}"
 
     echo "==================== Uploading jar to Rheos Portal ===================="
-    mvn job-uploader:upload \
+    ../mvnw job-uploader:upload \
       -Dusername=${API_KEY} \
       -Dpassword=${API_SECRET} \
       -Dnamespace=${NAMESPACE} \
