@@ -22,13 +22,17 @@ if [[ -d "${MODULE}" && -e "${MODULE}/pom.xml" ]]; then
 
     echo "$JAR_FILE_NAME"
     echo "${ghprbPullId}"
-    echo "${BUILD_NUMBER}"
+    echo "${ghprbActualCommit}"
+
+    SHORT_SHA1=${ghprbActualCommit:0:7}
+
+    echo "${SHORT_SHA1}"
 
     # rename jar file with generated build number
-    mv "$JAR_FILE_NAME" "${JAR_FILE_NAME//-SNAPSHOT/.pr.${ghprbPullId}.${BUILD_NUMBER}}"
+    mv "$JAR_FILE_NAME" "${JAR_FILE_NAME//-SNAPSHOT/.pr.${ghprbPullId}.${SHORT_SHA1}}"
 
     JAR_NAME=$(../mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-    JAR_TAG=$(sed "s/-SNAPSHOT/.pr.${ghprbPullId}.${BUILD_NUMBER}/" <../pomVersion)
+    JAR_TAG=$(sed "s/-SNAPSHOT/.pr.${ghprbPullId}.${SHORT_SHA1}/" <../pomVersion)
 
     echo "${JAR_NAME}"
     echo "${JAR_TAG}"
