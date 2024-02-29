@@ -28,7 +28,10 @@ if [[ -d "${MODULE}" && -e "${MODULE}/pom.xml" ]]; then
 
     JAR_NAME=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
     JAR_TAG=$(sed "s/-SNAPSHOT/.pr.${ghprbPullId}.${BUILD_NUMBER}/" <../pomVersion)
-    #
+
+    echo "${JAR_NAME}"
+    echo "${JAR_TAG}"
+
     echo "==================== Uploading jar to Rheos Portal ===================="
     mvn job-uploader:upload \
       -Dusername=${API_KEY} \
