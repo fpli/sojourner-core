@@ -4,6 +4,7 @@ import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.model.SojWatermark;
 import com.ebay.sojourner.dumper.bucket.SessionMetricsHdfsBucketAssigner;
 import com.ebay.sojourner.flink.common.FlinkEnv;
+import com.ebay.sojourner.flink.connector.hdfs.OutputFileConfigUtils;
 import com.ebay.sojourner.flink.connector.hdfs.ParquetAvroWritersWithCompression;
 import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
 import com.ebay.sojourner.flink.connector.kafka.schema.deserialize.SessionMetricsDeserialization;
@@ -82,11 +83,12 @@ public class SojournerSessionMetricsDumperJob {
                                     .uid(UID_EXTRACT_WATERMARK)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
-        // sink for SojWatermark
+        // build hdfs sink for SojWatermark
         final FileSink<SojWatermark> sojWatermarkSink =
                 FileSink.forBulkFormat(new Path(HDFS_WATERMARK_PATH),
                                        ParquetAvroWritersWithCompression.forReflectRecord(SojWatermark.class))
                         .withBucketAssigner(new SojCommonDateTimeBucketAssigner<>())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
                         .build();
 
         // sink SojWatermark to hdfs
@@ -95,11 +97,12 @@ public class SojournerSessionMetricsDumperJob {
                           .uid(UID_HDFS_SINK_WATERMARK)
                           .setParallelism(flinkEnv.getSinkParallelism());
 
-        // sink for SessionMetrics
+        // build hdfs sink for SessionMetrics
         final FileSink<SessionMetrics> sessionMetricsSink =
                 FileSink.forBulkFormat(new Path(HDFS_BASE_PATH),
                                        ParquetAvroWritersWithCompression.forSpecificRecord(SessionMetrics.class))
                         .withBucketAssigner(new SessionMetricsHdfsBucketAssigner())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
                         .build();
 
         // sink SessionMetrics to hdfs

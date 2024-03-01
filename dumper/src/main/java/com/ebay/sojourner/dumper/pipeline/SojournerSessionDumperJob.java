@@ -4,6 +4,7 @@ import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.model.SojWatermark;
 import com.ebay.sojourner.dumper.bucket.SojSessionHdfsBucketAssigner;
 import com.ebay.sojourner.flink.common.FlinkEnv;
+import com.ebay.sojourner.flink.connector.hdfs.OutputFileConfigUtils;
 import com.ebay.sojourner.flink.connector.hdfs.ParquetAvroWritersWithCompression;
 import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
 import com.ebay.sojourner.flink.connector.kafka.schema.deserialize.SojSessionDeserialization;
@@ -80,11 +81,12 @@ public class SojournerSessionDumperJob {
                                 .uid(UID_EXTRACT_WATERMARK)
                                 .setParallelism(flinkEnv.getSourceParallelism());
 
-        // sink for SojWatermark
+        // build hdfs sink for SojWatermark
         final FileSink<SojWatermark> sojWatermarkSink =
                 FileSink.forBulkFormat(new Path(HDFS_WATERMARK_PATH),
                                        ParquetAvroWritersWithCompression.forReflectRecord(SojWatermark.class))
                         .withBucketAssigner(new SojCommonDateTimeBucketAssigner<>())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
                         .build();
 
         // sink SojWatermark to hdfs
@@ -93,11 +95,12 @@ public class SojournerSessionDumperJob {
                           .uid(UID_HDFS_SINK_WATERMARK)
                           .setParallelism(flinkEnv.getSinkParallelism());
 
-        // sink for SojSession
+        // build hdfs sink for SojSession
         final FileSink<SojSession> sojSessionSink =
                 FileSink.forBulkFormat(new Path(HDFS_BASE_PATH),
                                        ParquetAvroWritersWithCompression.forSpecificRecord(SojSession.class))
                         .withBucketAssigner(new SojSessionHdfsBucketAssigner())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
                         .build();
 
         // sink SojSession to hdfs

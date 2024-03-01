@@ -4,6 +4,7 @@ import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojWatermark;
 import com.ebay.sojourner.dumper.bucket.SojEventHdfsBucketAssigner;
 import com.ebay.sojourner.flink.common.FlinkEnv;
+import com.ebay.sojourner.flink.connector.hdfs.OutputFileConfigUtils;
 import com.ebay.sojourner.flink.connector.hdfs.ParquetAvroWritersWithCompression;
 import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
 import com.ebay.sojourner.flink.connector.kafka.schema.deserialize.SojEventDeserialization;
@@ -109,11 +110,12 @@ public class SojournerEventDumperJob {
                               .uid(UID_EXTRACT_WATERMARK)
                               .setParallelism(flinkEnv.getSinkParallelism());
 
-        // sink for SojWatermark
+        // build hdfs sink for SojWatermark
         final FileSink<SojWatermark> sojWatermarkSink =
                 FileSink.forBulkFormat(new Path(HDFS_WATERMARK_PATH),
                                        ParquetAvroWritersWithCompression.forReflectRecord(SojWatermark.class))
                         .withBucketAssigner(new SojCommonDateTimeBucketAssigner<>())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
                         .build();
 
         // sink SojWatermark to hdfs
@@ -122,11 +124,12 @@ public class SojournerEventDumperJob {
                           .uid(UID_HDFS_SINK_WATERMARK)
                           .setParallelism(flinkEnv.getSinkParallelism());
 
-        // sink for SojEvent
+        // build hdfs sink for SojEvent
         final FileSink<SojEvent> sojEventSink =
                 FileSink.forBulkFormat(new Path(HDFS_BASE_PATH),
                                        ParquetAvroWritersWithCompression.forSpecificRecord(SojEvent.class))
                         .withBucketAssigner(new SojEventHdfsBucketAssigner())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
                         .build();
 
         // sink SojEvent to hdfs
