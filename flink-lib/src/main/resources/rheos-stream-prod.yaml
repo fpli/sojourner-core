@@ -26,11 +26,11 @@
   auth-protocol: SASL_PLAINTEXT
   brokers:
     rno:
-      - rhs-pbuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.26.tess.io:9092
-      - rhs-pbuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.26.tess.io:9092
-      - rhs-pbuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.26.tess.io:9092
-      - rhs-pbuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.26.tess.io:9092
-      - rhs-pbuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.26.tess.io:9092
+      - rhs-pbuvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-pbuvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-pbuvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-pbuvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-pbuvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
 
 -
   stream: behavior.totalv3
@@ -54,17 +54,17 @@
   auth-protocol: SASL_PLAINTEXT
   brokers:
     rno:
-      - rhs-okrvkiaa-kfk-rno-1.rheos-streaming-prod.svc.25.tess.io:9092
-      - rhs-okrvkiaa-kfk-rno-2.rheos-streaming-prod.svc.25.tess.io:9092
-      - rhs-okrvkiaa-kfk-rno-3.rheos-streaming-prod.svc.25.tess.io:9092
-      - rhs-okrvkiaa-kfk-rno-4.rheos-streaming-prod.svc.25.tess.io:9092
-      - rhs-okrvkiaa-kfk-rno-5.rheos-streaming-prod.svc.25.tess.io:9092
+      - rhs-okrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-okrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-okrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-okrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-okrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
     slc:
-      - rhs-qisvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
-      - rhs-qisvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
-      - rhs-qisvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
-      - rhs-qisvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
-      - rhs-qisvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+      - rhs-qisvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-qisvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-qisvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-qisvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-qisvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
 
 -
   stream: behavior.raw
