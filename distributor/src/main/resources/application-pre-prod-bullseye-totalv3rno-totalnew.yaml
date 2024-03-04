@@ -29,4 +29,4 @@ flink:
       dc:
         - rno
       topic-config:
-        - "bullseye-view-item:behavior.raw.bullseye.viewitem"
+        - "bullseye-view-item:behavior.total.new.bullseye.viewitem"
