@@ -10,13 +10,14 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 
+@Deprecated
 public class SourceDataStreamBuilder<T> {
 
   private final StreamExecutionEnvironment environment;
   private DataCenter dc;
   private String operatorName;
   private String uid;
-  private String slotGroup;
+  private String slotGroup = "default";
   private int parallelism = getInteger(Property.SOURCE_PARALLELISM);
   private int outOfOrderlessInMin;
   private String fromTimestamp = getStringOrDefault(Property.FLINK_APP_SOURCE_FROM_TIMESTAMP, "0");

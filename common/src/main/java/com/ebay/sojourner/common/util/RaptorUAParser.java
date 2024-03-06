@@ -18,14 +18,12 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 public class RaptorUAParser extends AbstractUAParser {
 
   public static final Charset CHARSET = UTF_8;
-  private static final Logger LOGGER = LoggerFactory.getLogger(RaptorUAParser.class);
   private static final Long ONE_MINUTE = 60 * 1000L;
   private static final Long ONE_HOUR = 60 * 60 * 1000L;
   private static final int INIT_CACHE_SIZE = 10000;
@@ -118,7 +116,7 @@ public class RaptorUAParser extends AbstractUAParser {
       try {
         deviceInfoProviderInstance.refresh();
       } catch (Exception e) {
-        LOGGER.warn("UARefresher failed: Exception= " + e.getMessage());
+        log.warn("UARefresher failed: Exception= " + e.getMessage());
       }
     }
   }

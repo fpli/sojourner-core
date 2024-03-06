@@ -1,0 +1,41 @@
+-
+  stream: behavior.pathfinder
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    slc:
+      - rhs-jhnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-jhnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-jhnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-jhnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-jhnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
+
+-
+  stream: behavior.totalv2
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    slc:
+      - rhs-vgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-vgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-vgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-vgnaniaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-vgnaniaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
+
+-
+  stream: behavior.pulsar
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    slc:
+      - rhs-rbrvkiaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-rbrvkiaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-rbrvkiaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-rbrvkiaa-kfk-4.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-rbrvkiaa-kfk-5.rheos-streaming-qa.stratus.qa.ebay.com:9092
+
+-
+  stream: behavior.raw
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    lvs:
+      - rhs-wgnaniaa-kfk-1.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-wgnaniaa-kfk-2.rheos-streaming-qa.stratus.qa.ebay.com:9092
+      - rhs-wgnaniaa-kfk-3.rheos-streaming-qa.stratus.qa.ebay.com:9092

@@ -1,0 +1,30 @@
+flink:
+  app:
+    name: Sojourner Distributor Bot Event - Pre-Prod
+    parallelism:
+      source: 300
+      sink: 300
+    source:
+      kafka:
+        group-id: sojourner-distributor-event-pre-prod
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+        topic:
+          - behavior.total.new.sojevent.bot
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+    filter:
+      large-message:
+        max-bytes: 819200
+    dist:
+      topic-config:
+        - ""
+
+rest-client:
+  config:
+    profile: pre-prod-total-new-bot

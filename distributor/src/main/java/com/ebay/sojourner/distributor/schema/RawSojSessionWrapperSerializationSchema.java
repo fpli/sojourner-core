@@ -6,6 +6,7 @@ import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class RawSojSessionWrapperSerializationSchema
     implements KafkaSerializationSchema<RawSojSessionWrapper> {
 

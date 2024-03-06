@@ -36,6 +36,14 @@ public class CustomTopicConfigSourceFunction extends RichSourceFunction<PageIdTo
   private ListState<CustomTopicConfig> state;
   private Set<Integer> latestPageIds = new HashSet<>();
 
+  public CustomTopicConfigSourceFunction(String baseURL, String profile,
+                                         ListStateDescriptor<CustomTopicConfig> stateDescriptor) {
+    this.baseURL = baseURL;
+    this.interval = 30000L; // default 30s
+    this.profile = profile;
+    this.stateDescriptor = stateDescriptor;
+  }
+
   public CustomTopicConfigSourceFunction(String baseURL, Long interval, String profile,
                                          ListStateDescriptor<CustomTopicConfig> stateDescriptor) {
     this.baseURL = baseURL;

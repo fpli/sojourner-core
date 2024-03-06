@@ -5,20 +5,12 @@ import com.ebay.sojourner.flink.connector.kafka.schema.AvroKafkaSerializationSch
 import com.ebay.sojourner.flink.connector.kafka.schema.RheosKafkaSerializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.SojEventKafkaSerializationSchema;
 import com.google.common.base.Preconditions;
-import io.ebay.rheos.flink.connector.kafkaha.sink.FlinkKafkaHaProducer;
-import io.ebay.rheos.flink.connector.kafkaha.sink.FlinkKafkaHaProducerBuilder;
-import io.ebay.rheos.flink.connector.kafkaha.sink.KafkaRecordSerializationSchemaBuilder;
-import io.ebay.rheos.flink.connector.kafkaha.sink.TopicSelector;
 import org.apache.avro.specific.SpecificRecord;
-import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer.Semantic;
 import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
-import org.apache.flink.streaming.connectors.kafka.partitioner.FlinkFixedPartitioner;
-import org.apache.kafka.clients.producer.ProducerConfig;
 
-import java.util.Properties;
-
+@Deprecated
 public class FlinkKafkaProducerFactory {
 
     private final KafkaProducerConfig config;
@@ -36,34 +28,6 @@ public class FlinkKafkaProducerFactory {
             AvroKafkaSerializationSchema<T> serializer) {
         return new FlinkKafkaProducer<>(serializer.defaultTopic, serializer, config.getProperties(),
                 Semantic.AT_LEAST_ONCE);
-    }
-
-    public <T> FlinkKafkaHaProducer getHaProducer(String producerId, String rheosUrl,
-                                                  int probeIntervalMins,
-                                                  SerializationSchema<T> serializationSchema,
-                                                  TopicSelector<T> topicSelector) {
-
-        Properties properties = new Properties();
-        properties.setProperty("producer.name", producerId);
-        properties.putAll(config.getProperties());
-        properties.remove(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG);
-        KafkaRecordSerializationSchemaBuilder<T> schemaBuilder =
-                new KafkaRecordSerializationSchemaBuilder<>();
-
-        FlinkKafkaHaProducerBuilder<T> builder = FlinkKafkaHaProducerBuilder.builder();
-
-        return builder.setKafkaProducerConfig(properties)
-                .setProbeIntervalMinutes(probeIntervalMins)
-                .setRecordSerializer(
-                        schemaBuilder
-                                .setPartitioner(new FlinkFixedPartitioner<>())
-                                .setTopicSelector(topicSelector)
-                                .setValueSerializationSchema(serializationSchema)
-                                .build())
-                .setProducerName(producerId)
-                .setRheosHaServiceUrl(rheosUrl)
-                .build();
-
     }
 
 

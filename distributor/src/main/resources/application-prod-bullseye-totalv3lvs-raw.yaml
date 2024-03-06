@@ -1,0 +1,40 @@
+flink:
+  app:
+    name: Sojourner Simple Distributor - Prod
+    parallelism:
+      source: 400
+      sink: 100
+    source:
+      kafka:
+        group-id: sojourner-simple-distributor-prod
+        env: prod
+        stream: behavior.totalv3
+        dc: lvs
+        topic:
+          - behavior.totalv3.sojevent-nonbot-rno
+          - behavior.totalv3.sojevent-bot-rno
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: prod
+        stream: behavior.raw
+    filter:
+      large-message:
+        max-bytes: 819200
+    dist:
+      key-list: guid,pageId
+      hash-key:
+        - guid
+        - colo
+      dc:
+        - rno
+        - lvs
+        - slc
+      topic-config:
+        - "bullseye-id-link-sign-in:behavior.raw.bullseye.bullseye_idlink_signin"
+        - "bullseye-view-item:behavior.raw.bullseye.bullseye_viewitem"
+        - "bullseye-interests:behavior.raw.bullseye.interests"
+        - "bullseye-guest-checkout:behavior.raw.bullseye.guest_checkout"
+        - "bullseye-shopping-cart:behavior.raw.bullseye.bullseye_shoppingcart"
+        - "bullseye-ad-type:behavior.raw.bullseye.adtype"
+        - "bullseye-search:behavior.raw.bullseye.bullseye_search"

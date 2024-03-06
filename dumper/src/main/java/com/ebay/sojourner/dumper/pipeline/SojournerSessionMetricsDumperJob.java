@@ -2,134 +2,116 @@ package com.ebay.sojourner.dumper.pipeline;
 
 import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.model.SojWatermark;
-import com.ebay.sojourner.common.util.Property;
-import com.ebay.sojourner.flink.common.DataCenter;
-import com.ebay.sojourner.flink.common.FlinkEnvUtils;
-import com.ebay.sojourner.flink.common.OutputTagConstants;
-import com.ebay.sojourner.flink.connector.hdfs.HdfsConnectorFactory;
-import com.ebay.sojourner.flink.connector.hdfs.SessionMetricsDateTimeBucketAssigner;
+import com.ebay.sojourner.dumper.bucket.SessionMetricsHdfsBucketAssigner;
+import com.ebay.sojourner.flink.common.FlinkEnv;
+import com.ebay.sojourner.flink.connector.hdfs.OutputFileConfigUtils;
+import com.ebay.sojourner.flink.connector.hdfs.ParquetAvroWritersWithCompression;
 import com.ebay.sojourner.flink.connector.hdfs.SojCommonDateTimeBucketAssigner;
-import com.ebay.sojourner.flink.connector.kafka.SojSerializableTimestampAssigner;
-import com.ebay.sojourner.flink.connector.kafka.SourceDataStreamBuilder;
-import com.ebay.sojourner.flink.connector.kafka.schema.PassThroughDeserializationSchema;
-import com.ebay.sojourner.flink.function.BinaryToSessionMetricsMapFunction;
-import com.ebay.sojourner.flink.function.ExtractWatermarkProcessFunction;
-import com.ebay.sojourner.flink.function.SessionMetricsTimestampTransMapFunction;
-import com.ebay.sojourner.flink.function.SplitMetricsProcessFunction;
+import com.ebay.sojourner.flink.connector.kafka.schema.deserialize.SessionMetricsDeserialization;
+import com.ebay.sojourner.flink.function.map.SessionMetricsTimestampTransMapFunction;
+import com.ebay.sojourner.flink.function.process.ExtractWatermarkProcessFunction;
+import com.ebay.sojourner.flink.watermark.SessionMetricsTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.connector.file.sink.FileSink;
+import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import java.time.Duration;
-
-import static com.ebay.sojourner.common.util.Property.FLINK_APP_SOURCE_FROM_TIMESTAMP;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
-import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_HDFS_BASE_PATH;
 
 public class SojournerSessionMetricsDumperJob {
 
-  public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
-    final StreamExecutionEnvironment executionEnvironment = FlinkEnvUtils.prepare(args);
+        FlinkEnv flinkEnv = new FlinkEnv(args);
+        StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
-    String dc = getString(Property.FLINK_APP_SOURCE_DC);
+        // operator uid
+        final String UID_KAFKA_SOURCE_SESSION_METRICS = "kafka-source-session-metrics";
+        final String UID_HDFS_SINK_SESSION_METRICS = "hdfs-sink-session-metrics";
+        final String UID_HDFS_SINK_WATERMARK = "hdfs-sink-watermark";
+        final String UID_UNIX_TS_TO_SOJ_TS = "unix-timestamp-to-soj-timestamp";
+        final String UID_EXTRACT_WATERMARK = "extract-watermark";
 
-    // rescaled kafka source
-    SourceDataStreamBuilder<byte[]> dataStreamBuilder =
-        new SourceDataStreamBuilder<>(executionEnvironment);
+        // operator name
+        final String NAME_KAFKA_SOURCE_SESSION_METRICS = String.format("Kafka: SessionMetrics - %s",
+                                                                       flinkEnv.getSourceKafkaStreamName());
+        final String NAME_HDFS_SINK_SESSION_METRICS = "HDFS Sink: SessionMetrics";
+        final String NAME_HDFS_SINK_WATERMARK = "HDFS Sink: SojWatermark";
+        final String NAME_UNIX_TS_TO_SOJ_TS = "Unix Timestamp To Soj Timestamp";
+        final String NAME_EXTRACT_WATERMARK = "Extract SojWatermark";
 
-    DataStream<byte[]> rescaledByteMetricsDataStream = dataStreamBuilder
-        .dc(DataCenter.of(dc))
-        .operatorName(getString(Property.SOURCE_OPERATOR_NAME))
-        .uid(getString(Property.SOURCE_UID))
-        .fromTimestamp(getString(FLINK_APP_SOURCE_FROM_TIMESTAMP))
-        .buildRescaled(new PassThroughDeserializationSchema());
+        // config
+        final String HDFS_BASE_PATH = flinkEnv.getString(FLINK_APP_SINK_HDFS_BASE_PATH);
+        final String HDFS_WATERMARK_PATH = flinkEnv.getString("flink.app.sink.hdfs.watermark-path");
+        final String METRIC_WATERMARK_DELAY = flinkEnv.getString("flink.app.metric.watermark-delay");
 
-    // byte to sessionMetrics
-    DataStream<SessionMetrics> sessionMetricsDataStream = rescaledByteMetricsDataStream
-        .map(new BinaryToSessionMetricsMapFunction())
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name(getString(Property.PASS_THROUGH_OPERATOR_NAME))
-        .uid(getString(Property.PASS_THROUGH_UID));
 
-    // assgin watermark
-    DataStream<SessionMetrics> assignedWatermarkSessionMetricsDataStream = sessionMetricsDataStream
-        .assignTimestampsAndWatermarks(
-            WatermarkStrategy
-                .<SessionMetrics>forBoundedOutOfOrderness(Duration.ofMinutes(
-                    FlinkEnvUtils.getInteger(Property.FLINK_APP_SOURCE_OUT_OF_ORDERLESS_IN_MIN)))
-                .withTimestampAssigner(new SojSerializableTimestampAssigner<>()))
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name(getString(Property.ASSIGN_WATERMARK_OPERATOR_NAME))
-        .uid(getString(Property.ASSIGN_WATERMARK_UID));
+        // kafka data source
+        KafkaSource<SessionMetrics> kafkaSource =
+                KafkaSource.<SessionMetrics>builder()
+                           .setBootstrapServers(flinkEnv.getSourceKafkaBrokers())
+                           .setGroupId(flinkEnv.getSourceKafkaGroupId())
+                           .setTopics(flinkEnv.getSourceKafkaTopics())
+                           .setProperties(flinkEnv.getKafkaConsumerProps())
+                           .setStartingOffsets(flinkEnv.getSourceKafkaStartingOffsets())
+                           .setDeserializer(new SessionMetricsDeserialization())
+                           .build();
 
-    // unix timestamp to sojourner timestamp
-    DataStream<SessionMetrics> finalSessionMetricsDataStream = assignedWatermarkSessionMetricsDataStream
-        .map(new SessionMetricsTimestampTransMapFunction())
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name("Unix Timestamp To Soj Timestamp")
-        .uid("unix-timestamp-to-soj-timestamp");
+        // watermark
+        WatermarkStrategy<SessionMetrics> watermarkStrategy =
+                WatermarkStrategy.<SessionMetrics>forMonotonousTimestamps()
+                                 .withTimestampAssigner(new SessionMetricsTimestampAssigner());
 
-    // extract timestamp
-    DataStream<SojWatermark> sessionMetricsWatermarkStream = finalSessionMetricsDataStream
-        .process(new ExtractWatermarkProcessFunction<>(
-            getString(Property.FLINK_APP_METRIC_NAME)))
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name(getString(Property.TIMESTAMP_EXTRACT_OPERATOR_NAME))
-        .uid(getString(Property.TIMESTAMP_EXTRACT_UID));
+        SingleOutputStreamOperator<SessionMetrics> sourceDataStream =
+                executionEnvironment.fromSource(kafkaSource, watermarkStrategy, NAME_KAFKA_SOURCE_SESSION_METRICS)
+                                    .uid(UID_KAFKA_SOURCE_SESSION_METRICS)
+                                    .setParallelism(flinkEnv.getSourceParallelism());
 
-    // sink timestamp to hdfs
-    sessionMetricsWatermarkStream
-        .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_WATERMARK_PATH), SojWatermark.class,
-            new SojCommonDateTimeBucketAssigner<>()))
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name(getString(Property.SINK_OPERATOR_NAME_WATERMARK))
-        .uid(getString(Property.SINK_UID_WATERMARK));
+        // unix timestamp to sojourner timestamp
+        SingleOutputStreamOperator<SessionMetrics> sessionMetricsStream =
+                sourceDataStream.map(new SessionMetricsTimestampTransMapFunction())
+                                .name(NAME_UNIX_TS_TO_SOJ_TS)
+                                .uid(UID_UNIX_TS_TO_SOJ_TS)
+                                .setParallelism(flinkEnv.getSourceParallelism());
 
-    SingleOutputStreamOperator<SessionMetrics> sameDaySessionMetricsStream =
-        finalSessionMetricsDataStream
-            .process(new SplitMetricsProcessFunction(OutputTagConstants.crossDaySessionMetricsOutputTag,
-                OutputTagConstants.openSessionMetricsOutputTag))
-            .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-            .name(getString(Property.SESSION_METRICS_SPLIT_OPERATOR_NAME))
-            .uid(getString(Property.SESSION_METRICS_SPLIT_UID));
+        // extract timestamp
+        SingleOutputStreamOperator<SojWatermark> sojWatermarkStream =
+                sessionMetricsStream.process(new ExtractWatermarkProcessFunction<>(METRIC_WATERMARK_DELAY))
+                                    .name(NAME_EXTRACT_WATERMARK)
+                                    .uid(UID_EXTRACT_WATERMARK)
+                                    .setParallelism(flinkEnv.getSourceParallelism());
 
-    DataStream<SessionMetrics> crossDaySessionMetricsStream = sameDaySessionMetricsStream
-        .getSideOutput(OutputTagConstants.crossDaySessionMetricsOutputTag);
+        // build hdfs sink for SojWatermark
+        final FileSink<SojWatermark> sojWatermarkSink =
+                FileSink.forBulkFormat(new Path(HDFS_WATERMARK_PATH),
+                                       ParquetAvroWritersWithCompression.forReflectRecord(SojWatermark.class))
+                        .withBucketAssigner(new SojCommonDateTimeBucketAssigner<>())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
+                        .build();
 
-    DataStream<SessionMetrics> openSessionMetricsStream = sameDaySessionMetricsStream
-        .getSideOutput(OutputTagConstants.openSessionMetricsOutputTag);
+        // sink SojWatermark to hdfs
+        sojWatermarkStream.sinkTo(sojWatermarkSink)
+                          .name(NAME_HDFS_SINK_WATERMARK)
+                          .uid(UID_HDFS_SINK_WATERMARK)
+                          .setParallelism(flinkEnv.getSinkParallelism());
 
-    // same day session metrics hdfs sink
-    sameDaySessionMetricsStream
-        .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_SAME_DAY_SESSION_METRICS_PATH), SessionMetrics.class,
-            new SessionMetricsDateTimeBucketAssigner()))
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name(getString(Property.SINK_OPERATOR_NAME_SESSION_METRICS_SAME_DAY))
-        .uid(getString(Property.SINK_UID_SESSION_METRICS_SAME_DAY));
+        // build hdfs sink for SessionMetrics
+        final FileSink<SessionMetrics> sessionMetricsSink =
+                FileSink.forBulkFormat(new Path(HDFS_BASE_PATH),
+                                       ParquetAvroWritersWithCompression.forSpecificRecord(SessionMetrics.class))
+                        .withBucketAssigner(new SessionMetricsHdfsBucketAssigner())
+                        .withOutputFileConfig(OutputFileConfigUtils.withRandomUUID())
+                        .build();
 
-    // cross day session metrics hdfs sink
-    crossDaySessionMetricsStream
-        .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_CROSS_DAY_SESSION_METRICS_PATH), SessionMetrics.class,
-            new SessionMetricsDateTimeBucketAssigner()))
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name(getString(Property.SINK_OPERATOR_NAME_SESSION_METRICS_CROSS_DAY))
-        .uid(getString(Property.SINK_UID_SESSION_METRICS_CROSS_DAY));
+        // sink SessionMetrics to hdfs
+        sessionMetricsStream.sinkTo(sessionMetricsSink)
+                            .name(NAME_HDFS_SINK_SESSION_METRICS)
+                            .uid(UID_HDFS_SINK_SESSION_METRICS)
+                            .setParallelism(flinkEnv.getSinkParallelism());
 
-    // open session metrics hdfs sink
-    openSessionMetricsStream
-        .addSink(HdfsConnectorFactory.createWithParquet(
-            getString(Property.FLINK_APP_SINK_HDFS_OPEN_SESSION_METRICS_PATH), SessionMetrics.class,
-            new SessionMetricsDateTimeBucketAssigner()))
-        .setParallelism(getInteger(Property.SINK_HDFS_PARALLELISM))
-        .name(getString(Property.SINK_OPERATOR_NAME_SESSION_METRICS_OPEN))
-        .uid(getString(Property.SINK_UID_SESSION_METRICS_OPEN));
-
-    // submit job
-    FlinkEnvUtils.execute(executionEnvironment, getString(Property.FLINK_APP_NAME));
-  }
+        // submit job
+        flinkEnv.execute(executionEnvironment);
+    }
 }

@@ -2,11 +2,10 @@ package com.ebay.sojourner.common.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RegexReplace {
-
-  private static final Logger log = Logger.getLogger(RegexReplace.class);
 
   public RegexReplace() {
     super();

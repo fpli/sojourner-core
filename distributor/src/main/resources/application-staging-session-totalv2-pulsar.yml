@@ -1,0 +1,32 @@
+flink:
+  app:
+    name: Sojourner Distributor Non-Bot Session - Staging
+    parallelism:
+      source: 2
+      sink: 2
+    source:
+      kafka:
+        group-id: sojourner-distributor-session-staging
+        env: stage
+        stream: behavior.totalv2
+        dc: slc
+        topic:
+          - behavior.totalv2.sojsession-nonbot
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: stage
+        stream: behavior.pulsar
+        dc: slc
+    dist:
+      topic: behavior.pulsar.sojsession.sessionend
+
+
+rheos:
+  registry-url: https://rheos-services.qa.ebay.com
+  client:
+    auth-type: IAF
+    iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+      secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
+      env: staging

@@ -6,18 +6,18 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class PassThroughDeserializationSchema implements KafkaDeserializationSchema<byte[]> {
 
-  @Override
-  public boolean isEndOfStream(byte[] nextElement) {
-    return false;
-  }
+    @Override
+    public boolean isEndOfStream(byte[] nextElement) {
+        return false;
+    }
 
-  @Override
-  public byte[] deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
-    return record.value();
-  }
+    @Override
+    public byte[] deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
+        return record.value();
+    }
 
-  @Override
-  public TypeInformation<byte[]> getProducedType() {
-    return TypeInformation.of(byte[].class);
-  }
+    @Override
+    public TypeInformation<byte[]> getProducedType() {
+        return TypeInformation.of(byte[].class);
+    }
 }

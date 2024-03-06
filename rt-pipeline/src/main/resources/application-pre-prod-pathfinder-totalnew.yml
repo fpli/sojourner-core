@@ -1,35 +1,34 @@
 flink:
   app:
-    name: Sojourner Realtime Pipeline Preprod - totalnew
-    sink:
-      dc: rno
+    name: Sojourner Realtime Pipeline - Pre-Prod
+    parallelism:
+      source: 200
+      session: 1024
+      broadcast: 512
+      agent-ip: 150
+    source:
       kafka:
+        group-id: sojourner-realtime-pre-prod
+        env: prod
+        stream: behavior.pathfinder
         topic:
-          session:
-            bot: behavior.total.new.sojsession.bot
-            non-bot: behavior.total.new.sojsession.nonbot
+          - behavior.pathfinder.events.total
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+        topic:
           event:
             bot: behavior.total.new.sojevent.bot
             non-bot: behavior.total.new.sojevent.nonbot
-            late: behavior.total.new.late-event
-          signature:
+            late: behavior.total.new.sojevent-late
+          session:
+            bot: behavior.total.new.sojsession.bot
+            non-bot: behavior.total.new.sojsession.nonbot
+            metrics: behavior.total.new.session.metrics
+          bot-signature:
             agent-ip: behavior.total.new.signature.agentIp
             agent: behavior.total.new.signature.agent
             ip: behavior.total.new.signature.ip
-          metrics: behavior.total.new.session.metrics
-        subject:
-          metrics: behavior.total.new.session.metrics.schema
-
-kafka:
-  consumer:
-    group-id: sojourner-pathfinder-realtime-preprod-totalnew-test
-
-  producer:
-    stream: behavior.total.new
-    bootstrap-servers:
-      rno:
-        - rhs-pbuvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092

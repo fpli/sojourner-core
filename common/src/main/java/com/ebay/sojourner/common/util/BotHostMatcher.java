@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
+@Slf4j
 public class BotHostMatcher {
 
   public static final BotHostMatcher INSTANCE = new BotHostMatcher();
@@ -20,7 +21,6 @@ public class BotHostMatcher {
   public static final String GI_XEN = ".gixen.com";
   public static final String POST_NEWS = "postnews";
   public static final String GOOGLE_APP = ".google.";
-  private static final Logger LOG = Logger.getLogger(BotHostMatcher.class);
   public static Map<String, Boolean> hostBotMap = new ConcurrentHashMap<String, Boolean>();
   // public static Map<String, String> ipHostMap = new ConcurrentHashMap<String, String>();
 
@@ -78,7 +78,7 @@ public class BotHostMatcher {
           host = host.trim();
         }
       }
-      LOG.info("Process exitValue: " + proc.waitFor() + " ip: " + ip);
+      log.info("Process exitValue: " + proc.waitFor() + " ip: " + ip);
     } catch (Exception e) {
       throw new RuntimeException("host: " + host, e);
     }
@@ -104,7 +104,7 @@ public class BotHostMatcher {
     String stdError = null;
     boolean error = false;
     while ((stdError = errReader.readLine()) != null) {
-      LOG.error(stdError);
+      log.error(stdError);
       error = true;
     }
 

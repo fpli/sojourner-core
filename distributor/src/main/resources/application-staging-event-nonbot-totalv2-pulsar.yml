@@ -1,0 +1,48 @@
+flink:
+  app:
+    name: Sojourner Distributor Non-Bot Event - Staging
+    parallelism:
+      source: 4
+      sink: 4
+    source:
+      kafka:
+        group-id: sojourner-distributor-event-staging
+        env: stage
+        stream: behavior.totalv2
+        dc: slc
+        topic:
+          - behavior.totalv2.sojevent-nonbot
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: stage
+        stream: behavior.pulsar
+        dc: slc
+    filter:
+      large-message:
+        max-bytes: 819200
+    dist:
+      topic-config:
+        - "entry-page:behavior.pulsar.sojsession.entrypage"
+        - "mt-mobile-mc3ur:behavior.pulsar.customized.mc3ur"
+        - "expc-native-events:behavior.pulsar.customized.expc-native-events"
+        - "srch-auto-complete:behavior.pulsar.customized.srch-auto-complete"
+        - "srpGist:behavior.pulsar.customized.srpGist"
+        - "expm-native-events:behavior.pulsar.customized.expm-native-events"
+        - "scandal-trk:behavior.pulsar.customized.scandal-trk"
+        - "viewport:behavior.pulsar.customized.viewport"
+        - "new-tracking-standard:behavior.pulsar.customized.new-tracking-standard"
+
+rheos:
+  registry-url: https://rheos-services.qa.ebay.com
+  client:
+    auth-type: IAF
+    iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+      secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
+      env: staging
+
+rest-client:
+  base-url: https://sojsvc.vip.qa.ebay.com
+  config:
+    profile: staging

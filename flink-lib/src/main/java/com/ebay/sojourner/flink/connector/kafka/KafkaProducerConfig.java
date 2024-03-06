@@ -14,6 +14,7 @@ import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getBoolean;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getInteger;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 
+@Deprecated
 @Data
 public class KafkaProducerConfig {
 

@@ -8,13 +8,12 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class StaticPageTypeParserTest {
-
-  private static final Logger logger = Logger.getLogger(StaticPageTypeParserTest.class);
 
   private static UbiEvent ubiEvent = null;
   private static String parser = null;
@@ -48,7 +47,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -73,7 +72,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -96,7 +95,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -120,7 +119,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -144,7 +143,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -168,7 +167,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -192,7 +191,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -216,7 +215,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -240,7 +239,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -265,7 +264,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -290,7 +289,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -315,7 +314,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -339,7 +338,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 
@@ -363,7 +362,7 @@ public class StaticPageTypeParserTest {
             VaildateResult.validateInteger(entry.getValue(), ubiEvent.getStaticPageType()));
       }
     } catch (Exception e) {
-      logger.error("staticpage test fail!!!");
+      log.error("staticpage test fail!!!");
     }
   }
 }

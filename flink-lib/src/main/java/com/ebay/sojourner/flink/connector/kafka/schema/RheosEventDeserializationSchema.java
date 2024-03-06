@@ -6,6 +6,7 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+@Deprecated
 public class RheosEventDeserializationSchema implements KafkaDeserializationSchema<RheosEvent> {
 
   private transient RheosEventDeserializer rheosEventDeserializer;

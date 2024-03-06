@@ -9,7 +9,7 @@ import lombok.Data;
 public class RawSojEventWrapper {
   private String topic;
   private byte[] key;
-  private byte[] payload;
+  private byte[] value;
   private Map<String, Long> timestamps;
   private Long eventTimestamp;
 }

@@ -9,6 +9,7 @@ import java.util.Properties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@Deprecated
 @AllArgsConstructor
 @Data
 public class RheosKafkaProducerConfig implements Serializable {

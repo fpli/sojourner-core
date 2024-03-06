@@ -25,6 +25,7 @@ import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+@Deprecated
 @Slf4j
 public class FlinkEnvUtils {
 
@@ -105,7 +106,7 @@ public class FlinkEnvUtils {
     conf.setMaxConcurrentCheckpoints(getInteger(CHECKPOINT_MAX_CONCURRENT));
 
     // state config
-    env.setStateBackend(StateBackendFactory.getStateBackend(StateBackendFactory.FS));
+    env.setStateBackend(StateBackendFactory.getStateBackend(StateBackendFactory.HASHMAP));
 
     return env;
   }
@@ -148,21 +149,21 @@ public class FlinkEnvUtils {
   }
 
   public static String getListString(String key) {
-    List<String> list = EnvironmentUtils.get(key, List.class);
+    List<String> list = EnvironmentUtils.getForClass(key, List.class);
     String value = String.join(",", list);
     CONFIG.put(key, value);
     return value;
   }
 
   public static Set<String> getSet(String key) {
-    List<String> list = EnvironmentUtils.get(key, List.class);
+    List<String> list = EnvironmentUtils.getForClass(key, List.class);
     String value = String.join(",", list);
     CONFIG.put(key, value);
     return new HashSet<>(list);
   }
 
   public static List<String> getList(String key) {
-    List<String> list = EnvironmentUtils.get(key, List.class);
+    List<String> list = EnvironmentUtils.getForClass(key, List.class);
     String value = String.join(",", list);
     CONFIG.put(key, value);
     return list;

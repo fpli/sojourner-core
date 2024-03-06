@@ -9,13 +9,12 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class PartialValidPageParserTest {
-
-  private static final Logger logger = Logger.getLogger(PartialValidPageParser.class);
 
   private static UbiEvent ubiEvent = null;
   private static ClientData clientData = null;
@@ -49,7 +48,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -73,7 +72,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -97,7 +96,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -120,7 +119,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -144,7 +143,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -168,7 +167,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -191,7 +190,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -214,7 +213,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -239,7 +238,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -263,7 +262,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -286,7 +285,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -309,7 +308,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -334,7 +333,7 @@ public class PartialValidPageParserTest {
       }
     } catch (Exception e) {
       //            System.out.println(e.getMessage());
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -357,7 +356,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -381,7 +380,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -405,7 +404,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -429,7 +428,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -452,7 +451,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -479,7 +478,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -502,7 +501,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -526,7 +525,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -549,7 +548,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -576,7 +575,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -600,7 +599,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -624,7 +623,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -647,7 +646,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -671,7 +670,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -695,7 +694,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -719,7 +718,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -743,7 +742,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -767,7 +766,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -791,7 +790,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -815,7 +814,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -838,7 +837,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -861,7 +860,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -889,7 +888,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 
@@ -910,7 +909,7 @@ public class PartialValidPageParserTest {
                 entry.getValue(), String.valueOf(ubiEvent.isPartialValidPage())));
       }
     } catch (Exception e) {
-      logger.error("partial test fail!!!");
+      log.error("partial test fail!!!");
     }
   }
 }

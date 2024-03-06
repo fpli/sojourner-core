@@ -8,11 +8,8 @@ import com.ebay.sojourner.common.model.ClientData;
 import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class ClientIPParser implements FieldParser<RawEvent, UbiEvent> {
-
-  private static final Logger log = Logger.getLogger(ClientIPParser.class);
 
   @Override
   public void init() throws Exception {

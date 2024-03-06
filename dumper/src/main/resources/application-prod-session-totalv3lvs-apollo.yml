@@ -1,0 +1,37 @@
+flink:
+  app:
+    name: Sojourner Dumper Apollo Session - Prod
+    parallelism:
+      source: 50
+      sink: 50
+    source:
+      kafka:
+        group-id: sojourner-dumper-apollo-session-prod
+        env: prod
+        stream: behavior.totalv3
+        dc: lvs
+        topic:
+          - behavior.totalv3.sojsession-nonbot-rno
+          - behavior.totalv3.sojsession-bot-rno
+        from-timestamp: latest
+    sink:
+      hdfs:
+        base-path: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/stg_ubi_session_dump_w/
+        watermark-path: hdfs://apollo-router/sys/edw/working/ubi/ubi_w/soj/ubi_session_watermark_lkp/
+    metric:
+      watermark-delay: sojourner-session-watermark-delay-time
+
+kafka:
+  consumer:
+    # 10000, default is 500
+    max-poll-records: 10000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 1MB, default value is 64KB
+    receive-buffer: 1048576
+    # 100ms, default value is 500ms
+    fetch-max-wait-ms: 100
+    # 10MB, default value is 1MB
+    max-partitions-fetch-bytes: 10485760
+    # when offset cannot be found, read from `latest`
+    auto-offset-reset: latest

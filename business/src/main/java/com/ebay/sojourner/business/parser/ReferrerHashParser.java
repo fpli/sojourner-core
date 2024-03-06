@@ -5,11 +5,9 @@ import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class ReferrerHashParser implements FieldParser<RawEvent, UbiEvent> {
 
-  private static final Logger log = Logger.getLogger(ReferrerHashParser.class);
   private static final String R_TAG = "r";
 
   public void parse(RawEvent rawEvent, UbiEvent ubiEvent) {

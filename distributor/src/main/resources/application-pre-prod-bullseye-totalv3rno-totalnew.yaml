@@ -1,0 +1,32 @@
+flink:
+  app:
+    name: Sojourner Simple Distributor - Pre-Prod
+    parallelism:
+      source: 400
+      sink: 100
+    source:
+      kafka:
+        group-id: sojourner-simple-distributor-pre-prod
+        env: prod
+        stream: behavior.totalv3
+        dc: rno
+        topic:
+          - behavior.totalv3.sojevent-nonbot-rno
+          - behavior.totalv3.sojevent-bot-rno
+        from-timestamp: latest
+    sink:
+      kafka:
+        env: prod
+        stream: behavior.total.new
+    filter:
+      large-message:
+        max-bytes: 819200
+    dist:
+      key-list: guid,pageId
+      hash-key:
+        - guid
+        - colo
+      dc:
+        - rno
+      topic-config:
+        - "bullseye-view-item:behavior.total.new.bullseye.viewitem"

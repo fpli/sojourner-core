@@ -37,7 +37,6 @@ public class SojEventDistProcessFunction extends
     BroadcastProcessFunction<RawSojEventWrapper, PageIdTopicMapping, RawSojEventWrapper> {
 
   private final MapStateDescriptor<Integer, PageIdTopicMapping> stateDescriptor;
-  private final int ALL_PAGE = 0;
   private final AddTagMapFunction addTagMapFunction = new AddTagMapFunction();
   private final CFlagFilterFunction cFlagFilterFunction = new CFlagFilterFunction();
   private transient KafkaDeserializer<SojEvent> deserializer;
@@ -49,7 +48,6 @@ public class SojEventDistProcessFunction extends
   private Counter largeMessageSizeCounter;
   private Counter droppedEventCounter;
   private final long maxMessageBytes;
-  private final boolean debugMode;
   private static final String LARGE_MESSAGE_SIZE_METRIC_NAME = "large-message-size";
   private static final String DROPPED_EVENT_METRIC_NAME = "dropped-event-count";
   public static final String REMOVE_TAG = "experience";
@@ -57,7 +55,7 @@ public class SojEventDistProcessFunction extends
   public static final String EXPC_KW = "expc-native-events";
 
   public SojEventDistProcessFunction(MapStateDescriptor<Integer, PageIdTopicMapping> descriptor,
-      List<String> topicConfigs, long maxMessageBytes, boolean debugMode) {
+                                     List<String> topicConfigs, long maxMessageBytes) {
     this.stateDescriptor = descriptor;
     final Map<String, String> topicConfigMap = new HashMap<>();
     if (topicConfigs != null) {
@@ -70,7 +68,6 @@ public class SojEventDistProcessFunction extends
     }
     this.router = new SojEventRouter(topicConfigMap);
     this.maxMessageBytes = maxMessageBytes;
-    this.debugMode = debugMode;
   }
 
   @Override
@@ -83,22 +80,22 @@ public class SojEventDistProcessFunction extends
     largeMessageSizeCounter =
         getRuntimeContext()
             .getMetricGroup()
-            .addGroup(Constants.SOJ_METRICS_GROUP)
+            .addGroup(Constants.SOJ_METRIC_GROUP)
             .counter(LARGE_MESSAGE_SIZE_METRIC_NAME);
 
     droppedEventCounter =
         getRuntimeContext()
             .getMetricGroup()
-            .addGroup(Constants.SOJ_METRICS_GROUP)
+            .addGroup(Constants.SOJ_METRIC_GROUP)
             .counter(DROPPED_EVENT_METRIC_NAME);
 
   }
 
   @Override
   public void processElement(RawSojEventWrapper sojEventWrapper, ReadOnlyContext ctx,
-      Collector<RawSojEventWrapper> out) throws Exception {
+                             Collector<RawSojEventWrapper> out) throws Exception {
     // deserialize to SojEvent, add tags and filter out `cflags`
-    byte[] payload = sojEventWrapper.getPayload();
+    byte[] payload = sojEventWrapper.getValue();
     SojEvent sojEvent = deserializer.decodeValue(payload);
 
     // add produceTimestamp and ingestTime into sojHeader
@@ -108,12 +105,12 @@ public class SojEventDistProcessFunction extends
     if (timestamps != null) {
       if (timestamps.get(DISTRIBUTOR_INGEST_TIMESTAMP) != null) {
         sojHeader.put(DISTRIBUTOR_INGEST_TIMESTAMP,
-            ByteBuffer.wrap(ByteArrayUtils.fromLong(timestamps.get(DISTRIBUTOR_INGEST_TIMESTAMP))));
+                      ByteBuffer.wrap(ByteArrayUtils.fromLong(timestamps.get(DISTRIBUTOR_INGEST_TIMESTAMP))));
       }
 
       if (timestamps.get(REALTIME_PRODUCER_TIMESTAMP) != null) {
         sojHeader.put(REALTIME_PRODUCER_TIMESTAMP,
-            ByteBuffer.wrap(ByteArrayUtils.fromLong(timestamps.get(REALTIME_PRODUCER_TIMESTAMP))));
+                      ByteBuffer.wrap(ByteArrayUtils.fromLong(timestamps.get(REALTIME_PRODUCER_TIMESTAMP))));
       }
     }
     sojEvent.setSojHeader(sojHeader);
@@ -142,14 +139,14 @@ public class SojEventDistProcessFunction extends
       log.info("message size is more than max message size, need drop");
       droppedEventCounter.inc();
       largeMessageSizeCounter.inc(value.length);
-      if (debugMode) {
-        log.info(String.format("large message size is %s, payload is %s",
-            value.length, sojEvent.toString()));
+      if (log.isDebugEnabled()) {
+        log.debug(String.format("large message size is %s, payload is %s",
+                                value.length, sojEvent.toString()));
       }
       return;
     }
 
-    sojEventWrapper.setPayload(value);
+    sojEventWrapper.setValue(value);
 
     ReadOnlyBroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);
@@ -171,23 +168,15 @@ public class SojEventDistProcessFunction extends
       if (topic.contains(EXPM_KW) || topic.contains(EXPC_KW)) {
         sojEvent.getApplicationPayload().remove(REMOVE_TAG);
         byte[] valueTmp = serializer.encodeValue(sojEvent);
-        sojEventWrapper.setPayload(valueTmp);
+        sojEventWrapper.setValue(valueTmp);
       }
       out.collect(sojEventWrapper);
-    }
-
-    // for bot sojevents, distribute all events if all_page(0) is set
-    if (sojEvent.getBot() != 0 && broadcastState.get(ALL_PAGE) != null) {
-      for (String topic : broadcastState.get(ALL_PAGE).getTopics()) {
-        sojEventWrapper.setTopic(topic);
-        out.collect(sojEventWrapper);
-      }
     }
   }
 
   @Override
   public void processBroadcastElement(PageIdTopicMapping mapping, Context ctx,
-      Collector<RawSojEventWrapper> out) throws Exception {
+                                      Collector<RawSojEventWrapper> out) throws Exception {
     log.info("process broadcast pageId topic mapping: {}", mapping);
     BroadcastState<Integer, PageIdTopicMapping> broadcastState =
         ctx.getBroadcastState(stateDescriptor);

@@ -5,11 +5,9 @@ import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class FlagsParser implements FieldParser<RawEvent, UbiEvent> {
 
-  private static final Logger log = Logger.getLogger(FlagsParser.class);
   private static final String FLGS_TAG = "flgs";
 
   public void parse(RawEvent event, UbiEvent ubiEvent) {

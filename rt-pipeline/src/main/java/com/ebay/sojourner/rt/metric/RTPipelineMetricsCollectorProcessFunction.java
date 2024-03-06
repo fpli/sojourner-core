@@ -13,6 +13,7 @@ import org.apache.flink.dropwizard.metrics.DropwizardHistogramWrapper;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 
+// TODO: refactor me
 public class RTPipelineMetricsCollectorProcessFunction extends ProcessFunction<UbiEvent, UbiEvent> {
 
   private static final String siteToSource = "site_to_source";

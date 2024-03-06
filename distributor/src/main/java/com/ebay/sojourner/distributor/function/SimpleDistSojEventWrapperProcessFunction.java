@@ -30,13 +30,12 @@ public class SimpleDistSojEventWrapperProcessFunction extends
   private Counter largeMessageSizeCounter;
   private Counter droppedEventCounter;
   private final long maxMessageBytes;
-  private final boolean debugMode;
   private static final String LARGE_MESSAGE_SIZE_METRIC_NAME = "large-message-size";
   private static final String DROPPED_EVENT_METRIC_NAME = "dropped-event-count";
 
 
   public SimpleDistSojEventWrapperProcessFunction(List<String> keyList,
-      List<String> topicConfigs, long maxMessageBytes, boolean debugMode) {
+      List<String> topicConfigs, long maxMessageBytes) {
     if (topicConfigs != null) {
       for (String topicConfig : topicConfigs) {
         String[] configStr = topicConfig.split(":");
@@ -48,7 +47,6 @@ public class SimpleDistSojEventWrapperProcessFunction extends
     this.keyList = keyList;
     this.router = new SojEventRouter(topicConfigMap);
     this.maxMessageBytes = maxMessageBytes;
-    this.debugMode = debugMode;
   }
 
   @Override
@@ -84,8 +82,8 @@ public class SimpleDistSojEventWrapperProcessFunction extends
       log.info("message size is more than max message size, need drop");
       droppedEventCounter.inc();
       largeMessageSizeCounter.inc(value.length);
-      if (debugMode) {
-        log.info(String.format("large message size is %s, payload is %s",
+      if (log.isDebugEnabled()) {
+        log.debug(String.format("large message size is %s, payload is %s",
             value.length, sojEvent.toString()));
       }
       return;

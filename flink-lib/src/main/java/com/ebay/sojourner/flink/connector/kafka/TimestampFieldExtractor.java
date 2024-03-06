@@ -10,6 +10,7 @@ import com.ebay.sojourner.common.model.SojSession;
 import com.ebay.sojourner.common.util.SojTimestamp;
 import lombok.extern.slf4j.Slf4j;
 
+@Deprecated
 @Slf4j
 public class TimestampFieldExtractor {
 

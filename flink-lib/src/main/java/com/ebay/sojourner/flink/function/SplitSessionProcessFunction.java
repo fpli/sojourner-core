@@ -11,6 +11,7 @@ import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 
+@Deprecated
 @Slf4j
 public class SplitSessionProcessFunction extends ProcessFunction<SojSession, SojSession> {
 

@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.RoundRobinAssignor;
 
+@Deprecated
 @Data
 public class KafkaConsumerConfig {
 

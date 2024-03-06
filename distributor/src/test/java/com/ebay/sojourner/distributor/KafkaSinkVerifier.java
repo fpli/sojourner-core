@@ -22,7 +22,7 @@ public class KafkaSinkVerifier {
     Properties props = new Properties();
     // This is the broker addresses that can be looked up in Rheos portal
     EnvironmentUtils.activateProfile("test");
-    String brokers = String.join(",", EnvironmentUtils.get("kafka.consumer.bootstrap-servers.lvs", List.class));
+    String brokers = String.join(",", EnvironmentUtils.getForClass("kafka.consumer.bootstrap-servers.lvs", List.class));
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
     // This is the consumer name that is registered in Rheos
     props.put(ConsumerConfig.GROUP_ID_CONFIG, "sojourner-distributor-test-sink-verifier");

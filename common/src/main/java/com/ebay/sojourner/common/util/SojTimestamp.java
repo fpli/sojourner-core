@@ -10,7 +10,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-
+@Deprecated
 // FIXME: 1. remove joda, use java 8 time api instead.
 //  2. consolidate all datetime utils into one class
 public class SojTimestamp {

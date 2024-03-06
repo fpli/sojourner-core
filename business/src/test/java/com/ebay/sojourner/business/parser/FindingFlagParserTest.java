@@ -9,13 +9,12 @@ import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class FindingFlagParserTest {
-
-  private static final Logger logger = Logger.getLogger(FindingFlagParserTest.class);
 
   private static UbiEvent ubiEvent = null;
   private static String parser = null;
@@ -44,7 +43,7 @@ public class FindingFlagParserTest {
         System.out.println(VaildateResult.validateInteger(entry.getValue(), ubiEvent.getBitVal()));
       }
     } catch (Exception e) {
-      logger.error("findingflag test fail!!!");
+      log.error("findingflag test fail!!!");
     }
   }
 
@@ -65,7 +64,7 @@ public class FindingFlagParserTest {
                 entry.getValue(), TypeTransUtil.IntegerToString(ubiEvent.getBitVal())));
       }
     } catch (Exception e) {
-      logger.error("findingflag test fail!!!");
+      log.error("findingflag test fail!!!");
     }
   }
 }

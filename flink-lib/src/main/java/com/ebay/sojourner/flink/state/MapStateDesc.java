@@ -6,6 +6,7 @@ import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 
+@Deprecated
 public class MapStateDesc {
 
   public static final MapStateDescriptor<String, Map<String, Map<Integer, Long[]>>>

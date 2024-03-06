@@ -53,6 +53,8 @@ under the License.
               files="src/main/java/com/ebay/sojourner/common/util/PropertyUtils.java"/>
     <suppress checks="LineLength"
               files="src/main/java/com/ebay/sojourner/common/util/Property.java"/>
+    <suppress checks="LineLength"
+              files="src/main/java/com/ebay/sojourner/common/constant/ConfigProperty.java"/>
 
     <suppress checks="NewlineAtEndOfFile" files=".java"/>
     <suppress checks="NewlineAtEndOfFile" files=".properties"/>

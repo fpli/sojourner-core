@@ -6,11 +6,9 @@ import com.ebay.sojourner.common.model.UbiEvent;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class ItemIdParser implements FieldParser<RawEvent, UbiEvent> {
 
-  private static final Logger log = Logger.getLogger(ItemIdParser.class);
   private static final String _ITM_TAG = "_itm";
   private static final String ITM_TAG = "itm";
 

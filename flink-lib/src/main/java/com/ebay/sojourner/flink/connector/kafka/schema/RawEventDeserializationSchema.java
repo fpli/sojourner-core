@@ -58,7 +58,7 @@ public class RawEventDeserializationSchema implements DeserializationSchema<RawE
   @Override
   public void open(InitializationContext context) throws Exception {
     this.droppedEventCounter = context.getMetricGroup()
-                                      .addGroup(Constants.SOJ_METRIC_TYPE)
+                                      .addGroup(Constants.SOJ_METRIC_GROUP)
                                       .counter(Constants.SOJ_METRIC_DROPPED_EVENT_CNT);
   }
 

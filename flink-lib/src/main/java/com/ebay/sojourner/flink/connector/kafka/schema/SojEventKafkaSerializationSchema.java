@@ -13,6 +13,7 @@ import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class SojEventKafkaSerializationSchema extends RheosKafkaSerializationSchema<SojEvent> {
 
   private final RheosKafkaProducerConfig rheosKafkaConfig;

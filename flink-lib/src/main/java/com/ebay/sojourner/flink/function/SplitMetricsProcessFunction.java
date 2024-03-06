@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+@Deprecated
 @Slf4j
 public class SplitMetricsProcessFunction extends ProcessFunction<SessionMetrics, SessionMetrics> {
 

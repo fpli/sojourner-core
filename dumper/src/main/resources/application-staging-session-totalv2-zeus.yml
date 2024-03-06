@@ -1,0 +1,31 @@
+flink:
+  app:
+    name: Sojourner Dumper Zeus Session - Staging
+    parallelism:
+      source: 2
+      sink: 2
+    source:
+      kafka:
+        group-id: sojourner-dumper-zeus-session-staging
+        env: stage
+        stream: behavior.totalv2
+        dc: slc
+        topic:
+          - behavior.totalv2.sojsession-nonbot
+          - behavior.totalv2.sojsession-bot
+        from-timestamp: latest
+    sink:
+      hdfs:
+        base-path: hdfs://zeus/user/o_ubi/soj/ubd/sessions/
+        watermark-path: hdfs://zeus/user/o_ubi/soj/ubd/watermark/sessions/
+    metric:
+      watermark-delay: sojourner-session-watermark-delay-time
+
+rheos:
+  registry-url: https://rheos-services.qa.ebay.com
+  client:
+    auth-type: IAF
+    iaf:
+      id: "urn:ebay-marketplace-consumerid:68a97ac2-013b-4915-9ed7-d6ae2ff01618"
+      secret: 6218c197-200e-49d7-b404-2a4dbf7595ef
+      env: staging

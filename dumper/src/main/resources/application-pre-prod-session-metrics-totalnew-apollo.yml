@@ -1,58 +1,36 @@
-kafka:
-  consumer:
-    stream: behavior.total.new
-    topic:
-      - behavior.total.new.session.metrics
-    group-id: sojourner-metrics-dumper-apollo-pre-prod
-    bootstrap-servers:
-      rno:
-        - rhs-pbuvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
-        - rhs-pbuvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
-
 flink:
   app:
-    name: Sojourner RNO Session Metrics HDFS Load Pipeline PREPROD
+    name: Sojourner Dumper Apollo Session Metrics - Pre-Prod
     parallelism:
       source: 50
-      sink:
-        hdfs: 50
-    operator-name:
-      source: Sojourner Total New Session Metrics Source
-      pass-through: RNO Byte To Session Metrics
-      assgin-watermark: RNO Session Metrics Watermark Assign
-      extract-watermark: RNO Session Metrics Timestamp Extract
-      metrics-split: RNO Session Metrics Split
-      sink:
-        metrics:
-          open: Sojourner Total New Open Session Metrics Sink
-          same-day: Sojourner Total New RNO Same Day Session Metrics Sink
-          cross-day: Sojourner Total New RNO Cross Day Session Metrics Sink
-        watermark: Sojourner Total New RNO Session Metrics Watermark Sink
-    uid:
-      source: sojourner-total-new-rno-session-metrics-source
-      pass-through: rno-byte-to-session-metrics
-      assgin-watermark: rno-session-metrics-watermak-assign
-      extract-watermark: rno-session-metrics-timestamp-extract
-      metrics-split: rno-session-metrics-split
-      sink:
-        metrics:
-          open: sojourner-total-new-rno-open-session-metrics-sink
-          same-day: sojourner-total-new-rno-same-day-session-metrics-sink
-          cross-day: sojourner-total-new-rno-cross-day-session-metrics-sink
-        watermark: sojourner-total-new-rno-session-metrics-watermark-sink
-    metric:
-      watermark-process-progress: sojourner-ubd-session-metrics-watermark-delay-time
+      sink: 50
     source:
-      dc: rno
+      kafka:
+        group-id: sojourner-dumper-apollo-session-metrics-pre-prod
+        env: prod
+        stream: behavior.total.new
+        dc: rno
+        topic:
+          - behavior.total.new.session.metrics
+        from-timestamp: latest
     sink:
       hdfs:
-        path:
-          metrics:
-            open: hdfs://apollo-router/sys/soj/ubd/metrics/category=open
-            same-day: hdfs://apollo-router/sys/soj/ubd/metrics/category=sameday
-            cross-day: hdfs://apollo-router/sys/soj/ubd/metrics/category=crossday
-        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/metrics
+        base-path: hdfs://apollo-router/sys/soj/ubd/metrics/
+        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/metrics/
+    metric:
+      watermark-delay: sojourner-session-metrics-watermark-delay-time
 
+kafka:
+  consumer:
+    # 10000, default is 500
+    max-poll-records: 10000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 1MB, default value is 64KB
+    receive-buffer: 1048576
+    # 100ms, default value is 500ms
+    fetch-max-wait-ms: 100
+    # 10MB, default value is 1MB
+    max-partitions-fetch-bytes: 10485760
+    # when offset cannot be found, read from `latest`
+    auto-offset-reset: latest

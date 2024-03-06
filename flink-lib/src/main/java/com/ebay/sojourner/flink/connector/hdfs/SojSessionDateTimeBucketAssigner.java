@@ -10,6 +10,7 @@ import org.apache.flink.streaming.api.functions.sink.filesystem.BucketAssigner;
 import org.apache.flink.streaming.api.functions.sink.filesystem.bucketassigners.SimpleVersionedStringSerializer;
 import org.apache.flink.util.Preconditions;
 
+@Deprecated
 public class SojSessionDateTimeBucketAssigner implements BucketAssigner<SojSession, String> {
 
   private static final long serialVersionUID = 1L;

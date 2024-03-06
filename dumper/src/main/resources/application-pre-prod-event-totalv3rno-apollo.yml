@@ -1,0 +1,24 @@
+flink:
+  app:
+    name: Sojourner Dumper Apollo Event - Pre-Prod
+    parallelism:
+      source:
+        non-bot: 400
+        bot: 600
+      sink: 1200
+    source:
+      kafka:
+        group-id: sojourner-dumper-apollo-event-pre-prod
+        env: prod
+        stream: behavior.totalv3
+        dc: rno
+        topic:
+          non-bot: behavior.totalv3.sojevent-nonbot-rno
+          bot: behavior.totalv3.sojevent-bot-rno
+        from-timestamp: latest
+    sink:
+      hdfs:
+        base-path: hdfs://apollo-router/sys/soj/ubd/events/
+        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/events/
+    metric:
+      watermark-delay: sojourner-event-watermark-delay-time
