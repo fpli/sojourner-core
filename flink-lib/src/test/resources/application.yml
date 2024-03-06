@@ -17,23 +17,23 @@ kafka:
     group-id: sojourner-pathfinder-realtime
     bootstrap-servers:
       rno:
-        - rhs-glrvkiaa-kfk-rno-1.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-glrvkiaa-kfk-rno-2.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-glrvkiaa-kfk-rno-3.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-glrvkiaa-kfk-rno-4.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-glrvkiaa-kfk-rno-5.rheos-streaming-prod.svc.25.tess.io:9092
+        - rhs-glrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-glrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-glrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-glrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-glrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
       slc:
-        - rhs-mwsvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-mwsvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-mwsvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-mwsvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-mwsvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-mwsvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-mwsvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-mwsvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-mwsvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-mwsvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
       lvs:
-        - rhs-swsvkiaa-kfk-lvs-1.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-swsvkiaa-kfk-lvs-2.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-swsvkiaa-kfk-lvs-3.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-swsvkiaa-kfk-lvs-4.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-swsvkiaa-kfk-lvs-5.rheos-streaming-prod.svc.38.tess.io:9092
+        - rhs-swsvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-swsvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-swsvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-swsvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-swsvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
 
     max-poll-records: 5000
     # 50MB, default value is 50MB
@@ -48,16 +48,6 @@ kafka:
     partition-discovery-interval-ms: 60000
 
   producer:
-    producerId: sojourner
-    stream: behavior.totalv2
-    bootstrap-servers:
-      rno:
-        - rhs-fxuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.37.tess.io:9092
-
     batch-size: 524288
     acks: 1
     linger-ms: 50

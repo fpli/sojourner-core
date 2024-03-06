@@ -28,17 +28,17 @@ kafka:
       - behavior.totalv2.sojevent-nonbot-lvs
     bootstrap-servers:
       rno:
-        - rhs-fxuvkiaa-kfk-rno-1.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-2.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-3.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-4.rheos-streaming-prod.svc.37.tess.io:9092
-        - rhs-fxuvkiaa-kfk-rno-5.rheos-streaming-prod.svc.37.tess.io:9092
+        - rhs-fxuvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-fxuvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-fxuvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-fxuvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-fxuvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
       lvs:
-        - rhs-ravvkiaa-kfk-lvs-1.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-2.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-3.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-4.rheos-streaming-prod.svc.38.tess.io:9092
-        - rhs-ravvkiaa-kfk-lvs-5.rheos-streaming-prod.svc.38.tess.io:9092
+        - rhs-ravvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-ravvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-ravvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-ravvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-ravvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
 
     max-poll-records: 3000
     # 16MB, default value is 50MB
@@ -54,17 +54,17 @@ kafka:
     stream: behavior.pulsar
     bootstrap-servers:
       rno:
-        - rhs-okrvkiaa-kfk-rno-1.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-okrvkiaa-kfk-rno-2.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-okrvkiaa-kfk-rno-3.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-okrvkiaa-kfk-rno-4.rheos-streaming-prod.svc.25.tess.io:9092
-        - rhs-okrvkiaa-kfk-rno-5.rheos-streaming-prod.svc.25.tess.io:9092
+        - rhs-okrvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-okrvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-okrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-okrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-okrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
       slc:
-        - rhs-qisvkiaa-kfk-slc-1.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-qisvkiaa-kfk-slc-2.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-qisvkiaa-kfk-slc-3.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-qisvkiaa-kfk-slc-4.rheos-streaming-prod.svc.45.tess.io:9092
-        - rhs-qisvkiaa-kfk-slc-5.rheos-streaming-prod.svc.45.tess.io:9092
+        - rhs-qisvkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-qisvkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-qisvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-qisvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+        - rhs-qisvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
     batch-size: 524288
     acks: 1
     linger-ms: 50

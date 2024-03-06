@@ -4,7 +4,7 @@ pipeline {
     label 'raptor-io-builder'
   }
   tools {
-    maven 'Maven3.6.3'
+    maven 'Maven3.9.6'
     jdk 'OPENJDK8'
   }
   stages {
