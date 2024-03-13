@@ -6,13 +6,11 @@ flink:
       session: 4
       broadcast: 2
       agent-ip: 2
-      sink: 2
     source:
       kafka:
         group-id: sojourner-realtime-staging
         env: stage
         stream: behavior.pathfinder
-        dc: slc
         topic:
           - behavior.pathfinder.events.total
         from-timestamp: latest
