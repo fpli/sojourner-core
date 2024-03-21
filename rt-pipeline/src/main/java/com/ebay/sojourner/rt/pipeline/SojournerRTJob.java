@@ -157,7 +157,7 @@ public class SojournerRTJob {
 
         SingleOutputStreamOperator<UbiEvent> rnoEventStream =
                 executionEnvironment.fromSource(rnoPathfinderKafkaSource, watermarkStrategy, "Pathfinder RNO Source")
-                                    .uid("pathfinder-rno-source")
+                                    .uid("source-kafka-pathfinder-rno")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
                                     .setParallelism(flinkEnv.getSourceParallelism())
                                     .flatMap(new LargeMessageHandler(
@@ -176,7 +176,7 @@ public class SojournerRTJob {
 
         SingleOutputStreamOperator<UbiEvent> lvsEventStream =
                 executionEnvironment.fromSource(lvsPathfinderKafkaSource, watermarkStrategy, "Pathfinder LVS Source")
-                                    .uid("pathfinder-lvs-source")
+                                    .uid("source-kafka-pathfinder-lvs")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
                                     .setParallelism(flinkEnv.getSourceParallelism())
                                     .flatMap(new LargeMessageHandler(
@@ -195,7 +195,7 @@ public class SojournerRTJob {
 
         SingleOutputStreamOperator<UbiEvent> slcEventStream =
                 executionEnvironment.fromSource(slcPathfinderKafkaSource, watermarkStrategy, "Pathfinder SLC Source")
-                                    .uid("pathfinder-slc-source")
+                                    .uid("source-kafka-pathfinder-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
                                     .setParallelism(flinkEnv.getSourceParallelism())
                                     .flatMap(new LargeMessageHandler(

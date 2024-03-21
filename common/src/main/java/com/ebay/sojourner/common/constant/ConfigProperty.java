@@ -33,7 +33,7 @@ public class ConfigProperty {
   public static final String FLINK_APP_SOURCE_KAFKA_DC = "flink.app.source.kafka.dc";
   public static final String FLINK_APP_SOURCE_KAFKA_TOPIC = "flink.app.source.kafka.topic";
   public static final String FLINK_APP_SOURCE_KAFKA_GROUP_ID = "flink.app.source.kafka.group-id";
-  public static final String FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP = "flink.app.source.kafka.from-timestamp";
+  public static final String FLINK_APP_SOURCE_KAFKA_START_OFFSET = "flink.app.source.kafka.start-offset";
 
   // flink - sink - kafka
   public static final String FLINK_APP_SINK_KAFKA_ENV = "flink.app.sink.kafka.env";
