@@ -29,8 +29,8 @@ kafka:
     fetch-max-bytes: 52428800
     # 4MB, default value is 64KB
     receive-buffer: 4194304
-    # 10MB, default value is 1MB
-    max-partitions-fetch-bytes: 10485760
+    # 25MB, default value is 1MB
+    max-partitions-fetch-bytes: 26214400
     # when offset cannot be found, read from earliest
     auto-offset-reset: earliest
 
@@ -41,8 +41,8 @@ kafka:
     linger-ms: 50
     # 30s, default value is 30s
     request-timeout-ms: 30000
-    # 10, default value is 2147483647
-    retries: 10
+    # 2147483647, default value is 2147483647(Integer.MAX_VALUE)
+    retries: 2147483647
     # 256MB, default value is 32MB
     buffer-memory: 268435456
     # default value is none

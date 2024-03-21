@@ -1,0 +1,16 @@
+flink:
+  app:
+    name: Sojourner Realtime Pipeline - Pre-Prod
+    parallelism:
+      source: 200
+      session: 1024
+      broadcast: 512
+      agent-ip: 150
+    source:
+      kafka:
+        group-id: sojourner-realtime-pre-prod
+        env: prod
+        stream: behavior.pathfinder
+        topic:
+          - behavior.pathfinder.events.total
+        from-timestamp: latest
