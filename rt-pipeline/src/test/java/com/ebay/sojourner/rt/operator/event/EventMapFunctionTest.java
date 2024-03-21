@@ -10,6 +10,7 @@ import com.ebay.sojourner.business.detector.NewEventBotDetector;
 import com.ebay.sojourner.business.parser.EventParser;
 import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
+import com.google.common.collect.Maps;
 import org.apache.flink.api.common.accumulators.AverageAccumulator;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.api.common.functions.util.FunctionUtils;
@@ -27,7 +28,7 @@ class EventMapFunctionTest {
 
   @BeforeEach
   void setUp() {
-    mapFunction = new EventMapFunction();
+    mapFunction = new EventMapFunction(Maps.newHashMap());
     FunctionUtils.setFunctionRuntimeContext(mapFunction, mockRuntimeContext);
     doNothing().when(mockRuntimeContext).addAccumulator(anyString(), any());
   }

@@ -8,7 +8,7 @@ flink:
       agent-ip: 150
     source:
       kafka:
-        group-id: sojourner-realtime-pre-prod
+        group-id: sojourner-realtime-nosink-pre-prod
         env: prod
         stream: behavior.pathfinder
         topic:

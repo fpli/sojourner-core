@@ -1,4 +1,4 @@
-package com.ebay.sojourner.dumper.bucket;
+package com.ebay.sojourner.flink.connector.hdfs.bucket;
 
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.util.SojDateTimeUtils;

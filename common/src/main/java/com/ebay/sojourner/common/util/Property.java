@@ -26,6 +26,12 @@ public class Property {
   public static final String MPX_ROTATION = "mpx.rotation";
   public static final String PAGE_FMLY_ALL = "pageFmlyAll";
 
+  // -------------------- CJS Lookup Property File ----------------------------------
+  // Lookup table properties
+  public static final String CJS_METADATA_JSON = "cjs.metadata.json";
+  public static final String CJSBETA_METADATA_JSON = "cjsBeta.metadata.json";
+  public static final String CJS_LKP_PATH = "cjsLkpPath";
+
   // -------------------- Page Indicator Property --------------------------------
   public static final String SEARCH_VIEW_PAGES = "search.view.pages";
   public static final String VIEW_ITEM_PAGES = "view.item.pages";

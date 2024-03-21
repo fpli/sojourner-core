@@ -3,6 +3,7 @@ package com.ebay.sojourner.flink.common;
 import com.ebay.sojourner.common.env.EnvironmentUtils;
 import com.ebay.sojourner.flink.connector.kafka.rheos.RheosStreamsConfig;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.ebay.rheos.kafka.security.RheosLogin;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import static com.ebay.sojourner.common.constant.ConfigProperty.CJS_CJSBETA_DISABLED;
+import static com.ebay.sojourner.common.constant.ConfigProperty.CJS_CJS_DISABLED;
+import static com.ebay.sojourner.common.constant.ConfigProperty.CJS_PARSER_DISABLED;
+import static com.ebay.sojourner.common.constant.ConfigProperty.CJS_PARSER_FILTER_ENABLED;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_DATA_DIR;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_INCREMENTAL;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_INTERVAL_MS;
@@ -78,7 +83,6 @@ import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CON
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CLASS;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
-
 
 @Slf4j
 public class FlinkEnv {
@@ -295,6 +299,10 @@ public class FlinkEnv {
         String value = EnvironmentUtils.get(key);
         CONFIG.put(key, value);
         return EnvironmentUtils.getStringList(key, delimiter);
+    }
+
+    public Set<String> getStringSet(String key, String delimiter) {
+        return new HashSet<>(getStringList(key, delimiter));
     }
 
     // env shortcuts
@@ -565,6 +573,15 @@ public class FlinkEnv {
         CONFIG.put("rheos.kafka." + stream + "." + dc + ".brokers", brokers);
 
         return brokers;
+    }
+
+    public Map<String, Object> getCjsConfigMap() {
+        return ImmutableMap.of(
+                CJS_PARSER_DISABLED, getBooleanOrDefault(CJS_PARSER_DISABLED, false),
+                CJS_PARSER_FILTER_ENABLED, getBooleanOrDefault(CJS_PARSER_FILTER_ENABLED, false),
+                CJS_CJS_DISABLED, getBooleanOrDefault(CJS_CJS_DISABLED, false),
+                CJS_CJSBETA_DISABLED, getBooleanOrDefault(CJS_CJSBETA_DISABLED, false)
+        );
     }
 
 }

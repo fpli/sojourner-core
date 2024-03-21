@@ -75,6 +75,7 @@ import org.apache.flink.types.Either;
 
 import java.time.Duration;
 import java.util.Properties;
+import java.util.Set;
 
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_IDLE_SOURCE_TIMEOUT_IN_MIN;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_MAX_OUT_OF_ORDERNESS_IN_MIN;
@@ -101,6 +102,9 @@ public class SojournerRTJob {
                 flinkEnv.getInteger("flink.app.filter.large-message.sub-url-query-string-length");
         final Boolean TRUNCATE_URL_QUERY_STRING =
                 flinkEnv.getBoolean("flink.app.filter.large-message.truncate-url-query-string");
+        final Set<String> LARGE_MSG_PAGEID_MONITOR =
+                flinkEnv.getStringSet("flink.app.filter.large-message.pageid-monitor", ",");
+
 
         final int PARALLELISM_SESSION = flinkEnv.getInteger("flink.app.parallelism.session");
         final int PARALLELISM_BROADCAST = flinkEnv.getInteger("flink.app.parallelism.broadcast");
@@ -111,6 +115,7 @@ public class SojournerRTJob {
         final String SLOT_GROUP_SOURCE_SLC = "source-slc";
         final String SLOT_GROUP_SESSION = "session";
         final String SLOT_GROUP_CROSS_SESSION = "cross-session";
+        final String SLOT_GROUP_EVENT_SINK = "event-sink";
 
         final String REGISTRY_URL = flinkEnv.getString(RHEOS_REGISTRY_URL);
 
@@ -163,12 +168,13 @@ public class SojournerRTJob {
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
                                             SUB_URL_QUERY_STRING_LENGTH,
-                                            TRUNCATE_URL_QUERY_STRING))
+                                            TRUNCATE_URL_QUERY_STRING,
+                                            LARGE_MSG_PAGEID_MONITOR))
                                     .name("Large Message Filter - RNO")
                                     .uid("large-message-filter-rno")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
                                     .setParallelism(flinkEnv.getSourceParallelism())
-                                    .map(new EventMapFunction())
+                                    .map(new EventMapFunction(flinkEnv.getCjsConfigMap()))
                                     .name("Event Operator - RNO")
                                     .uid("event-operator-rno")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
@@ -182,12 +188,13 @@ public class SojournerRTJob {
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
                                             SUB_URL_QUERY_STRING_LENGTH,
-                                            TRUNCATE_URL_QUERY_STRING))
+                                            TRUNCATE_URL_QUERY_STRING,
+                                            LARGE_MSG_PAGEID_MONITOR))
                                     .name("Large Message Filter - LVS")
                                     .uid("large-message-filter-lvs")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
                                     .setParallelism(flinkEnv.getSourceParallelism())
-                                    .map(new EventMapFunction())
+                                    .map(new EventMapFunction(flinkEnv.getCjsConfigMap()))
                                     .name("Event Operator - LVS")
                                     .uid("event-operator-lvs")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
@@ -201,12 +208,13 @@ public class SojournerRTJob {
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
                                             SUB_URL_QUERY_STRING_LENGTH,
-                                            TRUNCATE_URL_QUERY_STRING))
+                                            TRUNCATE_URL_QUERY_STRING,
+                                            LARGE_MSG_PAGEID_MONITOR))
                                     .name("Large Message Filter - SLC")
                                     .uid("large-message-filter-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
                                     .setParallelism(flinkEnv.getSourceParallelism())
-                                    .map(new EventMapFunction())
+                                    .map(new EventMapFunction(flinkEnv.getCjsConfigMap()))
                                     .name("Event Operator - SLC")
                                     .uid("event-operator-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
@@ -353,7 +361,7 @@ public class SojournerRTJob {
                                                      OutputTagConstants.botEventOutputTag))
                                              .name("UbiEvent to SojEvent")
                                              .uid("ubievent-to-sojevent")
-                                             .slotSharingGroup(SLOT_GROUP_SESSION)
+                                             .slotSharingGroup(SLOT_GROUP_EVENT_SINK)
                                              .setParallelism(PARALLELISM_BROADCAST);
 
         DataStream<SojEvent> botSojEventStream = sojEventWithSessionId
@@ -417,13 +425,13 @@ public class SojournerRTJob {
         sojEventWithSessionId.sinkTo(nonbotSojEventKafkaSink)
                              .name("Kafka Sink: SojEvent Non-Bot")
                              .uid("nonbot-sojevent-sink")
-                             .slotSharingGroup(SLOT_GROUP_SESSION)
+                             .slotSharingGroup(SLOT_GROUP_EVENT_SINK)
                              .setParallelism(PARALLELISM_BROADCAST);
 
         botSojEventStream.sinkTo(botSojEventKafkaSink)
                          .name("Kafka Sink: SojEvent Bot")
                          .uid("bot-sojevent-sink")
-                         .slotSharingGroup(SLOT_GROUP_SESSION)
+                         .slotSharingGroup(SLOT_GROUP_EVENT_SINK)
                          .setParallelism(PARALLELISM_BROADCAST);
 
         // kafka sink for SessionMetrics

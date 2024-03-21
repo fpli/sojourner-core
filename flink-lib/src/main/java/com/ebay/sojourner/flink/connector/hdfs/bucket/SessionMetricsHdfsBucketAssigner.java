@@ -1,6 +1,6 @@
-package com.ebay.sojourner.dumper.bucket;
+package com.ebay.sojourner.flink.connector.hdfs.bucket;
 
-import com.ebay.sojourner.common.model.SojSession;
+import com.ebay.sojourner.common.model.SessionMetrics;
 import com.ebay.sojourner.common.util.SojDateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.core.io.SimpleVersionedSerializer;
@@ -8,18 +8,18 @@ import org.apache.flink.streaming.api.functions.sink.filesystem.BucketAssigner;
 import org.apache.flink.streaming.api.functions.sink.filesystem.bucketassigners.SimpleVersionedStringSerializer;
 
 @Slf4j
-public class SojSessionHdfsBucketAssigner implements BucketAssigner<SojSession, String> {
+public class SessionMetricsHdfsBucketAssigner implements BucketAssigner<SessionMetrics, String> {
 
     @Override
-    public String getBucketId(SojSession sojSession, Context context) {
+    public String getBucketId(SessionMetrics sessionMetrics, Context context) {
         StringBuilder sb = new StringBuilder();
 
         long sessionEndTimestamp = System.currentTimeMillis();
         long sessionStartDt = System.currentTimeMillis();
 
         try {
-            sessionEndTimestamp = SojDateTimeUtils.toEpochMilli(sojSession.getAbsEndTimestamp());
-            sessionStartDt = SojDateTimeUtils.toEpochMilli(sojSession.getSessionStartDt());
+            sessionEndTimestamp = SojDateTimeUtils.toEpochMilli(sessionMetrics.getAbsEndTimestamp());
+            sessionStartDt = SojDateTimeUtils.toEpochMilli(sessionMetrics.getSessionStartDt());
         } catch (Exception e) {
             log.warn("session end time is null: " + sessionEndTimestamp);
             log.warn("session start time is null: " + sessionStartDt);
@@ -30,19 +30,12 @@ public class SojSessionHdfsBucketAssigner implements BucketAssigner<SojSession, 
         String sessionStartHrStr = SojDateTimeUtils.toHrString(sessionStartDt);
 
         // for session category
-        if (sojSession.getIsOpen()) {
+        if (sessionMetrics.getIsOpen()) {
             sb.append("category=open");
         } else if (sessionStartDtStr.equals(sessionEndDtStr)) {
             sb.append("category=sameday");
         } else {
             sb.append("category=crossday");
-        }
-
-        // for session type: bot and nonbot
-        if (sojSession.getBotFlag() != 0) {
-            sb.append("/type=bot");
-        } else {
-            sb.append("/type=nonbot");
         }
 
         // for dt and hr
