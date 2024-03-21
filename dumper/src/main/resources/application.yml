@@ -6,8 +6,6 @@ flink:
       interval-ms: 300000
       # 15 mins
       timeout-ms: 900000
-    source:
-      from-timestamp: latest
 
 kafka:
   consumer:

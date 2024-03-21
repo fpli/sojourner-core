@@ -12,7 +12,7 @@ flink:
         dc: slc
         topic:
           - behavior.totalv2.sojevent-nonbot
-        from-timestamp: latest
+        start-offset: latest
     filter:
       large-message:
         max-bytes: 819200

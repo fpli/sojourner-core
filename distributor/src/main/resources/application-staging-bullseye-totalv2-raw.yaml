@@ -13,7 +13,7 @@ flink:
         topic:
           - behavior.totalv2.sojevent-nonbot
           - behavior.totalv2.sojevent-bot
-        from-timestamp: latest
+        start-offset: latest
     sink:
       kafka:
         env: stage
