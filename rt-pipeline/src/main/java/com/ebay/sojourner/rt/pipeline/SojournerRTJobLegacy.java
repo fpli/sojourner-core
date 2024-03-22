@@ -74,6 +74,7 @@ import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getString;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getStringArray;
 import static com.ebay.sojourner.flink.common.FlinkEnvUtils.getStringList;
 
+@Deprecated
 public class SojournerRTJobLegacy {
 
   public static void main(String[] args) throws Exception {

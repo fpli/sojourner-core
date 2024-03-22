@@ -21,6 +21,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.security.auth.SecurityProtocol;
 
@@ -469,22 +470,24 @@ public class FlinkEnv {
     }
 
     public OffsetsInitializer getSourceKafkaStartingOffsets() {
-        if (EnvironmentUtils.isSet(FLINK_APP_SOURCE_KAFKA_START_OFFSET)) {
-            String startOffset = getString(FLINK_APP_SOURCE_KAFKA_START_OFFSET);
+        // start-offset must be declared explicitly
+        String startOffset = getString(FLINK_APP_SOURCE_KAFKA_START_OFFSET);
 
-            if (startOffset.equalsIgnoreCase("committed-offset")) {
-                return OffsetsInitializer.committedOffsets();
-            } else if (startOffset.equalsIgnoreCase("0")
-                    || startOffset.equalsIgnoreCase("latest")) {
-                return OffsetsInitializer.latest();
-            } else if (startOffset.equalsIgnoreCase("earliest")) {
-                return OffsetsInitializer.earliest();
-            } else {
-                return OffsetsInitializer.timestamp(Long.parseLong(startOffset));
-            }
+        if (startOffset.equalsIgnoreCase("committed-offset")) {
+            return OffsetsInitializer.committedOffsets();
+        } else if (startOffset.equalsIgnoreCase("committed-offset-or-earliest")) {
+            return OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST);
+        } else if (startOffset.equalsIgnoreCase("committed-offset-or-latest")) {
+            return OffsetsInitializer.committedOffsets(OffsetResetStrategy.LATEST);
+        } else if (startOffset.equalsIgnoreCase("0") || startOffset.equalsIgnoreCase("latest")) {
+            return OffsetsInitializer.latest();
+        } else if (startOffset.equalsIgnoreCase("earliest")) {
+            return OffsetsInitializer.earliest();
+        } else {
+            // from timestamp
+            return OffsetsInitializer.timestamp(Long.parseLong(startOffset));
         }
-        // default start offset is earliest
-        return OffsetsInitializer.earliest();
+
     }
 
     public String getSourceKafkaGroupId() {

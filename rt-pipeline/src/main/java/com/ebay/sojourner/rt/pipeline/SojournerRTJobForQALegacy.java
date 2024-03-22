@@ -70,6 +70,7 @@ import org.apache.flink.streaming.api.windowing.triggers.EventTimeTrigger;
 import org.apache.flink.streaming.runtime.operators.windowing.WindowOperatorHelper;
 import org.apache.flink.types.Either;
 
+@Deprecated
 public class SojournerRTJobForQALegacy {
 
   public static void main(String[] args) throws Exception {
