@@ -12,7 +12,7 @@ flink:
         dc: rno
         topic:
           - behavior.total.new.sojevent.nonbot
-        from-timestamp: latest
+        start-offset: latest
     sink:
       kafka:
         env: prod

@@ -13,7 +13,7 @@ flink:
         topic:
           - behavior.total.new.sojsession.nonbot
           - behavior.total.new.sojsession.bot
-        from-timestamp: latest
+        start-offset: latest
     sink:
       hdfs:
         base-path: hdfs://apollo-router/sys/soj/ubd/sessions/

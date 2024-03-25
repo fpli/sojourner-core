@@ -15,7 +15,7 @@ flink:
         topic:
           non-bot: behavior.total.new.sojevent.nonbot
           bot: behavior.total.new.sojevent.bot
-        from-timestamp: latest
+        start-offset: latest
     sink:
       hdfs:
         base-path: hdfs://apollo-router/sys/soj/ubd/events/

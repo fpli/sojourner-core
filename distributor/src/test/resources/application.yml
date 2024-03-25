@@ -12,7 +12,7 @@ flink:
       max-concurrent: 1
     source:
       dc: rno
-      from-timestamp: 0
+      start-offset: 0
       out-of-orderless-in-min: 0
     sink:
       dc: rno

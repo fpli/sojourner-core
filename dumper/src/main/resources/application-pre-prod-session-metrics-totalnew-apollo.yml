@@ -12,7 +12,7 @@ flink:
         dc: rno
         topic:
           - behavior.total.new.session.metrics
-        from-timestamp: latest
+        start-offset: latest
     sink:
       hdfs:
         base-path: hdfs://apollo-router/sys/soj/ubd/metrics/

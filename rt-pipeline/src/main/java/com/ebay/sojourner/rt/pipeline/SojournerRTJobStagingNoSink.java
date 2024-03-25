@@ -15,12 +15,6 @@ import com.ebay.sojourner.flink.common.FlinkEnv;
 import com.ebay.sojourner.flink.common.OutputTagConstants;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventDeserializationSchema;
 import com.ebay.sojourner.flink.connector.kafka.schema.RawEventKafkaDeserializationSchemaWrapper;
-import com.ebay.sojourner.flink.connector.kafka.schema.serialize.BotSignatureKafkaRecordSerializationSchema;
-import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SessionMetricsKeySerializerSchema;
-import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SessionMetricsValueSerializerSchema;
-import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojEventKafkaRecordSerializationSchema;
-import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojSessionKeySerializerSchema;
-import com.ebay.sojourner.flink.connector.kafka.schema.serialize.SojSessionValueSerializerSchema;
 import com.ebay.sojourner.flink.state.MapStateDesc;
 import com.ebay.sojourner.flink.watermark.RawEventTimestampAssigner;
 import com.ebay.sojourner.flink.window.CompositeTrigger;
@@ -53,12 +47,8 @@ import com.ebay.sojourner.rt.operator.session.UbiSessionAgg;
 import com.ebay.sojourner.rt.operator.session.UbiSessionToSessionCoreMapFunction;
 import com.ebay.sojourner.rt.operator.session.UbiSessionToSojSessionProcessFunction;
 import com.ebay.sojourner.rt.operator.session.UbiSessionWindowProcessFunction;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.connector.base.DeliveryGuarantee;
-import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
-import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.apache.flink.streaming.api.datastream.BroadcastStream;
@@ -66,6 +56,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SideOutputDataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.sink.DiscardingSink;
 import org.apache.flink.streaming.api.transformations.OneInputTransformation;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
@@ -74,18 +65,15 @@ import org.apache.flink.streaming.runtime.operators.windowing.WindowOperatorHelp
 import org.apache.flink.types.Either;
 
 import java.time.Duration;
-import java.util.Properties;
 
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_IDLE_SOURCE_TIMEOUT_IN_MIN;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_MAX_OUT_OF_ORDERNESS_IN_MIN;
 import static com.ebay.sojourner.common.constant.ConfigProperty.RHEOS_REGISTRY_URL;
-import static com.ebay.sojourner.flink.common.DataCenter.LVS;
-import static com.ebay.sojourner.flink.common.DataCenter.RNO;
 import static com.ebay.sojourner.flink.common.DataCenter.SLC;
 import static org.apache.flink.streaming.api.windowing.time.Time.hours;
 import static org.apache.flink.streaming.api.windowing.time.Time.minutes;
 
-public class SojournerRTJob {
+public class SojournerRTJobStagingNoSink {
 
     public static void main(String[] args) throws Exception {
         // 1. Prepare Flink environment
@@ -106,37 +94,11 @@ public class SojournerRTJob {
         final int PARALLELISM_BROADCAST = flinkEnv.getInteger("flink.app.parallelism.broadcast");
         final int PARALLELISM_AGENT_IP = flinkEnv.getInteger("flink.app.parallelism.agent-ip");
 
-        final String SLOT_GROUP_SOURCE_RNO = "source-rno";
-        final String SLOT_GROUP_SOURCE_LVS = "source-lvs";
         final String SLOT_GROUP_SOURCE_SLC = "source-slc";
         final String SLOT_GROUP_SESSION = "session";
         final String SLOT_GROUP_CROSS_SESSION = "cross-session";
 
         final String REGISTRY_URL = flinkEnv.getString(RHEOS_REGISTRY_URL);
-
-        // event topics
-        final String TOPIC_BOT_EVENT = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
-        final String TOPIC_NONBOT_EVENT = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
-        final String TOPIC_LATE_EVENT = flinkEnv.getString("flink.app.sink.kafka.topic.event.late");
-        // session topics
-        final String TOPIC_BOT_SESSION = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
-        final String TOPIC_NONBOT_SESSION = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
-        final String TOPIC_SESSION_METRICS = flinkEnv.getString("flink.app.sink.kafka.topic.session.metrics");
-        // bot signature topics
-        final String TOPIC_BOT_SIG_AGENT_IP =
-                flinkEnv.getString("flink.app.sink.kafka.topic.bot-signature.agent-ip");
-        final String TOPIC_BOT_SIG_AGENT = flinkEnv.getString("flink.app.sink.kafka.topic.bot-signature.agent");
-        final String TOPIC_BOT_SIG_IP = flinkEnv.getString("flink.app.sink.kafka.topic.bot-signature.ip");
-
-        // schema subject names
-        final String SUBJECT_SOJEVENT = flinkEnv.getString("flink.app.sink.kafka.subject.event");
-        final String SUBJECT_SOJSESSION = flinkEnv.getString("flink.app.sink.kafka.subject.session");
-        final String SUBJECT_SESSION_METRICS = flinkEnv.getString("flink.app.sink.kafka.subject.session-metrics");
-
-        final String SINK_KAFKA_BROKERS = flinkEnv.getSinkKafkaBrokers();
-        final Properties KAFKA_PRODUCER_PROPS = flinkEnv.getKafkaProducerProps();
-
-        final int metricWindow = 70000;
 
         // 2. Source & Filter & Event
         // 2.1 Consumes RawEvent from Pathfinder topic
@@ -146,8 +108,6 @@ public class SojournerRTJob {
         // 2.5 Union all UbiEvent
 
         // kafka data source
-        KafkaSource<RawEvent> rnoPathfinderKafkaSource = getKafkaSource(flinkEnv, RNO, REGISTRY_URL);
-        KafkaSource<RawEvent> lvsPathfinderKafkaSource = getKafkaSource(flinkEnv, LVS, REGISTRY_URL);
         KafkaSource<RawEvent> slcPathfinderKafkaSource = getKafkaSource(flinkEnv, SLC, REGISTRY_URL);
 
         WatermarkStrategy<RawEvent> watermarkStrategy =
@@ -155,45 +115,7 @@ public class SojournerRTJob {
                                  .withIdleness(Duration.ofMinutes(IDLE_SOURCE_TIMEOUT))
                                  .withTimestampAssigner(new RawEventTimestampAssigner());
 
-        SingleOutputStreamOperator<UbiEvent> rnoEventStream =
-                executionEnvironment.fromSource(rnoPathfinderKafkaSource, watermarkStrategy, "Pathfinder RNO Source")
-                                    .uid("source-kafka-pathfinder-rno")
-                                    .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
-                                    .flatMap(new LargeMessageHandler(
-                                            LARGE_MESSAGE_MAX_BYTES,
-                                            SUB_URL_QUERY_STRING_LENGTH,
-                                            TRUNCATE_URL_QUERY_STRING))
-                                    .name("Large Message Filter - RNO")
-                                    .uid("large-message-filter-rno")
-                                    .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
-                                    .map(new EventMapFunction())
-                                    .name("Event Operator - RNO")
-                                    .uid("event-operator-rno")
-                                    .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
-                                    .setParallelism(flinkEnv.getSourceParallelism());
-
-        SingleOutputStreamOperator<UbiEvent> lvsEventStream =
-                executionEnvironment.fromSource(lvsPathfinderKafkaSource, watermarkStrategy, "Pathfinder LVS Source")
-                                    .uid("source-kafka-pathfinder-lvs")
-                                    .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
-                                    .flatMap(new LargeMessageHandler(
-                                            LARGE_MESSAGE_MAX_BYTES,
-                                            SUB_URL_QUERY_STRING_LENGTH,
-                                            TRUNCATE_URL_QUERY_STRING))
-                                    .name("Large Message Filter - LVS")
-                                    .uid("large-message-filter-lvs")
-                                    .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
-                                    .map(new EventMapFunction())
-                                    .name("Event Operator - LVS")
-                                    .uid("event-operator-lvs")
-                                    .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
-                                    .setParallelism(flinkEnv.getSourceParallelism());
-
-        SingleOutputStreamOperator<UbiEvent> slcEventStream =
+        SingleOutputStreamOperator<UbiEvent> ubiEventDataStream =
                 executionEnvironment.fromSource(slcPathfinderKafkaSource, watermarkStrategy, "Pathfinder SLC Source")
                                     .uid("source-kafka-pathfinder-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
@@ -212,8 +134,6 @@ public class SojournerRTJob {
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
                                     .setParallelism(flinkEnv.getSourceParallelism());
 
-        // union ubiEvent from SLC/RNO/LVS
-        DataStream<UbiEvent> ubiEventDataStream = rnoEventStream.union(lvsEventStream).union(slcEventStream);
 
         // refine windowsoperator
         // 3. Session Operator
@@ -385,58 +305,43 @@ public class SojournerRTJob {
         // 5.3 Events (with session ID & bot flags)
         // 5.4 Events late
 
-        // kafka sinks
-        KafkaSink<SojSession> nonbotSojSessionKafkaSink = getKafkaSinkForSojSession(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJSESSION, TOPIC_NONBOT_SESSION);
 
-        KafkaSink<SojSession> botSojSessionKafkaSink = getKafkaSinkForSojSession(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJSESSION, TOPIC_BOT_SESSION);
-
-        KafkaSink<SojEvent> nonbotSojEventKafkaSink = getKafkaSinkForSojEvent(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJEVENT, TOPIC_NONBOT_EVENT);
-
-        KafkaSink<SojEvent> botSojEventKafkaSink = getKafkaSinkForSojEvent(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJEVENT, TOPIC_BOT_EVENT);
-
-
-        // kafka sink for bot and nonbot sojsession
-        sojSessionStream.sinkTo(nonbotSojSessionKafkaSink)
-                        .name("Kafka Sink: SojSession Non-Bot")
+        // discard sink for bot and nonbot sojsession
+        sojSessionStream.addSink(new DiscardingSink<>())
+                        .name("Discard Sink: SojSession Non-Bot")
                         .uid("nonbot-sojsession-sink")
                         .slotSharingGroup(SLOT_GROUP_SESSION)
                         .setParallelism(PARALLELISM_BROADCAST);
 
-        botSojSessionStream.sinkTo(botSojSessionKafkaSink)
-                           .name("Kafka Sink: SojSession Bot")
+        botSojSessionStream.addSink(new DiscardingSink<>())
+                           .name("Discard Sink: SojSession Bot")
                            .uid("bot-sojsession-sink")
                            .slotSharingGroup(SLOT_GROUP_SESSION)
                            .setParallelism(PARALLELISM_BROADCAST);
 
 
-        // kafka sink for bot and nonbot sojevent
-        sojEventWithSessionId.sinkTo(nonbotSojEventKafkaSink)
-                             .name("Kafka Sink: SojEvent Non-Bot")
+        // discard sink for bot and nonbot sojevent
+        sojEventWithSessionId.addSink(new DiscardingSink<>())
+                             .name("Discard Sink: SojEvent Non-Bot")
                              .uid("nonbot-sojevent-sink")
                              .slotSharingGroup(SLOT_GROUP_SESSION)
                              .setParallelism(PARALLELISM_BROADCAST);
 
-        botSojEventStream.sinkTo(botSojEventKafkaSink)
-                         .name("Kafka Sink: SojEvent Bot")
+        botSojEventStream.addSink(new DiscardingSink<>())
+                         .name("Discard Sink: SojEvent Bot")
                          .uid("bot-sojevent-sink")
                          .slotSharingGroup(SLOT_GROUP_SESSION)
                          .setParallelism(PARALLELISM_BROADCAST);
 
-        // kafka sink for SessionMetrics
-        sessionMetricsStream.sinkTo(getKafkaSinkForSessionMetrics(SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS,
-                                                                  REGISTRY_URL, SUBJECT_SESSION_METRICS,
-                                                                  TOPIC_SESSION_METRICS))
-                            .name("Kafka Sink: Session Metrics")
+        // discard sink for SessionMetrics
+        sessionMetricsStream.addSink(new DiscardingSink<>())
+                            .name("Discard Sink: Session Metrics")
                             .uid("bot-metrics-sink-kafka")
                             .slotSharingGroup(SLOT_GROUP_SESSION)
                             .setParallelism(PARALLELISM_BROADCAST);
 
         // metrics collector for end to end
-        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction(metricWindow))
+        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction(70000))
                                      .name("Pipeline Metrics Collector")
                                      .uid("pipeline-metrics-collector")
                                      .slotSharingGroup(SLOT_GROUP_SESSION)
@@ -462,28 +367,25 @@ public class SojournerRTJob {
                              .setParallelism(PARALLELISM_AGENT_IP);
 
         // signature sink
-        agentIpSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS,
-                                                                      TOPIC_BOT_SIG_AGENT_IP, "userAgent"))
+        agentIpSignatureDataStream.addSink(new DiscardingSink<>())
                                   .name(String.format("%s Signature", Constants.AGENTIP))
                                   .uid(String.format("signature-%s-sink", Constants.AGENTIP))
                                   .slotSharingGroup(SLOT_GROUP_CROSS_SESSION)
                                   .setParallelism(PARALLELISM_AGENT_IP);
 
-        agentSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS,
-                                                                    TOPIC_BOT_SIG_AGENT, "userAgent"))
+        agentSignatureDataStream.addSink(new DiscardingSink<>())
                                 .name(String.format("%s Signature", Constants.AGENT))
                                 .uid(String.format("signature-%s-sink", Constants.AGENT))
                                 .slotSharingGroup(SLOT_GROUP_CROSS_SESSION)
                                 .setParallelism(PARALLELISM_AGENT_IP);
 
-        ipSignatureDataStream.sinkTo(getKafkaSinkForBotSignature(SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS,
-                                                                 TOPIC_BOT_SIG_IP, "ip"))
+        ipSignatureDataStream.addSink(new DiscardingSink<>())
                              .name(String.format("%s Signature", Constants.IP))
                              .uid(String.format("signature-%s-sink", Constants.IP))
                              .slotSharingGroup(SLOT_GROUP_CROSS_SESSION)
                              .setParallelism(PARALLELISM_AGENT_IP);
 
-        // kafka sink for late event
+        // discard sink for late event
         DataStream<SojEvent> lateSojEventStream =
                 lateEventStream.map(new UbiEventToSojEventMapFunction())
                                .name("Late UbiEvent to SojEvent")
@@ -491,8 +393,7 @@ public class SojournerRTJob {
                                .slotSharingGroup(SLOT_GROUP_SESSION)
                                .setParallelism(PARALLELISM_SESSION);
 
-        lateSojEventStream.sinkTo(getKafkaSinkForSojEvent(SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL,
-                                                          SUBJECT_SOJEVENT, TOPIC_LATE_EVENT))
+        lateSojEventStream.addSink(new DiscardingSink<>())
                           .name("Kafka Sink: SojEvent Late")
                           .uid("late-sojevent-sink")
                           .slotSharingGroup(SLOT_GROUP_SESSION)
@@ -517,93 +418,6 @@ public class SojournerRTJob {
                                   )
                           ))
                           .build();
-    }
-
-    private static KafkaSink<SojEvent> getKafkaSinkForSojEvent(String brokers, Properties producerConfigs,
-                                                               String schemaRegistryUrl, String subjectName,
-                                                               String topic) {
-        Preconditions.checkNotNull(brokers);
-        Preconditions.checkNotNull(producerConfigs);
-        Preconditions.checkNotNull(schemaRegistryUrl);
-        Preconditions.checkNotNull(subjectName);
-        Preconditions.checkNotNull(topic);
-
-        // kafka sink
-        return KafkaSink.<SojEvent>builder()
-                        .setBootstrapServers(brokers)
-                        .setKafkaProducerConfig(producerConfigs)
-                        .setRecordSerializer(new SojEventKafkaRecordSerializationSchema(
-                                schemaRegistryUrl, subjectName, topic))
-                        .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
-                        .build();
-    }
-
-    private static KafkaSink<SojSession> getKafkaSinkForSojSession(String brokers, Properties producerConfigs,
-                                                                   String schemaRegistryUrl, String subjectName,
-                                                                   String topic) {
-        Preconditions.checkNotNull(brokers);
-        Preconditions.checkNotNull(producerConfigs);
-        Preconditions.checkNotNull(schemaRegistryUrl);
-        Preconditions.checkNotNull(subjectName);
-        Preconditions.checkNotNull(topic);
-
-        // sink to kafka
-        return KafkaSink.<SojSession>builder()
-                        .setBootstrapServers(brokers)
-                        .setKafkaProducerConfig(producerConfigs)
-                        .setRecordSerializer(
-                                KafkaRecordSerializationSchema
-                                        .<SojSession>builder()
-                                        .setTopic(topic)
-                                        .setKeySerializationSchema(new SojSessionKeySerializerSchema())
-                                        .setValueSerializationSchema(new SojSessionValueSerializerSchema(
-                                                schemaRegistryUrl, subjectName))
-                                        .build()
-                        )
-                        .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
-                        .build();
-    }
-
-    private static KafkaSink<SessionMetrics> getKafkaSinkForSessionMetrics(String brokers, Properties producerConfigs,
-                                                                           String schemaRegistryUrl, String subjectName,
-                                                                           String topic) {
-        Preconditions.checkNotNull(brokers);
-        Preconditions.checkNotNull(producerConfigs);
-        Preconditions.checkNotNull(schemaRegistryUrl);
-        Preconditions.checkNotNull(subjectName);
-        Preconditions.checkNotNull(topic);
-
-        // sink to kafka
-        return KafkaSink.<SessionMetrics>builder()
-                        .setBootstrapServers(brokers)
-                        .setKafkaProducerConfig(producerConfigs)
-                        .setRecordSerializer(
-                                KafkaRecordSerializationSchema
-                                        .<SessionMetrics>builder()
-                                        .setTopic(topic)
-                                        .setKeySerializationSchema(new SessionMetricsKeySerializerSchema())
-                                        .setValueSerializationSchema(new SessionMetricsValueSerializerSchema(
-                                                schemaRegistryUrl, subjectName))
-                                        .build()
-                        )
-                        .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
-                        .build();
-    }
-
-    private static KafkaSink<BotSignature> getKafkaSinkForBotSignature(String brokers, Properties producerConfigs,
-                                                                       String topic, String keyField) {
-        Preconditions.checkNotNull(brokers);
-        Preconditions.checkNotNull(producerConfigs);
-        Preconditions.checkNotNull(topic);
-        Preconditions.checkNotNull(keyField);
-
-        // sink to kafka
-        return KafkaSink.<BotSignature>builder()
-                        .setBootstrapServers(brokers)
-                        .setKafkaProducerConfig(producerConfigs)
-                        .setRecordSerializer(new BotSignatureKafkaRecordSerializationSchema(topic, keyField))
-                        .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
-                        .build();
     }
 
 }

@@ -11,4 +11,4 @@ flink:
         dc: rno
         topic:
           - behavior.total.new.customized.2349624
-        from-timestamp: latest
+        start-offset: latest

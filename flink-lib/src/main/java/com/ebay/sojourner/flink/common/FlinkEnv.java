@@ -1,5 +1,38 @@
 package com.ebay.sojourner.flink.common;
 
+import com.ebay.sojourner.common.env.EnvironmentUtils;
+import com.ebay.sojourner.flink.connector.kafka.rheos.RheosStreamsConfig;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import io.ebay.rheos.kafka.security.RheosLogin;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.flink.api.common.RuntimeExecutionMode;
+import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.configuration.RestOptions;
+import org.apache.flink.configuration.TaskManagerOptions;
+import org.apache.flink.connector.kafka.source.KafkaSourceOptions;
+import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
+import org.apache.flink.contrib.streaming.state.PredefinedOptions;
+import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.environment.CheckpointConfig;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.OffsetResetStrategy;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.security.auth.SecurityProtocol;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_DATA_DIR;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_INCREMENTAL;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_CHECKPOINT_INTERVAL_MS;
@@ -15,8 +48,8 @@ import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_K
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_STREAM;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_DC;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_ENV;
-import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_GROUP_ID;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_START_OFFSET;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_STREAM;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_TOPIC;
 import static com.ebay.sojourner.common.constant.ConfigProperty.KAFKA_CONSUMER_AUTO_OFFSET_RESET;
@@ -45,39 +78,6 @@ import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CON
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CLASS;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
-
-import com.ebay.sojourner.common.env.EnvironmentUtils;
-import com.ebay.sojourner.flink.connector.kafka.rheos.RheosStreamsConfig;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
-import io.ebay.rheos.kafka.security.RheosLogin;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.api.common.RuntimeExecutionMode;
-import org.apache.flink.api.java.utils.ParameterTool;
-import org.apache.flink.configuration.Configuration;
-import org.apache.flink.configuration.RestOptions;
-import org.apache.flink.configuration.TaskManagerOptions;
-import org.apache.flink.connector.kafka.source.KafkaSourceOptions;
-import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
-import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
-import org.apache.flink.contrib.streaming.state.PredefinedOptions;
-import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
-import org.apache.flink.streaming.api.CheckpointingMode;
-import org.apache.flink.streaming.api.environment.CheckpointConfig;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.security.auth.SecurityProtocol;
 
 
 @Slf4j
@@ -470,20 +470,24 @@ public class FlinkEnv {
     }
 
     public OffsetsInitializer getSourceKafkaStartingOffsets() {
-        if (EnvironmentUtils.isSet(FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP)) {
-            String fromTimestamp = getString(FLINK_APP_SOURCE_KAFKA_FROM_TIMESTAMP);
+        // start-offset must be declared explicitly
+        String startOffset = getString(FLINK_APP_SOURCE_KAFKA_START_OFFSET);
 
-            if (fromTimestamp.equalsIgnoreCase("0")
-                    || fromTimestamp.equalsIgnoreCase("latest")) {
-                return OffsetsInitializer.latest();
-            } else if (fromTimestamp.equalsIgnoreCase("earliest")) {
-                return OffsetsInitializer.earliest();
-            } else {
-                return OffsetsInitializer.timestamp(Long.parseLong(fromTimestamp));
-            }
+        if (startOffset.equalsIgnoreCase("committed-offset")) {
+            return OffsetsInitializer.committedOffsets();
+        } else if (startOffset.equalsIgnoreCase("committed-offset-or-earliest")) {
+            return OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST);
+        } else if (startOffset.equalsIgnoreCase("committed-offset-or-latest")) {
+            return OffsetsInitializer.committedOffsets(OffsetResetStrategy.LATEST);
+        } else if (startOffset.equalsIgnoreCase("0") || startOffset.equalsIgnoreCase("latest")) {
+            return OffsetsInitializer.latest();
+        } else if (startOffset.equalsIgnoreCase("earliest")) {
+            return OffsetsInitializer.earliest();
+        } else {
+            // from timestamp
+            return OffsetsInitializer.timestamp(Long.parseLong(startOffset));
         }
 
-        return OffsetsInitializer.latest();
     }
 
     public String getSourceKafkaGroupId() {

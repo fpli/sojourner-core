@@ -13,7 +13,7 @@ flink:
         topic:
           - behavior.totalv2.sojsession-nonbot
           - behavior.totalv2.sojsession-bot
-        from-timestamp: latest
+        start-offset: latest
     sink:
       hdfs:
         base-path: hdfs://zeus/user/o_ubi/soj/ubd/sessions/

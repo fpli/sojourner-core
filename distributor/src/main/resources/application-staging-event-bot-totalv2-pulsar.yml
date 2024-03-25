@@ -12,7 +12,7 @@ flink:
         dc: slc
         topic:
           - behavior.totalv2.sojevent-bot
-        from-timestamp: latest
+        start-offset: latest
     sink:
       kafka:
         env: stage
