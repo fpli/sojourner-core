@@ -2,7 +2,7 @@ package com.ebay.sojourner.dumper.pipeline;
 
 import com.ebay.sojourner.common.model.SojEvent;
 import com.ebay.sojourner.common.model.SojWatermark;
-import com.ebay.sojourner.dumper.bucket.SojEventHdfsBucketAssigner;
+import com.ebay.sojourner.flink.connector.hdfs.bucket.SojEventHdfsBucketAssigner;
 import com.ebay.sojourner.flink.common.FlinkEnv;
 import com.ebay.sojourner.flink.connector.hdfs.OutputFileConfigUtils;
 import com.ebay.sojourner.flink.connector.hdfs.ParquetAvroWritersWithCompression;

@@ -1,17 +1,29 @@
 flink:
   app:
-    name: Sojourner Realtime Pipeline PREPROD - SINK TO HDFS Apollo
+    name: Sojourner Realtime Pipeline Pre-Prod - SINK TO HDFS Apollo
     parallelism:
-      sink:
-        hdfs: 510
+      source: 200
+      session: 1024
+      broadcast: 512
+      agent-ip: 150
+    source:
+      kafka:
+        group-id: sojourner-realtime-hdfs-pre-prod
+        env: prod
+        stream: behavior.pathfinder
+        topic:
+          - behavior.pathfinder.events.total
+        start-offset: committed-offset
     sink:
       hdfs:
         session:
-          non-bot: hdfs://apollo-router/sys/soj/ubd/sessions/category=all/type=nonbot
-          bot: hdfs://apollo-router/sys/soj/ubd/sessions/category=all/type=bot
-        metrics:
-          non-bot: hdfs://apollo-router/sys/soj/ubd/metrics/category=all/type=nonbot
-          bot: hdfs://apollo-router/sys/soj/ubd/metrics/category=all/type=bot
-kafka:
-  consumer:
-    group-id: sojourner-pathfinder-realtime-hdfs-test
+          base-path: hdfs://apollo-router/sys/soj/ubd/sessions/
+          watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/sessions/
+        event:
+          base-path: hdfs://apollo-router/sys/soj/ubd/events/
+          watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/events/
+    metric:
+      session:
+        watermark-delay: sojourner-session-watermark-delay-time
+      event:
+        watermark-delay: sojourner-event-watermark-delay-time

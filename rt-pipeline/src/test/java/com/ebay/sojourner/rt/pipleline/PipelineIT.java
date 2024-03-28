@@ -21,6 +21,8 @@ import com.ebay.sojourner.rt.util.ResultGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.collect.Maps;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.runtime.testutils.MiniClusterResourceConfiguration;
@@ -87,7 +89,7 @@ public class PipelineIT {
             .name("Source Operator");
     DataStream<UbiEvent> ubiEventDataStream =
         rawEventDataStream
-            .map(new EventMapFunction())
+            .map(new EventMapFunction(Maps.newHashMap()))
             .setParallelism(2)
             .name("Event Operator"); // .slotSharingGroup("event");
     //        ubiEventDataStream.addSink(new CollectSink2());

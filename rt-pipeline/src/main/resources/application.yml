@@ -14,6 +14,7 @@ flink:
         max-bytes: 819200
         sub-url-query-string-length: 4096
         truncate-url-query-string: true
+        pageid-monitor: 2351460,2381081
     sink:
       kafka:
         subject:

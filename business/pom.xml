@@ -22,6 +22,11 @@
             <artifactId>sojourner-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.ebay.sojourner</groupId>
+            <artifactId>sojourner-cjs-lib</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- TODO: hadoop dependency should be removed from business -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>

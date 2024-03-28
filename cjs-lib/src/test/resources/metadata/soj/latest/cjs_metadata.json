@@ -1,0 +1,155 @@
+[
+  {
+    "id": "044a24cadb563653ab51d4eb40acaa88",
+    "version": 2,
+    "domain": "SRP1",
+    "name": "Impression_SRP_Page_Impression1",
+    "description": "Impression_SRP_Page_Impression1",
+    "type": "PAGE_IMPRESSION1",
+    "status": 0,
+    "logicalDefinition": [
+    ],
+    "refVersion": 1,
+    "createdUser": "yimikong",
+    "createdTime": "2024-02-26 02:20:02",
+    "updatedUser": "yimikong",
+    "updatedTime": "2024-02-26 02:20:02",
+    "env": "STAG"
+  },
+  {
+    "id": "044a23cadb563653ab51d4eb40acaa88",
+    "version": 2,
+    "domain": "SRP",
+    "name": "Impression_SRP_Page_Impression",
+    "description": "Impression_SRP_Page_Impression",
+    "type": "PAGE_IMPRESSION",
+    "status": 0,
+    "logicalDefinition": [
+      {
+        "eventClassifiers": [
+          {
+            "type": "IMPRESSION",
+            "name": "SRP",
+            "fsmOrder": null,
+            "source": "ST",
+            "filter": "!empty(rawEvent?.sojA?.CJS_ABC)"
+          }
+        ],
+        "fields": null,
+        "uuidGenerator": {
+          "clz": "jexl",
+          "formula": "uuid:fromString((event.userId?:'')+'_'+(event.itemId?.toString()?:'')+'_'+(event.eventTimestamp?.toString()?:''))?:''"
+        },
+        "platform": "CJS"
+      },
+      {
+        "eventClassifiers": [
+          {
+            "type": "IMPRESSION",
+            "name": "SRP1",
+            "fsmOrder": null,
+            "source": "SOJ",
+            "filter": "!empty(rawEvent?.sojA?.SOJ_ABC)"
+          }
+        ],
+        "fields": null,
+        "uuidGenerator": {
+          "clz": "jexl",
+          "formula": "uuid:fromString((event.userId?:'')+'_'+(event.itemId?.toString()?:'')+'_'+(event.eventTimestamp?.toString()?:''))?:''"
+        },
+        "platform": "SOJ"
+      },
+      {
+        "eventClassifiers": [
+          {
+            "type": "IMPRESSION",
+            "name": "SRP",
+            "fsmOrder": null,
+            "source": "SOJ",
+            "filter": "event.pageId != 4465146 && !empty(rawEvent?.sojA?.srpGist)"
+          }
+        ],
+        "fields": null,
+        "uuidGenerator": {
+          "clz": "jexl",
+          "formula": "uuid:fromString((event.userId?:'')+'_'+(event.itemId?.toString()?:'')+'_'+(event.eventTimestamp?.toString()?:''))?:''"
+        },
+        "platform": "SOJ"
+      }
+    ],
+    "refVersion": 1,
+    "createdUser": "yimikong",
+    "createdTime": "2024-02-26 02:20:02",
+    "updatedUser": "yimikong",
+    "updatedTime": "2024-02-26 02:20:02",
+    "env": "STAG"
+  },
+  {
+    "id": "1b60d5cb4fde4c08bb58795f141e391d",
+    "version": 1,
+    "domain": "ViewItem",
+    "name": "Impression_VI_Page_Impression",
+    "description": "Impression_VI_Page_Impression",
+    "type": "PAGE_IMPRESSION",
+    "status": 0,
+    "logicalDefinition": [
+      {
+        "eventClassifiers": [
+          {
+            "type": "IMPRESSION",
+            "name": "VI",
+            "fsmOrder": null,
+            "source": "SOJ",
+            "filter": "!empty(event.itemId) && event.itemId > 0 && event.rdt == false && [2349624, 4429486].contains(event.pageId) && ['EXPC', 'SERVER_CACHE_REPLAY_TRACKING'].contains(event.eventAction)"
+          }
+        ],
+        "fields": null,
+        "uuidGenerator": {
+          "clz": "jexl",
+          "formula": "uuid:fromAny(event.currentImprId)?:''"
+        },
+        "platform": "SOJ"
+      }
+    ],
+    "refVersion": null,
+    "createdUser": "yimikong",
+    "createdTime": "2024-02-26 02:01:53",
+    "updatedUser": "yimikong",
+    "updatedTime": "2024-02-26 02:01:53",
+    "env": "STAG"
+  },
+  {
+    "id": "ac6611f4b1474c7ea36c5676238a81bd",
+    "version": 2,
+    "domain": "Watch",
+    "name": "BusinessOutcome_Item_Watched",
+    "description": "BusinessOutcome_Item_Watched",
+    "type": "BBOWAC",
+    "status": 0,
+    "logicalDefinition": [
+      {
+        "eventClassifiers": [
+          {
+            "type": "OUTCOME",
+            "name": "ItemWatched",
+            "fsmOrder": null,
+            "source": "SOJ",
+            "filter": "!empty(event.itemId) && event.itemId > 0 && [2047937, 2055415, 2056818, 2057640, 2057896, 2058891, 4024275].contains(event.pageId)"
+          }
+        ],
+        "fields": null,
+        "uuidGenerator": {
+          "clz": "jexl",
+          "formula": "uuid:fromAny(rawEvent.sojA?.eventPrimaryId)?:''"
+        },
+        "platform": "SOJ"
+      }
+    ],
+    "refVersion": 1,
+    "createdUser": "yimikong",
+    "createdTime": "2024-02-26 02:33:19",
+    "updatedUser": "yimikong",
+    "updatedTime": "2024-02-26 02:33:19",
+    "env": "STAG"
+  }
+]

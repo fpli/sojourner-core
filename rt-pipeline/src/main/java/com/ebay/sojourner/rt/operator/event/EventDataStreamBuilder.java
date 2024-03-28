@@ -7,6 +7,8 @@ import com.ebay.sojourner.common.model.UbiEvent;
 import com.ebay.sojourner.common.util.Property;
 import com.ebay.sojourner.flink.common.FlinkEnvUtils;
 import com.ebay.sojourner.flink.common.DataCenter;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 @Deprecated
@@ -18,12 +20,13 @@ public class EventDataStreamBuilder {
         .flatMap(new LargeMessageHandler(
             FlinkEnvUtils.getLong(Property.MAX_MESSAGE_BYTES),
             FlinkEnvUtils.getInteger(Property.SUB_URL_QUERY_STRING_LENGTH),
-            FlinkEnvUtils.getBoolean(Property.TRUNCATE_URL_QUERY_STRING)))
+            FlinkEnvUtils.getBoolean(Property.TRUNCATE_URL_QUERY_STRING),
+            ImmutableSet.of()))
         .setParallelism(FlinkEnvUtils.getInteger(Property.EVENT_PARALLELISM))
         .slotSharingGroup(getSlotGroupForDC(dc))
         .name(String.format("Large Message Filter %s", dc))
         .uid(String.format("large-message-filter-%s", dc))
-        .map(new EventMapFunction())
+        .map(new EventMapFunction(Maps.newHashMap()))
         .setParallelism(FlinkEnvUtils.getInteger(Property.EVENT_PARALLELISM))
         .slotSharingGroup(getSlotGroupForDC(dc))
         .name(String.format("Event Operator %s", dc))

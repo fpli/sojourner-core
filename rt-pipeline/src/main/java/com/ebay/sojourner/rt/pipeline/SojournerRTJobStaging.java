@@ -75,6 +75,7 @@ import org.apache.flink.types.Either;
 
 import java.time.Duration;
 import java.util.Properties;
+import java.util.Set;
 
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_IDLE_SOURCE_TIMEOUT_IN_MIN;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_WATERMARK_MAX_OUT_OF_ORDERNESS_IN_MIN;
@@ -99,6 +100,8 @@ public class SojournerRTJobStaging {
                 flinkEnv.getInteger("flink.app.filter.large-message.sub-url-query-string-length");
         final Boolean TRUNCATE_URL_QUERY_STRING =
                 flinkEnv.getBoolean("flink.app.filter.large-message.truncate-url-query-string");
+        final Set<String> LARGE_MSG_PAGEID_MONITOR =
+                flinkEnv.getStringSet("flink.app.filter.large-message.pageid-monitor",",");
 
         final int PARALLELISM_SESSION = flinkEnv.getInteger("flink.app.parallelism.session");
         final int PARALLELISM_BROADCAST = flinkEnv.getInteger("flink.app.parallelism.broadcast");
@@ -155,12 +158,13 @@ public class SojournerRTJobStaging {
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
                                             SUB_URL_QUERY_STRING_LENGTH,
-                                            TRUNCATE_URL_QUERY_STRING))
+                                            TRUNCATE_URL_QUERY_STRING,
+                                            LARGE_MSG_PAGEID_MONITOR))
                                     .name("Large Message Filter - SLC")
                                     .uid("large-message-filter-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
                                     .setParallelism(flinkEnv.getSourceParallelism())
-                                    .map(new EventMapFunction())
+                                    .map(new EventMapFunction(flinkEnv.getCjsConfigMap()))
                                     .name("Event Operator - SLC")
                                     .uid("event-operator-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)

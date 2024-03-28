@@ -5,7 +5,13 @@ package com.ebay.sojourner.business.parser;
  */
 public interface Parser<Source, Target> {
 
-  void init() throws Exception;
+    default void init() throws Exception {
 
-  void parse(Source source, Target target) throws Exception;
+    }
+
+    default void init(ParserContext context) throws Exception {
+        init();
+    }
+
+    void parse(Source source, Target target) throws Exception;
 }

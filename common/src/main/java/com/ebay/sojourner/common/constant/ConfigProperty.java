@@ -80,4 +80,10 @@ public class ConfigProperty {
   public static final String REST_CLIENT_CONFIG_PROFILE = "rest-client.config.profile";
   public static final String REST_CLIENT_CONFIG_PULL_INTERVAL = "rest-client.config.pull-interval";
 
+  // region CJS properties
+  public static final String CJS_PARSER_DISABLED = "cjs.parser.disabled";
+  public static final String CJS_PARSER_FILTER_ENABLED = "cjs.parser.filter.enabled";
+  public static final String CJS_CJS_DISABLED = "cjs.cjs.disabled";
+  public static final String CJS_CJSBETA_DISABLED = "cjs.cjsBeta.disabled";
+  //endregion
 }
