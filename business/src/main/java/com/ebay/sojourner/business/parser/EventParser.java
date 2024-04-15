@@ -52,6 +52,8 @@ public class EventParser extends RecordParser<RawEvent, UbiEvent> {
             addFieldParser(new JSColumnParser());
             addFieldParser(new HashCodeParser());
             addFieldParser(new RvParser());
+            // for user's requirement to parse itemid from referrer
+            addFieldParser(new EnrichedItemIdParser());
 
             if (!context.get(CJS_PARSER_DISABLED, false)) {
                 // CAUTION: This CJS parser has to be invoked at last

@@ -10,6 +10,6 @@ class EventParserTest {
   @Test
   void test_eventParser() throws Exception {
     eventParser = new EventParser(new ParserContext.Builder().build());
-    Assertions.assertThat(eventParser.fieldParsers.size()).isEqualTo(30);
+    Assertions.assertThat(eventParser.fieldParsers.size()).isEqualTo(31);
   }
 }
