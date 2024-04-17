@@ -342,13 +342,13 @@ public class FlinkEnv {
             throw new RuntimeException("SecurityProtocol is not supported");
         }
 
-        // partition.discovery.interval.ms, type: long
+        // partition.discovery.interval.ms, type: String
         if (EnvironmentUtils.isSet(KAFKA_CONSUMER_PARTITION_DISCOVERY_INTERVAL_MS)) {
-            Long intervalMs = this.getLong(KAFKA_CONSUMER_PARTITION_DISCOVERY_INTERVAL_MS);
+            String intervalMs = this.getString(KAFKA_CONSUMER_PARTITION_DISCOVERY_INTERVAL_MS);
             props.put(KafkaSourceOptions.PARTITION_DISCOVERY_INTERVAL_MS.key(), intervalMs);
         } else {
             // default enable partition auto discovery and interval set to 1m
-            props.put(KafkaSourceOptions.PARTITION_DISCOVERY_INTERVAL_MS.key(), 60000);
+            props.put(KafkaSourceOptions.PARTITION_DISCOVERY_INTERVAL_MS.key(), "60000");
         }
 
         // max.poll.records, type: int
