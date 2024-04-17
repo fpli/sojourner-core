@@ -1,11 +1,14 @@
 package com.ebay.sojourner.business.parser;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author kofeng
+ * @author xiaoding
  */
+@Slf4j
 public abstract class RecordParser<Source, Target> implements Parser<Source, Target> {
 
     protected List<FieldParser<Source, Target>> fieldParsers = new ArrayList<>();
@@ -18,10 +21,16 @@ public abstract class RecordParser<Source, Target> implements Parser<Source, Tar
         }
     }
 
+
     public void parse(Source source, Target target)
             throws Exception {
         for (FieldParser<Source, Target> parser : fieldParsers) {
-            parser.parse(source, target);
+            try {
+                parser.parse(source, target);
+            } catch (Exception e) {
+                log.warn("Error parsing field: [{}]", parser.getClass().getSimpleName(), e);
+            }
+
         }
     }
 
@@ -33,4 +42,5 @@ public abstract class RecordParser<Source, Target> implements Parser<Source, Tar
             throw new RuntimeException("Duplicate Parser!!  ");
         }
     }
+
 }
