@@ -8,8 +8,8 @@ fi
 MODULE=$1
 
 # _soj_svc
-API_KEY=7fd45773637548469d728aceef7169eb
-API_SECRET=0cYSzwXkFzOOweW3hLj3IETrAmVUT8ZOyf7C782fLxaZUxGo6lu7cVkSOi6pl5hD
+API_KEY=f4761fed120e468180af9f2b1ca04197
+API_SECRET=VyX43liwhVRygELqVEdYsBX2OBpimBQFGa5cTEXDfxpLYRyFmLpZ8MknZZRlOBb8
 NAMESPACE=sojourner-ubd
 
 # project root as working dir

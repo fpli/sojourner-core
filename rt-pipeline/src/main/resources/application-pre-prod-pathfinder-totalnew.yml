@@ -13,7 +13,7 @@ flink:
         stream: behavior.pathfinder
         topic:
           - behavior.pathfinder.events.total
-        start-offset: committed-offset-or-latest
+        start-offset: latest
     sink:
       kafka:
         env: prod

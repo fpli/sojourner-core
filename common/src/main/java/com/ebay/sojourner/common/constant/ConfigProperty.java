@@ -38,6 +38,7 @@ public class ConfigProperty {
   // flink - sink - kafka
   public static final String FLINK_APP_SINK_KAFKA_ENV = "flink.app.sink.kafka.env";
   public static final String FLINK_APP_SINK_KAFKA_STREAM = "flink.app.sink.kafka.stream";
+  public static final String FLINK_APP_SINK_KAFKA_TOPIC = "flink.app.sink.kafka.topic";
   public static final String FLINK_APP_SINK_KAFKA_DC = "flink.app.sink.kafka.dc";
 
   // flink - sink - hdfs

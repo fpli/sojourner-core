@@ -2,7 +2,7 @@ flink:
   app:
     name: Sojourner Realtime Pipeline - Prod
     parallelism:
-      source: 200
+      source: 400
       session: 1024
       broadcast: 512
       agent-ip: 150
@@ -13,7 +13,7 @@ flink:
         stream: behavior.pathfinder
         topic:
           - behavior.pathfinder.events.total
-        start-offset: committed-offset
+        start-offset: committed-offset-or-earliest
     sink:
       kafka:
         env: prod

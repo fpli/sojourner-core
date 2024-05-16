@@ -51,6 +51,7 @@ import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_PARALL
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_DC;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_ENV;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_STREAM;
+import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SINK_KAFKA_TOPIC;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_DC;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_ENV;
 import static com.ebay.sojourner.common.constant.ConfigProperty.FLINK_APP_SOURCE_KAFKA_GROUP_ID;
@@ -192,6 +193,7 @@ public class FlinkEnv {
         final Configuration configuration = new Configuration();
         configuration.setInteger(TaskManagerOptions.NUM_TASK_SLOTS, slots);
         configuration.setInteger(RestOptions.PORT, webUiPort);
+        configuration.setString("state.savepoints.dir", "file:///tmp/savepoints");
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(configuration);
 
@@ -343,12 +345,11 @@ public class FlinkEnv {
         }
 
         // partition.discovery.interval.ms, type: String
+        // Note: this parameter is actually used by Flink, not Kafka. If we put types other than String,
+        //       Flink will ignore it.
         if (EnvironmentUtils.isSet(KAFKA_CONSUMER_PARTITION_DISCOVERY_INTERVAL_MS)) {
             String intervalMs = this.getString(KAFKA_CONSUMER_PARTITION_DISCOVERY_INTERVAL_MS);
             props.put(KafkaSourceOptions.PARTITION_DISCOVERY_INTERVAL_MS.key(), intervalMs);
-        } else {
-            // default enable partition auto discovery and interval set to 1m
-            props.put(KafkaSourceOptions.PARTITION_DISCOVERY_INTERVAL_MS.key(), "60000");
         }
 
         // max.poll.records, type: int
@@ -550,6 +551,10 @@ public class FlinkEnv {
         String stream = this.getString(FLINK_APP_SOURCE_KAFKA_STREAM);
 
         return getKafkaBrokers(env, stream, dc.toString());
+    }
+
+    public String getSinkKafkaTopic() {
+        return this.getString(FLINK_APP_SINK_KAFKA_TOPIC);
     }
 
     public String getSinkKafkaStreamName() {
