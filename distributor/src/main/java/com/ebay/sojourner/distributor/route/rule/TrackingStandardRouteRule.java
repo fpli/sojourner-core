@@ -16,7 +16,8 @@ public class TrackingStandardRouteRule extends AbstractSojEventRouteRule {
             "viewport",
             "interaction",
             "cartopstate",
-            "cjsBeta"
+            "cjsBeta",
+            "cjs"
     );
 
 
