@@ -74,10 +74,8 @@ class CjsFormulaInterpreterTest {
         val signalContext = SignalContext.getThreadLocalContext(rawEvent, ubiEvent);
 
         val signal = CJSignal.apply(
-                SignalKind.apply("SRP", SignalType.IMPRESSION, "SRP"),
-                UUIDUtils.fromAny(ubiEvent.getUserId() +
-                                          "_" + ubiEvent.getCurrentImprId() +
-                                          "_" + ubiEvent.getEventTimestamp()),
+                SignalKind.apply("Search", SignalType.IMPRESSION, "SRP"),
+                UUIDUtils.fromAny(ubiEvent.getCurrentImprId()),
                 DeviceContext.apply(signalContext.getDeviceContextExperience()));
 
         assertEquals(
@@ -334,6 +332,178 @@ class CjsFormulaInterpreterTest {
         assertEquals(
                 signal,
                 Decoders.cjs().decode(Base64.getDecoder().decode(intepreter.interpret(signalContext)))
+        );
+    }
+
+    @SneakyThrows
+    @Test
+    void testInvokeInterpretForAdd2Cart() {
+
+        val rawEvent = new RawEvent();
+        Map<String, String> sojA = Maps.newHashMap();
+        sojA.put("cartopstate", "non-empty");
+        sojA.put("cartaction", "ADD_TO_CART");
+        sojA.put("eventPrimaryId", "123456");
+        rawEvent.setSojA(sojA);
+
+        val ubiEvent = new UbiEvent();
+        ubiEvent.setPageId(2364840);
+        ubiEvent.setEventTimestamp(1640000000L);
+        ubiEvent.setApplicationPayload(PropertyUtils.mapToString(sojA));
+
+        val signalContext = SignalContext.getThreadLocalContext(rawEvent, ubiEvent);
+
+        val signal = CJSignal.apply(
+                SignalKind.apply("Cart", SignalType.OUTCOME, "Add2Cart"),
+                Optional.ofNullable(UUIDUtils.fromAny(Optional.ofNullable(rawEvent.getSojA()).map(s -> s.get("eventPrimaryId")).orElse(null))).orElse(""),
+                DeviceContext.apply(signalContext.getDeviceContextExperience()));
+
+        assertEquals(
+                signal,
+                Decoders.cjs().decode(Base64.getDecoder().decode(interpretInternal(context, signalContext)))
+        );
+
+        assertEquals(
+                interpretInternal(context, signalContext),
+                mapIfNotNull(cjSignalMessageEncoder.encode(signal), ByteBuffer::hasArray,
+                        x -> Base64.getEncoder().encodeToString(x.array()))
+        );
+    }
+
+    @SneakyThrows
+    @Test
+    void testInvokeInterpretForBid() {
+
+        val rawEvent = new RawEvent();
+        Map<String, String> sojA = Maps.newHashMap();
+        sojA.put("saleTypeFlow", "BID");
+        sojA.put("eventPrimaryId", "123456");
+        rawEvent.setSojA(sojA);
+
+        val ubiEvent = new UbiEvent();
+        ubiEvent.setPageId(2483445);
+        ubiEvent.setEventTimestamp(1640000000L);
+        ubiEvent.setApplicationPayload(PropertyUtils.mapToString(sojA));
+
+        val signalContext = SignalContext.getThreadLocalContext(rawEvent, ubiEvent);
+
+        val signal = CJSignal.apply(
+                SignalKind.apply("Bid", SignalType.OUTCOME, "Bid"),
+                Optional.ofNullable(UUIDUtils.fromAny(Optional.ofNullable(rawEvent.getSojA()).map(s -> s.get("eventPrimaryId")).orElse(null))).orElse(""),
+                DeviceContext.apply(signalContext.getDeviceContextExperience()));
+
+        assertEquals(
+                signal,
+                Decoders.cjs().decode(Base64.getDecoder().decode(interpretInternal(context, signalContext)))
+        );
+
+        assertEquals(
+                interpretInternal(context, signalContext),
+                mapIfNotNull(cjSignalMessageEncoder.encode(signal), ByteBuffer::hasArray,
+                        x -> Base64.getEncoder().encodeToString(x.array()))
+        );
+    }
+
+    @SneakyThrows
+    @Test
+    void testInvokeInterpretForBIN() {
+
+        val rawEvent = new RawEvent();
+        Map<String, String> sojA = Maps.newHashMap();
+        sojA.put("saleTypeFlow", "BIN");
+        sojA.put("eventPrimaryId", "123456");
+        rawEvent.setSojA(sojA);
+
+        val ubiEvent = new UbiEvent();
+        ubiEvent.setPageId(2483445);
+        ubiEvent.setEventTimestamp(1640000000L);
+        ubiEvent.setApplicationPayload(PropertyUtils.mapToString(sojA));
+
+        val signalContext = SignalContext.getThreadLocalContext(rawEvent, ubiEvent);
+
+        val signal = CJSignal.apply(
+                SignalKind.apply("BIN", SignalType.OUTCOME, "BIN"),
+                Optional.ofNullable(UUIDUtils.fromAny(Optional.ofNullable(rawEvent.getSojA()).map(s -> s.get("eventPrimaryId")).orElse(null))).orElse(""),
+                DeviceContext.apply(signalContext.getDeviceContextExperience()));
+
+        assertEquals(
+                signal,
+                Decoders.cjs().decode(Base64.getDecoder().decode(interpretInternal(context, signalContext)))
+        );
+
+        assertEquals(
+                interpretInternal(context, signalContext),
+                mapIfNotNull(cjSignalMessageEncoder.encode(signal), ByteBuffer::hasArray,
+                        x -> Base64.getEncoder().encodeToString(x.array()))
+        );
+    }
+
+    @SneakyThrows
+    @Test
+    void testInvokeInterpretForViewport() {
+
+        val rawEvent = new RawEvent();
+        Map<String, String> sojA = Maps.newHashMap();
+        sojA.put("viewport", "non-empty");
+        sojA.put("eventPrimaryId", "123456");
+        rawEvent.setSojA(sojA);
+
+        val ubiEvent = new UbiEvent();
+        ubiEvent.setEventFamily("LST");
+        ubiEvent.setEventTimestamp(1640000000L);
+        ubiEvent.setApplicationPayload(PropertyUtils.mapToString(sojA));
+
+        val signalContext = SignalContext.getThreadLocalContext(rawEvent, ubiEvent);
+
+        val signal = CJSignal.apply(
+                SignalKind.apply("Search", SignalType.IMPRESSION, "SRP_Viewport"),
+                Optional.ofNullable(UUIDUtils.fromAny(Optional.ofNullable(rawEvent.getSojA()).map(s -> s.get("eventPrimaryId")).orElse(null))).orElse(""),
+                DeviceContext.apply(signalContext.getDeviceContextExperience()));
+
+        assertEquals(
+                signal,
+                Decoders.cjs().decode(Base64.getDecoder().decode(interpretInternal(context, signalContext)))
+        );
+
+        assertEquals(
+                interpretInternal(context, signalContext),
+                mapIfNotNull(cjSignalMessageEncoder.encode(signal), ByteBuffer::hasArray,
+                        x -> Base64.getEncoder().encodeToString(x.array()))
+        );
+    }
+
+    @SneakyThrows
+    @Test
+    void testInvokeInterpretForInteraction() {
+
+        val rawEvent = new RawEvent();
+        Map<String, String> sojA = Maps.newHashMap();
+        sojA.put("interaction", "non-empty");
+        sojA.put("eventPrimaryId", "123456");
+        rawEvent.setSojA(sojA);
+
+        val ubiEvent = new UbiEvent();
+        ubiEvent.setEventFamily("LST");
+        ubiEvent.setEventAction("ACTN");
+        ubiEvent.setEventTimestamp(1640000000L);
+        ubiEvent.setApplicationPayload(PropertyUtils.mapToString(sojA));
+
+        val signalContext = SignalContext.getThreadLocalContext(rawEvent, ubiEvent);
+
+        val signal = CJSignal.apply(
+                SignalKind.apply("Search", SignalType.ACTION, "SRP_Interaction"),
+                Optional.ofNullable(UUIDUtils.fromAny(Optional.ofNullable(rawEvent.getSojA()).map(s -> s.get("eventPrimaryId")).orElse(null))).orElse(""),
+                DeviceContext.apply(signalContext.getDeviceContextExperience()));
+
+        assertEquals(
+                signal,
+                Decoders.cjs().decode(Base64.getDecoder().decode(interpretInternal(context, signalContext)))
+        );
+
+        assertEquals(
+                interpretInternal(context, signalContext),
+                mapIfNotNull(cjSignalMessageEncoder.encode(signal), ByteBuffer::hasArray,
+                        x -> Base64.getEncoder().encodeToString(x.array()))
         );
     }
 }

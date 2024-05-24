@@ -6,8 +6,9 @@
     "name": "Impression_SRP_Page_Impression",
     "description": "Impression_SRP_Page_Impression",
     "type": "PAGE_IMPRESSION",
-    "status": 0,
-    "logicalDefinition": [
+    "status": 3,
+    "logicalDefinition":
+    [
       {
         "eventClassifiers": [
           {
@@ -15,7 +16,7 @@
             "name": "SRP",
             "fsmOrder": null,
             "source": "SOJ",
-            "filter": "event.pageId != 4465146 && !empty(rawEvent?.sojA?.srpGist)"
+            "filter": "!empty(rawEvent?.sojA?.srpGist) && ![4465146, 3830594, 4535131].contains(event.pageId)"
           }
         ],
         "fields": null,
@@ -31,7 +32,7 @@
     "createdTime": "2024-02-26 02:20:02",
     "updatedUser": "yimikong",
     "updatedTime": "2024-02-26 02:20:02",
-    "env": "STAG"
+    "env": "PROD"
   },
   {
     "id": "1b60d5cb4fde4c08bb58795f141e391d",
@@ -40,10 +41,12 @@
     "name": "Impression_VI_Page_Impression",
     "description": "Impression_VI_Page_Impression",
     "type": "PAGE_IMPRESSION",
-    "status": 0,
-    "logicalDefinition": [
+    "status": 3,
+    "logicalDefinition":
+    [
       {
-        "eventClassifiers": [
+        "eventClassifiers":
+        [
           {
             "type": "IMPRESSION",
             "name": "VI",
@@ -53,7 +56,8 @@
           }
         ],
         "fields": null,
-        "uuidGenerator": {
+        "uuidGenerator":
+        {
           "clz": "jexl",
           "formula": "uuid:fromAny(event.currentImprId)?:''"
         },
@@ -65,7 +69,7 @@
     "createdTime": "2024-02-26 02:01:53",
     "updatedUser": "yimikong",
     "updatedTime": "2024-02-26 02:01:53",
-    "env": "STAG"
+    "env": "PROD"
   },
   {
     "id": "ac6611f4b1474c7ea36c5676238a81bd",
@@ -74,20 +78,23 @@
     "name": "BusinessOutcome_Item_Watched",
     "description": "BusinessOutcome_Item_Watched",
     "type": "BBOWAC",
-    "status": 0,
-    "logicalDefinition": [
+    "status": 3,
+    "logicalDefinition":
+    [
       {
-        "eventClassifiers": [
+        "eventClassifiers":
+        [
           {
             "type": "OUTCOME",
             "name": "ItemWatched",
             "fsmOrder": null,
             "source": "SOJ",
-            "filter": "!empty(event.itemId) && event.itemId > 0 && [2047937, 2055415, 2056818, 2057640, 2057896, 2058891, 4024275].contains(event.pageId)"
+            "filter": "!empty(event.itemId) && event.itemId > 0 && ([2047937, 2055415, 2056818, 2057640, 2057896, 2058891, 4024275].contains(event.pageId) || (event.pageId == 2356359 && event.eventAction == 'ACTN' && rawEvent?.sojA?.clickaction == 'WATCH' && ['CLICK', 'NAVSRC'].contains(rawEvent?.sojA?.actionKind)))"
           }
         ],
         "fields": null,
-        "uuidGenerator": {
+        "uuidGenerator":
+        {
           "clz": "jexl",
           "formula": "uuid:fromAny(rawEvent.sojA?.eventPrimaryId)?:''"
         },
@@ -99,6 +106,6 @@
     "createdTime": "2024-02-26 02:33:19",
     "updatedUser": "yimikong",
     "updatedTime": "2024-02-26 02:33:19",
-    "env": "STAG"
+    "env": "PROD"
   }
 ]
