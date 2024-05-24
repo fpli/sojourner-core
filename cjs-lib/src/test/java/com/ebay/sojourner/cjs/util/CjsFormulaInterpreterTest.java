@@ -96,12 +96,12 @@ class CjsFormulaInterpreterTest {
 
         val rawEvent = new RawEvent();
         Map<String, String> sojA = Maps.newHashMap();
-        sojA.put("SOJ_ABC", "SOJ_ABC");
+        sojA.put("srpGist", "base64");
         rawEvent.setSojA(sojA);
 
         val ubiEvent = new UbiEvent();
         ubiEvent.setAgentInfo("ebayUserAgent/eBayIOS;6.141.0;iOS;16.2;Apple;iPhone13_2;--;390x844;3.0");
-        ubiEvent.setPageId(4465146);
+        ubiEvent.setPageId(4465145);
         ubiEvent.setCurrentImprId(123456L);
         ubiEvent.setUserId("uid_123456");
         ubiEvent.setItemId(123456L);
@@ -111,10 +111,8 @@ class CjsFormulaInterpreterTest {
         val signalContext = SignalContext.getThreadLocalContext(rawEvent, ubiEvent);
 
         val signal = CJSignal.apply(
-                SignalKind.apply("SRP", SignalType.IMPRESSION, "SRP1"),
-                UUIDUtils.fromAny(ubiEvent.getUserId() +
-                                          "_" + ubiEvent.getCurrentImprId() +
-                                          "_" + ubiEvent.getEventTimestamp()),
+                SignalKind.apply("Search", SignalType.IMPRESSION, "SRP"),
+                UUIDUtils.fromAny(ubiEvent.getCurrentImprId()),
                 DeviceContext.apply(signalContext.getDeviceContextExperience()));
 
         assertEquals(
