@@ -48,7 +48,7 @@ public class CjsParser implements FieldParser<RawEvent, UbiEvent> {
     public static final String CJS_PROCESS_NS = "cjs.cjs.process.ns";
     public static final String CJSBETA_PROCESS_NS = "cjs.cjsBeta.process.ns";
 
-    private static final Set<String> E_FAM_PRE_FILTER_SET = ImmutableSet.of("ITM", "LST");
+    private static final Set<String> E_FAM_PRE_FILTER_SET = ImmutableSet.of("ITM", "LST", "XOUT");
 
     private CjsFormulaInterpreter cjsFormulaInterpreter;
     private CjsFormulaInterpreter cjsBetaFormulaInterpreter;
@@ -149,6 +149,7 @@ public class CjsParser implements FieldParser<RawEvent, UbiEvent> {
                 Objects.nonNull(ubiEvent.getEventFamily()) &&
                         E_FAM_PRE_FILTER_SET.contains(ubiEvent.getEventFamily())
         ) || (
+                // TODO: currently all ROI events in SOJ have itm tag, but better to have a separate event family
                 Objects.nonNull(ubiEvent.getItemId()) && ubiEvent.getItemId() > 0
         );
     }
