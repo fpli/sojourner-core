@@ -310,6 +310,9 @@ public class SojUtils {
         if (StringUtils.isNotEmpty(ubiSession.getFirstUserId())) {
             metricsMap.put("firstUserId", ubiSession.getFirstUserId());
         }
+        if (StringUtils.isNotEmpty(ubiSession.getBuserId())) {
+            metricsMap.put("buserId", ubiSession.getBuserId());
+        }
         return metricsMap;
     }
 
