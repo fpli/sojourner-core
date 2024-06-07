@@ -339,8 +339,7 @@ public class SojournerRTJobForQALegacy {
 
     // metrics collector for end to end
     signatureBotDetectionForEvent
-        .process(new RTPipelineMetricsCollectorProcessFunction(
-            FlinkEnvUtils.getInteger(Property.METRIC_WINDOW_SIZE)))
+        .process(new RTPipelineMetricsCollectorProcessFunction())
         .setParallelism(getInteger(Property.METRICS_PARALLELISM))
         .slotSharingGroup(getString(Property.CROSS_SESSION_SLOT_SHARE_GROUP))
         .name("Pipeline Metrics Collector")

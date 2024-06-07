@@ -108,8 +108,6 @@ public class SojournerRTJobNoSink {
 
         final String REGISTRY_URL = flinkEnv.getString(RHEOS_REGISTRY_URL);
 
-        final int metricWindow = 70000;
-
         // 2. Source & Filter & Event
         // 2.1 Consumes RawEvent from Pathfinder topic
         // 2.2 Assign Watermark
@@ -389,7 +387,7 @@ public class SojournerRTJobNoSink {
                             .setParallelism(PARALLELISM_BROADCAST);
 
         // metrics collector for end to end
-        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction(metricWindow))
+        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction())
                                      .name("Pipeline Metrics Collector")
                                      .uid("pipeline-metrics-collector")
                                      .slotSharingGroup(SLOT_GROUP_SESSION)

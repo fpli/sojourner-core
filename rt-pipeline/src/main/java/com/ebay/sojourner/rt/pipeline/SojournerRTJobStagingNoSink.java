@@ -345,7 +345,7 @@ public class SojournerRTJobStagingNoSink {
                             .setParallelism(PARALLELISM_BROADCAST);
 
         // metrics collector for end to end
-        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction(70000))
+        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction())
                                      .name("Pipeline Metrics Collector")
                                      .uid("pipeline-metrics-collector")
                                      .slotSharingGroup(SLOT_GROUP_SESSION)
