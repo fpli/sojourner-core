@@ -106,6 +106,7 @@ public class SojournerRTJob {
                 flinkEnv.getStringSet("flink.app.filter.large-message.pageid-monitor", ",");
 
 
+        final int PARALLELISM_SOURCE = flinkEnv.getSourceParallelism();
         final int PARALLELISM_SESSION = flinkEnv.getInteger("flink.app.parallelism.session");
         final int PARALLELISM_BROADCAST = flinkEnv.getInteger("flink.app.parallelism.broadcast");
         final int PARALLELISM_AGENT_IP = flinkEnv.getInteger("flink.app.parallelism.agent-ip");
@@ -120,12 +121,12 @@ public class SojournerRTJob {
         final String REGISTRY_URL = flinkEnv.getString(RHEOS_REGISTRY_URL);
 
         // event topics
-        final String TOPIC_BOT_EVENT = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
-        final String TOPIC_NONBOT_EVENT = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
-        final String TOPIC_LATE_EVENT = flinkEnv.getString("flink.app.sink.kafka.topic.event.late");
+        final String TOPIC_EVENT_BOT = flinkEnv.getString("flink.app.sink.kafka.topic.event.bot");
+        final String TOPIC_EVENT_NONBOT = flinkEnv.getString("flink.app.sink.kafka.topic.event.non-bot");
+        final String TOPIC_EVENT_LATE = flinkEnv.getString("flink.app.sink.kafka.topic.event.late");
         // session topics
-        final String TOPIC_BOT_SESSION = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
-        final String TOPIC_NONBOT_SESSION = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
+        final String TOPIC_SESSION_BOT = flinkEnv.getString("flink.app.sink.kafka.topic.session.bot");
+        final String TOPIC_SESSION_NONBOT = flinkEnv.getString("flink.app.sink.kafka.topic.session.non-bot");
         final String TOPIC_SESSION_METRICS = flinkEnv.getString("flink.app.sink.kafka.topic.session.metrics");
         // bot signature topics
         final String TOPIC_BOT_SIG_AGENT_IP =
@@ -140,8 +141,6 @@ public class SojournerRTJob {
 
         final String SINK_KAFKA_BROKERS = flinkEnv.getSinkKafkaBrokers();
         final Properties KAFKA_PRODUCER_PROPS = flinkEnv.getKafkaProducerProps();
-
-        final int metricWindow = 70000;
 
         // 2. Source & Filter & Event
         // 2.1 Consumes RawEvent from Pathfinder topic
@@ -164,7 +163,7 @@ public class SojournerRTJob {
                 executionEnvironment.fromSource(rnoPathfinderKafkaSource, watermarkStrategy, "Pathfinder RNO Source")
                                     .uid("source-kafka-pathfinder-rno")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
+                                    .setParallelism(PARALLELISM_SOURCE)
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
                                             SUB_URL_QUERY_STRING_LENGTH,
@@ -173,18 +172,18 @@ public class SojournerRTJob {
                                     .name("Large Message Filter - RNO")
                                     .uid("large-message-filter-rno")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
+                                    .setParallelism(PARALLELISM_SOURCE)
                                     .map(new EventMapFunction(flinkEnv.getCjsConfigMap()))
                                     .name("Event Operator - RNO")
                                     .uid("event-operator-rno")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_RNO)
-                                    .setParallelism(flinkEnv.getSourceParallelism());
+                                    .setParallelism(PARALLELISM_SOURCE);
 
         SingleOutputStreamOperator<UbiEvent> lvsEventStream =
                 executionEnvironment.fromSource(lvsPathfinderKafkaSource, watermarkStrategy, "Pathfinder LVS Source")
                                     .uid("source-kafka-pathfinder-lvs")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
+                                    .setParallelism(PARALLELISM_SOURCE)
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
                                             SUB_URL_QUERY_STRING_LENGTH,
@@ -193,18 +192,18 @@ public class SojournerRTJob {
                                     .name("Large Message Filter - LVS")
                                     .uid("large-message-filter-lvs")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
+                                    .setParallelism(PARALLELISM_SOURCE)
                                     .map(new EventMapFunction(flinkEnv.getCjsConfigMap()))
                                     .name("Event Operator - LVS")
                                     .uid("event-operator-lvs")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_LVS)
-                                    .setParallelism(flinkEnv.getSourceParallelism());
+                                    .setParallelism(PARALLELISM_SOURCE);
 
         SingleOutputStreamOperator<UbiEvent> slcEventStream =
                 executionEnvironment.fromSource(slcPathfinderKafkaSource, watermarkStrategy, "Pathfinder SLC Source")
                                     .uid("source-kafka-pathfinder-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
+                                    .setParallelism(PARALLELISM_SOURCE)
                                     .flatMap(new LargeMessageHandler(
                                             LARGE_MESSAGE_MAX_BYTES,
                                             SUB_URL_QUERY_STRING_LENGTH,
@@ -213,12 +212,12 @@ public class SojournerRTJob {
                                     .name("Large Message Filter - SLC")
                                     .uid("large-message-filter-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
-                                    .setParallelism(flinkEnv.getSourceParallelism())
+                                    .setParallelism(PARALLELISM_SOURCE)
                                     .map(new EventMapFunction(flinkEnv.getCjsConfigMap()))
                                     .name("Event Operator - SLC")
                                     .uid("event-operator-slc")
                                     .slotSharingGroup(SLOT_GROUP_SOURCE_SLC)
-                                    .setParallelism(flinkEnv.getSourceParallelism());
+                                    .setParallelism(PARALLELISM_SOURCE);
 
         // union ubiEvent from SLC/RNO/LVS
         DataStream<UbiEvent> ubiEventDataStream = rnoEventStream.union(lvsEventStream).union(slcEventStream);
@@ -250,7 +249,7 @@ public class SojournerRTJob {
                             .setParallelism(PARALLELISM_SESSION);
 
 
-        SideOutputDataStream<UbiEvent> ubiEventWithSessionIdStream =
+        SideOutputDataStream<UbiEvent> ubiEventStreamWithSessionId =
                 ubiSessionDataStream.getSideOutput(OutputTagConstants.mappedEventOutputTag);
 
         SideOutputDataStream<UbiEvent> lateEventStream =
@@ -332,7 +331,7 @@ public class SojournerRTJob {
                                     .setParallelism(PARALLELISM_SESSION);
 
         DataStream<Either<UbiEvent, UbiSession>> ubiEventTransDataStream =
-                ubiEventWithSessionIdStream.map(new DetectableEventMapFunction())
+                ubiEventStreamWithSessionId.map(new DetectableEventMapFunction())
                                            .name("Transform UbiEvent for Union")
                                            .uid("transform-ubievent-for-union")
                                            .slotSharingGroup(SLOT_GROUP_SESSION)
@@ -395,28 +394,28 @@ public class SojournerRTJob {
 
         // kafka sinks
         KafkaSink<SojSession> nonbotSojSessionKafkaSink = getKafkaSinkForSojSession(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJSESSION, TOPIC_NONBOT_SESSION);
+                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJSESSION, TOPIC_SESSION_NONBOT);
 
         KafkaSink<SojSession> botSojSessionKafkaSink = getKafkaSinkForSojSession(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJSESSION, TOPIC_BOT_SESSION);
+                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJSESSION, TOPIC_SESSION_BOT);
 
         KafkaSink<SojEvent> nonbotSojEventKafkaSink = getKafkaSinkForSojEvent(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJEVENT, TOPIC_NONBOT_EVENT);
+                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJEVENT, TOPIC_EVENT_NONBOT);
 
         KafkaSink<SojEvent> botSojEventKafkaSink = getKafkaSinkForSojEvent(
-                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJEVENT, TOPIC_BOT_EVENT);
+                SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL, SUBJECT_SOJEVENT, TOPIC_EVENT_BOT);
 
 
         // kafka sink for bot and nonbot sojsession
         sojSessionStream.sinkTo(nonbotSojSessionKafkaSink)
                         .name("Kafka Sink: SojSession Non-Bot")
-                        .uid("nonbot-sojsession-sink")
+                        .uid("kafka-sink-sojsession-nonbot")
                         .slotSharingGroup(SLOT_GROUP_SESSION)
                         .setParallelism(PARALLELISM_BROADCAST);
 
         botSojSessionStream.sinkTo(botSojSessionKafkaSink)
                            .name("Kafka Sink: SojSession Bot")
-                           .uid("bot-sojsession-sink")
+                           .uid("kafka-sink-sojsession-bot")
                            .slotSharingGroup(SLOT_GROUP_SESSION)
                            .setParallelism(PARALLELISM_BROADCAST);
 
@@ -424,13 +423,13 @@ public class SojournerRTJob {
         // kafka sink for bot and nonbot sojevent
         sojEventWithSessionId.sinkTo(nonbotSojEventKafkaSink)
                              .name("Kafka Sink: SojEvent Non-Bot")
-                             .uid("nonbot-sojevent-sink")
+                             .uid("kafka-sink-sojevent-nonbot")
                              .slotSharingGroup(SLOT_GROUP_EVENT_SINK)
                              .setParallelism(PARALLELISM_BROADCAST);
 
         botSojEventStream.sinkTo(botSojEventKafkaSink)
                          .name("Kafka Sink: SojEvent Bot")
-                         .uid("bot-sojevent-sink")
+                         .uid("kafka-sink-sojevent-bot")
                          .slotSharingGroup(SLOT_GROUP_EVENT_SINK)
                          .setParallelism(PARALLELISM_BROADCAST);
 
@@ -439,12 +438,12 @@ public class SojournerRTJob {
                                                                   REGISTRY_URL, SUBJECT_SESSION_METRICS,
                                                                   TOPIC_SESSION_METRICS))
                             .name("Kafka Sink: Session Metrics")
-                            .uid("bot-metrics-sink-kafka")
+                            .uid("sink-kafka-session-metrics")
                             .slotSharingGroup(SLOT_GROUP_SESSION)
                             .setParallelism(PARALLELISM_BROADCAST);
 
         // metrics collector for end to end
-        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction(metricWindow))
+        signatureBotDetectionForEvent.process(new RTPipelineMetricsCollectorProcessFunction())
                                      .name("Pipeline Metrics Collector")
                                      .uid("pipeline-metrics-collector")
                                      .slotSharingGroup(SLOT_GROUP_SESSION)
@@ -500,9 +499,9 @@ public class SojournerRTJob {
                                .setParallelism(PARALLELISM_SESSION);
 
         lateSojEventStream.sinkTo(getKafkaSinkForSojEvent(SINK_KAFKA_BROKERS, KAFKA_PRODUCER_PROPS, REGISTRY_URL,
-                                                          SUBJECT_SOJEVENT, TOPIC_LATE_EVENT))
+                                                          SUBJECT_SOJEVENT, TOPIC_EVENT_LATE))
                           .name("Kafka Sink: SojEvent Late")
-                          .uid("late-sojevent-sink")
+                          .uid("kafka-sink-sojevent-late")
                           .slotSharingGroup(SLOT_GROUP_SESSION)
                           .setParallelism(PARALLELISM_SESSION);
 

@@ -1,0 +1,36 @@
+flink:
+  app:
+    name: Sojourner Dumper Apollo Session Metrics - Pre-Prod
+    parallelism:
+      source: 50
+      sink: 50
+    source:
+      kafka:
+        group-id: sojourner-dumper-apollo-session-metrics-dq-pre-prod
+        env: prod
+        stream: pulsar-placeholder-rno
+        dc: rno
+        topic:
+          - pulsar-placeholder-rno.test.session-metrics
+        start-offset: latest
+    sink:
+      hdfs:
+        base-path: hdfs://apollo-router/sys/soj/ubd/metrics/
+        watermark-path: hdfs://apollo-router/sys/soj/ubd/watermark/metrics/
+    metric:
+      watermark-delay: sojourner-session-metrics-watermark-delay-time
+
+kafka:
+  consumer:
+    # 10000, default is 500
+    max-poll-records: 10000
+    # 50MB, default value is 50MB
+    fetch-max-bytes: 52428800
+    # 1MB, default value is 64KB
+    receive-buffer: 1048576
+    # 100ms, default value is 500ms
+    fetch-max-wait-ms: 100
+    # 10MB, default value is 1MB
+    max-partitions-fetch-bytes: 10485760
+    # when offset cannot be found, read from `latest`
+    auto-offset-reset: latest

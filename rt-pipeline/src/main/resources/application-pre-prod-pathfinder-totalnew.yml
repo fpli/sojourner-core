@@ -2,9 +2,9 @@ flink:
   app:
     name: Sojourner Realtime Pipeline - Pre-Prod
     parallelism:
-      source: 200
-      session: 1024
-      broadcast: 512
+      source: 400
+      session: 2000
+      broadcast: 1000
       agent-ip: 150
     source:
       kafka:

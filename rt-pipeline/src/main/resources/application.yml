@@ -26,8 +26,8 @@ kafka:
   consumer:
     # 5000, default value is 500
     max-poll-records: 5000
-    # 50MB, default value is 50MB
-    fetch-max-bytes: 52428800
+    # 100MB, default value is 50MB
+    fetch-max-bytes: 104857600
     # 4MB, default value is 64KB
     receive-buffer: 4194304
     # 25MB, default value is 1MB
@@ -39,7 +39,7 @@ kafka:
     # 1MB, default value is 16KB
     batch-size: 1048576
     # 50ms, default value is 0
-    linger-ms: 50
+    # linger-ms: 50
     # 30s, default value is 30s
     request-timeout-ms: 30000
     # 2147483647, default value is 2147483647(Integer.MAX_VALUE)

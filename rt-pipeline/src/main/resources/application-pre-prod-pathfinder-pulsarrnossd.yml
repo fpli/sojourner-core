@@ -1,0 +1,34 @@
+flink:
+  app:
+    name: Sojourner Realtime Pipeline - Pre-Prod
+    parallelism:
+      source: 400
+      session: 2000
+      broadcast: 1000
+      agent-ip: 150
+    source:
+      kafka:
+        group-id: sojourner-realtime-state-pre-prod
+        env: prod
+        stream: behavior.pathfinder
+        topic:
+          - behavior.pathfinder.events.total
+        start-offset: latest
+    sink:
+      kafka:
+        env: prod
+        stream: pulsar-placeholder-rno
+        dc: rno
+        topic:
+          event:
+            non-bot: pulsar-placeholder-rno.test.sojevent-nonbot
+            bot: pulsar-placeholder-rno.test.sojevent-bot
+            late: pulsar-placeholder-rno.test.sojevent-late
+          session:
+            non-bot: pulsar-placeholder-rno.test.sojsession-nonbot
+            bot: pulsar-placeholder-rno.test.sojsession-bot
+            metrics: pulsar-placeholder-rno.test.session-metrics
+          bot-signature:
+            agent-ip: pulsar-placeholder-rno.test.signature.agent-ip
+            agent: pulsar-placeholder-rno.test.signature.agent
+            ip: pulsar-placeholder-rno.test.signature.ip

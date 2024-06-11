@@ -12,7 +12,7 @@ import java.util.Set;
 public class MTMobilePlatformMc3urRouteRule extends AbstractSojEventRouteRule {
 
   private final Set<Integer> MC3UR_PAGE_IDS = Sets.newHashSet(
-      2058483, 2109664, 2109665, 2056451, 2054060, 2054081, 2380424
+      2058483, 2109664, 2109665, 2056451, 2054060, 2054081, 2380424, 2054121
   );
 
   @Override

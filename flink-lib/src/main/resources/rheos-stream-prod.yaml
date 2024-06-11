@@ -88,3 +88,14 @@
       - rhs-mfrvkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
       - rhs-mfrvkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
       - rhs-mfrvkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
+
+-
+  stream: pulsar-placeholder-rno
+  auth-protocol: SASL_PLAINTEXT
+  brokers:
+    rno:
+      - rhs-mhnwkiaa-kfk-1.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mhnwkiaa-kfk-2.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mhnwkiaa-kfk-3.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mhnwkiaa-kfk-4.rheos-streaming-prod.vip.ebay.com:9092
+      - rhs-mhnwkiaa-kfk-5.rheos-streaming-prod.vip.ebay.com:9092
