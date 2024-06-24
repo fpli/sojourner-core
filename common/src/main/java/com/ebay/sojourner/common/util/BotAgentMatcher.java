@@ -2,8 +2,8 @@ package com.ebay.sojourner.common.util;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BotAgentMatcher {
 
@@ -17,7 +17,7 @@ public class BotAgentMatcher {
    * Construct matcher wish provided browser agents and bot agents.
    */
   public BotAgentMatcher(Collection<String> browserAgents, Collection<String> botAgents) {
-    this.botAgents = new HashSet<String>();
+    this.botAgents = ConcurrentHashMap.newKeySet();
     this.botAgentFilter = new BotAgentFilter(browserAgents, botAgents);
   }
 
