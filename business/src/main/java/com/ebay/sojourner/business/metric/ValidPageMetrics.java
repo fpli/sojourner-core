@@ -24,17 +24,23 @@ import org.apache.commons.lang3.StringUtils;
 public class ValidPageMetrics implements FieldMetrics<UbiEvent, SessionAccumulator> {
 
   private Set<Integer> invalidPageIds;
+  private Set<Integer> botBlockerPages;
 
   @Override
   public void init() throws Exception {
     invalidPageIds =
         PropertyUtils.getIntegerSet(
             UBIConfig.getString(Property.INVALID_PAGE_IDS), Property.PROPERTY_DELIMITER);
+    botBlockerPages = PropertyUtils.getIntegerSet(
+            UBIConfig.getString(Property.BOT_BLOCKER_PAGES), Property.PROPERTY_DELIMITER);
   }
 
   @Override
   public void start(SessionAccumulator sessionAccumulator) throws Exception {
     sessionAccumulator.getUbiSession().setValidPageCnt(0);
+    sessionAccumulator.getUbiSession().setNewValidPageCnt(0);
+    sessionAccumulator.getUbiSession().setLandingPageId(Integer.MIN_VALUE);
+    sessionAccumulator.getUbiSession().setStartTimestampForPartialValidPage(null);
   }
 
   @Override
@@ -69,9 +75,27 @@ public class ValidPageMetrics implements FieldMetrics<UbiEvent, SessionAccumulat
       }
 
     }
+    // set new start timestamp for new partial vaild page logic
+    if (event.isPartialValidPageFlag()
+            && !event.isIframe()
+            && !event.isRdt()
+            && (event.getPageId() != -1 && !botBlockerPages.contains(event.getPageId()))
+    ) {
+      ubiSession
+              .setNewValidPageCnt(ubiSession.getNewValidPageCnt() + 1);
+      if (ubiSession.getLandingPageId() == Integer.MIN_VALUE ||
+              SojEventTimeUtil.isEarlyEvent(event.getEventTimestamp(),
+                      ubiSession.getStartTimestampForPartialValidPage())) {
+        ubiSession.setStartTimestampForPartialValidPage(event.getEventTimestamp());
+        ubiSession.setLandingPageId(event.getPageId());
+      }
+    }
   }
 
   @Override
   public void end(SessionAccumulator sessionAccumulator) throws Exception {
+    if (sessionAccumulator.getUbiSession().getLandingPageId() == Integer.MIN_VALUE) {
+      sessionAccumulator.getUbiSession().setLandingPageId(0);
+    }
   }
 }

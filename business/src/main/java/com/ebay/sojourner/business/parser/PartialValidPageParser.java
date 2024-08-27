@@ -6,6 +6,8 @@ import com.ebay.sojourner.common.model.ClientData;
 import com.ebay.sojourner.common.model.RawEvent;
 import com.ebay.sojourner.common.model.UbiEvent;
 import org.apache.commons.lang3.StringUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PartialValidPageParser implements FieldParser<RawEvent, UbiEvent> {
 
@@ -38,6 +40,16 @@ public class PartialValidPageParser implements FieldParser<RawEvent, UbiEvent> {
 
   @Override
   public void parse(RawEvent rawEvent, UbiEvent ubiEvent) throws Exception {
+    Map<String, String> applicationPayload = new HashMap<>();
+    if(rawEvent.getSojA() != null) {
+      applicationPayload.putAll(rawEvent.getSojA());
+    }
+    if(rawEvent.getSojK() != null) {
+      applicationPayload.putAll(rawEvent.getSojK());
+    }
+    if(rawEvent.getSojC() != null) {
+      applicationPayload.putAll(rawEvent.getSojC());
+    }
     Integer pageId = ubiEvent.getPageId();
     String urlQueryString = ubiEvent.getUrlQueryString();
     ClientData clientData = ubiEvent.getClientData();
@@ -48,19 +60,19 @@ public class PartialValidPageParser implements FieldParser<RawEvent, UbiEvent> {
     String sojPage =
         ubiEvent.getApplicationPayload() == null
             ? null
-            : SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "page");
+            : applicationPayload.get("page");
     String urlQueryPage =
         StringUtils.isNotBlank(urlQueryString) ? SOJNVL.getTagValue(urlQueryString, "page") : null;
     String pfn =
         ubiEvent.getApplicationPayload() == null
             ? null
-            : SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "pfn");
+            : applicationPayload.get("pfn");
     String agentString = clientData == null ? null : clientData.getAgent();
     Integer appId = ubiEvent.getAppId();
     String cflags =
         ubiEvent.getApplicationPayload() == null
             ? null
-            : SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "cflgs");
+            : applicationPayload.get("cflgs");
 
     if (ubiEvent.isRdt()) {
       ubiEvent.setPartialValidPage(false);
@@ -137,12 +149,12 @@ public class PartialValidPageParser implements FieldParser<RawEvent, UbiEvent> {
       ubiEvent.setPartialValidPage(false);
       return;
     }
-    if (SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "an") != null
-        && SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "av") != null) {
+    if (applicationPayload.get("an") != null
+        && applicationPayload.get("av") != null) {
       ubiEvent.setPartialValidPage(false);
       return;
     }
-    if (SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "in") != null) {
+    if (applicationPayload.get("in") != null) {
       ubiEvent.setPartialValidPage(false);
       return;
     }
@@ -159,7 +171,7 @@ public class PartialValidPageParser implements FieldParser<RawEvent, UbiEvent> {
       ubiEvent.setPartialValidPage(false);
       return;
     }
-    if ("1".equals(SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "mr"))
+    if ("1".equals(applicationPayload.get("mr"))
         || StringUtils.isNotBlank(urlQueryString)
         && (urlQueryString.contains("?redirect=mobile")
         || urlQueryString.contains("&redirect=mobile"))) {
@@ -179,7 +191,7 @@ public class PartialValidPageParser implements FieldParser<RawEvent, UbiEvent> {
     // SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "state") != null) {
     if (pageId != null
         && isCorrespondingPageId(pageId, STATEPageIds)
-        && SOJNVL.getTagValue(ubiEvent.getApplicationPayload(), "state") == null) {
+        && applicationPayload.get("state") == null) {
       ubiEvent.setPartialValidPage(false);
       return;
     }

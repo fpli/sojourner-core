@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PartialValidPageParserSpecialTest {
 
   private PartialValidPageParser partialValidPageParser;
@@ -117,6 +120,9 @@ public class PartialValidPageParserSpecialTest {
   public void test_applicationPayload_is_not_contains_av()
       throws Exception {
     ubiEvent.setApplicationPayload("an=ebay");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("an", "ebay");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(true, ubiEvent.isPartialValidPage());
   }
@@ -151,6 +157,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setApplicationPayload("mr=1");
     ubiEvent.setUrlQueryString("&redirect=mobile");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("mr", "1");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(false, ubiEvent.isPartialValidPage());
   }
@@ -186,6 +195,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(2765);
     ubiEvent.setApplicationPayload("state=ebay");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("state", "ebay");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(true, ubiEvent.isPartialValidPage());
   }
@@ -237,6 +249,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(5713);
     ubiEvent.setApplicationPayload("page=cyp");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("page", "cyp");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(true, ubiEvent.isPartialValidPage());
   }
@@ -246,6 +261,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(5713);
     ubiEvent.setApplicationPayload("page=ebay");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("page", "ebay");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(false, ubiEvent.isPartialValidPage());
   }
@@ -473,6 +491,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(2056116);
     ubiEvent.setApplicationPayload("pfn=ebay");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("pfn", "ebay");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(false, ubiEvent.isPartialValidPage());
   }
@@ -482,6 +503,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(2056116);
     ubiEvent.setApplicationPayload("pfn=VI");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("pfn", "VI");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(true, ubiEvent.isPartialValidPage());
   }
@@ -499,6 +523,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(2056812);
     ubiEvent.setApplicationPayload("page=ryprender");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("page", "ryprender");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(true, ubiEvent.isPartialValidPage());
   }
@@ -508,6 +535,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(2056812);
     ubiEvent.setApplicationPayload("page=cyprender");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("page", "cyprender");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(true, ubiEvent.isPartialValidPage());
   }
@@ -517,6 +547,9 @@ public class PartialValidPageParserSpecialTest {
       throws Exception {
     ubiEvent.setPageId(2056812);
     ubiEvent.setApplicationPayload("page=eabay");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("page", "eabay");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(false, ubiEvent.isPartialValidPage());
   }
@@ -587,6 +620,9 @@ public class PartialValidPageParserSpecialTest {
     ubiEvent.setPageId(2053898);
     ubiEvent.setUrlQueryString("page=MainCheckoutPage");
     ubiEvent.setApplicationPayload("page=ryprender");
+    Map<String, String> sojA = new HashMap<>();
+    sojA.put("page", "ryprender");
+    rawEvent.setSojA(sojA);
     partialValidPageParser.parse(rawEvent, ubiEvent);
     Assertions.assertEquals(true, ubiEvent.isPartialValidPage());
   }

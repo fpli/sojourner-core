@@ -31,11 +31,13 @@ public class UbiSession implements Serializable, Cloneable {
   private int botFlags;
   private Long findingFlags;
   private int startPageId;
+  private int landingPageId;
   private int endPageId;
   private Long startTimestamp;
   private Long startTimestampNOIFRAMERDT;
   private Long endTimestampNOIFRAMERDT;
   private Long startTimestampForValidPage;
+  private Long startTimestampForPartialValidPage;
   private Long endTimestampForValidPage;
   private Long startTimestampNOIFRAME;
   private Long startTimestampForAgentString;
@@ -76,6 +78,7 @@ public class UbiSession implements Serializable, Cloneable {
   private String oldSessionSkey;
   private int absEventCnt; // Not exists in SojSession
   private int validPageCnt;
+  private int newValidPageCnt;
   private int agentCnt;
   private String agentString;
   private int lndgPageId;
@@ -199,6 +202,7 @@ public class UbiSession implements Serializable, Cloneable {
     this.signinPageCnt += ubiSession.getSigninPageCnt();
     this.nonIframeRdtEventCnt += ubiSession.getNonIframeRdtEventCnt();
     this.validPageCnt += ubiSession.getValidPageCnt();
+    this.newValidPageCnt += ubiSession.getNewValidPageCnt();
     this.agentCnt += ubiSession.getAgentCnt();
     this.familyViCnt += ubiSession.getFamilyViCnt();
     this.pageCnt += ubiSession.getPageCnt();
@@ -263,6 +267,15 @@ public class UbiSession implements Serializable, Cloneable {
       this.setSessionSkey(ubiSession.getSessionSkey());
       this.setSessionStartDt(ubiSession.getSessionStartDt());
       this.setStartPageId(ubiSession.getStartPageId());
+    }
+    if (this.getStartTimestampForPartialValidPage() == null
+            && ubiSession.getStartTimestampForPartialValidPage() != null) {
+      this.setStartTimestampForPartialValidPage(ubiSession.getStartTimestampForPartialValidPage());
+      this.setLandingPageId(ubiSession.getLandingPageId());
+    } else if (ubiSession.getStartTimestampForPartialValidPage() != null
+            && this.getStartTimestampForPartialValidPage() > ubiSession.getStartTimestampForPartialValidPage()) {
+      this.setStartTimestampForPartialValidPage(ubiSession.getStartTimestampForPartialValidPage());
+      this.setLandingPageId(ubiSession.getLandingPageId());
     }
     if (this.getAbsEndTimestamp() == null && ubiSession.getAbsEndTimestamp() != null) {
       this.setAbsEndTimestamp(ubiSession.getAbsEndTimestamp());

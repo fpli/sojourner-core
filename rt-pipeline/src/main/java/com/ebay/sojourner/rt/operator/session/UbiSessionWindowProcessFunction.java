@@ -98,6 +98,7 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setStreamId(ubiSessionTmp.getStreamId());
     ubiSession.setBuserId(ubiSessionTmp.getBuserId());
     ubiSession.setValidPageCnt(ubiSessionTmp.getValidPageCnt());
+    ubiSession.setNewValidPageCnt(ubiSessionTmp.getNewValidPageCnt());
     ubiSession.setOpenEmit(isOpen);
     ubiSession.setIsIPExternal(ubiSessionTmp.getIsIPExternal());
     ubiSession.setValidPageCntForIos(ubiSessionTmp.getValidPageCntForIos());
@@ -111,7 +112,8 @@ public class UbiSessionWindowProcessFunction
     ubiSession.setFirstCollectionExpTimestamp(ubiSessionTmp.getFirstCollectionExpTimestamp());
     ubiSession.setGpc(ubiSessionTmp.getGpc());
     ubiSession.setBuyerId(ubiSessionTmp.getBuyerId());
-
+    ubiSession.setLandingPageId(ubiSessionTmp.getLandingPageId());
+    ubiSession.setStartTimestampForPartialValidPage(ubiSessionTmp.getStartTimestampForPartialValidPage());
     return ubiSession;
   }
 

@@ -55,6 +55,7 @@ public class UbiEvent implements Serializable {
   private Long oldSessionSkey;
   private int hashCode;
   private boolean partialValidPage = true;
+  private boolean partialValidPageFlag = true;
   private Set<Integer> botFlags = new LinkedHashSet<>(); // bot in jetstream int
   private long icfBinary;
   // collect some metrics for monitor and validation

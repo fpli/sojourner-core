@@ -34,6 +34,7 @@ public class Property {
 
   // -------------------- Page Indicator Property --------------------------------
   public static final String SEARCH_VIEW_PAGES = "search.view.pages";
+  public static final String BOT_BLOCKER_PAGES = "bot.blocker.pages";
   public static final String VIEW_ITEM_PAGES = "view.item.pages";
   public static final String BID_PAGES = "bid.pages";
   public static final String BIN_PAGES = "bin.pages";

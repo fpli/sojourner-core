@@ -48,6 +48,7 @@ public class EventParser extends RecordParser<RawEvent, UbiEvent> {
             // new metrics
             addFieldParser(new CobrandParser());
             addFieldParser(new PartialValidPageParser());
+            addFieldParser(new PartialValidPageEnrichParser());
             // Jetstream columns
             addFieldParser(new JSColumnParser());
             addFieldParser(new HashCodeParser());

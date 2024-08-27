@@ -297,7 +297,10 @@ public class SojUtils {
     public static Map<String, String> createMetricsMap(UbiSession ubiSession) {
         Map<String, String> metricsMap = new HashMap<>();
         metricsMap.put("validPageCnt", Integer.toString(ubiSession.getValidPageCnt()));
-        metricsMap.put("lndgPageId", Integer.toString(ubiSession.getLndgPageId()));
+        metricsMap.put("newValidPageCnt", Integer.toString(ubiSession.getNewValidPageCnt()));
+        metricsMap.put("lndgPageId", String.valueOf(ubiSession.getLandingPageId()));
+        //debugging purpose, delete this line in production
+        metricsMap.put("startPageId", String.valueOf(ubiSession.getStartPageId()));
         metricsMap.put("endPageId", Integer.toString(ubiSession.getEndPageId()));
         metricsMap.put("homepageCnt", String.valueOf(ubiSession.getHomepageCnt()));
         metricsMap.put("signinPageCnt", String.valueOf(ubiSession.getSigninPageCnt()));
