@@ -1,0 +1,32 @@
+flink:
+  app:
+    name: Sojourner GUID X UID - Prod
+    parallelism:
+      source:
+        non-bot: 200
+        bot: 300
+      flatmap: 600
+      sink: 600
+    source:
+      kafka:
+        group-id: sojourner-guid-x-uid-valid-event-prod
+        env: prod
+        stream: behavior.totalv3
+        dc: lvs
+        topic:
+          non-bot: behavior.totalv3.sojevent-nonbot-rno
+          bot: behavior.totalv3.sojevent-bot-rno
+        start-offset: latest
+    sink:
+      kafka:
+        env: prod
+        stream: behavior.pulsar
+        dc:
+          - rno
+        topic: behavior.pulsar.guid-x-uid-valid-event
+        subject:
+          event: behavior.sojourner.sojevent.schema
+
+kafka:
+  producer:
+    acks: all
