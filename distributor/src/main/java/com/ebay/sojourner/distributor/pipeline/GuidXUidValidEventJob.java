@@ -24,7 +24,7 @@ public class GuidXUidValidEventJob {
     public static void main(String[] args) throws Exception {
 
         FlinkEnv flinkEnv = new FlinkEnv(args);
-        StreamExecutionEnvironment executionEnvironment = flinkEnv.local();
+        StreamExecutionEnvironment executionEnvironment = flinkEnv.init();
 
         final String REGISTRY_URL = flinkEnv.getString(RHEOS_REGISTRY_URL);
         final String TOPIC_EVENT = flinkEnv.getString("flink.app.sink.kafka.topic");
