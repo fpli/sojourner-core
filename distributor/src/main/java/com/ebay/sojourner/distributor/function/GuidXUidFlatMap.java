@@ -63,7 +63,7 @@ public class GuidXUidFlatMap extends RichFlatMapFunction<RawSojEventWrapper, Soj
         boolean buValid = checkUserId(bu);
         if (!buValid) {
             invalidUserIdEventCounter.inc();
-        //  applicationPayload.replace("bu", null);
+            //  applicationPayload.replace("bu", null);
             applicationPayload.remove("bu");
         }
         String userId = sojEvent.getUserId();

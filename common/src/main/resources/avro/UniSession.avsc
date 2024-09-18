@@ -1,0 +1,448 @@
+{
+  "type": "record",
+  "name": "UniSession",
+  "namespace": "com.ebay.sojourner.common.model",
+  "fields": [
+    {
+      "name": "rheosHeader",
+      "type": {
+        "type": "record",
+        "name": "RheosHeader",
+        "fields": [
+          {
+            "name": "eventCreateTimestamp",
+            "type": "long"
+          },
+          {
+            "name": "eventSentTimestamp",
+            "type": "long"
+          },
+          {
+            "name": "schemaId",
+            "type": "int"
+          },
+          {
+            "name": "eventId",
+            "type": [
+              "null",
+              {
+                "type": "string",
+                "avro.java.string": "String"
+              }
+            ]
+          },
+          {
+            "name": "producerId",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            }
+          }
+        ]
+      },
+      "doc": "Rheos header"
+    },
+    {
+      "name": "guid",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession guid"
+    },
+    {
+      "name": "globalSessionId",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from unisession globalSessionId"
+    },
+    {
+      "name": "absStartTimestamp",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from unisession absStartTimestamp"
+    },
+    {
+      "name": "absEndTimestamp",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from unisession absEndTimestamp"
+    },
+    {
+      "name": "sessionStartDt",
+      "type": [
+        "null",
+        "long"
+      ],
+      "doc": "from unisession sessionStartDt"
+    },
+    {
+      "name": "trafficSource",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "traffic source"
+    },
+    {
+      "name": "trafficSourceDetails",
+      "type": [
+        "null",
+        {
+          "type": "map",
+          "values": [
+            "null",
+            "string"
+          ],
+          "default": {}
+        }
+      ],
+      "doc": ""
+    },
+    {
+      "name": "ubiSessIds",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": "string"
+        }
+      ]
+    },
+    {
+      "name": "ubiSessSkeys",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": "long"
+        }
+      ]
+    },
+    {
+      "name": "autotrackSessIds",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": "long"
+        }
+      ]
+    },
+    {
+      "name": "autotrackSessSkeys",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": "long"
+        }
+      ]
+    },
+    {
+      "name": "botFlag",
+      "type": {
+        "type": "record",
+        "name": "BotFlag",
+        "fields": [
+          {
+            "name": "surface",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "int"
+              }
+            ]
+          },
+          {
+            "name": "ubi",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "int"
+              }
+            ]
+          },
+          {
+            "name": "utp",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "int"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "others",
+      "type": {
+        "type": "map",
+        "values": "string"
+      }
+    },
+    {
+      "name": "isOpen",
+      "type": [
+        "null",
+        "boolean"
+      ],
+      "doc": "to identify open or end"
+    },
+    {
+      "name": "userId",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession",
+      "default": null
+    },
+    {
+      "name": "firstAppId",
+      "type": [
+        "null",
+        "int"
+      ],
+      "doc": "from ubisession",
+      "default": null
+    },
+    {
+      "name": "cobrand",
+      "type": [
+        "null",
+        "int"
+      ],
+      "doc": "from ubisession ",
+      "default": null
+    },
+    {
+      "name": "userAgent",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession",
+      "default": null
+    },
+    {
+      "name": "experience",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession",
+      "default": null
+    },
+    {
+      "name": "experienceLevel1",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession",
+      "default": null
+    },
+    {
+      "name": "experienceLevel2",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "from ubisession",
+      "default": null
+    },
+    {
+      "name": "sessionSkey",
+      "type": [
+        "null",
+        "long"
+      ]
+    },
+    {
+      "name": "clavSessions",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": {
+            "name": "ClavSession",
+            "type": "record",
+            "fields": [
+              {
+                "name": "sessionId",
+                "type": "string",
+                "doc": "align with  globalSessionId"
+              },
+              {
+                "name": "siteId",
+                "type": "int"
+              },
+              {
+                "name": "botFlag",
+                "type": "long",
+                "doc": "botSignature"
+              },
+              {
+                "name": "validPageCount",
+                "type": "int"
+              },
+              {
+                "name": "duration",
+                "type": "long"
+              },
+              {
+                "name": "startPageId",
+                "type": "int"
+              },
+              {
+                "name": "exitPageId",
+                "type": "int"
+              },
+              {
+                "name": "startTimestamp",
+                "type": "long"
+              },
+              {
+                "name": "exitTimestamp",
+                "type": "long"
+              },
+              {
+                "name": "grCount",
+                "type": "int"
+              },
+              {
+                "name": "gr1Count",
+                "type": "int"
+              },
+              {
+                "name": "homepageCount",
+                "type": "int"
+              },
+              {
+                "name": "viCount",
+                "type": "int"
+              },
+              {
+                "name": "signinCount",
+                "type": "int"
+              },
+              {
+                "name": "myebayCount",
+                "type": "int"
+              },
+              {
+                "name": "userAgent",
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              {
+                "name": "experienceLevel1",
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              {
+                "name": "experienceLevel2",
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              {
+                "name": "deviceType",
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              {
+                "name": "deviceTypeLevel1",
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              {
+                "name": "deviceTypeLevel2",
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              {
+                "name": "sessionSkey",
+                "type": [
+                  "null",
+                  "long"
+                ]
+              },
+              {
+                "name": "cobrand",
+                "type": [
+                  "null",
+                  "int"
+                ]
+              },
+              {
+                "name": "sessionStartDt",
+                "type": [
+                  "null",
+                  "long"
+                ],
+                "doc": " clav sessionStartDt"
+              },
+              {
+                "name": "absStartTimestamp",
+                "type": [
+                  "null",
+                  "long"
+                ],
+                "doc": " clav absStartTimestamp"
+              },
+              {
+                "name": "absEndTimestamp",
+                "type": [
+                  "null",
+                  "long"
+                ],
+                "doc": " clav absEndTimestamp"
+              },
+
+              {
+                "name": "others",
+                "type": {
+                  "type": "map",
+                  "values": "string"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "doc": "from ubisession",
+      "default": null
+    },
+    {
+      "name": "botSignature",
+      "type": [
+        "null",
+        "long"
+      ]
+    }
+  ]
+}
+

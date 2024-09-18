@@ -47,6 +47,12 @@ under the License.
               files="/src/main/java/com/ebay/sojourner/common/model/Guid.java"/>
     <suppress checks=".*"
               files="/src/main/java/com/ebay/sojourner/common/model/BotSignature.java"/>
+    <suppress checks=".*"
+              files="/src/main/java/com/ebay/sojourner/common/model/UniSession.java"/>
+    <suppress checks=".*"
+              files="/src/main/java/com/ebay/sojourner/common/model/ClavSession.java"/>
+    <suppress checks=".*"
+              files="/src/main/java/com/ebay/sojourner/common/model/BotFlag.java"/>
 
     <!--  Below are the legacy code that will disable firstly to pass style checker-->
     <suppress checks="EmptyCatchBlock"
